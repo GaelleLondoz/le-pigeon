@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function(models) {
     // associations can be defined here
+    User.hasMany(models.Booking)
+    User.hasMany(models.Review)
+    User.hasMany(models.Message)
+    
   };
   return User;
 };
