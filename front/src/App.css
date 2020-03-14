@@ -1,10 +1,11 @@
-.App {
-  text-align: center;
+
+.container {
+  width: 100%;
+  flex-direction: row;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container li {
+  color: green;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -13,11 +14,13 @@
   }
 }
 
+
+
 .App-header {
-  background-color: #282c34;
+  background-color:#c1c4c9;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
