@@ -1,20 +1,12 @@
 "use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Bookings", {
+    return queryInterface.createTable("Reviews", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
-      date: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      status: {
-        allowNull: false,
-        type: Sequelize.STRING
       },
       userID: {
         allowNull: false,
@@ -24,10 +16,17 @@ module.exports = {
           key: "id"
         }
       },
+      comment: {
+        allowNull: false,
+        type: Sequelize.TEXT
+      },
+      rating: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: new Date()
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
@@ -36,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Bookings");
+    return queryInterface.dropTable("Reviews");
   }
 };
