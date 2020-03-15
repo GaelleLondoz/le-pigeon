@@ -1,32 +1,37 @@
 "use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("BookingLocations", {
+    return queryInterface.createTable("Destinations", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      bookingID: {
+      countryID: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Bookings",
+          model: "Countries",
           key: "id"
         }
       },
-      locationID: {
+      continentID: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Locations",
+          model: "Continents",
           key: "id"
         }
+      },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: new Date()
       },
       updatedAt: {
         allowNull: false,
@@ -35,6 +40,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("BookingLocations");
+    return queryInterface.dropTable("Destinations");
   }
 };
