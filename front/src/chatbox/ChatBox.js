@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { GiftedChat } from "react-web-gifted-chat";
-import axios from "axios";
+//import axios from "axios";
 import UserChatBox from "./UserChatBox";
 import ContactBox from "./ContactBox";
 import HomeChatBox from "./HomeChatBox";
