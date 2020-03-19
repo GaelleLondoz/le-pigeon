@@ -1,5 +1,6 @@
 "use strict";
 
+/* https://www.npmjs.com/package/faker */
 const faker = require("faker");
 
 module.exports = {
