@@ -1,8 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import RoutesNav from './RoutesNav';
 
 function Nav() {
   return (
+    <Router>
     <nav className="container">
       <ul>
         <li>
@@ -19,6 +21,8 @@ function Nav() {
         </li>
       </ul>
     </nav>
+    <RoutesNav />
+    </Router>
   );
 }
 
