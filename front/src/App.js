@@ -1,7 +1,7 @@
 import React from "react";
 //import logo from "./logo.svg";
 //import "./App.css";
-import ChatBox from "./chatbox/ChatBox";
+import ChatBox from "./components/chatbox/ChatBox";
 
 function App() {
   return (

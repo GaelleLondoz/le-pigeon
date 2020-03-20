@@ -4,24 +4,39 @@ import { GiftedChat } from "react-web-gifted-chat";
 import UserChatBox from "./UserChatBox";
 import ContactBox from "./ContactBox";
 import HomeChatBox from "./HomeChatBox";
+import VideoChatBox from "./VideoChatBox";
+import ErrorHandling from "./ErrorHandling";
 
 class ChatBox extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleCall = this.handleCall.bind(this);
+    this.handleStopVideo = this.handleStopVideo.bind(this);
+
     this.state = {
       messages: [
-        {
-          id: "81d9eeaf-918e-4184-9d29-cb2b88ada876",
-          text: "Hello Medium!",
-          user: {
-            avatar:
-              "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-            id: "er3JJoRkKwVfmRepUYMr46367P22",
-            name: "Jan Romaniak"
-          }
-        }
+        /*{
+                  id: "81d9eeaf-918e-4184-9d29-cb2b88ada876",
+                  text: "Hello Medium!",
+                  user: {
+                    avatar:
+                      "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
+                    id: "er3JJoRkKwVfmRepUYMr46367P22",
+                    name: "Jan Romaniak"
+                  }
+                }*/
+        /*,
+                {
+                  id: "81d9eeaf-918e-4184-9d29-cb2b88ada876",
+                  text: "Hi!",
+                  user: {
+                    avatar:
+                      "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
+                    id: "er3JJoRkKwVfmRepUYMr46367P22",
+                    name: "Jan Romaniak"
+                  }
+                }*/
       ],
       contacts: [
         {
@@ -56,24 +71,22 @@ class ChatBox extends Component {
       selectedUser: {},
       isAuthenticated: false,
       isSelected: false,
+      isCallInitiator: false,
+      isCallOnGoing: false,
+      isCallAccepted: false,
+      isCallStopped: false,
       selectedAvatar: "",
       selectedName: "",
-      count: 0
+      callRoomId: ""
     };
   }
   handleChange(user, e) {
     if (user) {
       user.isSelected = true;
       this.setState({
-        selectedUser: user
-      });
-      this.setState({
-        selectedAvatar: user.avatar
-      });
-      this.setState({
-        selectedName: user.name
-      });
-      this.setState({
+        selectedUser: user,
+        selectedAvatar: user.avatar,
+        selectedName: user.name,
         isSelected: true
       });
       return user;
@@ -81,40 +94,40 @@ class ChatBox extends Component {
   }
 
   handleCall(e) {
-    /* this.setState({
-                selectedUser: { user }
-              }); */
-    alert("Start video conference");
-  }
-  handleKey() {
     this.setState({
-      count: this.count + 1
+      isCallInitiator: true,
+      isCallOnGoing: true
     });
-    return this.state.count;
+  }
+
+  handleStopVideo(e) {
+    this.setState({
+      isCallOnGoing: false,
+      isSelected: false
+    });
   }
 
   onSend(messages = []) {
-    /*this.setState(previousState => ({
-              messages: GiftedChat.append(previousState.messages, messages)
-            }));*/
-    this.setState({
-      isSelected: false,
-      isAuthenticated: true,
-      selectedUser: {},
-      messages: [
-        {
-          id: "81d9eeaf-918e-4184-9d29-cb2b88ada876",
-          text: "Hello Medium!",
-          user: {
-            avatar:
-              "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-            id: "er3JJoRkKwVfmRepUYMr46367P22",
-            name: "Jan Romaniak"
-          }
-        }
-      ]
-    });
+    console.log({ message1: messages });
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, messages)
+    }));
+    console.log({ message2: this.state.messages });
   }
+
+  saveMessage(message) {
+    //save messages into database related to the user sent to selected user
+    //to call inside OnSend()
+  }
+  loadMessages() {
+    //Load messages from database related to the user and selected user
+  }
+
+  /*onSend(messages) {
+      for (const message of messages) {
+        this.saveMessage(message);
+      }
+    }*/
 
   renderUserChatBox() {
     return (
@@ -139,59 +152,66 @@ class ChatBox extends Component {
   }
 
   renderHomeChatBox() {
-    return <HomeChatBox avatar={this.state.selectedAvatar}></HomeChatBox>;
+    return <HomeChatBox />;
   }
 
   renderGiftedChat() {
-    //return <GiftedChat user={this.state.user} messages={this.state.messages} />;
     return (
-      <GiftedChat
-        user={this.state.messages[0].user.name}
-        messages={this.state.messages.slice().reverse()}
-        onSend={messages => this.onSend(messages)}
+      <ErrorHandling>
+        <GiftedChat
+          user={this.state.selectedUser}
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+        />
+      </ErrorHandling>
+    );
+  }
+
+  renderVideoChatBox() {
+    return (
+      <VideoChatBox
+        user={this.state.selectedUser}
+        handleStopVideo={this.handleStopVideo}
       />
     );
   }
+  //componentWillMount() {}
   componentDidMount() {
     //Query the API to retrieve the list of contact
+    //Query the API to retrieve the list of Message
     /*axios.get("http://localhost:7878/api/todos").then(res => {
-              const todos = res.data;
-              this.setState({ todos });
-            });*/
-    /* this.setState({
-              isAuthenticated: true,
-              user: {},
-              messages: [
-                {
-                  id: "81d9eeaf-918e-4184-9d29-cb2b88ada876",
-                  text: "Hello Medium!",
-                  user: {
-                    avatar:
-                      "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-                    id: "er3JJoRkKwVfmRepUYMr46367P22",
-                    name: "Jan Romaniak"
-                  }
-                }
-              ]
-            }); */
+                  const todos = res.data;
+                  this.setState({ todos });
+                });*/
+    if (this.state.isSelected && this.state.isCallOnGoing) {
+      console.log("ENTER INIT");
+      const script = document.createElement("script");
+      script.src = "../webrtc/ClientWebRTC.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
   }
 
   render() {
     return (
       <div className="chat" style={styles.container}>
-        <div style={styles.channelList}> {this.renderContacts()} </div>
-        {!this.state.isSelected && (
+        <div style={styles.contactList}> {this.renderContacts()} </div>
+        {!this.state.isSelected && !this.state.isCallOnGoing && (
           <div style={styles.chat}>
             <div style={styles.chat}> {this.renderHomeChatBox()} </div>
           </div>
         )}
-        {this.state.isSelected && (
+        {this.state.isSelected && !this.state.isCallOnGoing && (
           <div style={styles.chat}>
-            <div style={styles.chat}> {this.renderUserChatBox()} </div>
-            <div style={styles.chat}> {this.renderGiftedChat()} </div>
+            <div style={styles.chat}>{this.renderUserChatBox()}</div>
+            <div style={styles.chat}>{this.renderGiftedChat()}</div>
           </div>
         )}
-
+        {this.state.isSelected && this.state.isCallOnGoing && (
+          <div style={styles.chat}>
+            <div style={styles.chat}> {this.renderVideoChatBox()} </div>
+          </div>
+        )}
         <div style={styles.settings}> </div>
       </div>
     );
@@ -205,7 +225,7 @@ const styles = {
     flexDirection: "row",
     height: "100vh"
   },
-  channelList: {
+  contactList: {
     display: "flex",
     flex: 1,
     flexDirection: "column"

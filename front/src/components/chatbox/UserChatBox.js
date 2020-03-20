@@ -6,7 +6,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
-import AddIcCallIcon from "@material-ui/icons/AddIcCall";
 import VideoCallIcon from "@material-ui/icons/VideoCall";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
@@ -29,16 +28,9 @@ class UserChatBox extends React.Component {
         <List className={classes.root}>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar
-                //src={getValue(this.props.data, "avatar")}
-                //src="https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg"
-                src={this.props.avatar}
-                //src={""}
-                alt={this.props.name}
-              />
+              <Avatar src={this.props.avatar} alt={this.props.name} />
             </ListItemAvatar>
             <ListItemText
-              //primary={Math.random().toString(36)}
               primary={this.props.name}
               secondary={
                 <React.Fragment>
@@ -53,13 +45,10 @@ class UserChatBox extends React.Component {
                 </React.Fragment>
               }
             />
-            <IconButton aria-label="call" enabled color="primary">
-              <AddIcCallIcon />
-            </IconButton>
             <IconButton
               aria-label="video"
               onClick={e => this.props.handleCall(this.props.name, e)}
-              enabled
+              enabled="true"
               color="primary"
             >
               <VideoCallIcon />
