@@ -5,7 +5,7 @@ import UserChatBox from "./UserChatBox";
 import ContactBox from "./ContactBox";
 import HomeChatBox from "./HomeChatBox";
 import VideoChatBox from "./VideoChatBox";
-import ErrorHandling from "./ErrorHandling";
+//import ErrorHandling from "./ErrorHandling";
 
 class ChatBox extends Component {
   constructor(props) {
@@ -108,11 +108,9 @@ class ChatBox extends Component {
   }
 
   onSend(messages = []) {
-    console.log({ message1: messages });
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages)
     }));
-    console.log({ message2: this.state.messages });
   }
 
   saveMessage(message) {
@@ -157,13 +155,11 @@ class ChatBox extends Component {
 
   renderGiftedChat() {
     return (
-      <ErrorHandling>
-        <GiftedChat
-          user={this.state.selectedUser}
-          messages={this.state.messages}
-          onSend={messages => this.onSend(messages)}
-        />
-      </ErrorHandling>
+      <GiftedChat
+        user={this.state.selectedUser}
+        messages={this.state.messages}
+        onSend={messages => this.onSend(messages)}
+      />
     );
   }
 
@@ -198,7 +194,7 @@ class ChatBox extends Component {
         <div style={styles.contactList}> {this.renderContacts()} </div>
         {!this.state.isSelected && !this.state.isCallOnGoing && (
           <div style={styles.chat}>
-            <div style={styles.chat}> {this.renderHomeChatBox()} </div>
+            <div style={styles.chat}>{this.renderHomeChatBox()}</div>
           </div>
         )}
         {this.state.isSelected && !this.state.isCallOnGoing && (
@@ -209,7 +205,7 @@ class ChatBox extends Component {
         )}
         {this.state.isSelected && this.state.isCallOnGoing && (
           <div style={styles.chat}>
-            <div style={styles.chat}> {this.renderVideoChatBox()} </div>
+            <div style={styles.chat}>{this.renderVideoChatBox()} </div>
           </div>
         )}
         <div style={styles.settings}> </div>

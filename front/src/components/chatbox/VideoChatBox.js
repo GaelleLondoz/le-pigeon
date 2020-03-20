@@ -9,6 +9,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     "& > svg": {
       margin: theme.spacing(2)
+      /*       display: "flex",
+      flex: 2 */
     }
   }
 }));
@@ -21,7 +23,7 @@ export default function VideoChatBox(props) {
       <React.Fragment>
         <CssBaseline />
         <Box display="flex" justifyContent="center" bgcolor="background.paper">
-          <video id="localVideo" autoPlay="true"></video>
+          <video id="localVideo" autoPlay={true}></video>
         </Box>
         <Box
           display="flex"
@@ -29,7 +31,7 @@ export default function VideoChatBox(props) {
           bgcolor="background.paper"
           sizewidth="50%"
         >
-          <video id="remoteVideo" autoPlay="true"></video>
+          <video id="remoteVideo" autoPlay={true}></video>
         </Box>
         <Box
           display="flex"
@@ -40,7 +42,7 @@ export default function VideoChatBox(props) {
           <IconButton
             aria-label="video"
             onClick={e => props.handleStopVideo(e)}
-            enabled
+            enabled="true"
             color="secondary"
             size="medium"
           >
