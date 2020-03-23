@@ -1,31 +1,51 @@
-$primary-color: #fff;
+$white: #fff;
 $main-blue: #3f51b5;
+$dark-blue: #373E4C;
+$light-blue: #99CCFF;
+
+.MuiToolbar-regular {
+  background-color: $light-blue;
+}
 
 .navElement {
-  color: $primary-color;
+  color: $dark-blue;
   text-decoration: none;
   padding-left: 30px;
   padding-right: 30px;
+
+  & .icon {
+    color: $dark-blue;
+    height: 30px;
+    width: 30px;
+    margin-top: 3px;    
+  }
 
   &:first-child {
     font-size: 35px;
     padding-left: 0px;
   }
 
-  &:last-child {
-    padding-right: 0px;
-  }
-
   &:nth-child(5) {
-    background-color: $primary-color;
-    border: 2px solid $primary-color;
+    background-color: $white;
+    border: 2px solid $white;
     border-radius: 25px;
-    color: $main-blue;
+    color: $dark-blue;
     font-weight: bold;
     font-size: 20px;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
     padding-top: 3px;
     padding-bottom: 3px;
+  }
+  &:nth-child(5):hover {
+    background-color:red;
+  }
+
+  &:nth-child(6) {
+    padding-right: 0px;
+    & .icon {
+      height: 45px;
+      width: 45px;;    
+    }
   }
 }

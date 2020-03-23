@@ -1,8 +1,8 @@
 import React from "react";
 
-function Message() {
-    return <h2>Login Page</h2>;
+function Messages() {
+    return <h2>Yours messages</h2>;
 }
 
-export default Message
+export default Messages
 

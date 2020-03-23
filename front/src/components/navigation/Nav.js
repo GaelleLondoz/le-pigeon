@@ -2,13 +2,21 @@ import React from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import RoutesNav from "./RoutesNav";
 //////////////// Material-ui /////////////////////////////
+
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-/////////////////////////////////////////////////////////
+
+///////////////// SASS /////////////////////////////////////
+
 import "../../assets/sass/Nav.scss";
+
+///////////////// Icons /////////////////////////////////////
+
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import HelpIcon from "@material-ui/icons/Help";
+import EmailIcon from "@material-ui/icons/Email";
 
 // 2 // created navigation
 // export to App.js
@@ -38,19 +46,19 @@ function Nav() {
               </Link>
             </Typography>
             <Link to="/message" className="navElement">
-              Message
+              <EmailIcon className="icon" />
             </Link>
             <Link to="/connect" className="navElement">
               Se connecter
             </Link>
             <Link to="/help" className="navElement">
-              Aide
+              <HelpIcon className="icon" />
             </Link>
             <Link to="/become-agent" className="navElement">
               Devenez agent!
             </Link>
             <Link to="/login" className="navElement">
-              <AccountCircleIcon fontSize="large"/>
+              <AccountCircleIcon className="icon" />
             </Link>
           </Toolbar>
         </AppBar>
