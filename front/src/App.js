@@ -10,6 +10,7 @@ class App extends Component {
       <div className="app-viewport">
         <div className="container">
         <Head />
+        
           <Nav />
         </div>
       </div>
