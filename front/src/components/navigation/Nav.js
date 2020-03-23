@@ -34,7 +34,9 @@ function Nav() {
             <Typography variant="h5" className={classes.title}>
               <Link>LE PIGEON</Link>
             </Typography>
-
+            <Link to="/connect">Se connecter</Link>
+            <Link to="/help">Aide</Link>
+            <Link to="/become-agent">Devenez agent!</Link>
           </Toolbar>
         </AppBar>
       </div>
@@ -44,3 +46,4 @@ function Nav() {
 }
 
 export default Nav;
+
