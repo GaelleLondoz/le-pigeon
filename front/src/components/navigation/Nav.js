@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 
 ///////////////// SASS /////////////////////////////////////
 
-import "../../assets/sass/Nav.scss";
+import "../../assets/sass/nav.scss";
 
 ///////////////// Icons /////////////////////////////////////
 

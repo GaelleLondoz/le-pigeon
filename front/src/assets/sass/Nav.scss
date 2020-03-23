@@ -1,10 +1,10 @@
-$white: #fff;
-$main-blue: #3f51b5;
-$dark-blue: #373E4C;
-$light-blue: #99CCFF;
+@import "variables";
+@import "mixins";
 
 .MuiToolbar-regular {
   background-color: $light-blue;
+  @include paddings;
+
 }
 
 .navElement {
@@ -18,6 +18,10 @@ $light-blue: #99CCFF;
     height: 30px;
     width: 30px;
     margin-top: 3px;    
+  }//
+
+  & .icon:hover {
+    color: $main-blue;    
   }
 
   &:first-child {
@@ -38,7 +42,9 @@ $light-blue: #99CCFF;
     padding-bottom: 3px;
   }
   &:nth-child(5):hover {
-    background-color:red;
+    background-color: $main-blue;
+    color: $white;
+    border: 2px solid $main-blue;
   }
 
   &:nth-child(6) {

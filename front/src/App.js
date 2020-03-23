@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Nav from './components/navigation/Nav';
 import Head from './components/Head';
-
+import './assets/sass/body.scss'
 
 class App extends Component {
 
