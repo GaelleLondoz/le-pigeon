@@ -32,7 +32,7 @@ function Nav() {
           <Toolbar>
 
             <Typography variant="h5" className={classes.title}>
-              LE PIGEON
+              <Link>LE PIGEON</Link>
             </Typography>
 
           </Toolbar>
