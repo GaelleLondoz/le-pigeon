@@ -8,3 +8,5 @@ https://docs.google.com/presentation/d/18uy6YQfS4CgOSgbo512RWDuny3o0QZt8jg0d5o8w
 
 Project charter
 https://docs.google.com/document/d/1mM_m0S-CE24hOduglewzkkoWwPjCcCejbwc_3wWkuws/edit?usp=sharing
+
+Searching for a solution
