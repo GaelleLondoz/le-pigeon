@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Places from './components/Places';
+import Signin from './components/signin'
  
 class App extends Component {
 
@@ -7,7 +8,7 @@ class App extends Component {
     return (
       <div className="app-viewport">
         <div className="container">
-          
+          <Signin />
           <Places/>
         </div>
       </div>
