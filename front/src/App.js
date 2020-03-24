@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import Nav from './components/navigation/Nav';
 import Head from './components/Head';
 import './assets/sass/body.scss'
+import Places from './components/Places';
+import Rating from './components/rating';
+ 
 
 class App extends Component {
 
@@ -12,6 +15,9 @@ class App extends Component {
         <Head />
         
           <Nav />
+          
+          <Rating />
+          <Places />
         </div>
       </div>
     );
