@@ -4,6 +4,7 @@ const router = Router();
 const usersController = require('../controllers/usersController')
 const bookingsController = require('../controllers/bookingsController')
 const reviewsController = require('../controllers/reviewsController')
+const messagesController = require('../controllers/messagesController')
 
 // users
 router.get('/users', usersController.index)
@@ -25,6 +26,13 @@ router.post('/reviews', reviewsController.create)
 router.get('/reviews/:id', reviewsController.findOne)
 router.put('/reviews/:id', reviewsController.update)
 router.delete('/reviews/:id', reviewsController.destroy)
+
+// messages
+router.get('/messages', messagesController.index)
+router.post('/messages', messagesController.create)
+router.get('/messages/:id', messagesController.findOne)
+router.put('/messages/:id', messagesController.update)
+router.delete('/messages/:id', messagesController.destroy)
 
 
 module.exports = router
