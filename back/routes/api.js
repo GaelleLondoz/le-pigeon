@@ -34,5 +34,4 @@ router.get('/messages/:id', messagesController.findOne)
 router.put('/messages/:id', messagesController.update)
 router.delete('/messages/:id', messagesController.destroy)
 
-
 module.exports = router
