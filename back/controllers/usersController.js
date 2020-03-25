@@ -1,4 +1,4 @@
-const { User } = require("../models/user");
+const { User } = require("../models");
 
 const index = (req, res) => {
   return User.findAll()
@@ -13,7 +13,55 @@ const create = (req, res) => {
     .catch(e => res.status(500).send(e));
 };
 
+const findOne = (req, res) => {
+    const id = req.params.id;
+    return User.findByPk(id)
+    .then(user => res.status(200).send(user))
+    .catch(e => res.status(500).send(e));
+}
+
+const update = (req, res) => {
+    const id = req.params.id;
+
+    User.update(req.body, {
+        where: { id: id }
+    })
+    .then(user => res.status(200).send(user))
+    .catch(e => res.status(500).send(e));
+
+}
+
+
+const destroy = (req, res) => {
+    const id = req.params.id;
+  
+    User.destroy({
+      where: { id: id }
+    })
+    .then(user => res.status(200).send(user))
+    .catch(e => res.status(500).send(e));
+};
+
+// Update a Tutorial by the id in the request
+// exports.update = (req, res) => {
+  
+// };
+
+// // Delete a Tutorial with the specified id in the request
+// exports.delete = (req, res) => {
+  
+// };
+
+// // Delete all Tutorials from the database.
+// exports.deleteAll = (req, res) => {
+  
+// };
+
+
 module.exports = {
   index,
-  create
+  create,
+  findOne,
+  update,
+  destroy
 };
