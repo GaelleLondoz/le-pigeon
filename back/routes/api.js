@@ -3,6 +3,7 @@ const router = Router();
 
 const usersController = require('../controllers/usersController')
 const bookingsController = require('../controllers/bookingsController')
+const reviewsController = require('../controllers/reviewsController')
 
 // users
 router.get('/users', usersController.index)
@@ -17,6 +18,13 @@ router.post('/bookings', bookingsController.create)
 router.get('/bookings/:id', bookingsController.findOne)
 router.put('/bookings/:id', bookingsController.update)
 router.delete('/bookings/:id', bookingsController.destroy)
+
+// reviews
+router.get('/reviews', reviewsController.index)
+router.post('/reviews', reviewsController.create)
+router.get('/reviews/:id', reviewsController.findOne)
+router.put('/reviews/:id', reviewsController.update)
+router.delete('/reviews/:id', reviewsController.destroy)
 
 
 module.exports = router
