@@ -1,32 +1,32 @@
-const { User } = require("../models");
+const { Booking } = require("../models");
 
 const index = (req, res) => {
-  return User.findAll()
-    .then(users => res.status(200).send(users))
+  return Booking.findAll()
+    .then(bookings => res.status(200).send(bookings))
     .catch(e => res.status(500).send(e));
 };
 
 const create = (req, res) => {
-  const newUser = req.body.User;
-  return User.create(newUser)
-    .then(user => res.status(200).send(user))
+  const newBooking = req.body.Booking;
+  return Booking.create(newBooking)
+    .then(booking => res.status(200).send(booking))
     .catch(e => res.status(500).send(e));
 };
 
 const findOne = (req, res) => {
     const id = req.params.id;
-    return User.findByPk(id)
-    .then(user => res.status(200).send(user))
+    return Booking.findByPk(id)
+    .then(booking => res.status(200).send(booking))
     .catch(e => res.status(500).send(e));
 }
 
 const update = (req, res) => {
     const id = req.params.id;
 
-    User.update(req.body, {
+    Booking.update(req.body, {
         where: { id: id }
     })
-    .then(user => res.status(200).send(user))
+    .then(booking => res.status(200).send(booking))
     .catch(e => res.status(500).send(e));
 
 }
@@ -34,10 +34,10 @@ const update = (req, res) => {
 const destroy = (req, res) => {
     const id = req.params.id;
   
-    User.destroy({
+    Booking.destroy({
       where: { id: id }
     })
-    .then(user => res.status(200).send(user))
+    .then(Booking => res.status(200).send(Booking))
     .catch(e => res.status(500).send(e));
 };
 
