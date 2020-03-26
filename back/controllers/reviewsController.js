@@ -7,7 +7,7 @@ const index = (req, res) => {
 };
 
 const create = (req, res) => {
-  const newReview = req.body.Review;
+  const newReview = req.body.review;
   return Review.create(newReview)
     .then(review => res.status(200).send(review))
     .catch(e => res.status(500).send(e));

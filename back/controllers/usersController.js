@@ -7,7 +7,7 @@ const index = (req, res) => {
 };
 
 const create = (req, res) => {
-  const newUser = req.body.User;
+  const newUser = req.body.user;
   return User.create(newUser)
     .then(user => res.status(200).send(user))
     .catch(e => res.status(500).send(e));

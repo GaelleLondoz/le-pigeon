@@ -1,4 +1,4 @@
-const { Message } = require("../models");
+const { Message, User } = require("../models");
 
 const index = (req, res) => {
   return Message.findAll()
@@ -7,7 +7,7 @@ const index = (req, res) => {
 };
 
 const create = (req, res) => {
-  const newMessage = req.body.Message;
+  const newMessage = req.body.message;
   return Message.create(newMessage)
     .then(message => res.status(200).send(message))
     .catch(e => res.status(500).send(e));

@@ -7,7 +7,7 @@ const index = (req, res) => {
 };
 
 const create = (req, res) => {
-  const newBooking = req.body.Booking;
+  const newBooking = req.body.booking;
   return Booking.create(newBooking)
     .then(booking => res.status(200).send(booking))
     .catch(e => res.status(500).send(e));
@@ -28,7 +28,6 @@ const update = (req, res) => {
     })
     .then(booking => res.status(200).send(booking))
     .catch(e => res.status(500).send(e));
-
 }
 
 const destroy = (req, res) => {
