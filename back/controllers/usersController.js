@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const {getHash} = require("../helpers/index")
 const { User } = require("../models");
 
 const index = (req, res) => {
@@ -8,6 +10,7 @@ const index = (req, res) => {
 
 const create = (req, res) => {
   const newUser = req.body.user;
+  newUser.password = getHash(newUser.password)
   return User.create(newUser)
     .then(user => res.status(200).send(user))
     .catch(e => res.status(500).send(e));
@@ -41,10 +44,43 @@ const destroy = (req, res) => {
     .catch(e => res.status(500).send(e));
 };
 
+const login = async (req, res) => {
+  const {email, password} = req.body.login;
+
+  if(email && password) {
+    try {
+      const user = await User.findOne({
+        where: {
+          email
+        }
+      })
+      console.log(user)
+
+      if (!user) {
+        res.status(401).json({ message: 'No such user found' });
+      }
+  
+      if (user.password === password) {
+        let payload = { id: user.id };
+        let token = jwt.sign(payload, process.env.JWT_SECRET);
+        res.json({ msg: 'ok', token: token });
+      } else {
+        res.status(401).json({ msg: 'Password is incorrect' });
+      }
+    }
+    catch (e) {
+      console.log(e)
+    }
+
+
+  }
+}
+
 module.exports = {
   index,
   create,
   findOne,
   update,
-  destroy
+  destroy,
+  login
 };
