@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
 import { BrowserRouter } from "react-router-dom";
-import Routes from "./Routes";
+import Routes from "./components/navigation/Routes";
 
 import "./assets/sass/body.scss";
 
