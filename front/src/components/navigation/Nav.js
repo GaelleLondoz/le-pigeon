@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import RoutesNav from "./RoutesNav";
 //////////////// Material-ui /////////////////////////////
@@ -17,6 +18,7 @@ import "../../assets/sass/nav.scss";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HelpIcon from "@material-ui/icons/Help";
 import EmailIcon from "@material-ui/icons/Email";
+import Login from "../../pages/Login";
 
 // 2 // created navigation
 // export to App.js
@@ -32,8 +34,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Nav() {
+let Nav = props => {
   const classes = useStyles();
+
+  const handleLogin = () => {
+    props.login();
+  };
 
   return (
     <Router>
@@ -45,12 +51,21 @@ function Nav() {
                 LE PIGEON
               </Link>
             </Typography>
-            <Link to="/message" className="navElement">
-              <EmailIcon className="icon" />
-            </Link>
-            <Link to="/connect" className="navElement">
-              Se connecter
-            </Link>
+            {props.auth !== null ? (
+              <Link to="/message" className="navElement">
+                <EmailIcon className="icon" />
+              </Link>
+            ) : (
+              ""
+            )}
+            {props.auth === null ? (
+              /* {<Link to="/connect" className="navElement">
+                Se connecter
+              </Link> : ""*/
+              <button onClick={() => handleLogin()}>Se connecter</button>
+            ) : (
+              ""
+            )}
             <Link to="/help" className="navElement">
               <HelpIcon className="icon" />
             </Link>
@@ -66,6 +81,22 @@ function Nav() {
       <RoutesNav />
     </Router>
   );
-}
+};
 
+const mapStateToAuth = state => {
+  return {
+    auth: state.auth
+  };
+};
+
+const mapDispatchToAuth = dispatch => {
+  return {
+    login: () => {
+      //Dispatch => role: call a action of type ...(SET_AUTH)
+      dispatch({ type: "SET_AUTH" });
+    }
+  };
+};
+
+Nav = connect(mapStateToAuth, mapDispatchToAuth)(Nav);
 export default Nav;

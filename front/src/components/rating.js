@@ -11,14 +11,16 @@ const StarRating = () => {
         const ratingValue = i + 1;
 
         return (
-          <label>
+          <label
+            key={i} 
+          >
             <input 
                 type="radio" 
                 name=" rating" 
                 value={ratingValue} 
                 onClick = {() => setRating(ratingValue)}
             />
-            <FaStar 
+            <FaStar
                 className="star" 
                 color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"} 
                 size={20} 
