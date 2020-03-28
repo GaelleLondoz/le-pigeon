@@ -13,6 +13,9 @@ router.get('/users/:id', usersController.findOne)
 router.put('/users/:id', usersController.update)
 router.delete('/users/:id', usersController.destroy)
 
+// login auth
+router.post('/login', usersController.login)
+
 // bookings
 router.get('/bookings', bookingsController.index)
 router.post('/bookings', bookingsController.create)
