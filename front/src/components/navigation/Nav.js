@@ -34,13 +34,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-let Nav = (props) => {
+let Nav = props => {
   const classes = useStyles();
 
   const handleLogin = () => {
-    props.login()
-  }
-  
+    props.login();
+  };
+
   return (
     <Router>
       <div className={classes.root}>
@@ -51,22 +51,21 @@ let Nav = (props) => {
                 LE PIGEON
               </Link>
             </Typography>
-            {props.auth !== null ?
+            {props.auth !== null ? (
               <Link to="/message" className="navElement">
-              <EmailIcon className="icon" />
-              </Link> : ""
-            }
-            {props.auth === null ?
+                <EmailIcon className="icon" />
+              </Link>
+            ) : (
+              ""
+            )}
+            {props.auth === null ? (
               /* {<Link to="/connect" className="navElement">
                 Se connecter
               </Link> : ""*/
-              <button
-                onClick={() => handleLogin()}
-              >
-                Se connecter
-              </button>
-              :""
-            }
+              <button onClick={() => handleLogin()}>Se connecter</button>
+            ) : (
+              ""
+            )}
             <Link to="/help" className="navElement">
               <HelpIcon className="icon" />
             </Link>
@@ -82,7 +81,7 @@ let Nav = (props) => {
       <RoutesNav />
     </Router>
   );
-}
+};
 
 const mapStateToAuth = state => {
   return {
@@ -90,13 +89,14 @@ const mapStateToAuth = state => {
   };
 };
 
-const mapDispatchToAuth = (dispatch) => {
+const mapDispatchToAuth = dispatch => {
   return {
     login: () => {
-      dispatch({ type: 'SET_AUTH' })
+      //Dispatch => role: call a action of type ...(SET_AUTH)
+      dispatch({ type: "SET_AUTH" });
     }
-  }
-}
+  };
+};
 
 Nav = connect(mapStateToAuth, mapDispatchToAuth)(Nav);
 export default Nav;
