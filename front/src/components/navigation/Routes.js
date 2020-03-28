@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  // BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
@@ -14,7 +13,7 @@ import Messages from '../../pages/Messages';
 // 1 //after created each pages, create paths:
 // export to Nav.js
 
-export default function RoutesNav() {
+export default function Routes() {
   return (
         <Switch>
         <Route path="/connect">

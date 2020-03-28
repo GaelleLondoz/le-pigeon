@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
-import RoutesNav from "./RoutesNav";
+import { Link } from "react-router-dom";
+
 //////////////// Material-ui /////////////////////////////
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,7 +36,7 @@ function Nav() {
   const classes = useStyles();
 
   return (
-    <Router>
+    
       <div className={classes.root}>
         <AppBar position="static" className={classes.root}>
           <Toolbar>
@@ -63,8 +63,8 @@ function Nav() {
           </Toolbar>
         </AppBar>
       </div>
-      <RoutesNav />
-    </Router>
+      
+    
   );
 }
 
