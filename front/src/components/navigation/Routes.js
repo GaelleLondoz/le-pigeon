@@ -8,7 +8,7 @@ import Connect from '../../pages/Connect';
 import Help from '../../pages/Help';
 import BecomeAgent from '../../pages/BecomeAgent';
 import Home from '../../pages/Home';
-import Login from '../../pages/Login';
+import LogIn from '../../pages/LogIn';
 import Messages from '../../pages/Messages';
 
 // 1 //after created each pages, create paths:
@@ -30,7 +30,7 @@ export default function RoutesNav() {
             <BecomeAgent />
           </Route>
           <Route path="/login">
-            <Login />
+            <LogIn />
           </Route>
           <Route path="/">
             <Home />
