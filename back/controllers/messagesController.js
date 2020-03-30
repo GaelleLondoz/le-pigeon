@@ -21,7 +21,7 @@ const findOne = (req, res) => {
 }
 
 const update = (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id;//
 
     Message.update(req.body, {
         where: { id: id }
