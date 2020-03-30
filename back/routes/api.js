@@ -1,3 +1,7 @@
+// install express allows syntax:
+// app.method (path, handler)
+// send to ??????????
+
 const { Router } = require("express");
 const router = Router();
 

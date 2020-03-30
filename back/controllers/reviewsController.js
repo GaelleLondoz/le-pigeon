@@ -1,3 +1,9 @@
+// create interactions with database (ex: CRUD) for reviews
+// actions already define by sequelize
+// .findAll(), .findByPk()... = sequelize vocabulary
+// send to ???????
+
+
 const { Review } = require("../models");
 
 const index = (req, res) => {

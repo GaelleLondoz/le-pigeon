@@ -1,3 +1,4 @@
+// auto-generate when use sequelize
 "use strict";
 
 const faker = require("faker");

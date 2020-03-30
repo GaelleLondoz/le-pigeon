@@ -1,3 +1,5 @@
+// use sequelize to create database
+// export to controllers
 "use strict";
 module.exports = (sequelize, DataTypes) => {
   const Booking = sequelize.define(

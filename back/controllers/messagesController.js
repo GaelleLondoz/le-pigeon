@@ -1,3 +1,8 @@
+// create interactions with database (ex: CRUD) for messages
+// actions already define by sequelize
+// .findAll(), .findByPk()... = sequelize vocabulary
+// send to ???????
+
 const { Message, User } = require("../models");
 
 const index = (req, res) => {

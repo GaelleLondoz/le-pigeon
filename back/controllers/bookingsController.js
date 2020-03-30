@@ -1,3 +1,8 @@
+// create interactions with database (ex: CRUD) for bookings
+// actions already define by sequelize
+// .findAll(), .findByPk()... = sequelize vocabulary
+// send to ???????
+
 const { Booking } = require("../models");
 
 const index = (req, res) => {

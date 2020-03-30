@@ -1,3 +1,5 @@
+// create crypting for password:
+// install bcrypt
 
 const bcrypt = require("bcrypt");
 const getHash = (string) => {

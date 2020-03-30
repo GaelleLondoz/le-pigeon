@@ -1,3 +1,8 @@
+// create interactions with database (ex: CRUD) for users
+// already define by sequelize
+// .findAll(), .findByPk()... = sequelize vocabulary
+// send to ???????
+
 const jwt = require('jsonwebtoken');
 const {getHash} = require("../helpers/index")
 const { User } = require("../models");
