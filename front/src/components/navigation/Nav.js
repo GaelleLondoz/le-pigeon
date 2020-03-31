@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 
 ///////////////// SASS /////////////////////////////////////
 
-import "../../assets/sass/nav.scss";
+import "../../assets/sass/_nav.scss";
 
 ///////////////// Icons /////////////////////////////////////
 
@@ -48,36 +48,36 @@ let Nav = props => {
           <Toolbar>
             <Typography variant="h5" className={classes.title}>
               <Link to="/" className="navElement">
-                LE PIGEON
-              </Link>
-            </Typography>
+                LE PIGEON{" "}
+              </Link>{" "}
+            </Typography>{" "}
             {props.auth !== null ? (
               <Link to="/message" className="navElement">
                 <EmailIcon className="icon" />
               </Link>
             ) : (
               ""
-            )}
+            )}{" "}
             {props.auth === null ? (
               /* {<Link to="/connect" className="navElement">
-                Se connecter
-              </Link> : ""*/
-              <button onClick={() => handleLogin()}>Se connecter</button>
+                  Se connecter
+                </Link> : ""*/
+              <button onClick={() => handleLogin()}> Se connecter </button>
             ) : (
               ""
-            )}
+            )}{" "}
             <Link to="/help" className="navElement">
               <HelpIcon className="icon" />
-            </Link>
+            </Link>{" "}
             <Link to="/become-agent" className="navElement">
               Devenez agent!
-            </Link>
+            </Link>{" "}
             <Link to="/login" className="navElement">
               <AccountCircleIcon className="icon" />
-            </Link>
-          </Toolbar>
-        </AppBar>
-      </div>
+            </Link>{" "}
+          </Toolbar>{" "}
+        </AppBar>{" "}
+      </div>{" "}
       <RoutesNav />
     </Router>
   );
