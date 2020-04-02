@@ -80,11 +80,16 @@ const login = async(req, res) => {
     }
 };
 
+const me = (req, res) => {
+    console.log("Hello je suis làààààà");
+};
+
 module.exports = {
     index,
     create,
     findOne,
     update,
     destroy,
-    login
+    login,
+    me
 };
