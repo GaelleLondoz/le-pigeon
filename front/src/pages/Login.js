@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 //import { Divider, Input } from "@material-ui/core";
 
 class Login extends Component {
@@ -18,15 +19,18 @@ class Login extends Component {
         password: this.state.password
       }
     };
-    const { data } = await axios.post("/login", payload);
-
+    const { data, status } = await axios.post("/login", payload);
+    if (status === 200) {
+      console.log({ props: this.props });
+      this.props.login(data);
+    }
     /*axios.post(apiBaseUrl + "login", payload).then(function(response) {
       console.log(response);
     });*/
   }
   async componentDidMount() {
     // Load async data.
-    const { data } = await axios.get("/users");
+    //const { data } = await axios.get("/users");
   }
   render() {
     return (
@@ -59,4 +63,14 @@ class Login extends Component {
   }
 }
 
+const mapDispatchToAuth = dispatch => {
+  return {
+    login: data => {
+      //Dispatch => role: call a action of type ...(SET_AUTH)
+      const action = { type: "SET_AUTH", payload: data };
+      dispatch(action);
+    }
+  };
+};
+Login = connect(null, mapDispatchToAuth)(Login);
 export default Login;

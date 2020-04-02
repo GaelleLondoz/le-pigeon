@@ -62,9 +62,14 @@ const login = async(req, res) => {
 
             bcrypt.compare(password, user.password, function(err, result) {
                 if (result) {
-                    let payload = { id: user.id };
+                    let payload = {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        avatar: user.avatar
+                    };
                     let token = jwt.sign(payload, process.env.JWT_SECRET);
-                    res.json({ msg: "ok", token: token });
+                    res.status(200).json({ msg: "ok", token: token, user: payload });
                 } else {
                     res.status(401).json({ msg: "Password is incorrect" });
                 }
