@@ -116,3 +116,32 @@ section#plan-homepage {
     }
   }
 }
+
+section#agent-avatar {
+  margin-top: 150px;
+  h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .container-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: 30px 100px;
+    border-radius: 5px;
+    .MuiAvatar-root {
+      height: 150px;
+      width: 150px;
+    }
+    p {
+      margin-top: 10px;
+    }
+    h6 {
+      font-weight: bold;
+      color: #3993dd;
+      text-transform: uppercase;
+    }
+  }
+}
