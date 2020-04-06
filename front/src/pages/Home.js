@@ -1,12 +1,15 @@
 import React from "react";
-import Places from '../components/Places';
+import Places from "../components/Places";
+import Header from "./homepage/Header";
+import Plan from "./homepage/Plan";
 
-function Home() {
-    return (
-        <div>
-            <h2>Bienvenue sur le Pigeon</h2>
-            <Places />
-        </div>)
-}
+const Home = () => {
+  return (
+    <>
+      <Header />
+      <Plan />
+    </>
+  );
+};
 
-export default Home
+export default Home;
