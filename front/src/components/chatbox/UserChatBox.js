@@ -1,14 +1,16 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import VideoCallIcon from "@material-ui/icons/VideoCall";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
+import {
+  IconButton,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Divider,
+  Typography
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 const classes = makeStyles(theme => ({
   root: {
@@ -46,12 +48,13 @@ class UserChatBox extends React.Component {
               }
             />
             <IconButton
-              aria-label="video"
-              onClick={e => this.props.handleCall(this.props.name, e)}
+              value={this.props.name}
+              aria-label="close"
+              onClick={e => this.props.handleClose(e)}
               enabled="true"
               color="primary"
             >
-              <VideoCallIcon />
+              <CloseIcon />
             </IconButton>
           </ListItem>
           <Divider variant="inset" component="li" />

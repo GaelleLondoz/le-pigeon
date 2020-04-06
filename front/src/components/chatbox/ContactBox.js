@@ -9,8 +9,8 @@ import {
   Typography,
   IconButton
 } from "@material-ui/core";
-
 import ChatIcon from "@material-ui/icons/Chat";
+import VideoCallIcon from "@material-ui/icons/VideoCall";
 
 const classes = makeStyles(theme => ({
   root: {
@@ -54,10 +54,16 @@ export default function ContactBox(props) {
           >
             <ChatIcon />
           </IconButton>
+          <IconButton
+            aria-label="video"
+            onClick={e => props.handleCall(props.user, e)}
+            enabled="true"
+            color="primary"
+          >
+            <VideoCallIcon />
+          </IconButton>
         </ListItem>
       </List>
     </div>
   );
 }
-
-//export default ContactBox;
