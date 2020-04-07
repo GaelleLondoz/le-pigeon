@@ -1,10 +1,172 @@
 @import "variables";
 
-
+/*
 .container {
     background-color: $light-grey;
     height: 100vh;
     display: block;
-    color: $dark-blue;
-    
+    color: $dark-blue; 
+}
+*/
+
+//Homepage
+
+section#header-homepage {
+  position: relative;
+  background-color: #3993dd;
+  padding: 100px 0;
+  .MuiTypography-h1 {
+    font-size: 4rem;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+  }
+  .form-search {
+    margin-top: 50px;
+    .MuiTextField-root {
+      margin: 0 20px;
+      .MuiInputBase-root {
+        border-radius: 0;
+        border-color: #fff;
+        .MuiOutlinedInput-input {
+          padding: 20.5px 40px;
+          background-color: #fff;
+          border-color: none;
+        }
+      }
+    }
+    .MuiButton-contained {
+      padding: 16px 40px;
+      font-size: 0.9375rem;
+      background-color: #16324f;
+    }
+  }
+}
+
+section#plan-homepage {
+  margin-top: 150px;
+  .MuiTypography-h2 {
+    font-size: 3rem;
+    text-align: center;
+  }
+  .MuiListItem-root {
+    display: block;
+    padding-top: 0;
+    color: black;
+  }
+  .progressBar {
+    counter-reset: step;
+    margin-top: 75px;
+    padding: 0;
+    counter-increment: step 0;
+    font-weight: bold;
+    li {
+      list-style-type: none;
+      float: left;
+      width: 33.33%;
+      position: relative;
+      text-align: center;
+      letter-spacing: 2px;
+      &:before {
+        content: counter(step);
+        counter-increment: step;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border: 3px solid #3993dd;
+        display: block;
+        text-align: center;
+        margin: 0 auto 10px auto;
+        border-radius: 50%;
+        background-color: #3993dd;
+        letter-spacing: 0px;
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        background-color: #16324f;
+        top: 25px;
+        left: -50%;
+        z-index: -1;
+      }
+      &:first-child:after {
+        content: none;
+      }
+    }
+  }
+  .MuiGrid-root {
+    margin-top: 50px;
+    .MuiCard-root {
+      background-color: #f5f5f5;
+      .icon-container {
+        text-align: center;
+        margin-bottom: 10px;
+        .MuiSvgIcon-root {
+          font-size: 3rem;
+          color: #3993dd;
+          margin: 0 auto;
+        }
+      }
+      p {
+        text-align: center;
+        color: gray;
+      }
+    }
+  }
+}
+
+section#agent-avatar {
+  margin-top: 150px;
+  h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .container-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: 30px 100px;
+    border-radius: 5px;
+    .MuiAvatar-root {
+      height: 150px;
+      width: 150px;
+    }
+    p {
+      margin-top: 10px;
+    }
+    h6 {
+      font-weight: bold;
+      color: #3993dd;
+      text-transform: uppercase;
+    }
+  }
+}
+
+section#articles-blog {
+  margin-top: 150px;
+  .MuiCardMedia-root {
+    max-height: 200px;
+  }
+  h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  h3 {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+}
+
+// Media Queries
+@media (max-width: 700px) {
+  section#header-homepage {
+    .MuiTypography-h1 {
+      font-size: 3rem;
+    }
+  }
 }
