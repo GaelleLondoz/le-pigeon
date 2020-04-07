@@ -1,0 +1,27 @@
+@import "variables";
+
+.Footer_container {
+  background-color: $dark-blue;
+  text-align: left;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 60px;
+  width: 100%;
+}
+
+.Footer_info {
+  display: block;
+  padding: 20px;
+  height: 60px;
+  width: 100%;
+  & a {
+    color: $light-grey;
+    text-decoration: none;
+    padding-right: 60px;
+    &:hover {
+      color: $light-blue;
+    }
+  }
+}

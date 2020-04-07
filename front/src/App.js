@@ -1,28 +1,34 @@
 import React, { Component } from "react";
-import Nav from './components/navigation/Nav';
-import Head from './components/Head';
-import './assets/sass/body.scss'
-import Places from './components/Places';
-import Rating from './components/rating';
- 
+import { BrowserRouter } from "react-router-dom";
+
+// components
+import Head from "./components/Head";
+import Routes from "./components/navigation/Routes";
+import Nav from "./components/navigation/Nav";
+import Rating from "./components/rating";
+import Footer from "./components/footer/Footer";
+
+// css
+import "./assets/sass/body.scss";
 
 class App extends Component {
-
   render() {
     return (
-      <div className="app-viewport">
-        <div className="container">
-        <Head />
-        
-          <Nav />
-          
-          <Rating />
-          <Places />
+      <BrowserRouter>
+        <div className="app-viewport">
+          <Head />
+          <div className="container">
+            <Nav />
+            <Footer />
+            <main>
+              <Routes />
+            </main>
+            <Rating />
+          </div>
         </div>
-      </div>
+      </BrowserRouter>
     );
   }
 }
-
 
 export default App;
