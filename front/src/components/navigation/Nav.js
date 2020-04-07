@@ -22,19 +22,19 @@ import Login from "../../pages/Login";
 
 // 2 // created navigation
 // export to App.js
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }));
 
-let Nav = props => {
+let Nav = (props) => {
   const classes = useStyles();
 
   const handleLogin = () => {
@@ -83,18 +83,18 @@ let Nav = props => {
   );
 };
 
-const mapStateToAuth = state => {
+const mapStateToAuth = (state) => {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 };
 
-const mapDispatchToAuth = dispatch => {
+const mapDispatchToAuth = (dispatch) => {
   return {
     login: () => {
       //Dispatch => role: call a action of type ...(SET_AUTH)
       dispatch({ type: "SET_AUTH" });
-    }
+    },
   };
 };
 

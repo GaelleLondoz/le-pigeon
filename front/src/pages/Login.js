@@ -9,15 +9,15 @@ class Login extends Component {
   }
   state = {
     email: "",
-    password: ""
+    password: "",
   };
   async handleLogin(event) {
     event.preventDefault();
     var payload = {
       login: {
         email: this.state.email,
-        password: this.state.password
-      }
+        password: this.state.password,
+      },
     };
     const { data, status } = await axios.post("/login", payload);
     if (status === 200) {
@@ -29,6 +29,7 @@ class Login extends Component {
     });*/
   }
   async componentDidMount() {
+    console.log(this.props);
     // Load async data.
     //const { data } = await axios.get("/users");
   }
@@ -43,7 +44,7 @@ class Login extends Component {
               placeholder="Enter email"
               id="email"
               name="email"
-              onChange={event => this.setState({ email: event.target.value })}
+              onChange={(event) => this.setState({ email: event.target.value })}
             />
             <label htmlFor="password">Enter Password:</label>
             <input
@@ -51,11 +52,11 @@ class Login extends Component {
               placeholder="Enter password"
               id="password"
               name="password"
-              onChange={event =>
+              onChange={(event) =>
                 this.setState({ password: event.target.value })
               }
             />
-            <button onClick={event => this.handleLogin(event)}>Login</button>
+            <button onClick={(event) => this.handleLogin(event)}>Login</button>
           </form>
         </div>
       </div>
@@ -63,14 +64,21 @@ class Login extends Component {
   }
 }
 
-const mapDispatchToAuth = dispatch => {
+const mapStateToAuth = (state) => {
   return {
-    login: data => {
+    auth: state.auth,
+    token: state.token,
+  };
+};
+
+const mapDispatchToAuth = (dispatch) => {
+  return {
+    login: (data) => {
       //Dispatch => role: call a action of type ...(SET_AUTH)
       const action = { type: "SET_AUTH", payload: data };
       dispatch(action);
-    }
+    },
   };
 };
-Login = connect(null, mapDispatchToAuth)(Login);
+Login = connect(mapStateToAuth, mapDispatchToAuth)(Login);
 export default Login;

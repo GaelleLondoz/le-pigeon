@@ -2,14 +2,19 @@ import React from "react"; //test ici
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 // import store from './store'
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./reducers/rootReducer";
 import "./components/services/API";
-
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-const store = createStore(rootReducer);
+const customMiddleWare = (store) => (next) => (action) => {
+  console.log({ store, action });
+  next(action);
+};
+
+//createstore => 2 paramater (store and middleware)
+const store = createStore(rootReducer, applyMiddleware(customMiddleWare));
 
 ReactDOM.render(
   <React.StrictMode>
