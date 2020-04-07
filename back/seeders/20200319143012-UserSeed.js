@@ -1,6 +1,7 @@
 "use strict";
 
 const faker = require("faker");
+const {getHash} = require("../helpers/index")
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -13,7 +14,7 @@ module.exports = {
         lastName: faker.name.lastName(),
         userName: faker.internet.userName(),
         email: faker.internet.email(),
-        password: "password",
+        password: getHash("password"),
         avatar: faker.image.avatar(),
         createdAt: new Date(),
         updatedAt: new Date()

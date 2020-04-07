@@ -7,7 +7,7 @@ class Head extends React.Component {
       <div className="allApplication">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Le Pigeon de Julien</title>
+          <title>Le Pigeon</title>
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width"
