@@ -4,7 +4,7 @@ const cookies = new Cookies();
 
 const initState = {
   auth: null,
-  token: cookies.get("auth_token") || "",
+  token: cookies.get("auth_token") || null,
 };
 
 const rootReducer = (state = initState, action) => {

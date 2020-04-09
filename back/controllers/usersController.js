@@ -28,8 +28,8 @@ const update = (req, res) => {
     const id = req.params.id;
 
     User.update(req.body, {
-            where: { id: id },
-        })
+        where: { id: id },
+    })
         .then((user) => res.status(200).send(user))
         .catch((e) => res.status(500).send(e));
 };
@@ -38,13 +38,13 @@ const destroy = (req, res) => {
     const id = req.params.id;
 
     User.destroy({
-            where: { id: id },
-        })
+        where: { id: id },
+    })
         .then((user) => res.status(200).send(user))
         .catch((e) => res.status(500).send(e));
 };
 
-const login = async(req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body.login;
 
     if (email && password) {
@@ -60,7 +60,7 @@ const login = async(req, res) => {
                 res.status(401).json({ message: "No such user found" });
             }
 
-            bcrypt.compare(password, user.password, function(err, result) {
+            bcrypt.compare(password, user.password, function (err, result) {
                 if (result) {
                     let payload = {
                         id: user.id,
@@ -86,14 +86,12 @@ const me = (req, res) => {
     try {
         let checkStatus = jwt.verify(headerAuth, process.env.JWT_SECRET);
         if (checkStatus != null) {
-            res.status(200).json({ msg: "Token is still valid", token: headerAuth });
+            res.status(200).json({ msg: "Token is still valid", token: headerAuth, user: checkStatus });
         }
     } catch (e) {
         console.log({ e: e })
         throw e;
     }
-
-
 };
 
 module.exports = {

@@ -25,21 +25,73 @@ let headers = {
   Authorization: "",
 };
 
-async function onAppInit({ token }) {
-  try {
-    headers.Authorization = token;
-    const checkAuth = await axios.get("/me", {
-      headers: headers,
-    });
-    console.log({ checkAuth: checkAuth });
-    if (checkAuth.status === "200") {
-      console.log("REDIRECT ON GOING");
-      return <Redirect to="/" />;
-    }
-  } catch (error) {
-    console.log(error.response);
-  }
+function applyMiddleware(...middlewares) {
+  // Middleware handlers are all side-effect,
+  // so if we reach the last we don't need to do anything
+  var finish = _.noop;
+  // Middlewares will be called from left to right
+  // until one of them doesn't call `next(nextState, transition)`
+  var handler = _.compose(...middlewares)(finish);
+
+  return function (nextState, transition) {
+    return handler(nextState, transition);
+  };
+  return { ...middlewares }
 }
+
+// Auth middleware
+async function requireAuth(props, next) {
+  return function (nextState, transition) {
+    // if (!auth.isLoggedIn()) {
+    //   transition.to('/login', null, { redirect: nextState.location });
+    //   return;
+    // }
+
+    if (props.token === null) return
+    try {
+      headers.Authorization = props.token;
+      const checkAuth = await axios.get("/me", {
+        headers: headers,
+      });
+      console.log({ checkAuth: checkAuth });
+      if (checkAuth.status == "200") {
+        console.log("REDIRECT ON GOING");
+        let data = {
+          payload: checkAuth.data.user,
+          token: props.token
+        }
+        props.setAuth(data)
+        transition.to('/', null, { redirect: nextState.location });
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+
+    next(nextState, transition);
+  };
+}
+
+// async function onAppInit(props) {
+//   if (props.token === null) return
+//   try {
+//     headers.Authorization = props.token;
+//     const checkAuth = await axios.get("/me", {
+//       headers: headers,
+//     });
+//     console.log({ checkAuth: checkAuth });
+//     if (checkAuth.status == "200") {
+//       console.log("REDIRECT ON GOING");
+//       let data = {
+//         payload: checkAuth.data.user,
+//         token: props.token
+//       }
+//       props.setAuth(data)
+//       return <Redirect to="/" />;
+//     }
+//   } catch (error) {
+//     console.log(error.response);
+//   }
+// }
 
 let RoutesNav = (props) => {
   return (
@@ -56,7 +108,7 @@ let RoutesNav = (props) => {
       <Route path="/become-agent">
         <BecomeAgent />
       </Route>{" "}
-      <Route path="/login" onEnter={onAppInit(props)}>
+      <Route path="/login" onEnter={applyMiddleware(requireAuth(props))}>
         <Login />
       </Route>{" "}
       <Route path="/">
@@ -69,9 +121,22 @@ let RoutesNav = (props) => {
 const mapStateToAuth = (state) => {
   return {
     token: state.token,
+    auth: state.auth
   };
 };
 
-RoutesNav = connect(mapStateToAuth)(RoutesNav);
+const mapDispatchToAuth = (dispatch) => {
+  return {
+    setAuth: (data) => {
+      //Dispatch => role: call a action of type ...(SET_AUTH)
+      const action = { type: "SET_AUTH", payload: data };
+      dispatch(action);
+    },
+  };
+};
+
+
+RoutesNav = connect(mapStateToAuth, mapDispatchToAuth)(RoutesNav);
+
 
 export default RoutesNav;
