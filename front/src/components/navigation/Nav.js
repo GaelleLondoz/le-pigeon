@@ -1,88 +1,252 @@
 import React from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Link } from "react-router-dom";
-import RoutesNav from "./RoutesNav";
-//////////////// Material-ui /////////////////////////////
+import { Link } from "react-router-dom";
 
+// links
+//import RoutesNav from "./RoutesNav";
+
+// Material-ui
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import Badge from "@material-ui/core/Badge";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import AgentIcon from "@material-ui/icons/EmojiEmotions";
+import PowerIcon from '@material-ui/icons/Power';
 
-///////////////// SASS /////////////////////////////////////
 
-import "../../assets/sass/_nav.scss";
 
-///////////////// Icons /////////////////////////////////////
-
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+// icons
+import MailIcon from "@material-ui/icons/Mail";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import HelpIcon from "@material-ui/icons/Help";
-import EmailIcon from "@material-ui/icons/Email";
-import Login from "../../pages/Login";
 
-///////////////// Components /////////////////////////////////////
+// sass
+import "../../assets/sass/_nav.scss";
+import "../../assets/sass/nav_avatar.scss";
 
-import NavAvatar from "./NavAvatar";
-
-
-// 2 // created navigation
-// export to App.js
 const useStyles = makeStyles(theme => ({
-  root: {
+  grow: {
     flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block"
+    }
+  },
+
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex"
+    }
+  },
+  sectionMobile: {
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none"
+    }
   }
 }));
 
 let Nav = props => {
   const classes = useStyles();
-
   const handleLogin = () => {
     props.login();
   };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleProfileMenuOpen = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuOpen = event => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+// menu avatar  //////
+
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/login">Se connecter</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/subscribe">S'inscrire</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/board">Mon tableau de bord</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/ask-travel">Mes demandes de voyage</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/destinations">Mes destinations</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/profile">Mon profil</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/add-travel">Ajouter un voyage</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/profile">Profil voyageur</Link>
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/">Se déconnecter</Link>
+      </MenuItem>
+    </Menu>
+  );
+
+  // menu mobile //////
+
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <IconButton aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <MailIcon />
+          </Badge>
+        </IconButton>
+        <p>Messages</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label="se connecter" color="inherit">
+          <PowerIcon />
+        </IconButton>
+        <p>Se connecter</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label="aide" color="inherit">
+          <HelpIcon />
+        </IconButton>
+        <p>Aide</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label="devenir agent" color="inherit">
+          <AgentIcon />
+        </IconButton>
+        <p>Devenir Agent</p>
+      </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
 
   return (
-    <Router>
-      <div className={classes.root}>
-        <AppBar position="static" className={classes.root}>
-          <Toolbar>
-            <Typography variant="h5" className={classes.title}>
-              <Link to="/" className="navElement">
-                LE PIGEON{" "}
-              </Link>{" "}
-            </Typography>{" "}
+    <div className={classes.grow}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="open drawer"
+          ></IconButton>
+          <Typography className={classes.title} variant="h6" noWrap>
+            <Link to="/" className="navElement">
+              LE PIGEON
+            </Link>
+          </Typography>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
             {props.auth !== null ? (
               <Link to="/message" className="navElement">
-                <EmailIcon className="icon" />
+                <IconButton aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon className="icon" />
+                  </Badge>
+                </IconButton>
               </Link>
             ) : (
               ""
             )}{" "}
             {props.auth === null ? (
               /* {<Link to="/connect" className="navElement">
-                  Se connecter
-                </Link> : ""*/
+                    Se connecter
+                  </Link> : ""*/
               <button onClick={() => handleLogin()}> Se connecter </button>
             ) : (
               ""
-            )}{" "}
+            )}
             <Link to="/help" className="navElement">
               <HelpIcon className="icon" />
-            </Link>{" "}
+            </Link>
             <Link to="/become-agent" className="navElement">
               Devenez agent!
-            </Link>{" "}
-            <NavAvatar />
-          </Toolbar>{" "}
-        </AppBar>{" "}
-      </div>{" "}
-      <RoutesNav />
-    </Router>
+            </Link>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+      {renderMobileMenu}
+      {renderMenu}
+    </div>
   );
 };
 
@@ -101,5 +265,8 @@ const mapDispatchToAuth = dispatch => {
   };
 };
 
-Nav = connect(mapStateToAuth, mapDispatchToAuth)(Nav);
+Nav = connect(
+  mapStateToAuth,
+  mapDispatchToAuth
+)(Nav);
 export default Nav;
