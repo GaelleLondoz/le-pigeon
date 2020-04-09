@@ -1,6 +1,7 @@
 @import "variables";
 
 .Footer_container {
+  z-index: 1000;
   background-color: $dark-blue;
   text-align: left;
   padding: 20px;
