@@ -3,6 +3,7 @@ import {
   // BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -18,12 +19,23 @@ import Messages from "../../pages/Messages";
 
 // this function is called only once, before application initially starts to render react-route and any of its related DOM elements
 // it can be used to add init config settings to the application
+
+let headers = {
+  "Content-Type": "application/json",
+  Authorization: "",
+};
+
 async function onAppInit({ token }) {
   try {
+    headers.Authorization = token;
     const checkAuth = await axios.get("/me", {
-      params: { token },
+      headers: headers,
     });
-    console.log(checkAuth);
+    console.log({ checkAuth: checkAuth });
+    if (checkAuth.status === "200") {
+      console.log("REDIRECT ON GOING");
+      return <Redirect to="/" />;
+    }
   } catch (error) {
     console.log(error.response);
   }
@@ -34,22 +46,22 @@ let RoutesNav = (props) => {
     <Switch>
       <Route path="/connect">
         <Connect />
-      </Route>
+      </Route>{" "}
       <Route path="/help">
         <Help />
-      </Route>
+      </Route>{" "}
       <Route path="/message">
         <Messages />
-      </Route>
+      </Route>{" "}
       <Route path="/become-agent">
         <BecomeAgent />
-      </Route>
+      </Route>{" "}
       <Route path="/login" onEnter={onAppInit(props)}>
         <Login />
-      </Route>
+      </Route>{" "}
       <Route path="/">
         <Home />
-      </Route>
+      </Route>{" "}
     </Switch>
   );
 };
