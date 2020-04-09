@@ -20,6 +20,11 @@ import HelpIcon from "@material-ui/icons/Help";
 import EmailIcon from "@material-ui/icons/Email";
 import Login from "../../pages/Login";
 
+///////////////// Components /////////////////////////////////////
+
+import NavAvatar from "./NavAvatar";
+
+
 // 2 // created navigation
 // export to App.js
 const useStyles = makeStyles(theme => ({
@@ -72,9 +77,7 @@ let Nav = props => {
             <Link to="/become-agent" className="navElement">
               Devenez agent!
             </Link>{" "}
-            <Link to="/login" className="navElement">
-              <AccountCircleIcon className="icon" />
-            </Link>{" "}
+            <NavAvatar />
           </Toolbar>{" "}
         </AppBar>{" "}
       </div>{" "}

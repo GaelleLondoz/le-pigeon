@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
 import "./assets/sass/body.scss";
-import Places from "./components/Places";
-import Rating from "./components/rating";
+import Footer from "./components/Footer";
 
 class App extends Component {
   render() {
@@ -12,6 +11,7 @@ class App extends Component {
         <div className="container">
           <Head />
           <Nav />
+          <Footer />
         </div>
       </div>
     );
