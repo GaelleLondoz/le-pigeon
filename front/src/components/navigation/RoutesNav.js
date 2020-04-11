@@ -3,7 +3,7 @@ import {
   // BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -22,53 +22,86 @@ import Messages from "../../pages/Messages";
 
 let headers = {
   "Content-Type": "application/json",
-  Authorization: "",
+  Authorization: ""
 };
+
+const compose = (fn, ...rest) =>
+  rest.length === 0 ? fn : (...args) => fn(compose(...rest)(...args));
 
 function applyMiddleware(...middlewares) {
   // Middleware handlers are all side-effect,
   // so if we reach the last we don't need to do anything
-  var finish = _.noop;
+  const finish = undefined;
   // Middlewares will be called from left to right
   // until one of them doesn't call `next(nextState, transition)`
-  var handler = _.compose(...middlewares)(finish);
+  console.log(compose);
+  const handler = compose(...middlewares);
 
-  return function (nextState, transition) {
+  return function(nextState, transition) {
     return handler(nextState, transition);
   };
-  return { ...middlewares }
 }
 
 // Auth middleware
 async function requireAuth(props, next) {
-  return function (nextState, transition) {
-    // if (!auth.isLoggedIn()) {
-    //   transition.to('/login', null, { redirect: nextState.location });
-    //   return;
-    // }
-
-    if (props.token === null) return
-    try {
-      headers.Authorization = props.token;
-      const checkAuth = await axios.get("/me", {
-        headers: headers,
-      });
-      console.log({ checkAuth: checkAuth });
-      if (checkAuth.status == "200") {
-        console.log("REDIRECT ON GOING");
-        let data = {
-          payload: checkAuth.data.user,
-          token: props.token
+  console.log("ma fonction à moi");
+  if (props.token === null) return;
+  await function(finish) {
+    console.log("await fonction")
+    headers.Authorization = props.token;
+    axios
+      .get("/me", {
+        headers: headers
+      })
+      .then(checkAuth => {
+        console.log({ checkAuth: checkAuth });
+        if (checkAuth.status == "200") {
+          console.log("REDIRECT ON GOING");
+          let data = {
+            payload: checkAuth.data.user,
+            token: props.token
+          };
+          props.setAuth(data);
+          // transition.to('/', null, { redirect: nextState.location });
+          // window.location = "/";
+          console.log("window location");
+          return next();
         }
-        props.setAuth(data)
-        transition.to('/', null, { redirect: nextState.location });
-      }
-    } catch (error) {
-      console.log(error.response);
-    }
-
-    next(nextState, transition);
+      })
+      .catch(error => console.log(error.response));
+    return finish();
   };
+  //return next();
+
+  // async function (nextState, transition) {
+  // if (!auth.isLoggedIn()) {
+  //   transition.to('/login', null, { redirect: nextState.location });
+  //   return;
+  // }
+  // console.log("ma fonction à moi")
+  // if (props.token === null) return
+  // try {
+  //   headers.Authorization = props.token;
+  //   const checkAuth = await axios.get("/me", {
+  //     headers: headers,
+  //   });
+  //   console.log({ checkAuth: checkAuth });
+  //   if (checkAuth.status == "200") {
+  //     console.log("REDIRECT ON GOING");
+  //     let data = {
+  //       payload: checkAuth.data.user,
+  //       token: props.token
+  //     }
+  //     props.setAuth(data)
+  //     // transition.to('/', null, { redirect: nextState.location });
+  //     window.location = "/"
+  //   }
+  // } catch (error) {
+  //   console.log(error.response);
+  // }
+
+  // next(nextState, transition);
+  //};
 }
 
 // async function onAppInit(props) {
@@ -93,7 +126,7 @@ async function requireAuth(props, next) {
 //   }
 // }
 
-let RoutesNav = (props) => {
+let RoutesNav = props => {
   return (
     <Switch>
       <Route path="/connect">
@@ -118,25 +151,26 @@ let RoutesNav = (props) => {
   );
 };
 
-const mapStateToAuth = (state) => {
+const mapStateToAuth = state => {
   return {
     token: state.token,
     auth: state.auth
   };
 };
 
-const mapDispatchToAuth = (dispatch) => {
+const mapDispatchToAuth = dispatch => {
   return {
-    setAuth: (data) => {
+    setAuth: data => {
       //Dispatch => role: call a action of type ...(SET_AUTH)
       const action = { type: "SET_AUTH", payload: data };
       dispatch(action);
-    },
+    }
   };
 };
 
-
-RoutesNav = connect(mapStateToAuth, mapDispatchToAuth)(RoutesNav);
-
+RoutesNav = connect(
+  mapStateToAuth,
+  mapDispatchToAuth
+)(RoutesNav);
 
 export default RoutesNav;
