@@ -6,12 +6,13 @@ class Places extends Component {
 
    render() {
     return (
+      
         <AlgoliaPlaces
           placeholder='Write an address here'
      
           options={{
-            appId: 'pl8P9UZ5YTUQ',
-            apiKey: 'a379285faa78814d2308dcb4354015f3',
+            appId: process.env.REACT_APP_ALGOLIA_MAP_KEY_ID,
+            apiKey: process.env.REACT_APP_ALGOLIA_MAP_KEY,
             language: 'fr',
             type: 'city',
             // Other options from https://community.algolia.com/places/documentation.html#options
@@ -35,6 +36,8 @@ class Places extends Component {
           onError={({ message }) => 
             console.log('Fired when we could not make the request to Algolia Places servers for any reason but reaching your rate limit.')}
         />
+        
+       
       );  
    }
 }
