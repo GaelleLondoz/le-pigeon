@@ -7,12 +7,14 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
+
 import Connect from "../../pages/Connect";
 import Help from "../../pages/Help";
 import BecomeAgent from "../../pages/BecomeAgent";
 import Home from "../../pages/Home";
 import Login from "../../pages/Login";
 import Messages from "../../pages/Messages";
+import { Component } from "react";
 
 // 1 //after created each pages, create paths:
 // export to Nav.js
@@ -37,72 +39,129 @@ function applyMiddleware(...middlewares) {
   console.log(compose);
   const handler = compose(...middlewares);
 
-  return function(nextState, transition) {
+  return function (nextState, transition) {
     return handler(nextState, transition);
   };
 }
 
-// Auth middleware
-async function requireAuth(props, next) {
-  console.log("ma fonction à moi");
-  if (props.token === null) return;
-  await function(finish) {
-    console.log("await fonction")
-    headers.Authorization = props.token;
+const checkAuth = {
+  isAuthenticated: false,
+  check(store) {
+    console.log({ store });
+    headers.Authorization = store.token;
+    // const { data, status } = axios.get("/me", {
+    //   headers
+    // });
+    // if (status === 200) {
+    //   store.setAuth({
+    //     payload: data.user,
+    //     token: store.token
+    //   });
+    //   this.isAuthenticated = true;
+    // }
     axios
       .get("/me", {
-        headers: headers
+        headers
       })
-      .then(checkAuth => {
-        console.log({ checkAuth: checkAuth });
-        if (checkAuth.status == "200") {
-          console.log("REDIRECT ON GOING");
-          let data = {
-            payload: checkAuth.data.user,
-            token: props.token
-          };
-          props.setAuth(data);
-          // transition.to('/', null, { redirect: nextState.location });
-          // window.location = "/";
-          console.log("window location");
-          return next();
+      .then(res => {
+        console.log({ res })
+        if (res.status === 200) {
+          console.log({ 'res.status': res.status })
+          this.isAuthenticated = true;
         }
-      })
-      .catch(error => console.log(error.response));
-    return finish();
-  };
-  //return next();
+      }).catch(e => console.log(e));
+  }
+};
 
-  // async function (nextState, transition) {
-  // if (!auth.isLoggedIn()) {
-  //   transition.to('/login', null, { redirect: nextState.location });
-  //   return;
-  // }
-  // console.log("ma fonction à moi")
-  // if (props.token === null) return
-  // try {
-  //   headers.Authorization = props.token;
-  //   const checkAuth = await axios.get("/me", {
-  //     headers: headers,
-  //   });
-  //   console.log({ checkAuth: checkAuth });
-  //   if (checkAuth.status == "200") {
-  //     console.log("REDIRECT ON GOING");
-  //     let data = {
-  //       payload: checkAuth.data.user,
-  //       token: props.token
-  //     }
-  //     props.setAuth(data)
-  //     // transition.to('/', null, { redirect: nextState.location });
-  //     window.location = "/"
-  //   }
-  // } catch (error) {
-  //   console.log(error.response);
-  // }
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  // const { value: label } = this
+  checkAuth.check(rest.store);
+  console.log({ "rest.store": rest.store.token });
+  if (checkAuth.isAuthenticated === false) {
+    console.log({ 'quandcetfauxcheckAuth.isAuthenticated': checkAuth.isAuthenticated })
+    return <Redirect to="/login" />;
+  } else {
+    console.log({ 'checkAuth.isAuthenticated': checkAuth.isAuthenticated })
+    return <Route {...rest} render={props => <Component {...props} />} />;
+  }
+};
 
-  // next(nextState, transition);
-  //};
-}
+// const supertest = async function (props) {
+//   headers.Authorization = props.token;
+//   const { data, status } = await axios.get("/me", { headers });
+//   console.log({ data, status })
+//   if (status === 200) {
+//     console.log({ data });
+//     props.setAuth({
+//       payload: data.user,
+//       token: props.token
+//     });
+//   }
+
+//   // return next()
+// };
+
+// Auth middleware
+// async function requireAuth(props, next) {
+//   console.log("ma fonction à moi");
+//   if (props.token === null) return;
+//   await function(finish) {
+//     console.log("await fonction")
+//     headers.Authorization = props.token;
+//     axios
+//       .get("/me", {
+//         headers: headers
+//       })
+//       .then(checkAuth => {
+//         console.log({ checkAuth: checkAuth });
+//         if (checkAuth.status == "200") {
+//           console.log("REDIRECT ON GOING");
+//           let data = {
+//             payload: checkAuth.data.user,
+//             token: props.token
+//           };
+//           props.setAuth(data);
+//           // transition.to('/', null, { redirect: nextState.location });
+//           // window.location = "/";
+//           console.log("window location");
+//           return next();
+//         }
+//       })
+//       .catch(error => console.log(error.response));
+//     return finish();
+//   };
+//   //return next();
+
+//   // async function (nextState, transition) {
+//   // if (!auth.isLoggedIn()) {
+//   //   transition.to('/login', null, { redirect: nextState.location });
+//   //   return;
+//   // }
+//   // console.log("ma fonction à moi")
+//   // if (props.token === null) return
+//   // try {
+//   //   headers.Authorization = props.token;
+//   //   const checkAuth = await axios.get("/me", {
+//   //     headers: headers,
+//   //   });
+//   //   console.log({ checkAuth: checkAuth });
+//   //   if (checkAuth.status == "200") {
+//   //     console.log("REDIRECT ON GOING");
+//   //     let data = {
+//   //       payload: checkAuth.data.user,
+//   //       token: props.token
+//   //     }
+//   //     props.setAuth(data)
+//   //     // transition.to('/', null, { redirect: nextState.location });
+//   //     window.location = "/"
+//   //   }
+//   // } catch (error) {
+//   //   console.log(error.response);
+//   // }
+
+//   // next(nextState, transition);
+//   //};
+// }
 
 // async function onAppInit(props) {
 //   if (props.token === null) return
@@ -128,26 +187,20 @@ async function requireAuth(props, next) {
 
 let RoutesNav = props => {
   return (
-    <Switch>
-      <Route path="/connect">
-        <Connect />
-      </Route>{" "}
-      <Route path="/help">
+    <>
+      <Route exact path="/connect" component={Connect} />
+      <Route exact path="/help">
         <Help />
-      </Route>{" "}
-      <Route path="/message">
+      </Route>
+      <Route exact path="/message">
         <Messages />
-      </Route>{" "}
-      <Route path="/become-agent">
-        <BecomeAgent />
-      </Route>{" "}
-      <Route path="/login" onEnter={applyMiddleware(requireAuth(props))}>
-        <Login />
-      </Route>{" "}
-      <Route path="/">
-        <Home />
-      </Route>{" "}
-    </Switch>
+      </Route>
+      <Route exact path="/become-agent" component={BecomeAgent} />
+      <Route exact path="/login" component={Login} />
+
+      <PrivateRoute exact path="/" store={props} component={Home} />
+      {/* <Route exact path="/" component={Home} /> */}
+    </>
   );
 };
 
@@ -168,9 +221,6 @@ const mapDispatchToAuth = dispatch => {
   };
 };
 
-RoutesNav = connect(
-  mapStateToAuth,
-  mapDispatchToAuth
-)(RoutesNav);
+RoutesNav = connect(mapStateToAuth, mapDispatchToAuth)(RoutesNav);
 
 export default RoutesNav;

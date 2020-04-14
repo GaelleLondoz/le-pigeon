@@ -11,6 +11,8 @@ const rootReducer = (state = initState, action) => {
   if (action.type === "SET_AUTH") {
     console.log(action);
     console.log(Cookies);
+
+    
     
       cookies.set("auth_token", action.payload.token, { path: "/" });
       return {
