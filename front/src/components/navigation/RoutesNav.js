@@ -13,6 +13,7 @@ import Home from "../../pages/Home";
 import Login from "../../pages/Login";
 import Messages from "../../pages/Messages";
 import requireAuth from "../../middlewares/requireAuth";
+import requireLocation from "../../middlewares/requireLocation";
 //import { Component } from "react";
 
 // 1 //after created each pages, create paths:
@@ -78,7 +79,7 @@ let RoutesNav = (props) => {
         <Messages />
       </Route>
       <Route exact path="/become-agent" component={BecomeAgent} />
-      <Route exact path="/login" component={Login} />
+      <Route exact path="/login" component={requireLocation(Login)} />
       <Route exact path="/" component={requireAuth(Home)} />
 
       {/* <PrivateRoute exact path="/" store={props} component={Home} /> */}

@@ -31,7 +31,15 @@ const requireAuth = (Component) => {
             const { data, status } = await axios.get("/me", {
                 headers
             });
-            return (status === 200);
+
+            if (status === 200) {
+                this.props.setAuth({
+                    payload: data.user,
+                    token: token
+                });
+                return true;
+            }
+            return false;
             //{
             //   store.setAuth({
             //     payload: data.user,
