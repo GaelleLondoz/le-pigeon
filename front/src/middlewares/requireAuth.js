@@ -11,20 +11,23 @@ let headers = {
     Authorization: "",
 };
 
+const token = cookies.get("auth_token");
+
 const requireAuth = (Component) => {
     class AuthenticatedComponent extends React.Component {
         constructor(props) {
             super(props);
             this.state = {
-                token: cookies.get("auth_token"),
+                token,
+                isAuthenticated: this.checkValidity(token),
             };
         }
         componentDidMount() {
             this.checkAuth();
         }
 
-        async checkValidity() {
-            headers.Authorization = this.state.token;
+        async checkValidity(token) {
+            headers.Authorization = token;
             const { data, status } = await axios.get("/me", {
                 headers
             });
@@ -71,13 +74,13 @@ const requireAuth = (Component) => {
             console.log({ props: this.props });
             //const location = this.props.location;
             //const redirect = location.pathname + location.search;
-            if (!this.checkValidity()) {
+            if (!this.state.isAuthenticated) {
                 this.props.history.push(`/login`);
             }
         }
         render() {
-            console.log({ isAuthenticated: this.checkValidity() })
-            return this.checkValidity() ? < Component {...this.props }
+            //console.log({ isAuthenticated: this.checkValidity() })
+            return this.state.isAuthenticated ? < Component {...this.props }
             /> : null;
         }
     }
