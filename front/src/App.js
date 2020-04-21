@@ -1,18 +1,25 @@
 import React, { Component } from "react";
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
+import Footer from "./components/Footer";
+import RoutesNav from "./components/navigation/RoutesNav"
+import { BrowserRouter as Router } from "react-router-dom";
+
 import "./assets/sass/body.scss";
-import Places from "./components/Places";
-import Rating from "./components/rating";
+
 
 class App extends Component {
   render() {
     return (
       <div className="app-viewport">
+      <Router>
         <div className="container">
           <Head />
           <Nav />
+          <Footer />
         </div>
+        <RoutesNav />
+        </Router>
       </div>
     );
   }
