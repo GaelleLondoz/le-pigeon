@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -15,9 +15,7 @@ import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import AgentIcon from "@material-ui/icons/EmojiEmotions";
-import PowerIcon from '@material-ui/icons/Power';
-
-
+import PowerIcon from "@material-ui/icons/Power";
 
 // icons
 import MailIcon from "@material-ui/icons/Mail";
@@ -28,33 +26,34 @@ import HelpIcon from "@material-ui/icons/Help";
 // sass
 import "../../assets/sass/_nav.scss";
 import "../../assets/sass/nav_avatar.scss";
+import userAPI from "../services/userAPI";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   title: {
     display: "none",
     [theme.breakpoints.up("sm")]: {
-      display: "block"
-    }
+      display: "block",
+    },
   },
 
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
-      display: "flex"
-    }
+      display: "flex",
+    },
   },
   sectionMobile: {
     display: "flex",
     [theme.breakpoints.up("md")]: {
-      display: "none"
-    }
-  }
+      display: "none",
+    },
+  },
 }));
 
-let Nav = props => {
+let Nav = (props) => {
   const classes = useStyles();
   const handleLogin = () => {
     props.login();
@@ -65,7 +64,7 @@ let Nav = props => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = event => {
+  const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -78,11 +77,11 @@ let Nav = props => {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = event => {
+  const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-// menu avatar  //////
+  // menu avatar  //////
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -178,6 +177,24 @@ let Nav = props => {
     </Menu>
   );
 
+  const [currentUser, setCurrentUser] = useState({
+    firstName: "",
+    lastName: "",
+  });
+
+  const fetchUser = async () => {
+    try {
+      const data = await userAPI.getUser();
+      console.log(data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -250,23 +267,20 @@ let Nav = props => {
   );
 };
 
-const mapStateToAuth = state => {
+const mapStateToAuth = (state) => {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 };
 
-const mapDispatchToAuth = dispatch => {
+const mapDispatchToAuth = (dispatch) => {
   return {
     login: () => {
       //Dispatch => role: call a action of type ...(SET_AUTH)
       dispatch({ type: "SET_AUTH" });
-    }
+    },
   };
 };
 
-Nav = connect(
-  mapStateToAuth,
-  mapDispatchToAuth
-)(Nav);
+Nav = connect(mapStateToAuth, mapDispatchToAuth)(Nav);
 export default Nav;
