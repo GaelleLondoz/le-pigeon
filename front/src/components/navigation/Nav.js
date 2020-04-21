@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import authAPI from "../services/authAPI";
 
 // links
 //import RoutesNav from "./RoutesNav";
@@ -59,11 +60,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-let Nav = (props) => {
+let Nav = ({ history }) => {
   const classes = useStyles();
-  const handleLogin = () => {
-    props.login();
-  };
+  // const handleLogin = () => {
+  //   props.login();
+  // };
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -86,6 +87,15 @@ let Nav = (props) => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleLogOut = async () => {
+    try {
+      await authAPI.logout()
+      history.replace("/login")
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
 
   // menu avatar  //////
 
@@ -124,7 +134,7 @@ let Nav = (props) => {
       <MenuItem onClick={handleMenuClose}>
         <Link to="/profile">Profil voyageur</Link>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={handleLogOut}>
         <Link to="/">Se déconnecter</Link>
       </MenuItem>
     </Menu>
@@ -224,25 +234,6 @@ let Nav = (props) => {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {props.auth !== null ? (
-              <Link to="/message" className="navElement">
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <MailIcon className="icon" />
-                  </Badge>
-                </IconButton>
-              </Link>
-            ) : (
-              ""
-            )}{" "}
-            {props.auth === null ? (
-              /* {<Link to="/connect" className="navElement">
-                    Se connecter
-                  </Link> : ""*/
-              <button onClick={() => handleLogin()}> Se connecter </button>
-            ) : (
-              ""
-            )}
             <Link to="/help" className="navElement">
               <HelpIcon className="icon" />
             </Link>

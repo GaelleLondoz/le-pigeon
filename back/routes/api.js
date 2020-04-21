@@ -15,6 +15,7 @@ router.delete("/users/:id", usersController.destroy);
 
 // login auth
 router.post("/login", usersController.login);
+router.post("/logout", usersController.logout);
 router.get("/me", usersController.me);
 
 // bookings

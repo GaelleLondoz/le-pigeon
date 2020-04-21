@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { AUTH_URL } from "../../config";
+import { AUTH_URL, LOGOUT_URL } from "../../config";
 
 function login(credentials) {
   return axios
@@ -11,6 +11,19 @@ function login(credentials) {
       //Set Axios with this token
       setAxiosToken(token);
     });
+}
+
+function logout() {
+  // Warn back end to disconnect user
+  axios.post(LOGOUT_URL, {}).then((response) => response.status).then((status) => {
+    if (status === 200) {
+      // Delete token
+      window.localStorage.removeItem("authToken");
+
+      // Redirect user
+
+    }
+  })
 }
 
 /**
@@ -51,4 +64,5 @@ export default {
   login,
   isAuthenticated,
   setup,
+  logout
 };
