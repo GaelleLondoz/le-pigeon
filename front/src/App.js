@@ -8,7 +8,6 @@ import {
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
 import Footer from "./components/Footer";
-import RoutesNav from "./components/navigation/RoutesNav";
 
 import AuthAPI from "./components/services/authAPI";
 import AuthContext from "./contexts/AuthContext";
@@ -46,11 +45,15 @@ const App = () => {
     AuthAPI.isAuthenticated()
   );
 
+  const [currentUser, setCurrentUser] = useState({});
+
   const NavBarWithRouter = withRouter(Nav);
 
   const contextValue = {
     isAuthenticated,
     setIsAuthenticated,
+    currentUser,
+    setCurrentUser,
   };
 
   return (

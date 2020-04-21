@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -16,6 +17,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import AgentIcon from "@material-ui/icons/EmojiEmotions";
 import PowerIcon from "@material-ui/icons/Power";
+import AuthContext from "../../contexts/AuthContext";
 
 // icons
 import MailIcon from "@material-ui/icons/Mail";
@@ -50,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
+  },
+  orange: {
+    color: "white",
+    backgroundColor: "red",
   },
 }));
 
@@ -177,15 +183,19 @@ let Nav = (props) => {
     </Menu>
   );
 
+  const { isAuthenticated } = useContext(AuthContext);
+
   const [currentUser, setCurrentUser] = useState({
+    id: "",
     firstName: "",
     lastName: "",
+    avatar: "",
   });
 
   const fetchUser = async () => {
     try {
-      const data = await userAPI.getUser();
-      console.log(data);
+      const { user } = await userAPI.getUser();
+      setCurrentUser(user);
     } catch (error) {
       console.log(error.response);
     }
@@ -194,6 +204,8 @@ let Nav = (props) => {
   useEffect(() => {
     fetchUser();
   }, []);
+
+  console.log({ currentUser });
 
   return (
     <div className={classes.grow}>
@@ -237,6 +249,7 @@ let Nav = (props) => {
             <Link to="/become-agent" className="navElement">
               Devenez agent!
             </Link>
+            <Avatar className={classes.orange}>{currentUser.firstName}</Avatar>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -247,6 +260,7 @@ let Nav = (props) => {
             >
               <AccountCircle />
             </IconButton>
+            {isAuthenticated ? <p>{currentUser.firstName}</p> : ""}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton

@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import {
   // BrowserRouter as Router,
@@ -10,9 +11,6 @@ import BecomeAgent from "../../pages/BecomeAgent";
 import Home from "../../pages/Home";
 import Login from "../../pages/Login";
 import Messages from "../../pages/Messages";
-
-// 1 //after created each pages, create paths:
-// export to Nav.js
 
 export default function RoutesNav() {
   return (
@@ -38,3 +36,4 @@ export default function RoutesNav() {
     </Switch>
   );
 }
+*/
