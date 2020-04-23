@@ -1,42 +1,44 @@
 const { Router } = require("express");
+require("express-group-routes");
+
 const router = Router();
 
 const usersController = require("../controllers/usersController");
 const bookingsController = require("../controllers/bookingsController");
 const reviewsController = require("../controllers/reviewsController");
 const messagesController = require("../controllers/messagesController");
+const checkAuth = require("../middlewares/checkAuth");
 
 // users
 router.get("/users", usersController.index);
 router.post("/users", usersController.create);
 router.get("/users/:id", usersController.findOne);
-router.put("/users/:id", usersController.update);
-router.delete("/users/:id", usersController.destroy);
+router.put("/users/:id", checkAuth, usersController.update);
+router.delete("/users/:id", checkAuth, usersController.destroy);
 
 // login auth
 router.post("/login", usersController.login);
-router.post("/logout", usersController.logout);
+router.post("/logout", checkAuth, usersController.logout);
 router.get("/me", usersController.me);
 
 // bookings
-router.get("/bookings", bookingsController.index);
-router.post("/bookings", bookingsController.create);
-router.get("/bookings/:id", bookingsController.findOne);
-router.put("/bookings/:id", bookingsController.update);
-router.delete("/bookings/:id", bookingsController.destroy);
+router.get("/bookings", checkAuth, bookingsController.index);
+router.post("/bookings", checkAuth, bookingsController.create);
+router.get("/bookings/:id", checkAuth, bookingsController.findOne);
+router.put("/bookings/:id", checkAuth, bookingsController.update);
+router.delete("/bookings/:id", checkAuth, bookingsController.destroy);
 
-// reviews
 router.get("/reviews", reviewsController.index);
-router.post("/reviews", reviewsController.create);
+router.post("/reviews", checkAuth, reviewsController.create);
 router.get("/reviews/:id", reviewsController.findOne);
-router.put("/reviews/:id", reviewsController.update);
-router.delete("/reviews/:id", reviewsController.destroy);
+router.put("/reviews/:id", checkAuth, reviewsController.update);
+router.delete("/reviews/:id", checkAuth, reviewsController.destroy);
 
 // messages
-router.get("/messages", messagesController.index);
-router.post("/messages", messagesController.create);
-router.get("/messages/:id", messagesController.findOne);
-router.put("/messages/:id", messagesController.update);
-router.delete("/messages/:id", messagesController.destroy);
+router.get("/messages", checkAuth, messagesController.index);
+router.post("/messages", checkAuth, messagesController.create);
+router.get("/messages/:id", checkAuth, messagesController.findOne);
+router.put("/messages/:id", checkAuth, messagesController.update);
+router.delete("/messages/:id", checkAuth, messagesController.destroy);
 
 module.exports = router;
