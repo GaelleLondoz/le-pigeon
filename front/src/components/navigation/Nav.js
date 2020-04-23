@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import RootRef from '@material-ui/core/RootRef';
 import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import authAPI from "../services/authAPI";
-
-// links
-//import RoutesNav from "./RoutesNav";
 
 // Material-ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -61,6 +59,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let Nav = ({ history }) => {
+  const domRef = useRef();
+
+  useEffect(() => {
+    fetchUser();
+    console.log(domRef.current); // DOM node
+  }, []);
+  // const observed = useRef(null);
+
+  // useEffect(() => {
+  //   fetchUser();
+  //   console.log(observed.current);
+  // }, [observed]);
+
+  // useEffect(() => {
+    
+  // }, []);
   const classes = useStyles();
   // const handleLogin = () => {
   //   props.login();
@@ -93,7 +107,7 @@ let Nav = ({ history }) => {
       await authAPI.logout()
       history.replace("/login")
     } catch (error) {
-      console.log(error.response);
+      throw error.response;
     }
   }
 
@@ -101,7 +115,8 @@ let Nav = ({ history }) => {
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
-    <Menu
+    <RootRef rootRef={domRef}>
+      <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
@@ -138,13 +153,15 @@ let Nav = ({ history }) => {
         <Link to="/">Se déconnecter</Link>
       </MenuItem>
     </Menu>
+    </RootRef>
   );
 
   // menu mobile //////
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
-    <Menu
+    <RootRef rootRef={domRef}>
+      <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
@@ -191,6 +208,7 @@ let Nav = ({ history }) => {
         <p>Profile</p>
       </MenuItem>
     </Menu>
+    </RootRef>
   );
 
   const { isAuthenticated } = useContext(AuthContext);
@@ -207,17 +225,12 @@ let Nav = ({ history }) => {
       const { user } = await userAPI.getUser();
       setCurrentUser(user);
     } catch (error) {
-      console.log(error.response);
+      throw error.response;
     }
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  console.log({ currentUser });
-
   return (
+
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>

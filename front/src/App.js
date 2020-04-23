@@ -18,27 +18,13 @@ import Help from "./pages/Help";
 import Messages from "./pages/Messages";
 import BecomeAgent from "./pages/BecomeAgent";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 import "./assets/sass/body.scss";
-import PrivateRoute from "./components/PrivateRoutes";
+import PrivateRoute from "./components/redirections/PrivateRoutes";
+import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRoutes";
 
 AuthAPI.setup();
-/*
-const App = () => {
-  return (
-    <div className="app-viewport">
-      <Router>
-        <div className="container">
-          <Head />
-          <Nav />
-          <Footer />
-        </div>
-        <RoutesNav />
-      </Router>
-    </div>
-  );
-};
-*/
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -64,12 +50,13 @@ const App = () => {
         <main>
           <Switch>
             {/*<Route exact path="/" component={Home} />*/}
-            <PrivateRoute exact path="/" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/connect" component={Connect} />
             <Route exact path="/help" component={Help} />
             <Route exact path="/message" component={Messages} />
             <Route exact path="/become-agent" component={BecomeAgent} />
-            <Route exact path="/login" component={Login} />
+            <LoginNotAllowedRoutes exact path="/login" component={Login} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
         </main>
         <Footer />

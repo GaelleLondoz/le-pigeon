@@ -19,9 +19,6 @@ function logout() {
     if (status === 200) {
       // Delete token
       window.localStorage.removeItem("authToken");
-
-      // Redirect user
-
     }
   })
 }
@@ -39,14 +36,10 @@ function setAxiosToken(token) {
 function setup() {
   //Verify if token
   const token = window.localStorage.getItem("authToken");
-  console.log({ token });
   if (token) {
     const jwtData = jwtDecode(token);
-    //if token valid
-    //if (jwtData.exp * 1000 > new Date().getTime()) {
     //Set Axios with this token
     setAxiosToken(token);
-    //}
   }
 }
 
@@ -54,8 +47,6 @@ function isAuthenticated() {
   const token = window.localStorage.getItem("authToken");
   if (token) {
     return true;
-    //const jwtData = jwtDecode(token);
-    //return jwtData.exp * 1000 > new Date().getTime();
   }
   return false;
 }
