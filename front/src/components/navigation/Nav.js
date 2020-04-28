@@ -236,6 +236,7 @@ let Nav = ({ history }) => {
 
   return (
 
+    
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
