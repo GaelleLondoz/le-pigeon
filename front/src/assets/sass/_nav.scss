@@ -51,9 +51,15 @@
   display: flex;
   align-items: center;
   background-color: $dark-blue;
+<<<<<<< HEAD
   border-radius: 20px;
   @include margins-nav; 
   border: none;
+=======
+  border-radius: 50px;
+  margin-left: 30px;
+  margin-right: 60px;
+>>>>>>> with agent button
   height: 40px !important;
   padding-left: 10px;
   padding-right: 10px;
