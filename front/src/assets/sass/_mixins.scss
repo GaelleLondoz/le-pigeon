@@ -1,4 +1,17 @@
+@import "variables";
+
 @mixin paddings {
   padding-left: 30px !important;
   padding-right: 30px !important;
+}
+
+@mixin margins-nav {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+@mixin small {
+  @media (max-width: #{$breakpoint-tablet}) {
+      @content;
+  }
 }
