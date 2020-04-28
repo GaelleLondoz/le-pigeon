@@ -1,57 +1,97 @@
 @import "variables";
 @import "mixins";
 
+// background header
 .MuiToolbar-regular {
   background-color: $light-blue;
   @include paddings;
-
+  min-height: 60px !important;
+  align-items: center !important;
+  align-content: center !important;
+  @include small {
+    min-height: 40px !important;
+  }
 }
 
-.navElement {
+
+.logo {
+  font-size: 35px !important;
+  padding-left: 0px;
   color: $dark-blue;
   text-decoration: none;
-  padding-left: 30px;
-  padding-right: 30px;
+  @include small {
+    font-size: 20px !important;
+    width: 100px !important;
 
-  & .icon {
-    color: $dark-blue;
-    height: 30px;
-    width: 30px;
-    margin-top: 3px;    
-  }//
-
-  & .icon:hover {
-    color: $main-blue;    
-  }
-
-  &:first-child {
-    font-size: 35px;
-    padding-left: 0px;
-  }
-
-  &:nth-child(5) {
-    background-color: $white;
-    border: 2px solid $white;
-    border-radius: 25px;
-    color: $dark-blue;
-    font-weight: bold;
-    font-size: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-  }
-  &:nth-child(5):hover {
-    background-color: $main-blue;
-    color: $white;
-    border: 2px solid $main-blue;
-  }
-
-  &:nth-child(6) {
-    padding-right: 0px;
-    & .icon {
-      height: 45px;
-      width: 45px;;    
-    }
   }
 }
+
+.linkHelp {
+  align-items: center;
+  display: flex;
+
+}
+
+.MuiIconButton-root:hover {
+  background-color: $light-blue !important;
+}
+
+.icon {
+  color: $dark-blue;
+  height: 40px !important;
+  width: 40px !important;
+  @include margins-nav; 
+ 
+  &:hover {
+    color: $main-blue;    
+  }
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  background-color: $dark-blue;
+  border-radius: 50px;
+  margin-left: 30px;
+  margin-right: 60px;
+  height: 40px !important;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: $white;
+  text-decoration: none;
+  font-family: $main-font;
+}
+
+
+
+
+
+
+  
+  // &:nth-child(5) {
+  //   background-color: $white;
+  //   border: 2px solid $white;
+  //   border-radius: 25px;
+  //   color: $dark-blue;
+  //   font-weight: bold;
+  //   font-size: 20px;
+  //   margin-left: 20px;
+  //   margin-right: 20px;
+  //   padding-top: 3px;
+  //   padding-bottom: 3px;
+  // }
+  // &:nth-child(5):hover {
+  //   background-color: $main-blue;
+  //   color: $white;
+  //   border: 2px solid $main-blue;
+  // }
+
+  // &:nth-child(6) {
+  //   padding-right: 0px;
+  //   & .icon {
+  //     height: 45px;
+  //     width: 45px;;    
+  //   }
+  
+
+
