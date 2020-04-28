@@ -4,7 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import authAPI from "../services/authAPI";
-import renderMobileMenu from "./NavMobile";
+
 // Material-ui
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   title: {
-    display: "none",
+    display: "block",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
   sectionDesktop: {
     display: "none",
+    alignItems: "center",
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
@@ -157,7 +158,69 @@ let Nav = ({ history }) => {
   );
 
   // menu mobile //////
-    <renderMobileMenu />
+    
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <RootRef rootRef={domRef}>
+      <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <IconButton aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <MailIcon />
+          </Badge>
+        </IconButton>
+        <p>Messages</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label="se connecter" color="inherit">
+          <PowerIcon />
+        </IconButton>
+        <p>Se connecter</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label="aide" color="inherit">
+          <HelpIcon />
+        </IconButton>
+        <p>Aide</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton aria-label="devenir agent" color="inherit">
+          <AgentIcon />
+        </IconButton>
+        <p>Devenir Agent</p>
+      </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+    </RootRef>
+  );
+
+
+  const { isAuthenticated } = useContext(AuthContext);
+
+  const [currentUser, setCurrentUser] = useState({
+    id: "",
+    firstName: "",
+    lastName: "",
+    avatar: "",
+  });
 
   const fetchUser = async () => {
     try {
@@ -168,31 +231,27 @@ let Nav = ({ history }) => {
     }
   };
 
+
+  // menu principal //////
+
   return (
 
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          ></IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/" className="navElement">
+            <Link to="/" className="logo" >
               LE PIGEON
             </Link>
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Link to="/help" className="navElement">
+            <Link to="/help" className="linkHelp">
               <HelpIcon className="icon" />
             </Link>
-            <Link to="/become-agent" className="navElement">
-              Devenez agent!
+            <Link to="/become-agent" className="navButton">
+              <p>Devenez agent!</p>
             </Link>
-            <Avatar className={classes.orange}>{currentUser.firstName}</Avatar>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -201,7 +260,8 @@ let Nav = ({ history }) => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+            <Avatar className={`${classes.orange} avatar`}>{currentUser.firstName}</Avatar>
+
             </IconButton>
             {isAuthenticated ? <p>{currentUser.firstName}</p> : ""}
           </div>
