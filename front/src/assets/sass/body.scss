@@ -162,6 +162,11 @@ section#articles-blog {
   }
 }
 
+// Page Profile Agent
+.MuiTabs-flexContainer {
+  justify-content: center;
+}
+
 // Media Queries
 @media (max-width: 700px) {
   section#header-homepage {

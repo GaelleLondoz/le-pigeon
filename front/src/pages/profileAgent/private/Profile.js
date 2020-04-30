@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import NavBar from "../../../components/profileAgent/NavBar";
 
 const Profile = () => {
+  const [valueTab, setValueTab] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValueTab(newValue);
+  };
+
   return (
     <div>
-      <h1>Profile Agent</h1>
+      <NavBar value={valueTab} handleChange={handleChange} />
     </div>
   );
 };
