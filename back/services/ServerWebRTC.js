@@ -8,7 +8,7 @@ const WebSocketServer = WebSocket.Server;
 // Yes, TLS is required
 const serverConfig = {
     key: fs.readFileSync("./ssl/key.pem"),
-    cert: fs.readFileSync("./ssl/cert.pem")
+    cert: fs.readFileSync("./ssl/cert.pem"),
 };
 
 // ----------------------------------------------------------------------------------------
@@ -19,12 +19,12 @@ const handleRequest = function(request, response) {
     console.log("request received: " + request.url);
 
     /*if (request.url === "/") {
-                                                                                response.writeHead(200, { "Content-Type": "text/html" });
-                                                                                response.end(fs.readFileSync("client/index.html"));
-                                                                            } else if (request.url === "/webrtc.js") {
-                                                                                response.writeHead(200, { "Content-Type": "application/javascript" });
-                                                                                response.end(fs.readFileSync("client/webrtc.js"));
-                                                                            }*/
+                                                                                    response.writeHead(200, { "Content-Type": "text/html" });
+                                                                                    response.end(fs.readFileSync("client/index.html"));
+                                                                                } else if (request.url === "/webrtc.js") {
+                                                                                    response.writeHead(200, { "Content-Type": "application/javascript" });
+                                                                                    response.end(fs.readFileSync("client/webrtc.js"));
+                                                                                }*/
 };
 
 const httpsServer = https.createServer(serverConfig, handleRequest);
@@ -43,10 +43,8 @@ wss.on("connection", function(ws) {
 });
 
 wss.broadcast = function(data) {
-    console.log("BROADCAST ------------->");
     this.clients.forEach(function(client) {
         if (client.readyState === WebSocket.OPEN) {
-            //console.log({ client: client });
             console.log("SEND");
             client.send(data);
         }

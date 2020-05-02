@@ -120,10 +120,22 @@ function start(isCaller) {
   console.log("ENTER => Start function");
   peerConnection = new RTCPeerConnection(peerConnectionConfig);
   console.log({ peerConnection: peerConnection });
-  peerConnection.onicecandidate = gotIceCandidate;
+  //peerConnection.onicecandidate = gotIceCandidate;
+  peerConnection.onicecandidate = (event) => {
+    console.log("gotIceCandidate");
+    if (event.candidate != null) {
+      console.log({ eventCandidate: event });
+      serverConnection.onopen = () =>
+        serverConnection.send(
+          JSON.stringify({ ice: event.candidate, uuid: uuid })
+        );
+    } else {
+      console.log("gotIceCandidate -> EVENT IS NULL");
+    }
+  };
   //peerConnection.ontrack = gotRemoteStream;
-  peerConnection.ontrack = function (event) {
-    console.log("START -> ON TRACK()");
+  peerConnection.ontrack = (event) => {
+    console.log("START -> ONTRACK()");
     remoteVideo.srcObject = event.streams[0];
   };
   //peerConnection.addStream(localStream);

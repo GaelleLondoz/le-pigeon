@@ -107,14 +107,15 @@ function callOngoing(props) {
   message = props.liveMessage;
   serverConnection = props.liveConnection;
 
+  /*   serverConnection = new WebSocket(
+    "wss://" + window.location.hostname + ":10443"
+  ); */
   console.log({ liveMessage: message });
   console.log({ serverConnection: serverConnection });
 
   localVideo = document.getElementById("localVideo");
   remoteVideo = document.getElementById("remoteVideo");
-  /*serverConnection = new WebSocket(
-    "wss://" + window.location.hostname + ":10443"
-  );*/
+
   //start(false);
   //serverConnection.onmessage = gotMessageFromServer;
   gotMessageFromServer(message);
@@ -140,7 +141,7 @@ function getUserMediaSuccess(stream) {
   console.log({ localStream: stream });
   //peerConnection.addStream(stream);
   stream.getTracks().forEach(function (track) {
-    console.log("getUserMediaSuccess -> ADD TRACT");
+    console.log("getUserMediaSuccess -> ADD LOCAL TRACK");
     peerConnection.addTrack(track, stream);
   });
   console.log("getUserMediaSuccess END");
@@ -149,10 +150,21 @@ function getUserMediaSuccess(stream) {
 function start(isCaller) {
   console.log("start");
   peerConnection = new RTCPeerConnection(peerConnectionConfig);
-  peerConnection.onicecandidate = gotIceCandidate;
+  //peerConnection.onicecandidate = gotIceCandidate;
+  peerConnection.onicecandidate = (event) => {
+    console.log("gotIceCandidate");
+    if (event.candidate != null) {
+      console.log("gotIceCandidate -> EVENT NOT NULL");
+      serverConnection.send(
+        JSON.stringify({ ice: event.candidate, uuid: uuid })
+      );
+    } else {
+      console.log("gotIceCandidate -> EVENT IS NULL");
+    }
+  };
   //peerConnection.ontrack = gotRemoteStream;
-  peerConnection.ontrack = function (event) {
-    console.log("START -> ON TRACK()");
+  peerConnection.ontrack = (event) => {
+    console.log("START -> ONTRACK()");
     remoteVideo.srcObject = event.streams[0];
   };
   //peerConnection.addStream(localStream);
@@ -178,7 +190,18 @@ function gotMessageFromServer(message) {
     console.log("gotMessageFromServer -> It's me");
     if (signal.sdp) {
       console.log("gotMessageFromServer -> SDP");
-      peerConnection
+      peerConnection.setRemoteDescription(
+        new RTCSessionDescription(signal.sdp)
+      );
+      console.log({ PEERCONNECTION: peerConnection });
+      if (signal.sdp.type === "offer") {
+        console.log("gotMessageFromServer -> OFFER");
+        peerConnection
+          .createAnswer()
+          .then(createdDescription)
+          .catch(errorHandler);
+      }
+      /*       peerConnection
         .setRemoteDescription(new RTCSessionDescription(signal.sdp))
         .then(function () {
           // Only create answers in response to offers
@@ -189,8 +212,8 @@ function gotMessageFromServer(message) {
               .then(createdDescription)
               .catch(errorHandler);
           }
-        })
-        .catch(errorHandler);
+        }) 
+        .catch(errorHandler);*/
     } else if (signal.ice) {
       console.log({ ice: signal.ice });
       /*peerConnection
