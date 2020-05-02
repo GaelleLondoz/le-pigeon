@@ -8,7 +8,7 @@ import {
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
 import Footer from "./components/Footer";
-
+import ChatBox from "./components/chatbox/ChatBox";
 import AuthAPI from "./components/services/authAPI";
 import AuthContext from "./contexts/AuthContext";
 
@@ -50,6 +50,7 @@ const App = () => {
         <main>
           <Switch>
             {/*<Route exact path="/" component={Home} />*/}
+            <Route exact path="/chat" component={ChatBox} />
             <Route exact path="/" component={Home} />
             <Route exact path="/connect" component={Connect} />
             <Route exact path="/help" component={Help} />
@@ -59,7 +60,7 @@ const App = () => {
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
         </main>
-        <Footer />
+        {/*<Footer />*/}
       </Router>
     </AuthContext.Provider>
   );
