@@ -120,9 +120,7 @@ class ChatBox extends Component {
   }
   monitorIncomingCalls() {
     console.log("monitorIncomingCalls");
-    serverConnection = new WebSocket(
-      "wss://" + window.location.hostname + ":10443"
-    );
+    serverConnection = new WebSocket(process.env.REACT_APP_WEB_RTC_SERVER);
     serverConnection.onmessage = (message) => {
       var signal = JSON.parse(message.data);
       console.log({ signal: signal });
