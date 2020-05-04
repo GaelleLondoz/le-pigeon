@@ -8,21 +8,16 @@ import PhoneCallbackIcon from "@material-ui/icons/PhoneCallback";
 import Alert from "@material-ui/lab/Alert";
 
 var localVideo;
-//var localStream;
+var localStream;
 var remoteVideo;
+var remoteStream;
 var peerConnection;
 var uuid;
 var message;
 var serverConnection;
 
 var peerConnectionConfig = {
-  iceServers: [
-    { urls: "stun:stun.stunprotocol.org:3478" },
-    { urls: "stun:stun.l.google.com:19302" },
-  ],
-};
-var ConnectionConfigconstraints = {
-  mandatory: { OfferToReceiveAudio: true, OfferToReceiveVideo: true },
+  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 };
 
 navigator.getUserMedia =
@@ -67,7 +62,12 @@ export default function VideoReceiverChatBox(props) {
           This is an info alert — Incoming call !!!
         </Alert>
         <Box display="flex" justifyContent="center" bgcolor="background.paper">
-          <video id="localVideo" autoPlay={true}></video>
+          <video
+            id="localVideo"
+            autoPlay={true}
+            width={480}
+            height={150}
+          ></video>
         </Box>
         <Box display="flex" justifyContent="center" bgcolor="background.paper">
           <video id="remoteVideo" autoPlay={true}></video>
@@ -100,61 +100,22 @@ export default function VideoReceiverChatBox(props) {
   );
 }
 
-function callOngoing(props) {
-  console.log("callOngoing");
-  //uuid = createUUID();
+async function callOngoing(props) {
   uuid = props.uuid;
   message = props.liveMessage;
   serverConnection = props.liveConnection;
 
-  /*   serverConnection = new WebSocket(
-    "wss://" + window.location.hostname + ":10443"
-  ); */
   console.log({ liveMessage: message });
   console.log({ serverConnection: serverConnection });
 
   localVideo = document.getElementById("localVideo");
   remoteVideo = document.getElementById("remoteVideo");
 
-  //start(false);
-  //serverConnection.onmessage = gotMessageFromServer;
-  gotMessageFromServer(message);
-  /*serverConnection.onmessage = message => {
-    console.log("gotMessageFromServer");
-    if (!peerConnection) start(false);
-  };*/
-
-  if (navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(getUserMediaSuccess)
-      .catch(errorHandler);
-  } else {
-    alert("Your browser does not support getUserMedia API");
-  }
-}
-
-function getUserMediaSuccess(stream) {
-  console.log("getUserMediaSuccess START");
-  //localStream = stream;
-  localVideo.srcObject = stream;
-  console.log({ localStream: stream });
-  //peerConnection.addStream(stream);
-  stream.getTracks().forEach(function (track) {
-    console.log("getUserMediaSuccess -> ADD LOCAL TRACK");
-    peerConnection.addTrack(track, stream);
-  });
-  console.log("getUserMediaSuccess END");
-}
-
-function start(isCaller) {
-  console.log("start");
   peerConnection = new RTCPeerConnection(peerConnectionConfig);
   //peerConnection.onicecandidate = gotIceCandidate;
-  peerConnection.onicecandidate = (event) => {
+  peerConnection.onicecandidate = function (event) {
     console.log("gotIceCandidate");
     if (event.candidate != null) {
-      console.log("gotIceCandidate -> EVENT NOT NULL");
       serverConnection.send(
         JSON.stringify({ ice: event.candidate, uuid: uuid })
       );
@@ -162,101 +123,81 @@ function start(isCaller) {
       console.log("gotIceCandidate -> EVENT IS NULL");
     }
   };
-  //peerConnection.ontrack = gotRemoteStream;
+
   peerConnection.ontrack = (event) => {
-    console.log("START -> ONTRACK()");
-    remoteVideo.srcObject = event.streams[0];
+    console.log("got remote stream");
+    if (event.streams != null) {
+      console.log("START -> ONTRACK()");
+      remoteVideo.srcObject = event.streams[0];
+    } else {
+      console.log("got remote stream -> EVENT IS NULL");
+    }
   };
-  //peerConnection.addStream(localStream);
-  console.log("start END");
-  if (isCaller) {
-    console.log("start - CALLER");
-    peerConnection.createOffer(
-      createdDescription,
-      errorHandler,
-      ConnectionConfigconstraints
-    );
+
+  if (navigator.mediaDevices.getUserMedia) {
+    await navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(getUserMediaSuccess)
+      .catch(errorHandler);
+  } else {
+    alert("Your browser does not support getUserMedia API");
   }
+
+  gotMessageFromServer(message);
 }
 
-function gotMessageFromServer(message) {
+function getUserMediaSuccess(stream) {
+  console.log("getUserMediaSuccess START");
+  localStream = stream;
+  localVideo.srcObject = stream;
+
+  stream.getTracks().forEach(async function (track) {
+    await peerConnection.addTrack(track, stream);
+  });
+  console.log("getUserMediaSuccess END");
+}
+async function gotMessageFromServer(message) {
   console.log("gotMessageFromServer");
-  console.log({ peerConnection: peerConnection });
-  if (!peerConnection) start(false);
 
   var signal = JSON.parse(message.data);
   console.log({ signal: signal });
   if (signal.uuid === uuid) {
     console.log("gotMessageFromServer -> It's me");
     if (signal.sdp) {
-      console.log("gotMessageFromServer -> SDP");
-      peerConnection.setRemoteDescription(
+      console.log("gotMessageFromServer -> SET REMOTE DESCRIPTION - SDP");
+      console.log({ SDP: signal.sdp });
+      await peerConnection.setRemoteDescription(
         new RTCSessionDescription(signal.sdp)
       );
       console.log({ PEERCONNECTION: peerConnection });
       if (signal.sdp.type === "offer") {
         console.log("gotMessageFromServer -> OFFER");
-        peerConnection
+        await peerConnection
           .createAnswer()
           .then(createdDescription)
           .catch(errorHandler);
       }
-      /*       peerConnection
-        .setRemoteDescription(new RTCSessionDescription(signal.sdp))
-        .then(function () {
-          // Only create answers in response to offers
-          if (signal.sdp.type === "offer") {
-            console.log("gotMessageFromServer -> OFFER");
-            peerConnection
-              .createAnswer()
-              .then(createdDescription)
-              .catch(errorHandler);
-          }
-        }) 
-        .catch(errorHandler);*/
-    } else if (signal.ice) {
-      console.log({ ice: signal.ice });
-      /*peerConnection
-        .addIceCandidate(new RTCIceCandidate(signal.ice))
-        .catch(errorHandler);*/
-      peerConnection
-        .addIceCandidate(signal.ice)
-        .then(onAddIceCandidateSuccess)
-        .catch(errorHandler);
     }
   }
 }
-
-function gotIceCandidate(event) {
-  console.log("gotIceCandidate");
-  if (event.candidate != null) {
-    console.log("gotIceCandidate -> EVENT NOT NULL");
-    serverConnection.send(JSON.stringify({ ice: event.candidate, uuid: uuid }));
-  } else {
-    console.log("gotIceCandidate -> EVENT IS NULL");
-  }
-}
-
-function createdDescription(description) {
+async function createdDescription(description) {
   console.log("got description");
-  peerConnection
+  const remoteStream = localStream;
+  console.log({ REMOTESTREAM: remoteStream });
+  await peerConnection
     .setLocalDescription(description)
     .then(function () {
       serverConnection.send(
-        JSON.stringify({ sdp: peerConnection.localDescription, uuid: uuid })
+        JSON.stringify({
+          sdp: peerConnection.localDescription,
+          uuid: uuid,
+          remoteStream: remoteStream,
+        })
       );
     })
     .catch(errorHandler);
 }
 
-/* function gotRemoteStream(event) {
-  console.log("got remote stream");
-  remoteVideo.srcObject = event.streams[0];
-} */
-
 function errorHandler(error) {
   console.log(error);
-}
-function onAddIceCandidateSuccess() {
-  console.log("AddIceCandidate success.");
 }

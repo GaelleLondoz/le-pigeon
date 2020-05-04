@@ -1,4 +1,6 @@
-const HTTPS_PORT = 10443;
+require("dotenv").config();
+
+const HTTPS_PORT = process.env.WEB_RTC_SERVER_HTTPS_PORT;
 
 const fs = require("fs");
 const https = require("https");
@@ -17,14 +19,6 @@ const serverConfig = {
 const handleRequest = function(request, response) {
     // Render the single client html file for any request the HTTP server receives
     console.log("request received: " + request.url);
-
-    /*if (request.url === "/") {
-                                                                                                          response.writeHead(200, { "Content-Type": "text/html" });
-                                                                                                          response.end(fs.readFileSync("client/index.html"));
-                                                                                                      } else if (request.url === "/webrtc.js") {
-                                                                                                          response.writeHead(200, { "Content-Type": "application/javascript" });
-                                                                                                          response.end(fs.readFileSync("client/webrtc.js"));
-                                                                                                      }*/
 };
 
 const httpsServer = https.createServer(serverConfig, handleRequest);
@@ -45,7 +39,7 @@ wss.on("connection", function(ws) {
 wss.broadcast = function(data) {
     this.clients.forEach(function(client) {
         if (client.readyState === WebSocket.OPEN) {
-            console.log("SEND");
+            console.log("");
             client.send(data);
         }
     });

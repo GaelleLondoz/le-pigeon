@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import { GiftedChat } from "react-web-gifted-chat";
-//import axios from "axios";
 import UserChatBox from "./UserChatBox";
 import ContactBox from "./ContactBox";
 import HomeChatBox from "./HomeChatBox";
 import VideoCallerChatBox from "./VideoCallerChatBox";
 import VideoReceiverChatBox from "./VideoReceiverChatBox";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import Button from "@material-ui/core/Button";
+import DialogActions from "@material-ui/core/DialogActions";
 
 var serverConnection;
+
 class ChatBox extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +20,7 @@ class ChatBox extends Component {
     this.monitorIncomingCalls = this.monitorIncomingCalls.bind(this);
     this.handleStopVideo = this.handleStopVideo.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
 
     this.state = {
       uuid: "er3JJoRkKwVfmRepUYMr46367P24",
@@ -83,8 +88,10 @@ class ChatBox extends Component {
       selectedName: "",
       liveMessage: {},
       liveConnection: {},
+      open: true,
     };
   }
+
   handleChange(user, e) {
     if (user) {
       user.isSelected = true;
@@ -149,6 +156,12 @@ class ChatBox extends Component {
       isCallOnGoing: false,
       isSelected: false,
       scriptLoaded: true,
+    });
+  }
+
+  handleOpen(e) {
+    this.setState({
+      open: false,
     });
   }
 
@@ -246,31 +259,44 @@ class ChatBox extends Component {
 
   render() {
     return (
-      <div className="chat" style={styles.container}>
-        <div style={styles.contactList}> {this.renderContacts()} </div>
-        {!this.state.isSelected && !this.state.isCallOnGoing && (
-          <div style={styles.chat}>
-            <div style={styles.chat}>{this.renderHomeChatBox()}</div>
-          </div>
-        )}
-        {this.state.isSelected && !this.state.isCallOnGoing && (
-          <div style={styles.chat}>
-            <div style={styles.chat}>{this.renderUserChatBox()}</div>
-            <div style={styles.chat}>{this.renderGiftedChat()}</div>
-          </div>
-        )}
-        {this.state.isSelected && this.state.isCallOnGoing && (
-          <div style={styles.chat}>
-            <div style={styles.chat}>{this.renderUserChatBox()}</div>
-            <div style={styles.chat}>{this.renderVideoChatBox()}</div>
-          </div>
-        )}
-        {!this.state.isSelected && this.state.isCallOnGoing && (
-          <div style={styles.chat}>
-            <div style={styles.chat}>{this.renderVideoReceiverChatBox()}</div>
-          </div>
-        )}
-        <div style={styles.settings}> </div>
+      <div>
+        <Dialog fullScreen open={this.state.open} onClose={this.handleOpen}>
+          <DialogContent>
+            <div className="chat" style={styles.container}>
+              <div style={styles.contactList}> {this.renderContacts()} </div>
+              {!this.state.isSelected && !this.state.isCallOnGoing && (
+                <div style={styles.chat}>
+                  <div style={styles.chat}>{this.renderHomeChatBox()}</div>
+                </div>
+              )}
+              {this.state.isSelected && !this.state.isCallOnGoing && (
+                <div style={styles.chat}>
+                  <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                  <div style={styles.chat}>{this.renderGiftedChat()}</div>
+                </div>
+              )}
+              {this.state.isSelected && this.state.isCallOnGoing && (
+                <div style={styles.chat}>
+                  <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                  <div style={styles.chat}>{this.renderVideoChatBox()}</div>
+                </div>
+              )}
+              {!this.state.isSelected && this.state.isCallOnGoing && (
+                <div style={styles.chat}>
+                  <div style={styles.chat}>
+                    {this.renderVideoReceiverChatBox()}
+                  </div>
+                </div>
+              )}
+              <div style={styles.settings}> </div>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleOpen} color="primary">
+              Fermer
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
