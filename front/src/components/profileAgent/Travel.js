@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Container, Grid } from "@material-ui/core";
 import UserDestionationsAPI from "../../../components/services/userDestinationsAPI";
-import { formatDate } from "../../../helpers/formatDate";
+import CardDestination from "../../../components/profileAgent/CardDestination";
 
 const Travel = () => {
   const url = window.location.href;
@@ -24,22 +25,20 @@ const Travel = () => {
   console.log(destinations);
   return (
     <>
-      <h1>Liste de vos voyages</h1>
-      <p>
-        Vous avez actuellement effectué <strong>{destinations.length}</strong>{" "}
-        voyage(s)
-      </p>
-
-      {destinations.map((destination) => (
-        <div key={destination.id} className="list-destinations-profile-agent">
-          <p>Nom de votre destination: {destination.Destination.name}</p>
-          <p>Continent : {destination.Destination.Continent.name}</p>
-          <p>Pays : {destination.Destination.Country.name}</p>
-          <p>Remarque : {destination.remarks}</p>
-          <p>Parti le : {formatDate(destination.date)}</p>
-          <hr />
-        </div>
-      ))}
+      <Container>
+        <h1>Liste de vos voyages</h1>
+        <p>
+          Vous avez effectué actuellement <strong>{destinations.length}</strong>{" "}
+          voyage(s)
+        </p>
+        <Grid container>
+          {destinations.map((destination) => (
+            <Grid key={destination.id} item m={4}>
+              <CardDestination destination={destination} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </>
   );
 };
