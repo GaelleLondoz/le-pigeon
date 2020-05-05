@@ -1,6 +1,8 @@
 import React from "react";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import TabPanel from "./TabPanel";
+import Profile from "./Profile";
+import Message from "./Message";
 
 const NavBar = ({ value, handleChange }) => {
   return (
@@ -19,10 +21,10 @@ const NavBar = ({ value, handleChange }) => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Profil
+        <Profile />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Messages
+        <Message />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Agenda
