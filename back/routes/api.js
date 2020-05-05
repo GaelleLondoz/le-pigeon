@@ -7,6 +7,7 @@ const usersController = require("../controllers/usersController");
 const bookingsController = require("../controllers/bookingsController");
 const reviewsController = require("../controllers/reviewsController");
 const messagesController = require("../controllers/messagesController");
+const userDestinationsController = require("../controllers/userDestinationsController");
 const checkAuth = require("../middlewares/checkAuth");
 
 // users
@@ -44,6 +45,12 @@ router.get(
   "/messages/users/:id",
   checkAuth,
   messagesController.getAllMessagesByUser
+);
+// destinations
+router.get(
+  "/destinations/users/:id",
+  checkAuth,
+  userDestinationsController.getAllDestinationsByUser
 );
 
 module.exports = router;
