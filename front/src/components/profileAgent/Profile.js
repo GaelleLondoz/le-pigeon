@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import TabPanel from "./TabPanel";
-import Account from "./Account";
-import Invoice from "./Invoice";
-import Payment from "./Payment";
+import Account from "../../pages/profileAgent/private/Account";
+import Invoice from "../../pages/profileAgent/private/Invoice";
+import Payment from "../../pages/profileAgent/private/Payment";
 
 const Profile = () => {
   const [valueTab, setValueTab] = useState(0);

@@ -59,7 +59,7 @@ const App = () => {
             <Route exact path="/become-agent" component={BecomeAgent} />
             <LoginNotAllowedRoutes exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <PrivateRoute exact path="/profile/agent/12" component={Profile} />
+            <PrivateRoute exact path="/profile/agent/:id" component={Profile} />
           </Switch>
         </main>
         {/*<Footer />*/}

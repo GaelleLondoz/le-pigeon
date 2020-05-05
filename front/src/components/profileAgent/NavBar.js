@@ -2,7 +2,10 @@ import React from "react";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import TabPanel from "./TabPanel";
 import Profile from "./Profile";
-import Message from "./Message";
+import Message from "../../pages/profileAgent/private/Message";
+import Agenda from "../../pages/profileAgent/private/Agenda";
+import Evaluation from "../../pages/profileAgent/private/Evaluation";
+import Travel from "../../pages/profileAgent/private/Travel";
 
 const NavBar = ({ value, handleChange }) => {
   return (
@@ -20,6 +23,7 @@ const NavBar = ({ value, handleChange }) => {
           <Tab label="Voyages" />
         </Tabs>
       </AppBar>
+
       <TabPanel value={value} index={0}>
         <Profile />
       </TabPanel>
@@ -27,13 +31,13 @@ const NavBar = ({ value, handleChange }) => {
         <Message />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Agenda
+        <Agenda />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Evaluation
+        <Evaluation />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Voyages
+        <Travel />
       </TabPanel>
     </>
   );
