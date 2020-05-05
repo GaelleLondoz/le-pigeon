@@ -247,12 +247,18 @@ let Nav = ({ history }) => {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+          <Link to="/message" className="navElement">
+                <IconButton aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon className="icon" />
+                  </Badge>
+                </IconButton>
+              </Link>
+              <button className="navButton"> Se connecter </button>
             <Link to="/help" className="linkHelp">
               <HelpIcon className="icon" />
             </Link>
-            <Link to="/become-agent" className="navButton">
-              <p>Devenez agent!</p>
-            </Link>
+            <button className="navButton">Devenez agent!</button>
             <IconButton
               edge="end"
               aria-label="account of current user"
