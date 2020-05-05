@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MessageAPI from "../../../components/services/messageAPI";
-import { formatDate } from "../../../helpers/formatDate";
+import CardMessage from "../../../components/profileAgent/CardMessage";
 
 const Message = () => {
   const url = window.location.href;
@@ -35,11 +35,7 @@ const Message = () => {
         <p>{notMessages}</p>
       ) : (
         messages.map((message) => (
-          <div key={message.id} className="list-messages-agent-profile">
-            <p>{message.content}</p>
-            <p>Status : {message.status}</p>
-            <p>Envoyé le {formatDate(message.createdAt)}</p>
-          </div>
+          <CardMessage key={message.id} message={message} />
         ))
       )}
     </>
