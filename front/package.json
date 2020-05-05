@@ -12,11 +12,8 @@
     "algolia-places-react": "^1.5.1",
     "axios": "^0.19.2",
     "jwt-decode": "^2.2.0",
-<<<<<<< HEAD
-=======
     "leaflet": "^1.6.0",
     "moment": "^2.25.3",
->>>>>>> Display all messages in profile agent
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^5.2.1",
