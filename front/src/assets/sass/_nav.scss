@@ -47,6 +47,13 @@
   }
 }
 
+// badge
+.MuiBadge-anchorOriginTopRightRectangle {
+  top: 6px !important;
+  right: 34px !important;
+  background-color: $main-blue !important;
+}
+
 .navButton {
   display: flex;
   align-items: center;
@@ -54,10 +61,11 @@
   border-radius: 20px;
   @include margins-nav; 
   border: none;
-  height: 40px !important;
-  padding-left: 10px;
-  padding-right: 10px;
-  color: $white;
+  height: 25px !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: $light-blue;
+  font-size: 14px;
   text-decoration: none;
   font-family: $main-font;
 }
