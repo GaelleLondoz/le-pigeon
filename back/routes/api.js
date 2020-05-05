@@ -40,5 +40,10 @@ router.post("/messages", checkAuth, messagesController.create);
 router.get("/messages/:id", checkAuth, messagesController.findOne);
 router.put("/messages/:id", checkAuth, messagesController.update);
 router.delete("/messages/:id", checkAuth, messagesController.destroy);
+router.get(
+  "/messages/users/:id",
+  checkAuth,
+  messagesController.getAllMessagesByUser
+);
 
 module.exports = router;
