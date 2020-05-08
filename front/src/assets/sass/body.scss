@@ -162,6 +162,32 @@ section#articles-blog {
   }
 }
 
+//Profile Agent
+section.profile-agent-account {
+  margin-top: 80px;
+  div.profile-agent-account-content {
+    padding: 30px;
+    background-color: #f5f5f5;
+    div.profile-agent-account-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .MuiFormControl-root {
+        margin-bottom: 10px;
+      }
+    }
+    div.profile-agent-account-avatar {
+      .MuiAvatar-root {
+        width: 120px;
+        height: 120px;
+      }
+      .MuiRating-root {
+        margin: 20px 0;
+      }
+    }
+  }
+}
+
 // Media Queries
 @media (max-width: 700px) {
   section#header-homepage {
