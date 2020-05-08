@@ -176,6 +176,12 @@ section.profile-agent-account {
         margin-bottom: 10px;
       }
     }
+    div.profile-agent-account-destinations {
+      .leaflet-container {
+        width: 100%;
+        height: 500px;
+      }
+    }
     div.profile-agent-account-avatar {
       .MuiAvatar-root {
         width: 120px;

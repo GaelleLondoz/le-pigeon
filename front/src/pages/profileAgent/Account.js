@@ -6,9 +6,14 @@ import {
   Avatar,
   Typography,
 } from "@material-ui/core";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Rating from "@material-ui/lab/Rating";
 
 const Account = () => {
+  {
+    /* Make a state with all destinations position */
+  }
+  const position = [51.505, -0.09];
   return (
     <section className="profile-agent-account">
       <Container>
@@ -51,7 +56,19 @@ const Account = () => {
             </Grid>
             <Grid item md={6}>
               <div className="profile-agent-account-destinations">
-                Carte des destinations ici
+                <Map center={position} zoom={12}>
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <Marker position={position}>
+                    <Popup>
+                      A pretty CSS3 popup.
+                      <br />
+                      Easily customizable.
+                    </Popup>
+                  </Marker>
+                </Map>
               </div>
             </Grid>
             <Grid item md={3}>
