@@ -10,9 +10,10 @@
   align-content: center !important;
   @include small {
     min-height: 40px !important;
+    padding-left: 19px !important;
+    padding-right: 13px !important;
   }
 }
-
 
 .logo {
   font-size: 35px !important;
@@ -22,36 +23,43 @@
   @include small {
     font-size: 20px !important;
     width: 100px !important;
-
   }
 }
 
 .linkHelp {
   align-items: center;
   display: flex;
-
 }
 
 .MuiIconButton-root:hover {
   background-color: $light-blue !important;
+  @include small {
+    background-color: $light-grey !important;
+ 
+  }
 }
 
 .icon {
   color: $dark-blue;
-  height: 40px !important;
-  width: 40px !important;
-  @include margins-nav; 
- 
+  height: 30px !important;
+  width: 30px !important;
+  @include margins-nav;
+
   &:hover {
-    color: $main-blue;    
+    color: $main-blue;
   }
 }
 
 // badge
 .MuiBadge-anchorOriginTopRightRectangle {
-  top: 6px !important;
-  right: 34px !important;
+  top: 4px !important;
+  right: 30px !important;
   background-color: $main-blue !important;
+
+  @include small {
+    top: 1px !important;
+    right: 23px !important;
+  }
 }
 
 .navButton {
@@ -61,7 +69,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
   border-radius: 20px;
-  @include margins-nav; 
+  @include margins-nav;
   border: none;
 <<<<<<< HEAD
 =======
@@ -84,41 +92,113 @@
   padding-right: 20px;
   color: $light-blue;
   font-size: 14px;
+<<<<<<< HEAD
 >>>>>>> with color
   text-decoration: none;
   font-family: $main-font;
 }
 
 
+=======
+  text-decoration: none !important;
+  font-family: $main-font !important;
+  text-decoration: none !important;
+>>>>>>> onclick/onload problem
 
+  &:hover {
+    background-color: $main-blue !important;
+    text-decoration: none !important;
+  }
+  &:active {
+    text-decoration: none !important;
+  }
+}
 
+// @media 3dots menu
 
+.makeStyles-sectionMobile-4 > .MuiIconButton-root:hover {
+  background-color: $light-blue !important;
+}
+.MuiSvgIcon-root {
+  color: $dark-blue;
+}
 
-  
-  // &:nth-child(5) {
-  //   background-color: $white;
-  //   border: 2px solid $white;
-  //   border-radius: 25px;
-  //   color: $dark-blue;
-  //   font-weight: bold;
-  //   font-size: 20px;
-  //   margin-left: 20px;
-  //   margin-right: 20px;
-  //   padding-top: 3px;
-  //   padding-bottom: 3px;
-  // }
-  // &:nth-child(5):hover {
-  //   background-color: $main-blue;
-  //   color: $white;
-  //   border: 2px solid $main-blue;
-  // }
+// menu in 3dots
+.MuiListItem-gutters {
+  padding-left: 5px;
+  padding-right: 16px;
+}
+// .MobileMainMenu ul {
+//     position: fixed;
+//     width: 180px !important;
+//     border: solid 1px blue !important;
+//     top: 48px !important;
+//     right: 0  !important;
+//     border-top-left-radius: 0  !important;
+//     border-top-right-radius: 0 !important;
+//     border-bottom-right-radius: 0 !important;
 
-  // &:nth-child(6) {
-  //   padding-right: 0px;
-  //   & .icon {
-  //     height: 45px;
-  //     width: 45px;;    
-  //   }
-  
+// }
 
+// @media main menu
+#primary-search-account-menu-mobile > .MuiPaper-root {
+  // border: red solid 2px;
+  //background-color: blue;
+  top: 48px !important;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  color: $dark-blue;
+  & .MuiSvgIcon-root {
+    margin-left: -10px;
+  }
+  & a {
+    font-weight: normal !important;
+  }
 
+}
+
+//avatar menu
+#primary-search-account-menu > .MuiPaper-elevation8 {
+  // border: 1px solid yellow;
+  // background-color: red;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  top: 64px !important;
+  & a {
+    font-weight: normal !important;
+  }
+  @include small {
+    // border: green solid 2px;
+    // background-color: yellow;
+    border-top-left-radius: 4px;
+    top: 331px !important;
+    & a {
+      font-weight: normal !important;
+    }
+  }
+}
+
+// &:nth-child(5) {
+//   background-color: $white;
+//   border: 2px solid $white;
+//   border-radius: 25px;
+//   color: $dark-blue;
+//   font-weight: bold;
+//   font-size: 20px;
+//   margin-left: 20px;
+//   margin-right: 20px;
+//   padding-top: 3px;
+//   padding-bottom: 3px;
+// }
+// &:nth-child(5):hover {
+//   background-color: $main-blue;
+//   color: $white;
+//   border: 2px solid $main-blue;
+// }
+
+// &:nth-child(6) {
+//   padding-right: 0px;
+//   & .icon {
+//     height: 45px;
+//     width: 45px;;
+//   }
