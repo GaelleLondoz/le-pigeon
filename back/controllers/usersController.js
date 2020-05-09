@@ -166,6 +166,7 @@ const getAvgRatingsAgent = async (req, res) => {
       where: { userID: id },
       attributes: [
         [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
+        [sequelize.fn("COUNT", sequelize.col("comment")), "countComments"],
       ],
     });
     if (!avgRatings) {

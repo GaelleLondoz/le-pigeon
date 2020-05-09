@@ -28,13 +28,14 @@ const Account = () => {
 
   const [avgRatings, setAvgRatings] = useState({
     avgRatings: "",
+    countComments: "",
   });
 
   const fetchAvgRatings = async (id) => {
     try {
       const data = await UsersAPI.getAvgRatings(id);
-      const { avgRatings } = data[0];
-      setAvgRatings({ avgRatings });
+      const { avgRatings, countComments } = data[0];
+      setAvgRatings({ avgRatings, countComments });
     } catch (error) {
       console.log(error.response);
     }
@@ -70,7 +71,7 @@ const Account = () => {
   }, [id]);
 
   //console.log(agent);
-  //console.log(avgRatings.avgRatings);
+  //console.log(avgRatings);
 
   {
     /* Make a state with all destinations position */
@@ -85,7 +86,6 @@ const Account = () => {
             <Grid item xs={12} md={3}>
               <div className="profile-agent-account-form">
                 <TextField
-                  id="outlined-basic"
                   //label="Prénom"
                   variant="outlined"
                   name="firstName"
@@ -93,7 +93,6 @@ const Account = () => {
                   onChange={handleUserChange}
                 />
                 <TextField
-                  id="outlined-basic"
                   //label="Nom"
                   variant="outlined"
                   name="lastName"
@@ -101,7 +100,6 @@ const Account = () => {
                   onChange={handleUserChange}
                 />
                 <TextField
-                  id="outlined-basic"
                   //label="Username"
                   variant="outlined"
                   name="userName"
@@ -109,7 +107,6 @@ const Account = () => {
                   onChange={handleUserChange}
                 />
                 <TextField
-                  id="outlined-basic"
                   //label="Email"
                   variant="outlined"
                   name="email"
@@ -117,7 +114,6 @@ const Account = () => {
                   onChange={handleUserChange}
                 />
                 <TextField
-                  id="outlined-basic"
                   //label="Langue"
                   variant="outlined"
                   name="language"
@@ -125,19 +121,13 @@ const Account = () => {
                   onChange={handleChange}
                 />
                 <TextField
-                  id="outlined-basic"
                   //label="Tarif"
                   variant="outlined"
                   name="price"
                   value={agent.price}
                   onChange={handleChange}
                 />
-                <TextField
-                  id="outlined-basic"
-                  label="Préférence"
-                  variant="outlined"
-                  name="hobby"
-                />
+                <TextField label="Préférence" variant="outlined" name="hobby" />
               </div>
             </Grid>
             <Grid item md={6}>
@@ -168,7 +158,9 @@ const Account = () => {
                   value={+avgRatings.avgRatings}
                   readOnly
                 />
-                <Typography component="p">29 commentaires</Typography>
+                <Typography component="p">
+                  {avgRatings.countComments} commentaire(s)
+                </Typography>
               </div>
             </Grid>
           </Grid>
