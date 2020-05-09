@@ -15,6 +15,11 @@ router.post("/users", usersController.create);
 router.get("/users/:id", usersController.findOne);
 router.put("/users/:id", checkAuth, usersController.update);
 router.delete("/users/:id", checkAuth, usersController.destroy);
+router.get(
+  "/users/profile/agent/:id",
+  checkAuth,
+  usersController.getProfileAgent
+);
 
 // login auth
 router.post("/login", usersController.login);

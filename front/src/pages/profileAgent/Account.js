@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -8,12 +8,56 @@ import {
 } from "@material-ui/core";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Rating from "@material-ui/lab/Rating";
+import UsersAPI from "../../components/services/userAPI";
 
 const Account = () => {
+  const url = window.location.href;
+  const id = +url.substring(url.lastIndexOf("/") + 1);
+
+  const [agent, setAgent] = useState({
+    User: {
+      firstName: "",
+      lastName: "",
+      userName: "",
+      email: "",
+      avatar: "",
+    },
+    language: "",
+    price: "",
+  });
+
+  const fetchAgent = async (id) => {
+    try {
+      const data = await UsersAPI.getProfileAgent(id);
+      const { User, language, price } = data;
+      setAgent({ User, language, price });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const handleChange = (e) => {
+    const name = e.currentTarget.name;
+    const value = e.currentTarget.value;
+    setAgent({ ...agent, [name]: value });
+  };
+  //Fix problem => how to control handleChange when Object in state
+  const handleUserChange = (e) => {
+    const value = e.currentTarget.value;
+    setAgent({ ...agent, User: value });
+  };
+
+  useEffect(() => {
+    fetchAgent(id);
+  }, [id]);
+
+  console.log(agent);
+
   {
     /* Make a state with all destinations position */
   }
   const position = [51.505, -0.09];
+
   return (
     <section className="profile-agent-account">
       <Container>
@@ -23,34 +67,57 @@ const Account = () => {
               <div className="profile-agent-account-form">
                 <TextField
                   id="outlined-basic"
-                  label="Prénom"
+                  //label="Prénom"
                   variant="outlined"
-                />
-                <TextField id="outlined-basic" label="Nom" variant="outlined" />
-                <TextField
-                  id="outlined-basic"
-                  label="Email"
-                  variant="outlined"
+                  name="firstName"
+                  value={agent.User.firstName}
+                  onChange={handleUserChange}
                 />
                 <TextField
                   id="outlined-basic"
-                  label="Adresse"
+                  //label="Nom"
                   variant="outlined"
+                  name="lastName"
+                  value={agent.User.lastName}
+                  onChange={handleUserChange}
                 />
                 <TextField
                   id="outlined-basic"
-                  label="Langue"
+                  //label="Username"
                   variant="outlined"
+                  name="userName"
+                  value={agent.User.userName}
+                  onChange={handleUserChange}
                 />
                 <TextField
                   id="outlined-basic"
-                  label="Tarif"
+                  //label="Email"
                   variant="outlined"
+                  name="email"
+                  value={agent.User.email}
+                  onChange={handleUserChange}
+                />
+                <TextField
+                  id="outlined-basic"
+                  //label="Langue"
+                  variant="outlined"
+                  name="language"
+                  value={agent.language}
+                  onChange={handleChange}
+                />
+                <TextField
+                  id="outlined-basic"
+                  //label="Tarif"
+                  variant="outlined"
+                  name="price"
+                  value={agent.price}
+                  onChange={handleChange}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Préférence"
                   variant="outlined"
+                  name="hobby"
                 />
               </div>
             </Grid>
@@ -74,8 +141,8 @@ const Account = () => {
             <Grid item md={3}>
               <div className="profile-agent-account-avatar">
                 <Avatar
-                  alt="Remy Sharp"
-                  src="https://randomuser.me/api/portraits/men/36.jpg"
+                  alt={"Pigeon | Avatar de l'agent " + agent.User.firstName}
+                  src={agent.User.avatar}
                 />
                 <Rating name="read-only" value={4} readOnly />
                 <Typography component="p">29 commentaires</Typography>

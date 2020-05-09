@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { getHash } = require("../helpers/index");
-const { User } = require("../models");
+const { User, UserRole } = require("../models");
 
 const index = (req, res) => {
   return User.findAll()
@@ -68,7 +68,9 @@ const login = async (req, res) => {
             lastName: user.lastName,
             avatar: user.avatar,
           };
-          let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "6000000" });
+          let token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: "6000000",
+          });
 
           res.json({ msg: "ok", token: token });
         } else {
@@ -110,19 +112,48 @@ const me = (req, res) => {
 const logout = (req, res) => {
   const headerAuth = req.headers.authorization;
   const verifyOptions = {
-    expiresIn: "0"
+    expiresIn: "0",
   };
 
-  const checkStatus = jwt.verify(headerAuth, process.env.JWT_SECRET, verifyOptions);
-  console.log({ checkStatus })
+  const checkStatus = jwt.verify(
+    headerAuth,
+    process.env.JWT_SECRET,
+    verifyOptions
+  );
+  console.log({ checkStatus });
   if (checkStatus != null) {
-    res.status(200).json({})
+    res.status(200).json({});
   } else {
     res.status(401).json({
       msg: "Unauthorized",
     });
   }
-}
+};
+
+const getProfileAgent = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const agent = await UserRole.findOne({
+      where: { userID: id, roleID: 2 },
+      include: [
+        {
+          model: User,
+          attributes: ["firstName", "lastName", "email", "userName", "avatar"],
+        },
+      ],
+    });
+    if (agent.roleID !== 2) {
+      return res.status(403).json({ msg: "Access Denied" });
+    }
+    if (!agent) {
+      return res.status(404).json({ msg: "Agent Not Found" });
+    }
+    return res.status(200).json(agent);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   index,
@@ -132,5 +163,6 @@ module.exports = {
   destroy,
   login,
   me,
-  logout
+  logout,
+  getProfileAgent,
 };
