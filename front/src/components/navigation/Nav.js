@@ -234,10 +234,8 @@ let Nav = ({ history }) => {
 
 
   // menu principal //////
-const test1111 = console.log('blue blue blue')
-  return (
 
-    
+  return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
@@ -249,7 +247,6 @@ const test1111 = console.log('blue blue blue')
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
           <Link to="/message"
-          onClick={test1111} 
           className="navElement">
                 <IconButton aria-label="show 4 new mails" color="inherit">
                   <Badge badgeContent={4} color="secondary">
