@@ -26,6 +26,20 @@ const Account = () => {
     price: "",
   });
 
+  const [avgRatings, setAvgRatings] = useState({
+    avgRatings: "",
+  });
+
+  const fetchAvgRatings = async (id) => {
+    try {
+      const data = await UsersAPI.getAvgRatings(id);
+      const { avgRatings } = data[0];
+      setAvgRatings({ avgRatings });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   const fetchAgent = async (id) => {
     try {
       const data = await UsersAPI.getProfileAgent(id);
@@ -51,7 +65,12 @@ const Account = () => {
     fetchAgent(id);
   }, [id]);
 
-  console.log(agent);
+  useEffect(() => {
+    fetchAvgRatings(id);
+  }, [id]);
+
+  //console.log(agent);
+  //console.log(avgRatings.avgRatings);
 
   {
     /* Make a state with all destinations position */
@@ -144,7 +163,11 @@ const Account = () => {
                   alt={"Pigeon | Avatar de l'agent " + agent.User.firstName}
                   src={agent.User.avatar}
                 />
-                <Rating name="read-only" value={4} readOnly />
+                <Rating
+                  name="read-only"
+                  value={+avgRatings.avgRatings}
+                  readOnly
+                />
                 <Typography component="p">29 commentaires</Typography>
               </div>
             </Grid>

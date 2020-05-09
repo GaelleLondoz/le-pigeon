@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
+const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { getHash } = require("../helpers/index");
-const { User, UserRole } = require("../models");
+const { User, UserRole, Review } = require("../models");
 
 const index = (req, res) => {
   return User.findAll()
@@ -158,6 +159,24 @@ const getProfileAgent = async (req, res) => {
   }
 };
 
+const getAvgRatingsAgent = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const avgRatings = await Review.findAll({
+      where: { userID: id },
+      attributes: [
+        [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
+      ],
+    });
+    if (!avgRatings) {
+      return res.status(404).json({ msg: "AvgRatings Not Found" });
+    }
+    return res.status(200).json(avgRatings);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   index,
   create,
@@ -168,4 +187,5 @@ module.exports = {
   me,
   logout,
   getProfileAgent,
+  getAvgRatingsAgent,
 };

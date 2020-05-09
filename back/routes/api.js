@@ -21,6 +21,11 @@ router.get(
   checkAuth,
   usersController.getProfileAgent
 );
+router.get(
+  "/users/profile/agent/:id/avgratings",
+  checkAuth,
+  usersController.getAvgRatingsAgent
+);
 
 // login auth
 router.post("/login", usersController.login);

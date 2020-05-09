@@ -9,8 +9,14 @@ function getProfileAgent(id) {
     .get(USERS_URL + "/profile/agent/" + id)
     .then((response) => response.data);
 }
+function getAvgRatings(id) {
+  return axios
+    .get(USERS_URL + "/profile/agent/" + id + "/avgratings")
+    .then((response) => response.data);
+}
 
 export default {
   getUser,
   getProfileAgent,
+  getAvgRatings,
 };
