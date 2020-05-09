@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container } from "@material-ui/core";
 import MessageAPI from "../../components/services/messageAPI";
 import CardMessage from "../../components/agent/CardMessage";
 
@@ -28,15 +29,17 @@ const Message = () => {
   console.log(messages);
   return (
     <section className="profile-agent-messages">
-      <h2>Liste de vos messages</h2>
-      <p>Retrouvez ci dessous la liste de vos messages</p>
-      {notMessages ? (
-        <p>{notMessages}</p>
-      ) : (
-        messages.map((message) => (
-          <CardMessage key={message.id} message={message} />
-        ))
-      )}
+      <Container>
+        <h2>Liste de vos messages</h2>
+        <p>Retrouvez ci dessous la liste de vos messages</p>
+        {notMessages ? (
+          <p>{notMessages}</p>
+        ) : (
+          messages.map((message) => (
+            <CardMessage key={message.id} message={message} />
+          ))
+        )}
+      </Container>
     </section>
   );
 };
