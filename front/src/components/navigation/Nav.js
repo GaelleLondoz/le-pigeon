@@ -163,6 +163,7 @@ let Nav = ({ history }) => {
   const renderMobileMenu = (
     <RootRef rootRef={domRef}>
       <Menu
+      className="MobileMainMenu"
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
@@ -171,31 +172,31 @@ let Nav = ({ history }) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+    <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
+        <Link to="/message" className="navElement">Messages</Link>
+        </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="se connecter" color="inherit">
           <PowerIcon />
         </IconButton>
-        <p>Se connecter</p>
+        <Link>Se connecter</Link>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="aide" color="inherit">
           <HelpIcon />
         </IconButton>
-        <p>Aide</p>
+        <Link>Aide</Link>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="devenir agent" color="inherit">
           <AgentIcon />
         </IconButton>
-        <p>Devenir Agent</p>
+        <Link>Devenir Agent</Link>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -206,7 +207,7 @@ let Nav = ({ history }) => {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <Link>Profile</Link>
       </MenuItem>
     </Menu>
     </RootRef>
@@ -233,7 +234,7 @@ let Nav = ({ history }) => {
 
 
   // menu principal //////
-
+const test1111 = console.log('blue blue blue')
   return (
 
     
@@ -247,14 +248,18 @@ let Nav = ({ history }) => {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-          <Link to="/message" className="navElement">
+          <Link to="/message"
+          onClick={test1111} 
+          className="navElement">
                 <IconButton aria-label="show 4 new mails" color="inherit">
                   <Badge badgeContent={4} color="secondary">
                     <MailIcon className="icon" />
                   </Badge>
                 </IconButton>
               </Link>
-              <button className="navButton"> Se connecter </button>
+              <Link to="/login" className="navButton">
+                Se connecter
+              </Link>
             <Link to="/help" className="linkHelp">
               <HelpIcon className="icon" />
             </Link>
