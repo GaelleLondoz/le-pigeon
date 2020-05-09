@@ -132,6 +132,12 @@ const logout = (req, res) => {
 
 const getProfileAgent = async (req, res) => {
   const id = req.params.id;
+  //Verify if user connected is same of id
+  /*
+  if (req.user.id != id) {
+    return res.status(403).json({ msg: "Access Denied" });
+  }
+  */
 
   try {
     const agent = await UserRole.findOne({
@@ -143,9 +149,6 @@ const getProfileAgent = async (req, res) => {
         },
       ],
     });
-    if (agent.roleID !== 2) {
-      return res.status(403).json({ msg: "Access Denied" });
-    }
     if (!agent) {
       return res.status(404).json({ msg: "Agent Not Found" });
     }
