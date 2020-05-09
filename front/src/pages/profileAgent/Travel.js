@@ -22,7 +22,7 @@ const Travel = () => {
     fetchDestinations(id);
   }, [id]);
 
-  console.log(destinations);
+  //console.log(destinations);
 
   return (
     <section className="profile-agent-destinations">

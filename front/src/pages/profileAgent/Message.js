@@ -26,7 +26,7 @@ const Message = () => {
     fetchMessages(id);
   }, [id]);
 
-  console.log(messages);
+  //console.log(messages);
   return (
     <section className="profile-agent-messages">
       <Container>
