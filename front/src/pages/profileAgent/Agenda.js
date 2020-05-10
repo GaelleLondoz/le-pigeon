@@ -33,15 +33,17 @@ const Agenda = () => {
           Liste de vos prochaines réservations
         </Typography>
         <Grid container>
-          <Grid item xs={12}>
-            {notBookings ? (
+          {notBookings ? (
+            <Grid item xs={12}>
               <p>{notBookings}</p>
-            ) : (
-              bookings.map((booking) => (
-                <CardAgendaBooking key={booking.id} booking={booking} />
-              ))
-            )}
-          </Grid>
+            </Grid>
+          ) : (
+            bookings.map((booking) => (
+              <Grid item xs={12} key={booking.id}>
+                <CardAgendaBooking booking={booking} />
+              </Grid>
+            ))
+          )}
         </Grid>
       </Container>
     </section>
