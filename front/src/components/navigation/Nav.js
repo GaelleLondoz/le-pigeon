@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   title: {
-    display: "block",
+    display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
   sectionDesktop: {
     display: "none",
-    alignItems: "center",
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
@@ -158,12 +157,11 @@ let Nav = ({ history }) => {
   );
 
   // menu mobile //////
-    
+
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <RootRef rootRef={domRef}>
       <Menu
-      className="MobileMainMenu"
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
@@ -172,31 +170,31 @@ let Nav = ({ history }) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-    <MenuItem onClick={handleMenuClose}>
+      <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
-        <Link to="/message" className="navElement">Messages</Link>
-        </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+        <p>Messages</p>
+      </MenuItem>
+      <MenuItem>
         <IconButton aria-label="se connecter" color="inherit">
           <PowerIcon />
         </IconButton>
-        <Link>Se connecter</Link>
+        <p>Se connecter</p>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem>
         <IconButton aria-label="aide" color="inherit">
           <HelpIcon />
         </IconButton>
-        <Link>Aide</Link>
+        <p>Aide</p>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem>
         <IconButton aria-label="devenir agent" color="inherit">
           <AgentIcon />
         </IconButton>
-        <Link>Devenir Agent</Link>
+        <p>Devenir Agent</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -207,12 +205,11 @@ let Nav = ({ history }) => {
         >
           <AccountCircle />
         </IconButton>
-        <Link>Profile</Link>
+        <p>Profile</p>
       </MenuItem>
     </Menu>
     </RootRef>
   );
-
 
   const { isAuthenticated } = useContext(AuthContext);
 
@@ -232,35 +229,31 @@ let Nav = ({ history }) => {
     }
   };
 
-
-  // menu principal //////
-
   return (
+
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="open drawer"
+          ></IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/" className="logo" >
+            <Link to="/" className="navElement">
               LE PIGEON
             </Link>
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-          <Link to="/message"
-          className="navElement">
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="secondary">
-                    <MailIcon className="icon" />
-                  </Badge>
-                </IconButton>
-              </Link>
-              <Link to="/login" className="navButton">
-                Se connecter
-              </Link>
-            <Link to="/help" className="linkHelp">
+            <Link to="/help" className="navElement">
               <HelpIcon className="icon" />
             </Link>
-            <button className="navButton">Devenez agent!</button>
+            <Link to="/become-agent" className="navElement">
+              Devenez agent!
+            </Link>
+            <Avatar className={classes.orange}>{currentUser.firstName}</Avatar>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -269,8 +262,7 @@ let Nav = ({ history }) => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-            <Avatar className={`${classes.orange} avatar`}>{currentUser.firstName}</Avatar>
-
+              <AccountCircle />
             </IconButton>
             {isAuthenticated ? <p>{currentUser.firstName}</p> : ""}
           </div>
