@@ -14,7 +14,7 @@ class Places extends Component {
             appId: process.env.REACT_APP_ALGOLIA_MAP_KEY_ID,
             apiKey: process.env.REACT_APP_ALGOLIA_MAP_KEY,
             language: 'fr',
-            type: 'country',
+            type: 'city',
             // Other options from https://community.algolia.com/places/documentation.html#options
           }}
      
