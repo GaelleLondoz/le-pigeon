@@ -211,6 +211,23 @@ section.profile-agent-destinations {
   h4 {
     font-weight: bold;
   }
+  .card-destination {
+    max-width: 800px;
+    div.card-destination-info {
+      display: flex;
+      h2 {
+        color: blue;
+        margin-left: 8px;
+      }
+      .card-destination-country {
+        color: red;
+        margin-left: 8px;
+      }
+    }
+    div.card-destination-desc {
+      margin-top: 15px;
+    }
+  }
 }
 section.profile-agent-evaluation {
   div.profile-agent-evaluation-content {
