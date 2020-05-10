@@ -38,6 +38,11 @@ router.post("/bookings", checkAuth, bookingsController.create);
 router.get("/bookings/:id", checkAuth, bookingsController.findOne);
 router.put("/bookings/:id", checkAuth, bookingsController.update);
 router.delete("/bookings/:id", checkAuth, bookingsController.destroy);
+router.get(
+  "/bookings/agent/:id",
+  checkAuth,
+  bookingsController.getBookingsByAgent
+);
 
 router.get("/reviews", reviewsController.index);
 router.post("/reviews", checkAuth, reviewsController.create);

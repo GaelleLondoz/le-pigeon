@@ -161,6 +161,12 @@ const getProfileAgent = async (req, res) => {
 
 const getAvgRatingsAgent = async (req, res) => {
   const id = req.params.id;
+  //Verify if user connected is same of id
+  /*
+  if (req.user.id != id) {
+    return res.status(403).json({ msg: "Access Denied" });
+  }
+  */
   try {
     const avgRatings = await Review.findAll({
       where: { userID: id },

@@ -11,3 +11,5 @@ export const USERS_URL = API_URL + "/users";
 export const MESSAGES_URL = API_URL + "/messages";
 
 export const USER_DESTINATIONS_URL = API_URL + "/destinations";
+
+export const BOOKINGS_URL = API_URL + "/bookings";
