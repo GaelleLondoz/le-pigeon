@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import MessageAPI from "../../components/services/messageAPI";
 import CardMessage from "../../components/agent/CardMessage";
 
@@ -30,7 +30,7 @@ const Message = () => {
   return (
     <section className="profile-agent-messages">
       <Container>
-        <h2>Liste de vos messages</h2>
+        <Typography variant="h4">Liste de vos messages</Typography>
         <p>Retrouvez ci dessous la liste de vos messages</p>
         {notMessages ? (
           <p>{notMessages}</p>

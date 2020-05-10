@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, Typography } from "@material-ui/core";
 import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
 import CardDestination from "../../components/agent/CardDestination";
 
@@ -27,7 +27,7 @@ const Travel = () => {
   return (
     <section className="profile-agent-destinations">
       <Container>
-        <h1>Liste de vos voyages</h1>
+        <Typography variant="h4">Liste de vos voyages</Typography>
         <p>
           Vous avez effectué actuellement <strong>{destinations.length}</strong>{" "}
           voyage(s)

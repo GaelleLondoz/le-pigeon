@@ -194,6 +194,9 @@ section.profile-agent-account {
   }
 }
 section.profile-agent-messages {
+  h4 {
+    font-weight: bold;
+  }
   div.list-agent-messages-profile {
     padding: 20px;
     background-color: #f5f5f5;
@@ -202,6 +205,11 @@ section.profile-agent-messages {
     small {
       font-style: italic;
     }
+  }
+}
+section.profile-agent-destinations {
+  h4 {
+    font-weight: bold;
   }
 }
 section.profile-agent-evaluation {
@@ -234,7 +242,7 @@ section.profile-agent-agenda {
   div.profile-agent-agenda-card {
     background-color: #f5f5f5;
     padding: 20px;
-    max-width: 700px;
+    max-width: 800px;
     margin: 30px 0;
   }
 }
