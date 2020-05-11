@@ -47,7 +47,7 @@ const Evaluation = () => {
     fetchAvgRatings(id);
   }, [id]);
 
-  console.log(avgRatings);
+  //console.log(avgRatings);
 
   return (
     <section className="profile-agent-evaluation">

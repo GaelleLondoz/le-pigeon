@@ -73,9 +73,7 @@ const Account = () => {
   //console.log(agent);
   //console.log(avgRatings);
 
-  {
-    /* Make a state with all destinations position */
-  }
+  //TODO => ADD FIELD LAT AND LNG IN TABLE COUNTRY ???
   const position = [
     [51.505, -0.09],
     [51.508, -0.12],
@@ -138,13 +136,17 @@ const Account = () => {
             </Grid>
             <Grid item md={6}>
               <div className="profile-agent-account-destinations">
+                <Typography variant="h5" style={{ marginBottom: "15px" }}>
+                  Mes destinations
+                </Typography>
                 <Map center={position[0]} zoom={12}>
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   />
-                  {position.map((mark) => (
-                    <Marker position={[mark[0], mark[1]]}>
+                  {position.map((mark, index) => (
+                    //When data provide from database => change key
+                    <Marker key={index} position={[mark[0], mark[1]]}>
                       <Popup>
                         A pretty CSS3 popup.
                         <br />
