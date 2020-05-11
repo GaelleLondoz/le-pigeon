@@ -45,15 +45,12 @@ const getAllMessagesByUser = async (req, res) => {
   try {
     const messages = await Message.findAll({
       where: { receiverID: id },
-      //TODO => Add user senderID
-      /*
       include: [
         {
           model: User,
-          where:{id: ...}
-        }
-      ]
-      */
+          as: "sender",
+        },
+      ],
     });
     if (!messages) {
       return res.status(404).json({ msg: "Messages Not Found" });

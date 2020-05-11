@@ -81,6 +81,9 @@ const Account = () => {
   return (
     <section className="profile-agent-account">
       <Container>
+        <Typography variant="h5" style={{ marginBottom: "30px" }}>
+          Bonjour {agent.User.lastName}, comment allez-vous aujourd'hui ?
+        </Typography>
         <div className="profile-agent-account-content">
           <Grid container spacing={5}>
             <Grid item xs={12} md={3}>
