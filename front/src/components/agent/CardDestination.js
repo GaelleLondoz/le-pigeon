@@ -1,6 +1,7 @@
 import React from "react";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import EventIcon from "@material-ui/icons/Event";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import { formatDate } from "../../helpers/formatDate";
 
@@ -34,9 +35,12 @@ const CardDestination = ({ destination }) => {
           <Typography variant="body2" component="p">
             {destination.remarks}
           </Typography>
-          <Typography component="small">
-            Parti le {formatDate(destination.date)}
-          </Typography>
+          <div className="card-destination-info" style={{ marginTop: "15px" }}>
+            <EventIcon />
+            <Typography component="p">
+              Parti le {formatDate(destination.date)}
+            </Typography>
+          </div>
         </div>
       </CardContent>
     </Card>

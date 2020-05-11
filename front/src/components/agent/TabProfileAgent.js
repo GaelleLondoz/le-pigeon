@@ -17,7 +17,7 @@ const TabProfileAgent = () => {
         position="static"
         style={{
           maxWidth: "500px",
-          backgroundColor: "lightGray",
+          backgroundColor: "white",
           color: "black",
         }}
       >

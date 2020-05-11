@@ -197,13 +197,16 @@ section.profile-agent-messages {
   h4 {
     font-weight: bold;
   }
-  div.list-agent-messages-profile {
+  div.card-agent-messages-profile {
     padding: 20px;
     background-color: #f5f5f5;
     margin-bottom: 20px;
     max-width: 800px;
-    small {
-      font-style: italic;
+    div.card-agent-messages-profile-info {
+      display: flex;
+      p {
+        margin-left: 8px;
+      }
     }
   }
 }
@@ -213,6 +216,7 @@ section.profile-agent-destinations {
   }
   .card-destination {
     max-width: 800px;
+    background-color: #f5f5f5;
     div.card-destination-info {
       display: flex;
       h2 {
@@ -221,6 +225,9 @@ section.profile-agent-destinations {
       }
       .card-destination-country {
         color: red;
+        margin-left: 8px;
+      }
+      p {
         margin-left: 8px;
       }
     }
@@ -268,6 +275,9 @@ section.profile-agent-agenda {
         margin-left: 10px;
       }
     }
+  }
+  .MuiTabs-scroller {
+    background-color: #fff;
   }
 }
 
