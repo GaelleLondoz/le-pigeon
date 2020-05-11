@@ -161,7 +161,7 @@ const getProfileAgent = async (req, res) => {
 
 const getAvgRatingsAgent = async (req, res) => {
   const id = req.params.id;
-  //Verify if user connected is same of id
+  //Verify if user connected is same of id payload
   /*
   if (req.user.id != id) {
     return res.status(403).json({ msg: "Access Denied" });
@@ -170,7 +170,7 @@ const getAvgRatingsAgent = async (req, res) => {
   try {
     const avgRatings = await Review.findAll({
       where: { userID: id },
-      //TODO => ADD COMMENT IN REQUEST
+      //TODO => ADD COMMENT FIELD IN REQUEST
       attributes: [
         [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
         [sequelize.fn("COUNT", sequelize.col("comment")), "countComments"],

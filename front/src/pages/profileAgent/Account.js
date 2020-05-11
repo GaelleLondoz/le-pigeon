@@ -76,7 +76,10 @@ const Account = () => {
   {
     /* Make a state with all destinations position */
   }
-  const position = [51.505, -0.09];
+  const position = [
+    [51.505, -0.09],
+    [51.508, -0.12],
+  ];
 
   return (
     <section className="profile-agent-account">
@@ -135,18 +138,20 @@ const Account = () => {
             </Grid>
             <Grid item md={6}>
               <div className="profile-agent-account-destinations">
-                <Map center={position} zoom={12}>
+                <Map center={position[0]} zoom={12}>
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   />
-                  <Marker position={position}>
-                    <Popup>
-                      A pretty CSS3 popup.
-                      <br />
-                      Easily customizable.
-                    </Popup>
-                  </Marker>
+                  {position.map((mark) => (
+                    <Marker position={[mark[0], mark[1]]}>
+                      <Popup>
+                        A pretty CSS3 popup.
+                        <br />
+                        Easily customizable.
+                      </Popup>
+                    </Marker>
+                  ))}
                 </Map>
               </div>
             </Grid>
@@ -163,6 +168,17 @@ const Account = () => {
                 />
                 <Typography component="p">
                   {avgRatings.countComments} commentaire(s)
+                </Typography>
+                <Typography
+                  component="p"
+                  style={{
+                    color: "red",
+                    fontWeight: "bold",
+                    marginTop: "20px",
+                    fontSize: "20px",
+                  }}
+                >
+                  {agent.price} € / heure
                 </Typography>
               </div>
             </Grid>
