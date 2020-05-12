@@ -32,15 +32,15 @@ const useStyles = makeStyles((theme) => ({
 //   );
 // }
 ///////////////
-
+// {`${classes.orange} avatar`}
 
 function Profile() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={[classes.root, "ProfileContainer"]}>
       <Grid container spacing={3}>
-        <Grid item xs={6}>
+        <Grid item  xs={6}>
           <Paper className={classes.paper}>
             <UserInfo className="test"/>
           </Paper>

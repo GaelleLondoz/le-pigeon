@@ -1,6 +1,7 @@
 @import "variables";
 @import "mixins";
 
+.ProfileContainer {
 .MuiGrid-container {
     //background-color: $light-grey; 
 }
@@ -15,6 +16,24 @@
     background-color: $light-grey;
 }
 
-.item {
-    background-color: yellow;
+// .item {
+//     background-color: yellow;
+// }
+
+.test {
+    background-color: rgb(78, 160, 103);
+}
+
+// both elements: info and map
+.makeStyles-paper-112:first-child {
+    background-color: $very-light-grey !important;
+    height: 100%;
+}
+
+.MuiGrid-container:nth-child(1) {
+    background-color: orange !important;
+    padding-right: 50px !important;
+    margin-right:   100px;
+  
+}
 }
