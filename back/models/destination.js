@@ -5,28 +5,32 @@ module.exports = (sequelize, DataTypes) => {
     {
       countryID: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       continentID: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false
-      }
+        allowNull: false,
+      },
+      coverImage: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {}
   );
-  Destination.associate = function(models) {
+  Destination.associate = function (models) {
     // associations can be defined here
     Destination.belongsTo(models.Continent, {
       foreignKey: "continentID",
-      allowNull: false
+      allowNull: false,
     });
     Destination.belongsTo(models.Country, {
       foreignKey: "countryID",
-      allowNull: false
+      allowNull: false,
     });
     Destination.hasMany(models.UserDestination);
     Destination.hasMany(models.PictureDestination);

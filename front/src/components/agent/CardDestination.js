@@ -76,10 +76,10 @@ const CardDestination = ({ destination }) => {
         {/* TODO => VERIFY IF DESTINATION HAS PICTURE, IF NOT MAKE A COVER IMAGE DEFAULT ?? */}
         <CardMedia
           component="img"
-          alt={destination.Destination.PictureDestinations[0].title}
+          alt={destination.Destination.Country.name}
           className={classes.media}
-          image={destination.Destination.PictureDestinations[0].path}
-          title={destination.Destination.PictureDestinations[0].name}
+          image={destination.Destination.coverImage}
+          title={destination.Destination.Country.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h3">
