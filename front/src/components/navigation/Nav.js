@@ -229,6 +229,12 @@ let Nav = ({ history }) => {
     }
   };
 
+<<<<<<< HEAD
+=======
+
+  // menu principal //////
+
+>>>>>>> parent of f926a65... onclick/onload problem
   return (
 
     <div className={classes.grow}>
@@ -247,7 +253,19 @@ let Nav = ({ history }) => {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+<<<<<<< HEAD
             <Link to="/help" className="navElement">
+=======
+          <Link to="/message" className="navElement">
+                <IconButton aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon className="icon" />
+                  </Badge>
+                </IconButton>
+              </Link>
+              <button className="navButton"> Se connecter </button>
+            <Link to="/help" className="linkHelp">
+>>>>>>> parent of f926a65... onclick/onload problem
               <HelpIcon className="icon" />
             </Link>
             <Link to="/become-agent" className="navElement">

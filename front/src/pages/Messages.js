@@ -1,15 +1,7 @@
 import React from "react";
-import NavPrivate from "../components/navigation/NavPrivate"
-import Footer from "../components/Footer";
-
 
 function Messages() {
-    return (
-        <div>
-            <NavPrivate />
-            <Footer />
-        </div>
-    )
+    return <h2>Yours messages</h2>;
 }
 
 export default Messages
