@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import AlgoliaPlaces from 'algolia-places-react';
 
+// appId: 'pl8P9UZ5YTUQ',
+// apiKey: 'a379285faa78814d2308dcb4354015f3',
+// process.env.REACT_APP_ALGOLIA_MAP_KEY_ID=pl8P9UZ5YTUQ
+// process.env.REACT_APP_ALGOLIA_MAP_KEY=a379285faa78814d2308dcb4354015f3
 
 class Places extends Component {
 
