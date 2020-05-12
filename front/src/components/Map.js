@@ -9,6 +9,8 @@ import {
 } from 'react-instantsearch-dom-maps';
 import Places from './places/widget';
 
+import "../assets/sass/_map.scss"
+
 
 const searchClient = algoliasearch(
   'latency',
