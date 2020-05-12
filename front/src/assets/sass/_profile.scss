@@ -1,0 +1,20 @@
+@import "variables";
+@import "mixins";
+
+.MuiGrid-container {
+    //background-color: $light-grey; 
+}
+
+.MuiGrid-item {
+    @include paddings;
+    border: red 1px solid;
+    //background-color: $light-grey; 
+}
+
+.MuiPaper-rounded {
+    background-color: $light-grey;
+}
+
+.item {
+    background-color: yellow;
+}

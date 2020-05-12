@@ -19,6 +19,7 @@ import Messages from "./pages/Messages";
 import BecomeAgent from "./pages/BecomeAgent";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 
 import "./assets/sass/body.scss";
 import PrivateRoute from "./components/redirections/PrivateRoutes";
@@ -54,6 +55,7 @@ const App = () => {
             <Route exact path="/" component={Home} />
             <Route exact path="/connect" component={Connect} />
             <Route exact path="/help" component={Help} />
+            <Route exact path="/profile" component={Profile} />
             <Route exact path="/message" component={Messages} />
             <Route exact path="/become-agent" component={BecomeAgent} />
             <LoginNotAllowedRoutes exact path="/login" component={Login} />
