@@ -22,7 +22,7 @@ const Travel = () => {
     fetchDestinations(id);
   }, [id]);
 
-  //console.log(destinations);
+  console.log(destinations);
 
   return (
     <section className="profile-agent-destinations">
@@ -34,7 +34,7 @@ const Travel = () => {
         </p>
         <Grid container>
           {destinations.map((destination) => (
-            <Grid key={destination.id} item m={4}>
+            <Grid key={destination.id} item m={4} xs={12} md={4}>
               <CardDestination destination={destination} />
             </Grid>
           ))}

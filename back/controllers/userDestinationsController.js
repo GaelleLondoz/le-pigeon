@@ -3,6 +3,8 @@ const {
   Destination,
   Country,
   Continent,
+  PictureDestination,
+  User,
 } = require("../models");
 
 const getAllDestinationsByUser = async (req, res) => {
@@ -19,6 +21,11 @@ const getAllDestinationsByUser = async (req, res) => {
             },
             {
               model: Continent,
+            },
+            //Verify to fix problem => image is not always related with agent => il se fixe sur id de la destination qui peut contenir des photos d'autres agents ??
+            {
+              model: PictureDestination,
+              attributes: ["path", "name", "alt"],
             },
           ],
         },
