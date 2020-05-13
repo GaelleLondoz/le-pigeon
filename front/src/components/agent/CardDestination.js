@@ -30,6 +30,11 @@ const useStyles = makeStyles({
     marginTop: "15px",
     fontStyle: "italic",
   },
+  linkShowMore: {
+    padding: "8px",
+    textDecoration: "none",
+    color: "#3f51b5",
+  },
 });
 
 const CardDestination = ({ destination }) => {
@@ -115,6 +120,7 @@ const CardDestination = ({ destination }) => {
             "/destination/" +
             destination.id
           }
+          className={classes.linkShowMore}
         >
           En savoir plus
         </Link>
