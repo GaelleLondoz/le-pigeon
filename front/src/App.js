@@ -24,6 +24,7 @@ import "./assets/sass/body.scss";
 import PrivateRoute from "./components/redirections/PrivateRoutes";
 import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRoutes";
 import ProfileAgent from "./pages/profileAgent";
+import ShowTravelDetails from "./pages/profileAgent/ShowTravelDetails";
 
 AuthAPI.setup();
 
@@ -63,6 +64,11 @@ const App = () => {
               exact
               path="/profile/agent/:id"
               component={ProfileAgent}
+            />
+            <PrivateRoute
+              exact
+              path="/profile/agent/:id/destination/:destinationId"
+              component={ShowTravelDetails}
             />
           </Switch>
         </main>
