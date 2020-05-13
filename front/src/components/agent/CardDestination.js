@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import EventIcon from "@material-ui/icons/Event";
@@ -107,9 +108,16 @@ const CardDestination = ({ destination }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Link
+          to={
+            "/profile/agent/" +
+            destination.UserId +
+            "/destination/" +
+            destination.id
+          }
+        >
           En savoir plus
-        </Button>
+        </Link>
       </CardActions>
     </Card>
   );
