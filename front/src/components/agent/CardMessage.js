@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Avatar } from "@material-ui/core";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import EventIcon from "@material-ui/icons/Event";
 import { formatDate } from "../../helpers/formatDate";
+import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 
 const CardMessage = ({ message }) => {
   return (
     <div className="card-agent-messages-profile">
       <div className="card-agent-messages-profile-info">
-        <CheckBoxIcon />
+        <CheckBoxIcon style={{ fill: changeColorIconStatus(message.status) }} />
         <Typography component="p">Status : {message.status}</Typography>
       </div>
       <div className="card-agent-messages-profile-info">

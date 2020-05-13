@@ -6,6 +6,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import InfoIcon from "@material-ui/icons/Info";
 import { formatDate } from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
+import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 
 const CardAgendaBooking = ({ booking }) => {
   return (
@@ -17,7 +18,7 @@ const CardAgendaBooking = ({ booking }) => {
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
-        <CheckBoxIcon />
+        <CheckBoxIcon style={{ fill: changeColorIconStatus(booking.status) }} />
         <Typography component="p">
           Status : <strong>{booking.status}</strong>
         </Typography>

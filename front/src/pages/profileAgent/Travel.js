@@ -27,7 +27,7 @@ const Travel = () => {
   return (
     <section className="profile-agent-destinations">
       <Container>
-        <Typography variant="h4">Liste de vos voyages</Typography>
+        <Typography variant="h5">Liste de vos voyages</Typography>
         <p>
           Vous avez effectué actuellement <strong>{destinations.length}</strong>{" "}
           voyage(s)

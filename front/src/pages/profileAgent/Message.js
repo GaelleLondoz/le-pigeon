@@ -30,7 +30,7 @@ const Message = () => {
   return (
     <section className="profile-agent-messages">
       <Container>
-        <Typography variant="h4">Liste de vos messages</Typography>
+        <Typography variant="h5">Liste de vos messages</Typography>
         <p>Vous avez actuellement {messages.length} message(s)</p>
         {notMessages ? (
           <p>{notMessages}</p>

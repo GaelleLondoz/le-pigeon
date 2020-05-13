@@ -61,7 +61,7 @@ const Agenda = () => {
       </AppBar>
       <TabPanel value={valueTab} index={0}>
         <Container>
-          <Typography variant="h4">
+          <Typography variant="h5">
             Liste de vos prochaines réservations
           </Typography>
           <Grid container>
