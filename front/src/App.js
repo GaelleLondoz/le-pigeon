@@ -56,6 +56,7 @@ const App = () => {
             <Route exact path="/connect" component={Connect} />
             <Route exact path="/help" component={Help} />
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/profile/:id" component={Profile} />
             <Route exact path="/message" component={Messages} />
             <Route exact path="/become-agent" component={BecomeAgent} />
             <LoginNotAllowedRoutes exact path="/login" component={Login} />
