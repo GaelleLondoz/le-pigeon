@@ -100,7 +100,7 @@ const CardDestination = ({ destination }) => {
             {destination.Destination.Country.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {destination.remarks}
+            {destination.remarks.substr(0, 60)}...
           </Typography>
           <Typography
             variant="body2"
