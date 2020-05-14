@@ -56,10 +56,16 @@ const Account = () => {
     const value = e.currentTarget.value;
     setAgent({ ...agent, [name]: value });
   };
-  //Fix problem => how to control handleChange when Object in state
   const handleUserChange = (e) => {
+    const name = e.currentTarget.name;
     const value = e.currentTarget.value;
-    setAgent({ ...agent, User: value });
+    setAgent({
+      ...agent,
+      User: {
+        ...agent.User,
+        [name]: value,
+      },
+    });
   };
 
   useEffect(() => {
@@ -71,7 +77,7 @@ const Account = () => {
   }, [id]);
 
   //console.log(agent);
-  //console.log(avgRatings);
+  console.log(avgRatings);
 
   //TODO => ADD FIELD LAT AND LNG IN TABLE COUNTRY ???
   const position = [
