@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config";
 import List from "../components/reviews/List"
+import Form from "../components/reviews/Form"
 
 
 export default ({ match }) => {
@@ -30,6 +31,7 @@ export default ({ match }) => {
         <>
             <div className="card">
                 <List reviews={reviews} />
+                <Form />
             </div>
         </>
     )

@@ -3,9 +3,24 @@ import { USERS_URL } from "../../config";
 
 
 function getReviews(id) {
-    console.log(USERS_URL + `/${id}/reviews`)
     return axios.get(USERS_URL + `/${id}/reviews`).then((response) => response.data);
 }
 
+function createReview(review) {
+    return axios
+        .post(USERS_URL, review)
+        .then((response) => response.status)
+        .then((status) => {
+            if (status === 200) {
+                return true;
+            }
+        });
+}
 
-getReviews()
+
+
+
+export default {
+    getReviews,
+    createReview
+};
