@@ -68,5 +68,10 @@ router.get(
   checkAuth,
   userDestinationsController.getAllDestinationsByUser
 );
+router.get(
+  "/users/:id/destination/:destinationId",
+  checkAuth,
+  userDestinationsController.getDestinationByUser
+);
 
 module.exports = router;

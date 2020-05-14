@@ -118,7 +118,7 @@ const CardDestination = ({ destination }) => {
             "/profile/agent/" +
             destination.UserId +
             "/destination/" +
-            destination.id
+            destination.Destination.id
           }
           className={classes.linkShowMore}
         >

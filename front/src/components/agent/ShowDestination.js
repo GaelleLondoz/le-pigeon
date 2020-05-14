@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Typography } from "@material-ui/core";
+import { formatDate } from "../../helpers/formatDate";
 
 const useStyles = makeStyles({
   containerCoverImage: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ShowDestination = () => {
+const ShowDestination = ({ destination }) => {
   const classes = useStyles();
   return (
     <section className="travel-details">
@@ -31,7 +32,10 @@ const ShowDestination = () => {
         <div className="travel-detail-location-title">
           <Grid container justify="center">
             <Grid item xs={12} className={classes.locationTitle}>
-              <Typography variant="h4">Amérique du Nord | Bulgarie</Typography>
+              <Typography variant="h4">
+                {destination.Destination.Continent.name} |{" "}
+                {destination.Destination.Country.name}
+              </Typography>
             </Grid>
           </Grid>
         </div>
@@ -42,12 +46,12 @@ const ShowDestination = () => {
           <Grid container justify="center">
             <Grid item xs={12}>
               <img
-                src="https://cdn.pixabay.com/photo/2020/05/07/09/33/flaming-5140842__340.jpg"
+                src={destination.Destination.coverImage}
                 alt=""
                 className={classes.coverImage}
               />
               <Typography component="p" className={classes.dateStart}>
-                - Parti le 22/04/2019 -
+                - Parti le {formatDate(destination.date)} -
               </Typography>
             </Grid>
           </Grid>
@@ -55,10 +59,7 @@ const ShowDestination = () => {
         <div className="travel-detail-info">
           <Grid container>
             <Grid item xs={12} md={8}>
-              <Typography component="p">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatem, aut nobis veritatis voluptas beatae quos!
-              </Typography>
+              <Typography component="p">{destination.remarks}</Typography>
             </Grid>
           </Grid>
         </div>
