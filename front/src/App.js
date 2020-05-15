@@ -62,13 +62,13 @@ const App = () => {
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute
               exact
-              path="/profile/agent/:id"
-              component={ProfileAgent}
+              path="/profile/agent/:id/destination/:destinationId"
+              component={ShowTravelDetails}
             />
             <PrivateRoute
               exact
-              path="/profile/agent/:id/destination/:destinationId"
-              component={ShowTravelDetails}
+              path="/profile/agent/:id"
+              component={ProfileAgent}
             />
           </Switch>
         </main>

@@ -14,9 +14,13 @@ function getDestinationByUser(id, destinationId) {
     .get(USERS_URL + "/" + id + "/destination/" + destinationId)
     .then((response) => response.data);
 }
+function getRoleUser() {
+  return axios.get(USERS_URL + "/me/roles").then((response) => response.data);
+}
 
 export default {
   getUser,
   getProfileAgent,
   getDestinationByUser,
+  getRoleUser,
 };

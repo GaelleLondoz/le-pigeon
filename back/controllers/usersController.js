@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { getHash } = require("../helpers/index");
-const { User, UserRole, Review } = require("../models");
+const { User, UserRole, Review, Role } = require("../models");
 
 const index = (req, res) => {
   return User.findAll()
@@ -131,6 +131,29 @@ const logout = (req, res) => {
   }
 };
 
+const getRoleUser = async (req, res) => {
+  const id = req.user.id;
+  console.log("role userrrr");
+  try {
+    const role = await UserRole.findOne({
+      where: { userID: id },
+      include: [
+        {
+          model: Role,
+          attributes: ["name"],
+        },
+      ],
+    });
+    if (!role) {
+      return res.status(404).json({ msg: "Role Not Found" });
+    }
+    return res.status(200).json(role);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
+
 const getProfileAgent = async (req, res) => {
   const id = req.params.id;
   //Verify if user connected is same of id
@@ -168,4 +191,5 @@ module.exports = {
   me,
   logout,
   getProfileAgent,
+  getRoleUser,
 };
