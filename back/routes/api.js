@@ -21,16 +21,6 @@ router.get(
   checkAuth,
   usersController.getProfileAgent
 );
-router.get(
-  "/users/profile/agent/:id/avgratings",
-  checkAuth,
-  usersController.getAvgRatingsAgent
-);
-router.get(
-  "/users/:id/comments",
-  checkAuth,
-  usersController.getAllCommentsReviewByAgent
-);
 
 // login auth
 router.post("/login", usersController.login);
@@ -54,6 +44,16 @@ router.post("/reviews", checkAuth, reviewsController.create);
 router.get("/reviews/:id", reviewsController.findOne);
 router.put("/reviews/:id", checkAuth, reviewsController.update);
 router.delete("/reviews/:id", checkAuth, reviewsController.destroy);
+router.get(
+  "/reviews/avgratings/agent/:id",
+  checkAuth,
+  reviewsController.getAvgRatingsAgent
+);
+router.get(
+  "/reviews/comments/agent/:id",
+  checkAuth,
+  reviewsController.getAllCommentsReviewByAgent
+);
 
 // messages
 router.get("/messages", checkAuth, messagesController.index);

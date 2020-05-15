@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Typography, Avatar, Grid, Box } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import UsersAPI from "../../components/services/userAPI";
+import ReviewsAPI from "../../components/services/reviewAPI";
 import CardComment from "../../components/agent/CardComment";
 
 const Evaluation = () => {
@@ -24,7 +25,7 @@ const Evaluation = () => {
 
   const fetchAvgRatings = async (id) => {
     try {
-      const data = await UsersAPI.getAvgRatings(id);
+      const data = await ReviewsAPI.getAvgRatings(id);
       const { avgRatings, countComments } = data[0];
       setAvgRatings({ avgRatings, countComments });
     } catch (error) {
@@ -34,9 +35,12 @@ const Evaluation = () => {
 
   const fetchComments = async (id) => {
     try {
-      const data = await UsersAPI.getCommentsByAgent(id);
+      const data = await ReviewsAPI.getCommentsByAgent(id);
       setComments(data);
     } catch (error) {
+      if (error.response.status === 404) {
+        setNoComments("Vous n'avez aucun commentaires...");
+      }
       console.log(error.response);
     }
   };
@@ -47,9 +51,6 @@ const Evaluation = () => {
       const { User } = data;
       setAgent({ User });
     } catch (error) {
-      if (error.response.status === 404) {
-        setNoComments("Vous n'avez aucun commentaires...");
-      }
       console.log(error.response);
     }
   };

@@ -9,6 +9,7 @@ import {
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Rating from "@material-ui/lab/Rating";
 import UsersAPI from "../../components/services/userAPI";
+import ReviewsAPI from "../../components/services/reviewAPI";
 
 const Account = () => {
   const url = window.location.href;
@@ -33,7 +34,7 @@ const Account = () => {
 
   const fetchAvgRatings = async (id) => {
     try {
-      const data = await UsersAPI.getAvgRatings(id);
+      const data = await ReviewsAPI.getAvgRatings(id);
       const { avgRatings, countComments } = data[0];
       setAvgRatings({ avgRatings, countComments });
     } catch (error) {
