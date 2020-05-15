@@ -161,15 +161,14 @@ const getProfileAgent = async (req, res) => {
 
 const getAvgRatingsAgent = async (req, res) => {
   const id = req.params.id;
-  //Verify if user connected is same of id payload
-  /*
-  if (req.user.id != id) {
-    return res.status(403).json({ msg: "Access Denied" });
-  }
-  */
+  // Verify if user connected is same of id payload
+  // if (req.user.id != id) {
+  //   return res.status(403).json({ msg: "Access Denied" });
+  // }
+
   try {
     const avgRatings = await Review.findAll({
-      where: { userID: id },
+      where: { agentID: id },
       //TODO => ADD COMMENT FIELD IN REQUEST
       attributes: [
         [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
@@ -182,9 +181,34 @@ const getAvgRatingsAgent = async (req, res) => {
     return res.status(200).json(avgRatings);
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
   }
 };
 
+const getAllCommentsReviewByAgent = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const comments = await Review.findAll({
+      where: { agentID: id },
+      //Find how to integrate authorID
+      attributes: ["id", "comment", "rating", "authorID"],
+      include: [
+        {
+          model: User,
+          as: "author",
+          attributes: ["firstName", "lastName", "avatar"],
+        },
+      ],
+    });
+    if (!comments) {
+      return res.status(404).json({ msg: "Comments Not Found" });
+    }
+    return res.status(200).json(comments);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   index,
   create,
@@ -196,4 +220,5 @@ module.exports = {
   logout,
   getProfileAgent,
   getAvgRatingsAgent,
+  getAllCommentsReviewByAgent,
 };

@@ -14,6 +14,11 @@ function getAvgRatings(id) {
     .get(USERS_URL + "/profile/agent/" + id + "/avgratings")
     .then((response) => response.data);
 }
+function getCommentsByAgent(id) {
+  return axios
+    .get(USERS_URL + "/" + id + "/comments")
+    .then((response) => response.data);
+}
 function getDestinationByUser(id, destinationId) {
   return axios
     .get(USERS_URL + "/" + id + "/destination/" + destinationId)
@@ -25,4 +30,5 @@ export default {
   getProfileAgent,
   getAvgRatings,
   getDestinationByUser,
+  getCommentsByAgent,
 };

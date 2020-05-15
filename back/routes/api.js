@@ -26,6 +26,11 @@ router.get(
   checkAuth,
   usersController.getAvgRatingsAgent
 );
+router.get(
+  "/users/:id/comments",
+  checkAuth,
+  usersController.getAllCommentsReviewByAgent
+);
 
 // login auth
 router.post("/login", usersController.login);

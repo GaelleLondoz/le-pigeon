@@ -77,7 +77,7 @@ const Account = () => {
   }, [id]);
 
   //console.log(agent);
-  console.log(avgRatings);
+  //console.log(avgRatings);
 
   //TODO => ADD FIELD LAT AND LNG IN TABLE COUNTRY ???
   const position = [

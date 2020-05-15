@@ -242,6 +242,7 @@ section.profile-agent-evaluation {
     background-color: #f5f5f5;
     padding: 20px;
     text-align: center;
+    margin-bottom: 50px;
     h4 {
       font-weight: bold;
       margin-bottom: 30px;
@@ -257,6 +258,19 @@ section.profile-agent-evaluation {
         height: 120px;
         margin: 10px auto;
       }
+    }
+  }
+  h5 {
+    margin-bottom: 30px;
+  }
+  div.card-comments-agent {
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #f5f5f5;
+    margin-bottom: 30px;
+    //max-width: 600px;
+    .MuiRating-root {
+      margin: 20px 0;
     }
   }
 }
