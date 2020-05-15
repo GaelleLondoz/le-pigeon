@@ -229,6 +229,8 @@ let Nav = ({ history }) => {
     },
   });
 
+  //Jouer avec condition ternaire pour afficher ou pas onglet profil"
+
   const fetchUser = async () => {
     try {
       const { user } = await userAPI.getUser();
