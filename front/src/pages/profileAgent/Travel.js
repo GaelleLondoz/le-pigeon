@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
       opacity: 0.8,
     },
   },
+  gridInput: {
+    marginBottom: "20px",
+  },
 }));
 
 const Travel = () => {
@@ -35,6 +38,12 @@ const Travel = () => {
     coverImage: "",
     remarks: "",
   });
+
+  const [openForm, setOpenForm] = useState(false);
+
+  const handleDestinationFormClick = () => {
+    setOpenForm(!openForm);
+  };
 
   const handleNewDestinationChange = (e) => {
     const value = e.currentTarget.value;
@@ -76,75 +85,95 @@ const Travel = () => {
           Vous avez effectué actuellement <strong>{destinations.length}</strong>{" "}
           voyage(s)
         </p>
-        <Button size="large" className={classes.buttonAddDestination}>
+        <Button
+          size="large"
+          className={classes.buttonAddDestination}
+          onClick={handleDestinationFormClick}
+        >
           Nouvelle destination
         </Button>
-        <form
-          className=""
-          autoComplete="off"
-          onSubmit={handleNewDestinationSubmit}
-          style={{ maxWidth: "700px" }}
-        >
-          <Grid container>
-            <Grid item xs={12}>
-              <Select
-                native
-                name="continent"
-                value={newDestination.continent}
-                onChange={handleNewDestinationChange}
-                fullWidth
-                variant="outlined"
-              >
-                <option value="Amérique du Nord">Amérique du Nord</option>
-                <option value="Amérique du Sud">Amérique du Sud</option>
-                <option value="Antarctique">Antarctique</option>
-                <option value="Asie">Asie</option>
-                <option value="Europe">Europe</option>
-                <option value="Afrique">Afrique</option>
-                <option value="Océanie">Océanie</option>
-              </Select>
+        {openForm && (
+          <form
+            className=""
+            autoComplete="off"
+            onSubmit={handleNewDestinationSubmit}
+          >
+            <Grid container>
+              <Grid item xs={12} className={classes.gridInput}>
+                <Select
+                  native
+                  name="continent"
+                  value={newDestination.continent}
+                  onChange={handleNewDestinationChange}
+                  fullWidth
+                  variant="outlined"
+                >
+                  <option value="Amérique du Nord">Amérique du Nord</option>
+                  <option value="Amérique du Sud">Amérique du Sud</option>
+                  <option value="Antarctique">Antarctique</option>
+                  <option value="Asie">Asie</option>
+                  <option value="Europe">Europe</option>
+                  <option value="Afrique">Afrique</option>
+                  <option value="Océanie">Océanie</option>
+                </Select>
+              </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <TextField
+                  value={newDestination.country}
+                  onChange={handleNewDestinationChange}
+                  name="country"
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <TextField
+                  value={newDestination.name}
+                  onChange={handleNewDestinationChange}
+                  name="name"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <TextField
+                  value={newDestination.remarks}
+                  onChange={handleNewDestinationChange}
+                  name="remarks"
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <TextField
+                  value={newDestination.coverImage}
+                  onChange={handleNewDestinationChange}
+                  name="coverImage"
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item className={classes.gridInput}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  style={{ marginRight: "10px" }}
+                >
+                  Créer
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleDestinationFormClick}
+                  variant="contained"
+                  color="secondary"
+                >
+                  Annuler
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={newDestination.country}
-                onChange={handleNewDestinationChange}
-                name="country"
-                fullWidth
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={newDestination.name}
-                onChange={handleNewDestinationChange}
-                name="name"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={newDestination.remarks}
-                onChange={handleNewDestinationChange}
-                name="remarks"
-                fullWidth
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                value={newDestination.coverImage}
-                onChange={handleNewDestinationChange}
-                name="coverImage"
-                fullWidth
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item>
-              <button type="submit">Submit</button>
-            </Grid>
-          </Grid>
-        </form>
+          </form>
+        )}
         <Grid container>
           {destinations.map((destination) => (
             <Grid item key={destination.id} m={4} xs={12} md={4}>
