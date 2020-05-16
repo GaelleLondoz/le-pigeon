@@ -79,5 +79,6 @@ router.get(
   checkAuth,
   userDestinationsController.getDestinationByUser
 );
+router.post("/destinations/new", checkAuth, userDestinationsController.create);
 
 module.exports = router;

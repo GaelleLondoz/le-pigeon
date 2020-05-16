@@ -257,7 +257,10 @@ let Nav = ({ history }) => {
       fetchRoleUser();
     }
   }, []);
-
+  //Test show role user
+  if (isAuthenticated) {
+    console.log("Le role de l'user actuel est :" + roleUser.Role.name);
+  }
   return (
     <div className={classes.grow}>
       <AppBar position="static">
