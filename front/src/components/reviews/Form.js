@@ -24,40 +24,26 @@ const useStyles = makeStyles((theme) => ({
 
 const ReviewForm = ({ history }) => {
 
-    const [credentials, setCredentials] = useState({
-        email: "",
-        password: "",
-    });
-    const [user, setUser] = useState({
-        firstName: null,
-        lastName: null,
-        userName: null,
-        email: null,
-        password: null,
-        avatar: null,
+    const [review, setReview] = useState({
+        comment: "",
+        rating: null
     });
 
-    // const handleChange = (event) => {
-    //     const value = event.currentTarget.value;
-    //     const name = event.currentTarget.name;
-    //     setCredentials({ ...credentials, [name]: value });
-    // };
+    const handleChange = (event) => {
+        const value = event.currentTarget.value;
+        const name = event.currentTarget.name;
+        setReview({ ...review, [name]: value });
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await ReviewsAPI.createReview({ user: user });
+            await ReviewsAPI.createReview({ review: review });
         } catch (error) {
             throw error.response;
         }
     };
-
     const classes = useStyles();
-    const [value, setValue] = React.useState('Controlled');
-
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
     return (
         <div>
             <form className={classes.root} noValidate autoComplete="off">
@@ -70,12 +56,12 @@ const ReviewForm = ({ history }) => {
                         label="Review"
                         name="review"
                         autoComplete="review"
-                        value={credentials.email}
+                        value={review.comment}
                         onChange={handleChange}
                         multiline
                         rows={4}
                         defaultValue="Default Value"
-                        validators={["required", "isEmail"]}
+
                         errorMessages={["Champ obligatoire*", "Email non valide"]}
                         autoFocus
                     />
