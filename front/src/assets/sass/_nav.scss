@@ -66,44 +66,26 @@
   display: flex;
   align-items: center;
   background-color: $dark-blue;
-<<<<<<< HEAD
-<<<<<<< HEAD
   border-radius: 20px;
   @include margins-nav;
   border: none;
-<<<<<<< HEAD
-=======
   border-radius: 50px;
   margin-left: 30px;
   margin-right: 60px;
->>>>>>> with agent button
-=======
   border-radius: 20px;
   @include margins-nav; 
   border: none;
->>>>>>> latest
   height: 40px !important;
   padding-left: 10px;
   padding-right: 10px;
   color: $white;
-=======
   height: 25px !important;
   padding-left: 20px;
   padding-right: 20px;
   color: $light-blue;
   font-size: 14px;
-<<<<<<< HEAD
->>>>>>> with color
   text-decoration: none;
   font-family: $main-font;
-}
-
-
-=======
-  text-decoration: none !important;
-  font-family: $main-font !important;
-  text-decoration: none !important;
->>>>>>> onclick/onload problem
 
   &:hover {
     background-color: $main-blue !important;
@@ -113,6 +95,7 @@
     text-decoration: none !important;
   }
 }
+
 
 // @media 3dots menu
 

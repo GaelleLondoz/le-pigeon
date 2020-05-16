@@ -261,16 +261,6 @@ let Nav = ({ history }) => {
               <HelpIcon className="icon" />
             </Link>
             <button className="navButton">Devenez agent!</button>
-            <Link to="/help" className="linkHelp">
-              <HelpIcon className="icon" />
-            </Link>
-            <Link to="/become-agent" className="navButton">
-              <p>Devenez agent!</p>
-            </Link>
-            <Link to="/help" className="linkHelp">
-              <HelpIcon className="icon" />
-            </Link>
-            <button className="navButton">Devenez agent!</button>
             <IconButton
               edge="end"
               aria-label="account of current user"
