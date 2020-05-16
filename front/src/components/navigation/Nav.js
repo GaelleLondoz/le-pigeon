@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   title: {
-    display: "none",
+    display: "block",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
   sectionDesktop: {
     display: "none",
+    alignItems: "center",
     [theme.breakpoints.up("md")]: {
       display: "flex",
     },
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
   orange: {
     color: "white",
-    backgroundColor: "red",
+    backgroundColor: "orange",
   },
 }));
 
@@ -157,11 +158,12 @@ let Nav = ({ history }) => {
   );
 
   // menu mobile //////
-
+    
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <RootRef rootRef={domRef}>
       <Menu
+      className="MobileMainMenu"
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
@@ -170,31 +172,31 @@ let Nav = ({ history }) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+    <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
+        <Link to="/message" className="navElement">Messages</Link>
+        </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="se connecter" color="inherit">
           <PowerIcon />
         </IconButton>
-        <p>Se connecter</p>
+        <Link>Se connecter</Link>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="aide" color="inherit">
           <HelpIcon />
         </IconButton>
-        <p>Aide</p>
+        <Link>Aide</Link>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={handleMenuClose}>
         <IconButton aria-label="devenir agent" color="inherit">
           <AgentIcon />
         </IconButton>
-        <p>Devenir Agent</p>
+        <Link>Devenir Agent</Link>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -205,11 +207,12 @@ let Nav = ({ history }) => {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <Link>Profile</Link>
       </MenuItem>
     </Menu>
     </RootRef>
   );
+
 
   const { isAuthenticated } = useContext(AuthContext);
 
@@ -229,31 +232,34 @@ let Nav = ({ history }) => {
     }
   };
 
-  return (
 
+  // menu principal //////
+  return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          ></IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/" className="navElement">
+            <Link to="/" className="logo" >
               LE PIGEON
             </Link>
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Link to="/help" className="navElement">
+          <Link to="/message"
+          className="navElement">
+                <IconButton aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon className="icon" />
+                  </Badge>
+                </IconButton>
+              </Link>
+              <Link to="/login" className="navButton">
+                Se connecter
+              </Link>
+            <Link to="/help" className="linkHelp">
               <HelpIcon className="icon" />
             </Link>
-            <Link to="/become-agent" className="navElement">
-              Devenez agent!
-            </Link>
-            <Avatar className={classes.orange}>{currentUser.firstName}</Avatar>
+            <button className="navButton">Devenez agent!</button>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -262,7 +268,8 @@ let Nav = ({ history }) => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+            <Avatar className={`${classes.orange} avatar`}>{currentUser.firstName}</Avatar>
+
             </IconButton>
             {isAuthenticated ? <p>{currentUser.firstName}</p> : ""}
           </div>

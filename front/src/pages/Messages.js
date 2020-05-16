@@ -1,7 +1,13 @@
 import React from "react";
+import Footer from "../components/Footer";
+
 
 function Messages() {
-    return <h2>Yours messages</h2>;
+    return (
+        <div>
+            <Footer />
+        </div>
+    )
 }
 
 export default Messages
