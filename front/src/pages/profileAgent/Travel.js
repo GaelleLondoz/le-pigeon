@@ -38,6 +38,7 @@ const Travel = () => {
     coverImage: "",
     remarks: "",
   });
+  const [continents, setContinents] = useState([]);
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -70,12 +71,25 @@ const Travel = () => {
     }
   };
 
+  const fetchContinents = async () => {
+    try {
+      const data = await UserDestinationsAPI.getAllContinents();
+      setContinents(data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
+  useEffect(() => {
+    fetchContinents();
+  }, []);
 
   //console.log(destinations);
-  console.log(newDestination);
+  //console.log(newDestination);
+  //console.log(continents);
 
   return (
     <section className="profile-agent-destinations">
@@ -108,13 +122,11 @@ const Travel = () => {
                   fullWidth
                   variant="outlined"
                 >
-                  <option value="Amérique du Nord">Amérique du Nord</option>
-                  <option value="Amérique du Sud">Amérique du Sud</option>
-                  <option value="Antarctique">Antarctique</option>
-                  <option value="Asie">Asie</option>
-                  <option value="Europe">Europe</option>
-                  <option value="Afrique">Afrique</option>
-                  <option value="Océanie">Océanie</option>
+                  {continents.map((continent) => (
+                    <option value={continent.name} key={continent.id}>
+                      {continent.name}
+                    </option>
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
@@ -124,6 +136,7 @@ const Travel = () => {
                   name="country"
                   fullWidth
                   variant="outlined"
+                  label="Pays"
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
@@ -133,6 +146,7 @@ const Travel = () => {
                   name="name"
                   variant="outlined"
                   fullWidth
+                  label="Titre"
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
@@ -142,6 +156,7 @@ const Travel = () => {
                   name="remarks"
                   fullWidth
                   variant="outlined"
+                  label="Remarque"
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
@@ -151,6 +166,7 @@ const Travel = () => {
                   name="coverImage"
                   fullWidth
                   variant="outlined"
+                  label="Image de couverture"
                 />
               </Grid>
               <Grid item className={classes.gridInput}>

@@ -9,19 +9,19 @@ const {
 
 const create = async (req, res) => {
   const id = req.user.id;
-  //Probleme trouvez le moyen pour country.id ...
+  //Trouvez une solution => lorsque le continent ou le pays existe déjà en base de donnée, il l'enregistre quand meme, => Doublon!!
   try {
-    const continent = Continent.create({
+    const continent = await Continent.create({
       name: req.body.continent,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    const country = Country.create({
+    const country = await Country.create({
       name: req.body.country,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    const destination = Destination.create({
+    const destination = await Destination.create({
       countryID: country.id,
       continentID: continent.id,
       name: req.body.name,
@@ -29,7 +29,7 @@ const create = async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    UserDestination.create({
+    await UserDestination.create({
       userID: id,
       destinationID: destination.id,
       date: "2017-12-26 16:11:50",
@@ -38,6 +38,21 @@ const create = async (req, res) => {
       updatedAt: new Date(),
     });
     return res.status(201).json({ msg: "Destination created successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
+
+const getAllContinents = async (req, res) => {
+  try {
+    const continents = await Continent.findAll({
+      attributes: ["id", "name"],
+    });
+    if (!continents) {
+      return res.status(404).json({ msg: "Continents Not Found" });
+    }
+    return res.status(200).json(continents);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Error Server" });
@@ -108,4 +123,5 @@ module.exports = {
   getAllDestinationsByUser,
   getDestinationByUser,
   create,
+  getAllContinents,
 };

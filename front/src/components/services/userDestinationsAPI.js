@@ -11,8 +11,14 @@ function create(data) {
     .post(USER_DESTINATIONS_URL + "/new", data)
     .then((response) => response.data);
 }
+function getAllContinents() {
+  return axios
+    .get(USER_DESTINATIONS_URL + "/continents")
+    .then((response) => response.data);
+}
 
 export default {
   getAllDestinationsByUser,
   create,
+  getAllContinents,
 };
