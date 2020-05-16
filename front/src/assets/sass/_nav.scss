@@ -39,7 +39,10 @@
   }
 }
 
-.icon {
+
+.logo {
+  font-size: 35px !important;
+  padding-left: 0px;
   color: $dark-blue;
   height: 30px !important;
   width: 30px !important;
@@ -86,7 +89,63 @@
   font-size: 14px;
   text-decoration: none;
   font-family: $main-font;
+  @include small {
+    font-size: 20px !important;
+    width: 100px !important;
+  }
+}
 
+.linkHelp {
+  align-items: center;
+  display: flex;
+}
+
+.MuiIconButton-root:hover {
+  background-color: $light-blue !important;
+  @include small {
+    background-color: $light-grey !important;
+ 
+  }
+}
+
+.icon {
+  color: $dark-blue;
+  height: 30px !important;
+  width: 30px !important;
+  @include margins-nav;
+
+  &:hover {
+    color: $main-blue;
+  }
+}
+
+// badge
+.MuiBadge-anchorOriginTopRightRectangle {
+  top: 4px !important;
+  right: 30px !important;
+  background-color: $main-blue !important;
+
+  @include small {
+    top: 1px !important;
+    right: 23px !important;
+  }
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  background-color: $dark-blue;
+  border-radius: 20px;
+  @include margins-nav;
+  border: none;
+  height: 25px !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: $light-blue;
+  font-size: 14px;
+  text-decoration: none !important;
+  font-family: $main-font !important;
+  text-decoration: none !important;
   &:hover {
     background-color: $main-blue !important;
     text-decoration: none !important;
@@ -95,7 +154,6 @@
     text-decoration: none !important;
   }
 }
-
 
 // @media 3dots menu
 
