@@ -119,9 +119,28 @@ const getDestinationByUser = async (req, res) => {
   }
 };
 
+const getPicturesDestinationByDestination = async (req, res) => {
+  const id = req.params.id;
+  const destinationId = req.params.destinationId;
+
+  try {
+    const pictures = await PictureDestination.findAll({
+      where: { userID: id, destinationID: destinationId },
+    });
+    if (!pictures) {
+      return res.status(404).json({ msg: "Pictures Not Found" });
+    }
+    return res.status(200).json(pictures);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
+
 module.exports = {
   getAllDestinationsByUser,
   getDestinationByUser,
   create,
   getAllContinents,
+  getPicturesDestinationByDestination,
 };

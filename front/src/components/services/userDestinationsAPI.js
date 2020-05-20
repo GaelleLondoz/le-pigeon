@@ -16,9 +16,22 @@ function getAllContinents() {
     .get(USER_DESTINATIONS_URL + "/continents")
     .then((response) => response.data);
 }
+function getAllPicturesByDestination(id, destinationId) {
+  return axios
+    .get(
+      USER_DESTINATIONS_URL +
+        "/users/" +
+        id +
+        "/destination/" +
+        destinationId +
+        "/pictures"
+    )
+    .then((response) => response.data);
+}
 
 export default {
   getAllDestinationsByUser,
   create,
   getAllContinents,
+  getAllPicturesByDestination,
 };

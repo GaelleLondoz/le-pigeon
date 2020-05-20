@@ -75,6 +75,10 @@ router.get(
   userDestinationsController.getAllDestinationsByUser
 );
 router.get(
+  "/destinations/users/:id/destination/:destinationId/pictures",
+  userDestinationsController.getPicturesDestinationByDestination
+);
+router.get(
   "/users/:id/destination/:destinationId",
   checkAuth,
   userDestinationsController.getDestinationByUser

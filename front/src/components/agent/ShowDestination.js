@@ -1,4 +1,6 @@
 import React from "react";
+import Swiper from "react-id-swiper";
+import "swiper/css/swiper.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Typography } from "@material-ui/core";
 import { formatDate } from "../../helpers/formatDate";
@@ -7,7 +9,7 @@ const useStyles = makeStyles({
   containerCoverImage: {
     margin: "60px 0",
   },
-  coverImage: {
+  picture: {
     width: "100%",
     maxHeight: "500px",
   },
@@ -24,8 +26,18 @@ const useStyles = makeStyles({
   },
 });
 
-const ShowDestination = ({ destination }) => {
+const ShowDestination = ({ destination, pictures }) => {
   const classes = useStyles();
+  const params = {
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  };
   return (
     <section className="travel-details">
       <Container>
@@ -45,11 +57,22 @@ const ShowDestination = ({ destination }) => {
         >
           <Grid container justify="center">
             <Grid item xs={12}>
-              <img
+              {/* <img
                 src={destination.Destination.coverImage}
                 alt=""
                 className={classes.coverImage}
-              />
+              /> */}
+              <Swiper {...params} shouldSwiperUpdate>
+                {pictures.map((picture) => (
+                  <div key={picture.id}>
+                    <img
+                      alt={picture.alt}
+                      src={picture.path}
+                      className={classes.picture}
+                    />
+                  </div>
+                ))}
+              </Swiper>
               <Typography component="p" className={classes.dateStart}>
                 - Parti le {formatDate(destination.date)} -
               </Typography>
