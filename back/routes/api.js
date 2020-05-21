@@ -67,6 +67,11 @@ router.get(
   checkAuth,
   messagesController.getAllMessagesByUser
 );
+router.put(
+  "/messages/:id/changestatus",
+  checkAuth,
+  messagesController.changeStatusMessage
+);
 
 // destinations
 router.get(
@@ -76,6 +81,7 @@ router.get(
 );
 router.get(
   "/destinations/users/:id/destination/:destinationId/pictures",
+  checkAuth,
   userDestinationsController.getPicturesDestinationByDestination
 );
 router.get(

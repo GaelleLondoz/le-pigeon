@@ -5,5 +5,8 @@ export const changeColorIconStatus = (status) => {
   if (status === "ACCEPT") {
     return "blue";
   }
+  if (status === "READ") {
+    return "green";
+  }
   return "red";
 };

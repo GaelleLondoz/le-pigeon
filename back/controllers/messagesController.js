@@ -58,6 +58,23 @@ const getAllMessagesByUser = async (req, res) => {
     return res.status(200).json(messages);
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
+
+const changeStatusMessage = async (req, res) => {
+  const id = req.params.id;
+  try {
+    await Message.update(
+      {
+        status: req.body.status,
+      },
+      { where: { id: id } }
+    );
+    return res.status(200).json({ msg: "Message Status Updated" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
   }
 };
 
@@ -68,4 +85,5 @@ module.exports = {
   update,
   destroy,
   getAllMessagesByUser,
+  changeStatusMessage,
 };

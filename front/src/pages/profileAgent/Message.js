@@ -9,7 +9,6 @@ const Message = () => {
 
   const [messages, setMessages] = useState([]);
   const [notMessages, setNotMessages] = useState("");
-  const [showMessage, setShowMessage] = useState(false);
 
   const fetchMessages = async (id) => {
     try {
@@ -21,10 +20,6 @@ const Message = () => {
       }
       console.log(error.response);
     }
-  };
-
-  const handleShowMessageClick = () => {
-    setShowMessage(!showMessage);
   };
 
   useEffect(() => {
@@ -41,12 +36,7 @@ const Message = () => {
           <p>{notMessages}</p>
         ) : (
           messages.map((message) => (
-            <CardMessage
-              key={message.id}
-              message={message}
-              handleShowMessageClick={handleShowMessageClick}
-              showMessage={showMessage}
-            />
+            <CardMessage key={message.id} message={message} />
           ))
         )}
       </Container>

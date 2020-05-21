@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Avatar, Button } from "@material-ui/core";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import EventIcon from "@material-ui/icons/Event";
 import { formatDate } from "../../helpers/formatDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
+import MessageAPI from "../../components/services/messageAPI";
 
-const CardMessage = ({ message, handleShowMessageClick, showMessage }) => {
+const CardMessage = ({ message }) => {
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handleShowMessageClick = async () => {
+    setShowMessage(!showMessage);
+    message.status = "READ";
+    try {
+      await MessageAPI.changeMessageStatus(message.id, { status: "READ" });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   return (
     <div className="card-agent-messages-profile">
       <div className="card-agent-messages-profile-info">
