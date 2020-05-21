@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Typography, Avatar } from "@material-ui/core";
+import React from "react";
+import { Typography, Avatar, Button } from "@material-ui/core";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import EventIcon from "@material-ui/icons/Event";
 import { formatDate } from "../../helpers/formatDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 
-const CardMessage = ({ message }) => {
+const CardMessage = ({ message, handleShowMessageClick, showMessage }) => {
   return (
     <div className="card-agent-messages-profile">
       <div className="card-agent-messages-profile-info">
@@ -27,9 +27,19 @@ const CardMessage = ({ message }) => {
           Par {message.sender.firstName} {message.sender.lastName}
         </Typography>
       </div>
-      <Typography component="p" style={{ marginTop: "20px" }}>
-        {message.content}
-      </Typography>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleShowMessageClick}
+        style={{ marginTop: "20px" }}
+      >
+        {showMessage ? "Fermer" : "Lire le message"}
+      </Button>
+      {showMessage && (
+        <Typography component="p" style={{ marginTop: "20px" }}>
+          {message.content}
+        </Typography>
+      )}
     </div>
   );
 };
