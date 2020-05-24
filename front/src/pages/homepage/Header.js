@@ -6,6 +6,9 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import SearchResult from "../../components/search/SearchResult";
+import SearchAuto from "../../components/search/SearchAuto";
+
 
 const Header = () => {
   return (
@@ -15,19 +18,21 @@ const Header = () => {
         <div className="form-search">
           <form className="" noValidate autoComplete="off">
             <Grid container justify="center" spacing={4}>
-              <Grid item>
-                <TextField
+               <Grid item>
+                 <SearchAuto />
+                {/*<TextField
                   id="outlined-basic"
                   label="Quelle région du monde ?"
                   variant="outlined"
-                />
-              </Grid>
+                />*/}
+              </Grid> 
               <Grid item>
-                <TextField
+                {/* <TextField
                   id="outlined-basic"
                   label="Quel type de voyage ?"
                   variant="outlined"
-                />
+                /> */}
+                
               </Grid>
               <Grid item>
                 <Button variant="contained" color="secondary" size="large">
@@ -37,6 +42,7 @@ const Header = () => {
             </Grid>
           </form>
         </div>
+        <SearchResult />
       </Container>
     </section>
   );

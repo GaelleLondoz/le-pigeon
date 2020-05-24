@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import AlgoliaPlaces from 'algolia-places-react';
 
 
-class Places extends Component {
+class SearchAuto extends Component {
 
    render() {
     return (
-      
+      <>
         <AlgoliaPlaces
           placeholder='Write an address here'
      
@@ -36,10 +36,13 @@ class Places extends Component {
           onError={({ message }) => 
             console.log('Fired when we could not make the request to Algolia Places servers for any reason but reaching your rate limit.')}
         />
+
         
-       
+
+        
+      </> 
       );  
    }
 }
 
-export default Places;
+export default SearchAuto;

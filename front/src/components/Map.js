@@ -9,6 +9,20 @@ import {
 } from 'react-instantsearch-dom-maps';
 import Places from './places/widget';
 
+const classes = useStyles();
+const [state, setState] = React.useState({
+  age: '',
+  name: 'hai',
+});
+
+const handleChange = (event) => {
+  const name = event.target.name;
+  setState({
+    ...state,
+    [name]: event.target.value,
+  });
+};
+
 
 const searchClient = algoliasearch(
   'latency',
@@ -18,6 +32,7 @@ const searchClient = algoliasearch(
 class Map extends Component {
   render() {
     return (
+      <>
       <div className="ais-InstantSearch">
         <h1>React InstantSearch Places</h1>
         <InstantSearch indexName="airports" searchClient={searchClient}>
@@ -55,6 +70,8 @@ class Map extends Component {
         </InstantSearch>
       </div>
     );
+    </>
+    )
   }
 }
 
