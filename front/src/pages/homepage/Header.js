@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import SearchResult from "../../components/search/SearchResult";
 import SearchAuto from "../../components/search/SearchAuto";
+import SearchWithChoice from "../../components/search/SearchWithChoice";
 
 
 const Header = () => {
@@ -27,6 +28,7 @@ const Header = () => {
                 />*/}
               </Grid> 
               <Grid item>
+                <SearchWithChoice />
                 {/* <TextField
                   id="outlined-basic"
                   label="Quel type de voyage ?"

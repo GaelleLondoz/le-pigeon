@@ -6,6 +6,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 
+// css
+import "../../assets/sass/components/search/_searchWithChoice.scss"
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -19,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NativeSelects() {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    age: '',
+    type: '',
     name: 'hai',
   });
 
@@ -33,22 +36,22 @@ export default function NativeSelects() {
 
   return (
     <div>
-      <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Age</InputLabel>
+      <FormControl variant="outlined" className={`${classes.formControl} test`}>
+        <InputLabel htmlFor="outlined-age-native-simple">Type</InputLabel>
         <Select
           native
-          value={state.age}
+          value={state.type}
           onChange={handleChange}
-          label="Age"
+          label="Type"
           inputProps={{
-            name: 'age',
+            name: 'type',
             id: 'outlined-age-native-simple',
           }}
         >
           <option aria-label="None" value="" />
-          <option value={10}>Ten</option>
-          <option value={20}>Twenty</option>
-          <option value={30}>Thirty</option>
+          <option value={10} className="Choice">backpack</option>
+          <option value={20} className="Choice">hôtel</option>
+          <option value={30} className="Choice">séjour</option>
         </Select>
       </FormControl>
     </div>

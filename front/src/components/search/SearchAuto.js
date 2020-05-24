@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import AlgoliaPlaces from 'algolia-places-react';
 
+// css
+import "../../assets/sass/components/search/_searchAuto.scss"
+
 
 class SearchAuto extends Component {
 
@@ -8,7 +11,8 @@ class SearchAuto extends Component {
     return (
       <>
         <AlgoliaPlaces
-          placeholder='Write an address here'
+          className="Auto"
+          placeholder='Où voulez-vous aller?'
      
           options={{
             appId: process.env.REACT_APP_ALGOLIA_MAP_KEY_ID,
