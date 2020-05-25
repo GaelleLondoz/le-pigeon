@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import { List, ListItem } from 'material-ui/List';
-import { RaisedButton } from 'material-ui';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import AppBar from '@material-ui/core/AppBar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+// import { Button } from '@material-ui';
+import Button from '@material-ui/core/Button';
 
 class FormUserDetails extends Component {
   continue = e => {
@@ -34,7 +36,7 @@ class FormUserDetails extends Component {
           <ListItem primaryText="Bio" secondaryText={values.bio} />
         </List>
         <br />
-        <RaisedButton
+        <Button variant="contained"
           label="Back"
           primary={false}
           style={styles.button}
@@ -42,7 +44,7 @@ class FormUserDetails extends Component {
           //   onClick={this.props.nextSteps()}
         />
         <br />
-        <RaisedButton
+        <Button variant="contained"
           label="Confirm & Continue"
           primary={true}
           style={styles.button}

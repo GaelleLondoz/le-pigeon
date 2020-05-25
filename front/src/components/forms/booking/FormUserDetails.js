@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import TextField from 'material-ui/TextField';
-import { RaisedButton } from 'material-ui';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import AppBar from '@material-ui/core/AppBar';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 class FormUserDetails extends Component {
   continue = e => {
@@ -35,7 +35,7 @@ class FormUserDetails extends Component {
           defaultValue={values.email}
         />
         <br />
-        <RaisedButton
+        <Button variant="contained"
           label="Continue"
           primary={true}
           style={styles.button}
