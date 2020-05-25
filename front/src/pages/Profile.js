@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { API_URL } from "../config";
+import ReviewsAPI from "../components/services/reviewsAPI";
 
-import List from "../components/reviews/List"
 import Form from "../components/reviews/Form"
+import List from "../components/reviews/List"
+
 
 
 export default ({ match }) => {
@@ -11,18 +11,15 @@ export default ({ match }) => {
 
     const [reviews, setReviews] = useState([])
 
-    function getReviews(id) {
-        return axios.get(API_URL + `/reviews/agent/${id}`).then((response) => response.data);
-    }
-
     useEffect(() => {
         fetchReviews(id);
     }, []);
 
     const fetchReviews = async (id) => {
         try {
-            const reviews = await getReviews(id)
+            const reviews = await ReviewsAPI.getReviews(id)
             setReviews(reviews)
+
         } catch (error) {
             throw error.response;
         }
@@ -31,11 +28,13 @@ export default ({ match }) => {
 
 
 
+
+
     return (
         <>
             <div className="card">
-                <List reviews={reviews} />
-                <Form id={id} />
+                <List reviews={reviews} id={id} />
+                <Form id={id} reviews={reviews} />
             </div>
         </>
     )

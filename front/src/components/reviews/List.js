@@ -6,7 +6,7 @@ export default (props) => {
         <ul className="review-items">
             {
                 props.reviews.map(review => {
-                    return <Item review={review} key={review.id} />
+                    return <Item id={props.id} review={review} key={review.id} />
                 })
 
             }
