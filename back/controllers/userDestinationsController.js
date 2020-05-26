@@ -37,7 +37,7 @@ const create = async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    return res.status(201).json({ msg: "Destination created successfully" });
+    return res.status(200).json({ msg: "Destination created successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Error Server" });
