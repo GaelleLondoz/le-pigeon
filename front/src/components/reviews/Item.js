@@ -1,25 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import { Rating } from '@material-ui/lab';
-import moment from "moment";
-import 'moment/locale/fr'
-
-
-import DeleteIcon from '@material-ui/icons/Delete';
 import AuthContext from "../../contexts/AuthContext";
 import userAPI from "../services/userAPI";
 import ReviewsAPI from "../services/reviewsAPI";
 
-// sass
+// externe libraries
+// moment
+import moment from "moment";
+import 'moment/locale/fr'
+
+// material-ui 
+import Avatar from "@material-ui/core/Avatar";
+import { Rating } from '@material-ui/lab';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+// custom style
 import "../../assets/sass/components/review.scss";
+
 export default (props) => {
+    // retrieve review from props
     const { review } = props
+
+    // check if user authenticated
     const { isAuthenticated } = useContext(AuthContext);
 
+    // init state for alert notification
     const [displayFlash, setDisplayFlash] = useState(false);
+    
+    
+    // user
     useEffect(() => {
         fetchUser(props.id);
-
     }, []);
 
     const [user, setUser] = useState({
@@ -36,10 +46,11 @@ export default (props) => {
         }
     };
 
+    // action delete item
     const handleDelete = async () => {  
         try {
             await ReviewsAPI.deleteReview(review.id);
-            props.test()
+            props.handleRefreshList()
             props.onDelete(true)
         } catch (error) {
             console.log(error.response)
@@ -47,8 +58,7 @@ export default (props) => {
     };
 
     return (
-        <li className="review-item">
-            
+        <li className="review-item">  
             <div className="review-item__top">
                 <div className="review-item__top-left">
                     <Avatar
@@ -76,9 +86,6 @@ export default (props) => {
                 <p>{review.comment}</p>
             </div>
             {isAuthenticated && review.author.id === user.id ? <div><DeleteIcon onClick={handleDelete} /></div> : ""}
-
-
-
         </li>
     )
 }

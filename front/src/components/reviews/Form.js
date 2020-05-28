@@ -1,13 +1,17 @@
-import React, { useState, setState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import ReviewsAPI from "../services/reviewsAPI";
 import userAPI from "../services/userAPI";
+
+// externe libraries
+// moment
+import 'moment/locale/fr'
+
+// material-ui 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import { Rating } from '@material-ui/lab';
-import 'moment/locale/fr'
-
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -24,18 +28,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-
 const ReviewForm = (props) => {
+    // use style from material-ui
+    const classes = useStyles();
 
     useEffect(() => {
         fetchUser(props.id);
         setReviews(props.reviews)
-
     }, []);
 
+    // check if user authenticated
     const { isAuthenticated } = useContext(AuthContext);
 
+    // reviews
     const [review, setReview] = useState({
         agentID: 0,
         authorID: 0,
@@ -46,15 +51,6 @@ const ReviewForm = (props) => {
     const [reviews, setReviews] = useState(
         []
     )
-
-    const fetchUser = async (id) => {
-        try {
-            const { user } = await userAPI.getUser();
-            setReview({ ...review, authorID: user.id, agentID: parseInt(id) });
-        } catch (error) {
-            throw error.response;
-        }
-    };
 
     const handleChange = (event) => {
         const value = event.currentTarget.value;
@@ -67,18 +63,25 @@ const ReviewForm = (props) => {
         if (isAuthenticated) {
             try {
                 await ReviewsAPI.createReview({ review: review });
-                props.refreshList()
+                props.handleRefreshList()
             } catch (error) {
                 throw error.response;
             }
         } else {
-            alert("connectez-vous")
+            alert("Connectez-vous")
         }
     };
 
+    // user info for review
+    const fetchUser = async (id) => {
+        try {
+            const { user } = await userAPI.getUser();
+            setReview({ ...review, authorID: user.id, agentID: parseInt(id) });
+        } catch (error) {
+            throw error.response;
+        }
+    };
 
-
-    const classes = useStyles();
     return (
         <div>
             <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
