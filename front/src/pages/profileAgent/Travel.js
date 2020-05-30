@@ -52,8 +52,8 @@ const Travel = () => {
 
     setNewDestination({ ...newDestination, [name]: value });
   };
+
   const createImage = (file) => {
-    console.log(file);
     const reader = new FileReader();
     reader.onload = (e) => {
       setNewDestination({ ...newDestination, coverImage: e.target.result });
@@ -70,6 +70,7 @@ const Travel = () => {
     e.preventDefault();
     try {
       await UserDestinationsAPI.create(newDestination);
+      fetchDestinations(id);
     } catch (error) {
       console.log(error.response);
     }
@@ -99,10 +100,6 @@ const Travel = () => {
   useEffect(() => {
     fetchContinents();
   }, []);
-
-  //console.log(destinations);
-  //console.log(newDestination);
-  //console.log(continents);
 
   return (
     <section className="profile-agent-destinations">
