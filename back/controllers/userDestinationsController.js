@@ -11,8 +11,6 @@ const { makeKey } = require("../helpers");
 
 const create = async (req, res) => {
   const id = req.user.id;
-  console.log(req.body);
-  //base64,
   const file = req.body.coverImage.split(";base64,");
   const extension = file[0].replace("data:image/", "");
   const filename = makeKey(10);
@@ -22,7 +20,7 @@ const create = async (req, res) => {
     filename,
     "." + extension,
   ].join("");
-  const fileToDatabase = filename + "." + extension;
+  const fileSendToDatabase = filename + "." + extension;
 
   fs.writeFile(rootFile, file[1], "base64", function (err) {
     console.log(err);
@@ -43,7 +41,7 @@ const create = async (req, res) => {
       countryID: country.id,
       continentID: continent.id,
       name: req.body.name,
-      coverImage: fileToDatabase,
+      coverImage: fileSendToDatabase,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

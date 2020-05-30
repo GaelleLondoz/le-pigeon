@@ -38,31 +38,6 @@ const Travel = () => {
     coverImage: "",
     remarks: "",
   });
-
-  // Convert file to base64 string
-  const fileToBase64 = (filename, filepath) => {
-    console.log({ filepath });
-    console.log({ filename });
-    return new Promise((resolve) => {
-      var file = new File([filename], filepath);
-      var reader = new FileReader();
-      console.log({ file, reader });
-      // Read file content on file loaded event
-      reader.onload = function (event) {
-        resolve(event.target.result);
-      };
-
-      // Convert data to base64
-      reader.readAsDataURL(file);
-    });
-  };
-  // Example call:
-  // fileToBase64(newDestination.coverImage, "../files/test.pdf").then(
-  //   (result) => {
-  //     console.log(result);
-  //   }
-  // );
-
   const [continents, setContinents] = useState([]);
 
   const [openForm, setOpenForm] = useState(false);
@@ -87,12 +62,8 @@ const Travel = () => {
   };
 
   const handleFileChange = (event) => {
-    console.log(event);
     const files = event.target.files || event.dataTransfer.files;
-    console.log({ files });
     createImage(files[0]);
-    //setNewDestination({ ...newDestination, coverImage: files[0] });
-    //setNewDestination({ ...newDestination, coverImage: [...e.target.files] });
   };
 
   const handleNewDestinationSubmit = async (e) => {
