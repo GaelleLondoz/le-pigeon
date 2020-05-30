@@ -1,14 +1,14 @@
 const express = require("express");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const { json, urlencoded } = require("body-parser");
-const cors = require('cors')
+const cors = require("cors");
 
 const app = express();
 const apiRoutes = require("./routes/api");
 
 app.use(cors());
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 app.use("/api", apiRoutes);
 
 module.exports = app;

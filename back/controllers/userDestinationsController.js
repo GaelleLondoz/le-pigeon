@@ -6,9 +6,27 @@ const {
   PictureDestination,
   User,
 } = require("../models");
+const fs = require("fs");
+const { makeKey } = require("../helpers");
 
 const create = async (req, res) => {
   const id = req.user.id;
+  console.log(req.body);
+  //base64,
+  const file = req.body.coverImage.split(";base64,");
+  const extension = file[0].replace("data:image/", "");
+  const filename = makeKey(10);
+  // "../storage/destination/jsnjfsjnfsjf544.jpg | png..."
+  const rootFile = [
+    __dirname + "/../storage/destination/",
+    filename,
+    "." + extension,
+  ].join("");
+  const fileToDatabase = filename + "." + extension;
+
+  fs.writeFile(rootFile, file[1], "base64", function (err) {
+    console.log(err);
+  });
   //Trouvez une solution => lorsque le continent ou le pays existe déjà en base de donnée, il l'enregistre quand meme, => Doublon!!
   try {
     const continent = await Continent.create({
@@ -25,7 +43,7 @@ const create = async (req, res) => {
       countryID: country.id,
       continentID: continent.id,
       name: req.body.name,
-      coverImage: req.body.coverImage,
+      coverImage: fileToDatabase,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
