@@ -48,6 +48,10 @@ const CardDestination = ({ destination }) => {
           alt={destination.Destination.Country.name}
           className={classes.media}
           image={destination.Destination.coverImage}
+          // image={
+          //   "http://localhost:5000/back/storage/destination/" +
+          //   destination.Destination.coverImage
+          // }
           title={destination.Destination.Country.name}
         />
         <CardContent>
