@@ -4,6 +4,7 @@ import Rating from "@material-ui/lab/Rating";
 import UsersAPI from "../../components/services/userAPI";
 import ReviewsAPI from "../../components/services/reviewAPI";
 import CardComment from "../../components/agent/CardComment";
+import Paginator from "../../components/Pagination";
 
 const Evaluation = () => {
   const url = window.location.href;
@@ -22,6 +23,9 @@ const Evaluation = () => {
   });
   const [comments, setComments] = useState([]);
   const [noComments, setNoComments] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const ITEMS_PER_PAGE = 5;
 
   const fetchAvgRatings = async (id) => {
     try {
@@ -54,6 +58,18 @@ const Evaluation = () => {
       console.log(error.response);
     }
   };
+
+  //gestion du changement de page
+  const handlePaginationChange = (e, page) => {
+    setCurrentPage(page);
+    //window.scrollTo(0, 0);
+  };
+
+  const paginatedComments = Paginator.getData(
+    comments,
+    currentPage,
+    ITEMS_PER_PAGE
+  );
 
   useEffect(() => {
     fetchAgent(id);
@@ -99,9 +115,17 @@ const Evaluation = () => {
         {noComments ? (
           <Typography component="p">{noComments}</Typography>
         ) : (
-          comments.map((comment) => (
+          paginatedComments.map((comment) => (
             <CardComment key={comment.id} comment={comment} />
           ))
+        )}
+        {comments.length > 5 && (
+          <Paginator
+            length={comments.length}
+            page={currentPage}
+            onPageChanged={handlePaginationChange}
+            itemsByPage={ITEMS_PER_PAGE}
+          />
         )}
       </Container>
     </section>
