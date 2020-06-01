@@ -13,10 +13,16 @@ const LoaderButton = ({
   loadingButton,
   size = 25,
   text = "",
+  onClick,
 }) => {
   const classes = useStyles();
   return (
-    <Button type="submit" variant="contained" color={colorButton}>
+    <Button
+      onClick={onClick}
+      type="submit"
+      variant="contained"
+      color={colorButton}
+    >
       {loadingButton ? (
         <CircularProgress color={classes.loaderButton} size={size} />
       ) : (

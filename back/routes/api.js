@@ -22,6 +22,7 @@ router.get(
   usersController.getProfileAgent
 );
 router.get("/users/me/roles", checkAuth, usersController.getRoleUser);
+router.put("/users/agent/:id", checkAuth, usersController.editProfileAgent);
 
 // login auth
 router.post("/login", usersController.login);

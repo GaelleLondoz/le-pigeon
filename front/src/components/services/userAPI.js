@@ -17,10 +17,16 @@ function getDestinationByUser(id, destinationId) {
 function getRoleUser() {
   return axios.get(USERS_URL + "/me/roles").then((response) => response.data);
 }
+function editProfileAgent(id, data) {
+  return axios
+    .put(USERS_URL + "/agent/" + id, data)
+    .then((response) => response.data);
+}
 
 export default {
   getUser,
   getProfileAgent,
   getDestinationByUser,
   getRoleUser,
+  editProfileAgent,
 };

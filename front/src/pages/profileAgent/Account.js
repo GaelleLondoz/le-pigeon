@@ -10,6 +10,7 @@ import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Rating from "@material-ui/lab/Rating";
 import UsersAPI from "../../components/services/userAPI";
 import ReviewsAPI from "../../components/services/reviewAPI";
+import EditAgentModal from "../../components/modals/EditAgentModal";
 
 const Account = () => {
   const url = window.location.href;
@@ -32,6 +33,8 @@ const Account = () => {
     countComments: "",
   });
 
+  const [sendEditAgentLoading, setSendEditAgentLoading] = useState(false);
+
   const fetchAvgRatings = async (id) => {
     try {
       const data = await ReviewsAPI.getAvgRatings(id);
@@ -48,6 +51,18 @@ const Account = () => {
       const { User, language, price } = data;
       setAgent({ User, language, price });
     } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const handleEditAgentSubmit = async (e) => {
+    e.preventDefault();
+    setSendEditAgentLoading(true);
+    try {
+      await UsersAPI.editProfileAgent(id, agent);
+      setSendEditAgentLoading(false);
+    } catch (error) {
+      setSendEditAgentLoading(false);
       console.log(error.response);
     }
   };
@@ -92,6 +107,13 @@ const Account = () => {
         <Typography variant="h5" style={{ marginBottom: "30px" }}>
           Bonjour {agent.User.lastName}, comment allez-vous aujourd'hui ?
         </Typography>
+        <EditAgentModal
+          agent={agent}
+          onChange={handleChange}
+          onChangeUser={handleUserChange}
+          onSubmit={handleEditAgentSubmit}
+          sendEditAgentLoading={sendEditAgentLoading}
+        />
         <div className="profile-agent-account-content">
           <Grid container spacing={5}>
             <Grid item xs={12} md={3}>

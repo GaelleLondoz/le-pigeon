@@ -181,6 +181,39 @@ const getProfileAgent = async (req, res) => {
     console.log(error);
   }
 };
+
+const editProfileAgent = async (req, res) => {
+  const id = req.params.id;
+  const { firstName, lastName, userName, email } = req.body.User;
+  const { language, price } = req.body;
+
+  try {
+    await User.update(
+      {
+        firstName,
+        lastName,
+        userName,
+        email,
+      },
+      {
+        where: { id },
+      }
+    );
+    await UserRole.update(
+      {
+        language,
+        price,
+      },
+      {
+        where: { userID: id },
+      }
+    );
+    return res.status(200).json({ msg: "Test Updated Agent" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   index,
   create,
@@ -192,4 +225,5 @@ module.exports = {
   logout,
   getProfileAgent,
   getRoleUser,
+  editProfileAgent,
 };
