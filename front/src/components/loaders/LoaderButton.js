@@ -24,7 +24,7 @@ const LoaderButton = ({
       color={colorButton}
     >
       {loadingButton ? (
-        <CircularProgress color={classes.loaderButton} size={size} />
+        <CircularProgress color={classes.loaderButton.color} size={size} />
       ) : (
         text
       )}
