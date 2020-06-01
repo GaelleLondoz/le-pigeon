@@ -239,6 +239,9 @@ section.profile-agent-destinations {
   form {
     max-width: 600px;
     margin-top: 50px;
+    .ap-input {
+      height: 57px;
+    }
   }
 }
 section.profile-agent-evaluation {

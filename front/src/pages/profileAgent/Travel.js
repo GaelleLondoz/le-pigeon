@@ -10,6 +10,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
 import CardDestination from "../../components/agent/CardDestination";
+import Places from "../../components/Places";
 
 const useStyles = makeStyles((theme) => ({
   buttonAddDestination: {
@@ -149,6 +150,9 @@ const Travel = () => {
                   label="Pays"
                 />
               </Grid>
+              {/* <Grid item xs={12} className={classes.gridInput}>
+                <Places country="country" />
+              </Grid> */}
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
                   value={newDestination.name}
@@ -182,20 +186,16 @@ const Travel = () => {
               </Grid>
               <Grid item className={classes.gridInput}>
                 <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  style={{ marginRight: "10px" }}
-                >
-                  Créer
-                </Button>
-                <Button
                   type="button"
                   onClick={handleDestinationFormClick}
                   variant="contained"
                   color="secondary"
+                  style={{ marginRight: "10px" }}
                 >
                   Annuler
+                </Button>
+                <Button type="submit" variant="contained" color="primary">
+                  Créer
                 </Button>
               </Grid>
             </Grid>
