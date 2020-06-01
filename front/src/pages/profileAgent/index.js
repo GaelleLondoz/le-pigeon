@@ -7,7 +7,11 @@ const ProfileAgent = () => {
   const handleChange = (event, newValue) => {
     setValueTab(newValue);
   };
-  return <NavBarProfileAgent value={valueTab} handleChange={handleChange} />;
+  return (
+    <>
+      <NavBarProfileAgent value={valueTab} handleChange={handleChange} />
+    </>
+  );
 };
 
 export default ProfileAgent;

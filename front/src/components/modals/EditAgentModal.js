@@ -6,6 +6,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
+  Avatar,
 } from "@material-ui/core";
 import LoaderButton from "../../components/loaders/LoaderButton";
 
@@ -18,29 +20,29 @@ const EditAgentModal = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const handleModalOpenToggle = () => {
+    setOpen(!open);
   };
 
   return (
     <div style={{ margin: "30px 0" }}>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleModalOpenToggle}
+      >
         Editer mon profil
       </Button>
-      <form>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">
-            Vous souhaitez éditer votre profil {agent.User.firstName} ?
-          </DialogTitle>
-          <DialogContent>
+      <Dialog
+        open={open}
+        onClose={handleModalOpenToggle}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">
+          Vous souhaitez éditer votre profil {agent.User.firstName} ?
+        </DialogTitle>
+        <DialogContent>
+          <form>
             <TextField
               autoFocus
               margin="dense"
@@ -96,17 +98,37 @@ const EditAgentModal = ({
               value={agent.price}
               onChange={onChange}
             />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="secondary" variant="contained">
-              Annuler
-            </Button>
-            <LoaderButton
-              text="Editer mon profil"
-              onClick={onSubmit}
-              loadingButton={sendEditAgentLoading}
-            />
-            {/* <Button
+            <Grid container alignItems="center">
+              <Grid item xs={10}>
+                <TextField
+                  margin="dense"
+                  name="price"
+                  label="Avatar"
+                  type="file"
+                  fullWidth
+                  onChange={onChange}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Avatar alt="Remy Sharp" src={agent.User.avatar} />
+              </Grid>
+            </Grid>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleModalOpenToggle}
+            color="secondary"
+            variant="contained"
+          >
+            Annuler
+          </Button>
+          <LoaderButton
+            text="Editer mon profil"
+            onClick={onSubmit}
+            loadingButton={sendEditAgentLoading}
+          />
+          {/* <Button
               onClick={onSubmit}
               type="submit"
               color="primary"
@@ -118,9 +140,8 @@ const EditAgentModal = ({
                 "Editer mon profil"
               )}
             </Button> */}
-          </DialogActions>
-        </Dialog>
-      </form>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

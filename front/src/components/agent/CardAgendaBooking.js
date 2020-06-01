@@ -1,10 +1,10 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import InfoIcon from "@material-ui/icons/Info";
-import { formatDate } from "../../helpers/formatDate";
+import { formatDateWithHour } from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 
@@ -14,7 +14,8 @@ const CardAgendaBooking = ({ booking }) => {
       <div className="profile-agent-agenda-card-info">
         <EventIcon />
         <Typography component="p">
-          Réservation prévu le <strong>{formatDate(booking.date)}</strong>
+          Réservation prévu le{" "}
+          <strong>{formatDateWithHour(booking.date)}</strong>
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
@@ -30,6 +31,20 @@ const CardAgendaBooking = ({ booking }) => {
           <strong>{booking.BookingLocations[0].Location.name}</strong>
         </Typography>
       </div>
+      {booking.status === "En cours" && (
+        <div className="profile-agent-agenda-actions">
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ marginRight: "10px" }}
+          >
+            Annuler
+          </Button>
+          <Button variant="contained" color="primary">
+            Accepter
+          </Button>
+        </div>
+      )}
       {!compareCurrentDate(booking.date) && (
         <div className="profile-agent-agenda-card-info">
           <InfoIcon />

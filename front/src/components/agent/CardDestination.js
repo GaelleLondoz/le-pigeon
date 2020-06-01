@@ -47,7 +47,6 @@ const CardDestination = ({ destination }) => {
           component="img"
           alt={destination.Destination.Country.name}
           className={classes.media}
-          //image={destination.Destination.coverImage}
           image={
             "http://localhost:5000/destination/" +
             destination.Destination.coverImage

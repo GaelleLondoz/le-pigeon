@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Rating from "@material-ui/lab/Rating";
+import Alert from "@material-ui/lab/Alert";
 import UsersAPI from "../../components/services/userAPI";
 import ReviewsAPI from "../../components/services/reviewAPI";
 import EditAgentModal from "../../components/modals/EditAgentModal";
@@ -34,6 +35,7 @@ const Account = () => {
   });
 
   const [sendEditAgentLoading, setSendEditAgentLoading] = useState(false);
+  const [showFlash, setShowFlash] = useState(false);
 
   const fetchAvgRatings = async (id) => {
     try {
@@ -61,6 +63,7 @@ const Account = () => {
     try {
       await UsersAPI.editProfileAgent(id, agent);
       setSendEditAgentLoading(false);
+      setShowFlash(true);
     } catch (error) {
       setSendEditAgentLoading(false);
       console.log(error.response);
@@ -104,6 +107,11 @@ const Account = () => {
   return (
     <section className="profile-agent-account">
       <Container>
+        {showFlash ? (
+          <Alert variant="filled" severity="success">
+            Votre compte a bien été modifié
+          </Alert>
+        ) : null}
         <Typography variant="h5" style={{ marginBottom: "30px" }}>
           Bonjour {agent.User.lastName}, comment allez-vous aujourd'hui ?
         </Typography>
