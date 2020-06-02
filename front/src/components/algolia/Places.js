@@ -8,8 +8,8 @@ class Places extends Component {
         placeholder={this.props.placeholder}
         name={this.props.name}
         options={{
-          appId: "pl8P9UZ5YTUQ",
-          apiKey: "a379285faa78814d2308dcb4354015f3",
+          appId: process.env.REACT_APP_APP_ID_ALGOLIA_NAIM,
+          apiKey: process.env.REACT_APP_API_KEY_ALGOLIA_NAIM,
           language: "fr",
           type: this.props.type,
           // Other options from https://community.algolia.com/places/documentation.html#options

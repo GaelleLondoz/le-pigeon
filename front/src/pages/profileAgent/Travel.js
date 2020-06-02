@@ -186,7 +186,7 @@ const Travel = () => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={12} className={classes.gridInput}>
+              {/* <Grid item xs={12} className={classes.gridInput}>
                 <TextField
                   value={newDestination.country}
                   onChange={handleNewDestinationChange}
@@ -195,8 +195,8 @@ const Travel = () => {
                   variant="outlined"
                   label="Pays"
                 />
-              </Grid>
-              {/* <Grid item xs={12} className={classes.gridInput}>
+              </Grid> */}
+              <Grid item xs={12} className={classes.gridInput}>
                 <Places
                   type="country"
                   name="country"
@@ -212,7 +212,7 @@ const Travel = () => {
                   name="city"
                   placeholder="Insérer la ville"
                 />
-              </Grid> */}
+              </Grid>
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
                   value={newDestination.name}
