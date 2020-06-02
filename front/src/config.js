@@ -7,3 +7,5 @@ export const USER_URL = API_URL + "/me";
 export const LOGOUT_URL = API_URL + "/logout";
 
 export const USERS_URL = API_URL + "/users";
+
+export const MESSAGE_URL = API_URL + "/messages";

@@ -37,8 +37,9 @@ router.delete("/reviews/:id", checkAuth, reviewsController.destroy);
 // messages
 router.get("/messages", checkAuth, messagesController.index);
 router.post("/messages", checkAuth, messagesController.create);
-router.get("/messages/:id", checkAuth, messagesController.findOne);
-router.put("/messages/:id", checkAuth, messagesController.update);
+//router.get("/messages/:id", checkAuth, messagesController.findOne);
+router.get("/messages/:receiverID", checkAuth, messagesController.findMessages);
+router.put("/messages/:id/:status", checkAuth, messagesController.update);
 router.delete("/messages/:id", checkAuth, messagesController.destroy);
 
 module.exports = router;

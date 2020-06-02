@@ -1,15 +1,16 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { AUTH_URL, LOGOUT_URL, USERS_URL } from "../../config";
+import { AUTH_URL, LOGOUT_URL } from "../../config";
 
 function login(credentials) {
     return axios
         .post(AUTH_URL, credentials)
-        .then((response) => response.data.token)
-        .then((token) => {
-            window.localStorage.setItem("authToken", token);
+        .then((response) => response.data)
+        .then((data) => {
+            window.localStorage.setItem("authToken", data.token);
             //Set Axios with this token
-            setAxiosToken(token);
+            setAxiosToken(data.token);
+            return data.user;
         });
 }
 
@@ -54,20 +55,9 @@ function isAuthenticated() {
     return false;
 }
 
-function createUser(user) {
-    return axios
-        .post(USERS_URL, user)
-        .then((response) => response.status)
-        .then((status) => {
-            if (status === 200) {
-                return true;
-            }
-        });
-}
 export default {
     login,
     isAuthenticated,
     setup,
     logout,
-    createUser,
 };

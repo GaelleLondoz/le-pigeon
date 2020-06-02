@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import RootRef from '@material-ui/core/RootRef';
+import RootRef from "@material-ui/core/RootRef";
 import Avatar from "@material-ui/core/Avatar";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -63,7 +63,7 @@ let Nav = ({ history }) => {
 
   useEffect(() => {
     fetchUser();
-    console.log(domRef.current); // DOM node
+    //console.log(domRef.current); // DOM node
   }, []);
   // const observed = useRef(null);
 
@@ -73,7 +73,7 @@ let Nav = ({ history }) => {
   // }, [observed]);
 
   // useEffect(() => {
-    
+
   // }, []);
   const classes = useStyles();
   // const handleLogin = () => {
@@ -104,12 +104,12 @@ let Nav = ({ history }) => {
 
   const handleLogOut = async () => {
     try {
-      await authAPI.logout()
-      history.replace("/login")
+      await authAPI.logout();
+      history.replace("/login");
     } catch (error) {
       throw error.response;
     }
-  }
+  };
 
   // menu avatar  //////
 
@@ -117,42 +117,42 @@ let Nav = ({ history }) => {
   const renderMenu = (
     <RootRef rootRef={domRef}>
       <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/login">Se connecter</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/subscribe">S'inscrire</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/board">Mon tableau de bord</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/ask-travel">Mes demandes de voyage</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/destinations">Mes destinations</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/profile">Mon profil</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/add-travel">Ajouter un voyage</Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/profile">Profil voyageur</Link>
-      </MenuItem>
-      <MenuItem onClick={handleLogOut}>
-        <Link to="/">Se déconnecter</Link>
-      </MenuItem>
-    </Menu>
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/login">Se connecter</Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/subscribe">S'inscrire</Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/board">Mon tableau de bord</Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/ask-travel">Mes demandes de voyage</Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/destinations">Mes destinations</Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/profile">Mon profil</Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/add-travel">Ajouter un voyage</Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to="/profile">Profil voyageur</Link>
+        </MenuItem>
+        <MenuItem onClick={handleLogOut}>
+          <Link to="/">Se déconnecter</Link>
+        </MenuItem>
+      </Menu>
     </RootRef>
   );
 
@@ -162,52 +162,52 @@ let Nav = ({ history }) => {
   const renderMobileMenu = (
     <RootRef rootRef={domRef}>
       <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="se connecter" color="inherit">
-          <PowerIcon />
-        </IconButton>
-        <p>Se connecter</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="aide" color="inherit">
-          <HelpIcon />
-        </IconButton>
-        <p>Aide</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="devenir agent" color="inherit">
-          <AgentIcon />
-        </IconButton>
-        <p>Devenir Agent</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+      >
+        <MenuItem>
+          <IconButton aria-label="show 4 new mails" color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <MailIcon />
+            </Badge>
+          </IconButton>
+          <p>Messages</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton aria-label="se connecter" color="inherit">
+            <PowerIcon />
+          </IconButton>
+          <p>Se connecter</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton aria-label="aide" color="inherit">
+            <HelpIcon />
+          </IconButton>
+          <p>Aide</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton aria-label="devenir agent" color="inherit">
+            <AgentIcon />
+          </IconButton>
+          <p>Devenir Agent</p>
+        </MenuItem>
+        <MenuItem onClick={handleProfileMenuOpen}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      </Menu>
     </RootRef>
   );
 
@@ -230,7 +230,6 @@ let Nav = ({ history }) => {
   };
 
   return (
-
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>

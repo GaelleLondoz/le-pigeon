@@ -85,10 +85,8 @@ async function callOngoing(props) {
   serverConnection = new WebSocket(process.env.REACT_APP_WEB_RTC_SERVER);
 
   peerConnection = new RTCPeerConnection(peerConnectionConfig);
-  console.log({ peerConnection: peerConnection });
 
   peerConnection.onicecandidate = (event) => {
-    console.log("gotIceCandidate");
     if (event.candidate != null) {
       console.log({ eventCandidate: event });
       serverConnection.onopen = () =>
@@ -101,7 +99,6 @@ async function callOngoing(props) {
   };
 
   peerConnection.ontrack = (event) => {
-    console.log("START -> ONTRACK()");
     remoteVideo.srcObject = event.streams[0];
   };
 
@@ -128,32 +125,23 @@ async function callOngoing(props) {
 }
 
 function getUserMediaSuccess(stream) {
-  console.log("getUserMediaSuccess START");
-  console.log({ stream: stream });
   localVideo.srcObject = stream;
   localStream = stream;
 
   stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
-  console.log("getUserMediaSuccess END");
 }
 
 async function gotMessageFromServer(message) {
-  console.log("gotMessageFromServer");
-
-  console.log({ MESSAGEOF: message });
   var signal = JSON.parse(message.data);
   //Ignore messages from ourself
   if (signal.uuid === uuid && signal.sdp) {
     if (signal.sdp.type === "answer") {
-      console.log("ANSWER ARRIVED");
       await peerConnection
         .setRemoteDescription(new RTCSessionDescription(signal.sdp))
         .catch(errorHandler);
     } else return;
   }
   if (signal.uuid === uuid && signal.ice) {
-    console.log("gotMessageFromServer -> ICE");
-    console.log({ ice: signal.ice });
     await peerConnection
       .addIceCandidate(signal.ice)
       .then(onAddIceCandidateSuccess)
@@ -162,7 +150,6 @@ async function gotMessageFromServer(message) {
 }
 
 async function createdDescription(description) {
-  console.log("got description:" + description);
   const remoteStream = localStream;
   await peerConnection
     .setLocalDescription(description)

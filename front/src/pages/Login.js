@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import AuthAPI from "../components/services/authAPI";
+import userAPI from "../components/services/userAPI";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = ({ history }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
+  const { setCurrentUser } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -72,8 +74,10 @@ const Login = ({ history }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await AuthAPI.login({ login: credentials });
+      const connectedUser = await AuthAPI.login({ login: credentials });
       setIsAuthenticated(true);
+      setCurrentUser(connectedUser);
+      console.log({ CURRENTUSER: connectedUser });
       // history.replace("/");
     } catch (error) {
       throw error.response;
@@ -84,7 +88,7 @@ const Login = ({ history }) => {
   const handleSubscribe = async (event) => {
     event.preventDefault();
     try {
-      await AuthAPI.createUser({ user: user });
+      await userAPI.createUser({ user: user });
     } catch (error) {
       throw error.response;
     }

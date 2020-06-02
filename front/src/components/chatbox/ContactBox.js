@@ -30,21 +30,7 @@ export default function ContactBox(props) {
           <ListItemAvatar>
             <Avatar alt={props.user.name} src={props.user.avatar} />
           </ListItemAvatar>
-          <ListItemText
-            primary={props.user.name}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  className={classes.inline}
-                  color="textPrimary"
-                >
-                  Bruxelles
-                </Typography>
-              </React.Fragment>
-            }
-          />
+          <ListItemText primary={props.user.name} />
           <IconButton
             value={props.user.name}
             aria-label="chat"

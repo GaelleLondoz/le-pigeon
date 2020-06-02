@@ -10,6 +10,7 @@ import Head from "./components/Head";
 import Footer from "./components/Footer";
 import ChatBox from "./components/chatbox/ChatBox";
 import AuthAPI from "./components/services/authAPI";
+//import userAPI from "./components/services/userAPI";
 import AuthContext from "./contexts/AuthContext";
 
 import Home from "./pages/Home";
@@ -25,7 +26,6 @@ import PrivateRoute from "./components/redirections/PrivateRoutes";
 import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRoutes";
 
 AuthAPI.setup();
-
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     AuthAPI.isAuthenticated()

@@ -127,7 +127,6 @@ async function callOngoing(props) {
   peerConnection.ontrack = (event) => {
     console.log("got remote stream");
     if (event.streams != null) {
-      console.log("START -> ONTRACK()");
       remoteVideo.srcObject = event.streams[0];
     } else {
       console.log("got remote stream -> EVENT IS NULL");
@@ -147,31 +146,22 @@ async function callOngoing(props) {
 }
 
 function getUserMediaSuccess(stream) {
-  console.log("getUserMediaSuccess START");
   localStream = stream;
   localVideo.srcObject = stream;
 
   stream.getTracks().forEach(async function (track) {
     await peerConnection.addTrack(track, stream);
   });
-  console.log("getUserMediaSuccess END");
 }
 async function gotMessageFromServer(message) {
-  console.log("gotMessageFromServer");
-
   var signal = JSON.parse(message.data);
   console.log({ signal: signal });
   if (signal.uuid === uuid) {
-    console.log("gotMessageFromServer -> It's me");
     if (signal.sdp) {
-      console.log("gotMessageFromServer -> SET REMOTE DESCRIPTION - SDP");
-      console.log({ SDP: signal.sdp });
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(signal.sdp)
       );
-      console.log({ PEERCONNECTION: peerConnection });
       if (signal.sdp.type === "offer") {
-        console.log("gotMessageFromServer -> OFFER");
         await peerConnection
           .createAnswer()
           .then(createdDescription)
@@ -181,9 +171,7 @@ async function gotMessageFromServer(message) {
   }
 }
 async function createdDescription(description) {
-  console.log("got description");
   const remoteStream = localStream;
-  console.log({ REMOTESTREAM: remoteStream });
   await peerConnection
     .setLocalDescription(description)
     .then(function () {
