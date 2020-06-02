@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 
 // css
-import "../../assets/sass/components/search/_searchWithChoice.scss"
+import "../../assets/sass/components/_search.scss"
 
 const useStyles = makeStyles((theme) => ({
   formControl: {

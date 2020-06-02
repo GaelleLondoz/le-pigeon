@@ -1,0 +1,47 @@
+@import "../variables";
+@import "../mixins";
+
+.SearchResult .MuiAvatar-root {
+    height: 100px !important;
+    width: 100px;
+    border: 1px solid blue !important;
+}
+
+.AgentDescription {
+    flex-direction: column;
+    h2 {
+        font-family: $main-font;
+        font-size:30px;
+        font-weight: 100;
+    }
+}   
+
+.AgentInfo {
+    flex-direction: row;
+    display: flex;
+}
+
+.AgentText {
+    margin: 0;
+    top: 50%;
+}
+
+.RatingNumber {
+    text-align: center !important;
+    height: 30px;
+}
+
+links {
+    flex-direction: row;
+    display: flex;
+    & a {
+        color: $blue;
+        &:hover {
+            color: $dark-blue;
+        }
+    }
+    
+}
+
+
+

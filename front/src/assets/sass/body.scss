@@ -12,7 +12,7 @@
 
 //Homepage
 
-section#header-homepage {
+section#search-homepage {
   position: relative;
   background-color: #3993dd;
   padding: 100px 0;
@@ -165,7 +165,7 @@ section#articles-blog {
 
 // Media Queries
 @media (max-width: 700px) {
-  section#header-homepage {
+  section#search-homepage {
     .MuiTypography-h1 {
       font-size: 3rem;
     }

@@ -17,6 +17,7 @@ import Menu from "@material-ui/core/Menu";
 import AgentIcon from "@material-ui/icons/EmojiEmotions";
 import PowerIcon from "@material-ui/icons/Power";
 import AuthContext from "../../contexts/AuthContext";
+import userAPI from "../services/userAPI";
 
 // icons
 import MailIcon from "@material-ui/icons/Mail";
@@ -25,9 +26,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import HelpIcon from "@material-ui/icons/Help";
 
 // sass
-import "../../assets/sass/_nav.scss";
-import "../../assets/sass/nav_avatar.scss";
-import userAPI from "../services/userAPI";
+import "../../assets/sass/components/navigation/_nav.scss";
+import "../../assets/sass/components/navigation/nav_avatar.scss";
 
 const useStyles = makeStyles((theme) => ({
   grow: {

@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
-import "../assets/sass/footer.scss";
+import "../assets/sass/components/_footer.scss";
 
 function Footer() {
   return (

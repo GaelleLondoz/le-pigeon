@@ -21,7 +21,7 @@ const Plan = () => {
           Organisez votre voyage en toute confiance
         </Typography>
 
-        <List className="progressBar">
+        <List search-homepageName="progressBar">
           <ListItem>Trouvez</ListItem>
           <ListItem>Planifiez</ListItem>
           <ListItem>Partez</ListItem>
@@ -29,9 +29,9 @@ const Plan = () => {
 
         <Grid container justify="center" spacing={10}>
           <Grid item xs={12} md={4}>
-            <Card className="">
+            <Card search-homepageName="">
               <CardContent>
-                <Box component="div" className="icon-container">
+                <Box component="div" search-homepageName="icon-container">
                   <SearchIcon />
                 </Box>
                 <Typography paragraph={true}>
@@ -42,9 +42,9 @@ const Plan = () => {
             </Card>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card className="">
+            <Card search-homepageName="">
               <CardContent>
-                <Box component="div" className="icon-container">
+                <Box component="div" search-homepageName="icon-container">
                   <EventNoteIcon />
                 </Box>
                 <Typography paragraph={true}>
@@ -55,9 +55,9 @@ const Plan = () => {
             </Card>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card className="">
+            <Card search-homepageName="">
               <CardContent>
-                <Box component="div" className="icon-container">
+                <Box component="div" search-homepageName="icon-container">
                   <FlightTakeoffIcon />
                 </Box>
                 <Typography paragraph={true}>

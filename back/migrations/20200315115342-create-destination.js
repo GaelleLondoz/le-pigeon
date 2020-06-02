@@ -24,6 +24,14 @@ module.exports = {
           key: "id"
         }
       },
+      cityID: { //
+        allowNull: false, //
+        type: Sequelize.INTEGER, //
+        references: { //
+          model: "Cities", //
+          key: "id" //
+        } //
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING

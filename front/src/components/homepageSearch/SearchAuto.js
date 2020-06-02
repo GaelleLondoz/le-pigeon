@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AlgoliaPlaces from 'algolia-places-react';
 
 // css
-import "../../assets/sass/components/search/_searchAuto.scss"
+import "../../assets/sass/components/_search.scss"
 
 
 class SearchAuto extends Component {

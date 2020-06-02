@@ -7,6 +7,7 @@ module.exports = {
     let count = 30;
     while (count--) {
       data.push({
+        cityID: faker.random.number({ min: 1, max: 15, precision: 1 }),
         countryID: faker.random.number({ min: 1, max: 15, precision: 1 }),
         continentID: faker.random.number({ min: 1, max: 7, precision: 1 }),
         name: faker.lorem.sentence(3),

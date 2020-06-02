@@ -6,14 +6,20 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
-import SearchResult from "../../components/search/SearchResult";
-import SearchAuto from "../../components/search/SearchAuto";
-import SearchWithChoice from "../../components/search/SearchWithChoice";
+
+// components
+import SearchResult from "../../components/homepageSearch/SearchResult";
+import SearchResult02 from "../../components/homepageSearch/SearchResult02";
+import SearchAuto from "../../components/homepageSearch/SearchAuto";
+import SearchWithChoice from "../../components/homepageSearch/SearchWithChoice";
+
+// scss
+import "../../assets/sass/components/_search.scss"
 
 
-const Header = () => {
+const Search = () => {
   return (
-    <section id="header-homepage">
+    <section id="search-homepage">
       <Container>
         <Typography variant="h1">Trouvez votre agent de voyage</Typography>
         <div className="form-search">
@@ -21,20 +27,9 @@ const Header = () => {
             <Grid container justify="center" spacing={4}>
                <Grid item>
                  <SearchAuto />
-                {/*<TextField
-                  id="outlined-basic"
-                  label="Quelle région du monde ?"
-                  variant="outlined"
-                />*/}
               </Grid> 
               <Grid item>
                 <SearchWithChoice />
-                {/* <TextField
-                  id="outlined-basic"
-                  label="Quel type de voyage ?"
-                  variant="outlined"
-                /> */}
-                
               </Grid>
               <Grid item>
                 <Button variant="contained" color="secondary" size="large">
@@ -45,9 +40,10 @@ const Header = () => {
           </form>
         </div>
         <SearchResult />
+        <SearchResult02 />
       </Container>
     </section>
   );
 };
 
-export default Header;
+export default Search;

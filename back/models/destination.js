@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
       },
+      cityID: { //
+        type: DataTypes.INTEGER, //
+        allowNull: false //
+      }, //
       name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -28,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "countryID",
       allowNull: false
     });
+    Destination.belongsTo(models.City, { //
+      foreignKey: "cityID", //
+      allowNull: false //
+    }); //
+    
     Destination.hasMany(models.UserDestination);
     Destination.hasMany(models.PictureDestination);
   };
