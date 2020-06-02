@@ -90,10 +90,10 @@ router.get(
   checkAuth,
   userDestinationsController.getDestinationByUser
 );
-router.get(
-  "/destinations/continents",
-  userDestinationsController.getAllContinents
-);
+// router.get(
+//   "/destinations/continents",
+//   userDestinationsController.getAllContinents
+// );
 router.post("/destinations/new", checkAuth, userDestinationsController.create);
 
 module.exports = router;

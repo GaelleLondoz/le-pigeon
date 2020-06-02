@@ -45,17 +45,17 @@ const CardDestination = ({ destination }) => {
         {/* TODO => VERIFY IF DESTINATION HAS PICTURE, IF NOT MAKE A COVER IMAGE DEFAULT ?? */}
         <CardMedia
           component="img"
-          alt={destination.Destination.Country.name}
+          alt={destination.name}
           className={classes.media}
           image={
             "http://localhost:5000/destination/" +
             destination.Destination.coverImage
           }
-          title={destination.Destination.Country.name}
+          title={destination.Destination.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h3">
-            {destination.Destination.Continent.name}
+            {destination.Destination.name}
           </Typography>
           <Typography
             gutterBottom
@@ -63,7 +63,7 @@ const CardDestination = ({ destination }) => {
             component="h4"
             className={classes.h4}
           >
-            {destination.Destination.Country.name}
+            {destination.Destination.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {destination.remarks.substr(0, 60)}...

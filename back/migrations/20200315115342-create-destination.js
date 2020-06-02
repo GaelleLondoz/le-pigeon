@@ -8,22 +8,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      countryID: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Countries",
-          key: "id",
-        },
-      },
-      continentID: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Continents",
-          key: "id",
-        },
-      },
+      // countryID: {
+      //   allowNull: false,
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: "Countries",
+      //     key: "id",
+      //   },
+      // },
+      // continentID: {
+      //   allowNull: false,
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: "Continents",
+      //     key: "id",
+      //   },
+      // },
       name: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -31,6 +31,14 @@ module.exports = {
       coverImage: {
         type: Sequelize.STRING,
         allowNull: true,
+      },
+      lat: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      lng: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

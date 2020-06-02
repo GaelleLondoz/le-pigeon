@@ -1,8 +1,8 @@
 const {
   UserDestination,
   Destination,
-  Country,
-  Continent,
+  //Country,
+  //Continent,
   PictureDestination,
   User,
 } = require("../models");
@@ -27,20 +27,22 @@ const create = async (req, res) => {
   });
   //Trouvez une solution => lorsque le continent ou le pays existe déjà en base de donnée, il l'enregistre quand meme, => Doublon!!
   try {
-    const continent = await Continent.create({
-      name: req.body.continent,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    const country = await Country.create({
-      name: req.body.country,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    // const continent = await Continent.create({
+    //   name: req.body.continent,
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // });
+    // const country = await Country.create({
+    //   name: req.body.country,
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // });
     const destination = await Destination.create({
-      countryID: country.id,
-      continentID: continent.id,
+      //countryID: country.id,
+      //continentID: continent.id,
       name: req.body.name,
+      lat: req.body.lat,
+      lng: req.body.lng,
       coverImage: fileSendToDatabase,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -60,20 +62,20 @@ const create = async (req, res) => {
   }
 };
 
-const getAllContinents = async (req, res) => {
-  try {
-    const continents = await Continent.findAll({
-      attributes: ["id", "name"],
-    });
-    if (!continents) {
-      return res.status(404).json({ msg: "Continents Not Found" });
-    }
-    return res.status(200).json(continents);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "Error Server" });
-  }
-};
+// const getAllContinents = async (req, res) => {
+//   try {
+//     const continents = await Continent.findAll({
+//       attributes: ["id", "name"],
+//     });
+//     if (!continents) {
+//       return res.status(404).json({ msg: "Continents Not Found" });
+//     }
+//     return res.status(200).json(continents);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ msg: "Error Server" });
+//   }
+// };
 
 const getAllDestinationsByUser = async (req, res) => {
   const id = req.params.id;
@@ -83,14 +85,14 @@ const getAllDestinationsByUser = async (req, res) => {
       include: [
         {
           model: Destination,
-          include: [
-            {
-              model: Country,
-            },
-            {
-              model: Continent,
-            },
-          ],
+          // include: [
+          //   {
+          //     model: Country,
+          //   },
+          //   {
+          //     model: Continent,
+          //   },
+          // ],
         },
       ],
     });
@@ -114,14 +116,6 @@ const getDestinationByUser = async (req, res) => {
       include: [
         {
           model: Destination,
-          include: [
-            {
-              model: Country,
-            },
-            {
-              model: Continent,
-            },
-          ],
         },
       ],
     });
@@ -157,6 +151,6 @@ module.exports = {
   getAllDestinationsByUser,
   getDestinationByUser,
   create,
-  getAllContinents,
+  //getAllContinents,
   getPicturesDestinationByDestination,
 };

@@ -10,7 +10,8 @@ module.exports = {
       data.push({
         date: faker.date.future(1),
         status: faker.random.arrayElement(dataStatus),
-        userID: faker.random.number({ min: 1, max: 30, precision: 1 }),
+        userID: faker.random.number({ min: 1, max: 15, precision: 1 }),
+        agentID: faker.random.number({ min: 16, max: 30, precision: 1 }),
         createdAt: new Date(),
         updatedAt: new Date(),
       });

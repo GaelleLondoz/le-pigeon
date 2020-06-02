@@ -38,6 +38,7 @@ const ShowDestination = ({ destination, pictures }) => {
       prevEl: ".swiper-button-prev",
     },
   };
+  console.log(destination.Destination.lat);
   return (
     <section className="travel-details">
       <Container>
@@ -45,8 +46,7 @@ const ShowDestination = ({ destination, pictures }) => {
           <Grid container justify="center">
             <Grid item xs={12} className={classes.locationTitle}>
               <Typography variant="h4">
-                {destination.Destination.Continent.name} |{" "}
-                {destination.Destination.Country.name}
+                {destination.Destination.name} | {destination.Destination.name}
               </Typography>
             </Grid>
           </Grid>

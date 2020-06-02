@@ -45,9 +45,10 @@ const Travel = () => {
     name: "",
     coverImage: "",
     remarks: "",
+    lat: "",
+    lng: "",
   });
   const [pictures, setPictures] = useState([]);
-  const [continents, setContinents] = useState([]);
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -64,12 +65,16 @@ const Travel = () => {
     const name = e.currentTarget.name;
 
     setNewDestination({ ...newDestination, [name]: value });
+    console.log(newDestination);
   };
 
-  const handlePlacesCountryChange = (suggestion) => {
+  const handlePlacesLatLngChange = (suggestion) => {
     console.log(suggestion);
-    const name = suggestion.type;
-    setNewDestination({ ...newDestination, [name]: suggestion.value });
+    setNewDestination({
+      ...newDestination,
+      lat: suggestion.latlng.lat,
+      lng: suggestion.latlng.lng,
+    });
   };
 
   const createImage = (file) => {
@@ -119,15 +124,6 @@ const Travel = () => {
     }
   };
 
-  const fetchContinents = async () => {
-    try {
-      const data = await UserDestinationsAPI.getAllContinents();
-      setContinents(data);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
   const addInputPicture = () => {
     setPictures([...pictures, { id: Math.random(), picture: "" }]);
   };
@@ -144,9 +140,6 @@ const Travel = () => {
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
-  useEffect(() => {
-    fetchContinents();
-  }, []);
 
   return (
     <section className="profile-agent-destinations">
@@ -170,22 +163,6 @@ const Travel = () => {
             onSubmit={handleNewDestinationSubmit}
           >
             <Grid container>
-              <Grid item xs={12} className={classes.gridInput}>
-                <Select
-                  native
-                  name="continent"
-                  value={newDestination.continent}
-                  onChange={handleNewDestinationChange}
-                  fullWidth
-                  variant="outlined"
-                >
-                  {continents.map((continent) => (
-                    <option value={continent.name} key={continent.id}>
-                      {continent.name}
-                    </option>
-                  ))}
-                </Select>
-              </Grid>
               {/* <Grid item xs={12} className={classes.gridInput}>
                 <TextField
                   value={newDestination.country}
@@ -196,21 +173,24 @@ const Travel = () => {
                   label="Pays"
                 />
               </Grid> */}
-              <Grid item xs={12} className={classes.gridInput}>
+              {/* <Grid item xs={12} className={classes.gridInput}>
                 <Places
-                  type="country"
-                  name="country"
+                  type="latlng"
+                  name="latlng"
                   placeholder="Insérer le pays"
                   handleChange={(suggestion) =>
-                    handlePlacesCountryChange(suggestion)
+                    handlePlacesLatLngChange(suggestion)
                   }
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} className={classes.gridInput}>
                 <Places
                   type="city"
-                  name="city"
-                  placeholder="Insérer la ville"
+                  name="latlng"
+                  placeholder="Insérer la ville de votre destination"
+                  handleChange={(suggestion) =>
+                    handlePlacesLatLngChange(suggestion)
+                  }
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>

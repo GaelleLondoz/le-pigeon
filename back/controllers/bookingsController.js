@@ -1,4 +1,4 @@
-const { Booking, BookingLocation, Location } = require("../models");
+const { Booking, BookingLocation, Location, User } = require("../models");
 
 const index = (req, res) => {
   return Booking.findAll()
@@ -45,7 +45,7 @@ const getBookingsByAgent = async (req, res) => {
 
   try {
     const bookings = await Booking.findAll({
-      where: { userID: id },
+      where: { agentID: id },
       attributes: ["id", "date", "status"],
       include: [
         {
@@ -57,6 +57,11 @@ const getBookingsByAgent = async (req, res) => {
               attributes: ["name"],
             },
           ],
+        },
+        {
+          model: User,
+          as: "booker",
+          attributes: ["firstName", "lastName"],
         },
       ],
     });
