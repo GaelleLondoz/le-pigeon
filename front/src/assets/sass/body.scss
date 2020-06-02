@@ -302,6 +302,15 @@ section.profile-agent-agenda {
     background-color: #fff;
   }
 }
+div.edit-agent-modal {
+  .MuiButton-containedPrimary {
+    color: #fff;
+    background-color: green;
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
 
 // Media Queries
 @media (max-width: 700px) {

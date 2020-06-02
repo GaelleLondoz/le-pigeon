@@ -18,6 +18,7 @@ const LoaderButton = ({
   const classes = useStyles();
   return (
     <Button
+      className="button-loader"
       onClick={onClick}
       type="submit"
       variant="contained"

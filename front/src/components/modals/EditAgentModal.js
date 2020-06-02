@@ -34,6 +34,7 @@ const EditAgentModal = ({
         Editer mon profil
       </Button>
       <Dialog
+        className="edit-agent-modal"
         open={open}
         onClose={handleModalOpenToggle}
         aria-labelledby="form-dialog-title"
@@ -99,7 +100,7 @@ const EditAgentModal = ({
               onChange={onChange}
             />
             <Grid container alignItems="center">
-              <Grid item xs={10}>
+              <Grid item xs={11}>
                 <TextField
                   margin="dense"
                   name="price"
@@ -109,7 +110,7 @@ const EditAgentModal = ({
                   onChange={onChange}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={1}>
                 <Avatar alt="Remy Sharp" src={agent.User.avatar} />
               </Grid>
             </Grid>

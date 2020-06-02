@@ -6,7 +6,7 @@ import {
   Button,
   Select,
   TextField,
-  CircularProgress,
+  Input,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
@@ -44,6 +44,7 @@ const Travel = () => {
     coverImage: "",
     remarks: "",
   });
+  const [pictures, setPictures] = useState([]);
   const [continents, setContinents] = useState([]);
 
   const [openForm, setOpenForm] = useState(false);
@@ -105,12 +106,30 @@ const Travel = () => {
     }
   };
 
+  const addInputPicture = () => {
+    setPictures([...pictures, { id: Math.random(), picture: "" }]);
+    //console.log(pictures);
+  };
+
+  const handlePicturesChange = (e, index) => {
+    pictures[index].picture = e.target.files;
+    setPictures(pictures);
+    console.log(pictures);
+  };
+
+  const handlePictureRemove = (e, id) => {
+    console.log(id);
+    setPictures(pictures.filter((picture) => picture.id !== id));
+  };
+
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
   useEffect(() => {
     fetchContinents();
   }, []);
+
+  console.log(pictures);
 
   return (
     <section className="profile-agent-destinations">
@@ -194,23 +213,60 @@ const Travel = () => {
                   //label="Image de couverture"
                 />
               </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <Button
+                  onClick={addInputPicture}
+                  variant="contained"
+                  color="primary"
+                >
+                  + Ajouter des images
+                </Button>
+                {pictures.map((picture, index) => {
+                  return (
+                    <div key={picture.id}>
+                      <Grid container alignItems="center">
+                        <Grid item xs={10}>
+                          <TextField
+                            style={{ marginTop: "20px" }}
+                            //value={picture}
+                            onChange={(e) => handlePicturesChange(e, index)}
+                            name="pictures"
+                            fullWidth
+                            type="file"
+                            variant="outlined"
+                            //label="Image de couverture"
+                          />
+                        </Grid>
+                        <Grid item xs={2}>
+                          <Button
+                            onClick={(e) => handlePictureRemove(e, picture.id)}
+                            type="button"
+                            variant="contained"
+                            color="secondary"
+                            style={{
+                              marginTop: "20px",
+                              marginLeft: "10px",
+                              padding: "16px 16px",
+                            }}
+                          >
+                            X
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  );
+                })}
+              </Grid>
               <Grid item className={classes.gridInput}>
                 <Button
                   type="button"
-                  onClick={handleDestinationFormClick}
+                  onClick={(e) => handleDestinationFormClick(e)}
                   variant="contained"
                   color="secondary"
                   style={{ marginRight: "10px" }}
                 >
                   Annuler
                 </Button>
-                {/* <Button type="submit" variant="contained" color="primary">
-                  {sendDestinationLoading ? (
-                    <CircularProgress color={classes.loaderButton} size={25} />
-                  ) : (
-                    "Créer"
-                  )}
-                </Button> */}
                 <LoaderButton
                   colorButton="primary"
                   loadingButton={sendDestinationLoading}
