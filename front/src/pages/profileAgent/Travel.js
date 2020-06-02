@@ -36,7 +36,7 @@ const Travel = () => {
   const classes = useStyles();
   const url = window.location.href;
   const id = +url.substring(url.lastIndexOf("/") + 1);
-  const ITEMSBYPAGE = 5;
+  const ITEMSBYPAGE = 6;
 
   const [destinations, setDestinations] = useState([]);
   const [newDestination, setNewDestination] = useState({
