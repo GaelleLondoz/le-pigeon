@@ -50,7 +50,7 @@ const create = async (req, res) => {
     await UserDestination.create({
       userID: id,
       destinationID: destination.id,
-      date: "2017-12-26 16:11:50",
+      date: req.body.date,
       remarks: req.body.remarks,
       createdAt: new Date(),
       updatedAt: new Date(),

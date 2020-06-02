@@ -47,6 +47,7 @@ const Travel = () => {
     remarks: "",
     lat: "",
     lng: "",
+    date: "",
   });
   const [pictures, setPictures] = useState([]);
 
@@ -205,6 +206,17 @@ const Travel = () => {
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
+                  value={newDestination.date}
+                  onChange={handleNewDestinationChange}
+                  name="date"
+                  variant="outlined"
+                  fullWidth
+                  //label="Date de votre destination"
+                  type="date"
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <TextField
                   value={newDestination.remarks}
                   onChange={handleNewDestinationChange}
                   name="remarks"
@@ -295,12 +307,14 @@ const Travel = () => {
             </Grid>
           ))}
         </Grid>
-        <Paginator
-          currentPage={currentPage}
-          itemsByPage={ITEMSBYPAGE}
-          length={destinations.length}
-          onPageChanged={handlePaginationChange}
-        />
+        {destinations.length > 6 && (
+          <Paginator
+            currentPage={currentPage}
+            itemsByPage={ITEMSBYPAGE}
+            length={destinations.length}
+            onPageChanged={handlePaginationChange}
+          />
+        )}
       </Container>
     </section>
   );
