@@ -5,6 +5,7 @@ import {
   TextField,
   Avatar,
   Typography,
+  Slide,
 } from "@material-ui/core";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Rating from "@material-ui/lab/Rating";
@@ -64,6 +65,9 @@ const Account = () => {
       await UsersAPI.editProfileAgent(id, agent);
       setSendEditAgentLoading(false);
       setShowFlash(true);
+      // setTimeout(() => {
+      //   setShowFlash(false);
+      // }, 5000);
     } catch (error) {
       setSendEditAgentLoading(false);
       console.log(error.response);
@@ -108,10 +112,15 @@ const Account = () => {
     <section className="profile-agent-account">
       <Container>
         {showFlash ? (
-          <Alert variant="filled" severity="success">
-            Votre compte a bien été modifié
-          </Alert>
-        ) : null}
+          <Slide direction="down" in={showFlash} mountOnEnter unmountOnExit>
+            <Alert variant="filled" severity="success">
+              Votre compte a bien été modifié
+            </Alert>
+          </Slide>
+        ) : // <Alert variant="filled" severity="success">
+        //   Votre compte a bien été modifié
+        // </Alert>
+        null}
         <Typography variant="h5" style={{ marginBottom: "30px" }}>
           Bonjour {agent.User.lastName}, comment allez-vous aujourd'hui ?
         </Typography>
