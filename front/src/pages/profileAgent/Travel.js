@@ -13,6 +13,7 @@ import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
 import CardDestination from "../../components/agent/CardDestination";
 import LoaderButton from "../../components/loaders/LoaderButton";
 import Places from "../../components/algolia/Places";
+import Paginator from "../../components/Pagination";
 
 const useStyles = makeStyles((theme) => ({
   buttonAddDestination: {
@@ -35,6 +36,7 @@ const Travel = () => {
   const classes = useStyles();
   const url = window.location.href;
   const id = +url.substring(url.lastIndexOf("/") + 1);
+  const ITEMSBYPAGE = 5;
 
   const [destinations, setDestinations] = useState([]);
   const [newDestination, setNewDestination] = useState({
@@ -50,6 +52,8 @@ const Travel = () => {
   const [openForm, setOpenForm] = useState(false);
 
   const [sendDestinationLoading, setSendDestinationLoading] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleDestinationFormClick = () => {
     setOpenForm(!openForm);
@@ -93,6 +97,18 @@ const Travel = () => {
       console.log(error.response);
     }
   };
+
+  //gestion du changement de page
+  const handlePaginationChange = (e, page) => {
+    setCurrentPage(page);
+    //window.scrollTo(0, 0);
+  };
+
+  const paginatedDestinations = Paginator.getData(
+    destinations,
+    currentPage,
+    ITEMSBYPAGE
+  );
 
   const fetchDestinations = async (id) => {
     try {
@@ -293,12 +309,18 @@ const Travel = () => {
           </form>
         )}
         <Grid container>
-          {destinations.map((destination) => (
+          {paginatedDestinations.map((destination) => (
             <Grid item key={destination.id} m={4} xs={12} md={4}>
               <CardDestination destination={destination} />
             </Grid>
           ))}
         </Grid>
+        <Paginator
+          currentPage={currentPage}
+          itemsByPage={ITEMSBYPAGE}
+          length={destinations.length}
+          onPageChanged={handlePaginationChange}
+        />
       </Container>
     </section>
   );
