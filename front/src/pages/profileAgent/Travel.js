@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
 import CardDestination from "../../components/agent/CardDestination";
 import LoaderButton from "../../components/loaders/LoaderButton";
-import Places from "../../components/Places";
+import Places from "../../components/algolia/Places";
 
 const useStyles = makeStyles((theme) => ({
   buttonAddDestination: {
@@ -62,6 +62,12 @@ const Travel = () => {
     setNewDestination({ ...newDestination, [name]: value });
   };
 
+  const handlePlacesCountryChange = (suggestion) => {
+    console.log(suggestion);
+    const name = suggestion.type;
+    setNewDestination({ ...newDestination, [name]: suggestion.value });
+  };
+
   const createImage = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -108,17 +114,14 @@ const Travel = () => {
 
   const addInputPicture = () => {
     setPictures([...pictures, { id: Math.random(), picture: "" }]);
-    //console.log(pictures);
   };
 
   const handlePicturesChange = (e, index) => {
     pictures[index].picture = e.target.files;
     setPictures(pictures);
-    console.log(pictures);
   };
 
   const handlePictureRemove = (e, id) => {
-    console.log(id);
     setPictures(pictures.filter((picture) => picture.id !== id));
   };
 
@@ -128,8 +131,6 @@ const Travel = () => {
   useEffect(() => {
     fetchContinents();
   }, []);
-
-  console.log(pictures);
 
   return (
     <section className="profile-agent-destinations">
@@ -180,7 +181,21 @@ const Travel = () => {
                 />
               </Grid>
               {/* <Grid item xs={12} className={classes.gridInput}>
-                <Places country="country" />
+                <Places
+                  type="country"
+                  name="country"
+                  placeholder="Insérer le pays"
+                  handleChange={(suggestion) =>
+                    handlePlacesCountryChange(suggestion)
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <Places
+                  type="city"
+                  name="city"
+                  placeholder="Insérer la ville"
+                />
               </Grid> */}
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
