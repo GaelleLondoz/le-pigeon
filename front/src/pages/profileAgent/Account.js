@@ -112,7 +112,6 @@ const Account = () => {
     fetchDestinationsByAgent(id);
   }, [id]);
 
-  console.log(destinations);
   const initialPosition = [];
   destinations.map((destination, index) =>
     index === 0

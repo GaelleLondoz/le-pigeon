@@ -39,7 +39,6 @@ const Agenda = () => {
   useEffect(() => {
     fetchBookings(id);
   }, [id]);
-  console.log(bookings);
   return (
     <section className="profile-agent-agenda">
       <AppBar

@@ -66,7 +66,6 @@ const Travel = () => {
     const name = e.currentTarget.name;
 
     setNewDestination({ ...newDestination, [name]: value });
-    console.log(newDestination);
   };
 
   const handlePlacesLatLngChange = (suggestion) => {
@@ -164,26 +163,6 @@ const Travel = () => {
             onSubmit={handleNewDestinationSubmit}
           >
             <Grid container>
-              {/* <Grid item xs={12} className={classes.gridInput}>
-                <TextField
-                  value={newDestination.country}
-                  onChange={handleNewDestinationChange}
-                  name="country"
-                  fullWidth
-                  variant="outlined"
-                  label="Pays"
-                />
-              </Grid> */}
-              {/* <Grid item xs={12} className={classes.gridInput}>
-                <Places
-                  type="latlng"
-                  name="latlng"
-                  placeholder="Insérer le pays"
-                  handleChange={(suggestion) =>
-                    handlePlacesLatLngChange(suggestion)
-                  }
-                />
-              </Grid> */}
               <Grid item xs={12} className={classes.gridInput}>
                 <Places
                   type="city"
@@ -201,7 +180,7 @@ const Travel = () => {
                   name="name"
                   variant="outlined"
                   fullWidth
-                  label="Titre"
+                  label="Donnez un titre à votre voyage"
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
@@ -223,6 +202,7 @@ const Travel = () => {
                   fullWidth
                   variant="outlined"
                   label="Remarque"
+                  type="textarea"
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>

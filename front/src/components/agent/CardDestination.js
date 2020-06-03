@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     height: 140,
   },
   h4: {
-    color: "red",
+    color: "#2E4052",
   },
   date: {
     marginTop: "15px",
@@ -54,9 +54,9 @@ const CardDestination = ({ destination }) => {
           title={destination.Destination.name}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h3">
+          {/* <Typography gutterBottom variant="h5" component="h3">
             {destination.Destination.name}
-          </Typography>
+          </Typography> */}
           <Typography
             gutterBottom
             variant="h5"
