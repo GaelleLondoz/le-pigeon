@@ -13,6 +13,7 @@ import Alert from "@material-ui/lab/Alert";
 import UsersAPI from "../../components/services/userAPI";
 import ReviewsAPI from "../../components/services/reviewAPI";
 import EditAgentModal from "../../components/modals/EditAgentModal";
+import userDestinationsAPI from "../../components/services/userDestinationsAPI";
 
 const Account = () => {
   const url = window.location.href;
@@ -34,6 +35,8 @@ const Account = () => {
     avgRatings: "",
     countComments: "",
   });
+
+  const [destinations, setDestinations] = useState([]);
 
   const [sendEditAgentLoading, setSendEditAgentLoading] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
@@ -58,6 +61,15 @@ const Account = () => {
     }
   };
 
+  const fetchDestinationsByAgent = async (id) => {
+    try {
+      const data = await userDestinationsAPI.getAllDestinationsByUser(id);
+      setDestinations(data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   const handleEditAgentSubmit = async (e) => {
     e.preventDefault();
     setSendEditAgentLoading(true);
@@ -65,9 +77,6 @@ const Account = () => {
       await UsersAPI.editProfileAgent(id, agent);
       setSendEditAgentLoading(false);
       setShowFlash(true);
-      // setTimeout(() => {
-      //   setShowFlash(false);
-      // }, 5000);
     } catch (error) {
       setSendEditAgentLoading(false);
       console.log(error.response);
@@ -99,14 +108,20 @@ const Account = () => {
     fetchAvgRatings(id);
   }, [id]);
 
-  //console.log(agent);
-  //console.log(avgRatings);
+  useEffect(() => {
+    fetchDestinationsByAgent(id);
+  }, [id]);
 
-  //TODO => ADD FIELD LAT AND LNG IN TABLE COUNTRY ???
-  const position = [
-    [51.505, -0.09],
-    [51.508, -0.12],
-  ];
+  console.log(destinations);
+  const initialPosition = [];
+  destinations.map((destination, index) =>
+    index === 0
+      ? initialPosition.push([
+          destination.Destination.lat,
+          destination.Destination.lng,
+        ])
+      : ""
+  );
 
   return (
     <section className="profile-agent-account">
@@ -117,10 +132,7 @@ const Account = () => {
               Votre compte a bien été modifié
             </Alert>
           </Slide>
-        ) : // <Alert variant="filled" severity="success">
-        //   Votre compte a bien été modifié
-        // </Alert>
-        null}
+        ) : null}
         <Typography variant="h5" style={{ marginBottom: "30px" }}>
           Bonjour {agent.User.lastName}, comment allez-vous aujourd'hui ?
         </Typography>
@@ -185,19 +197,20 @@ const Account = () => {
                 <Typography variant="h5" style={{ marginBottom: "15px" }}>
                   Mes destinations
                 </Typography>
-                <Map center={position[0]} zoom={12}>
+                <Map center={initialPosition[0]} zoom={1}>
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   />
-                  {position.map((mark, index) => (
-                    //When data provide from database => change key
-                    <Marker key={index} position={[mark[0], mark[1]]}>
-                      <Popup>
-                        A pretty CSS3 popup.
-                        <br />
-                        Easily customizable.
-                      </Popup>
+                  {destinations.map((destination) => (
+                    <Marker
+                      key={destination.id}
+                      position={[
+                        destination.Destination.lat,
+                        destination.Destination.lng,
+                      ]}
+                    >
+                      <Popup>{destination.Destination.name}</Popup>
                     </Marker>
                   ))}
                 </Map>
