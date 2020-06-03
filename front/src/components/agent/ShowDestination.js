@@ -67,7 +67,7 @@ const ShowDestination = ({ destination, pictures }) => {
                   <div key={picture.id}>
                     <img
                       alt={picture.alt}
-                      src={picture.path}
+                      src={"http://localhost:5000/destination/" + picture.path}
                       className={classes.picture}
                     />
                   </div>
