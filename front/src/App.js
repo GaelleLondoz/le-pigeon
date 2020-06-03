@@ -23,6 +23,7 @@ import Dashboard from "./pages/Dashboard";
 import "./assets/sass/body.scss";
 import PrivateRoute from "./components/redirections/PrivateRoutes";
 import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRoutes";
+import ProfileAgent from "./pages/profileAgent";
 
 AuthAPI.setup();
 
@@ -58,6 +59,11 @@ const App = () => {
             <Route exact path="/become-agent" component={BecomeAgent} />
             <LoginNotAllowedRoutes exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute
+              exact
+              path="/profile/agent/:id"
+              component={ProfileAgent}
+            />
           </Switch>
         </main>
         {/*<Footer />*/}
