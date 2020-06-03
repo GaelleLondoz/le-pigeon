@@ -3,6 +3,7 @@ import { Typography, Button } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InfoIcon from "@material-ui/icons/Info";
 import { formatDateWithHour } from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
@@ -12,7 +13,7 @@ const CardAgendaBooking = ({ booking }) => {
   return (
     <div className="profile-agent-agenda-card">
       <div className="profile-agent-agenda-card-info">
-        <EventIcon />
+        <EventIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
           Réservation prévu le{" "}
           <strong>{formatDateWithHour(booking.date)}</strong>
@@ -25,7 +26,16 @@ const CardAgendaBooking = ({ booking }) => {
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
-        <LocationOnIcon />
+        <AccountBoxIcon style={{ fill: "#750D37" }} />
+        <Typography component="p">
+          Auteur de la réservation :{" "}
+          <strong>
+            {booking.booker.firstName} {booking.booker.lastName}
+          </strong>
+        </Typography>
+      </div>
+      <div className="profile-agent-agenda-card-info">
+        <LocationOnIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
           Pour la destination :{" "}
           <strong>{booking.BookingLocations[0].Location.name}</strong>
