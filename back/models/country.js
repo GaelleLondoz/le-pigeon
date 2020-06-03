@@ -5,14 +5,14 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: {
         type: DataTypes.STRING,
-        allowNull: false
-      }
+        allowNull: false,
+      },
     },
     {}
   );
-  Country.associate = function(models) {
+  Country.associate = function (models) {
     // associations can be defined here
-    Country.hasMany(models.Destination);
+    //Country.hasMany(models.Destination);
   };
   return Country;
 };
