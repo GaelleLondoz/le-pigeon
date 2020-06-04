@@ -102,6 +102,33 @@ const acceptBooking = async (req, res) => {
   }
 };
 
+const cancelBooking = async (req, res) => {
+  const id = req.params.id;
+
+  const booking = await Booking.findOne({
+    where: { id },
+  });
+
+  if (!booking) {
+    return res.status(404).json({ msg: "Booking Not Found" });
+  }
+
+  try {
+    await Booking.update(
+      {
+        status: "CANCELLED",
+      },
+      {
+        where: { id },
+      }
+    );
+    return res.status(200).json({ msg: "Booking cancelled successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
+
 module.exports = {
   index,
   create,
@@ -110,4 +137,5 @@ module.exports = {
   destroy,
   getBookingsByAgent,
   acceptBooking,
+  cancelBooking,
 };

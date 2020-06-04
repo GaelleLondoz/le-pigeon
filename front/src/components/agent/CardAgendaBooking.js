@@ -15,11 +15,27 @@ import BookingAPI from "../../components/services/bookingAPI";
 const CardAgendaBooking = ({ booking }) => {
   const [status, setStatus] = useState(booking.status);
   const [showFlash, setShowFlash] = useState(false);
+  const [messageFlash, setMessageFlash] = useState("");
 
-  const handleAcceptBooking = async () => {
+  const handleAcceptBookingClick = async () => {
     try {
       await BookingAPI.acceptBooking(booking.id);
       setStatus("ACCEPTED");
+      setMessageFlash("La réservation a bien été acceptée");
+      setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const handleCancelBookingClick = async () => {
+    try {
+      await BookingAPI.cancelBooking(booking.id);
+      setStatus("CANCELLED");
+      setMessageFlash("La réservation a bien été annulée");
       setShowFlash(true);
       setTimeout(() => {
         setShowFlash(false);
@@ -32,7 +48,7 @@ const CardAgendaBooking = ({ booking }) => {
     <div className="profile-agent-agenda-card">
       {showFlash && (
         <Alert variant="filled" severity="success">
-          Réservation acceptée
+          {messageFlash}
         </Alert>
       )}
       <div className="profile-agent-agenda-card-info">
@@ -70,13 +86,14 @@ const CardAgendaBooking = ({ booking }) => {
             variant="contained"
             color="secondary"
             style={{ marginRight: "10px" }}
+            onClick={handleCancelBookingClick}
           >
             Annuler
           </Button>
           <Button
             variant="contained"
             color="primary"
-            onClick={handleAcceptBooking}
+            onClick={handleAcceptBookingClick}
           >
             Accepter
           </Button>

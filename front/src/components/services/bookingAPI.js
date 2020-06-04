@@ -13,7 +13,14 @@ function acceptBooking(id) {
     .then((response) => response.data);
 }
 
+function cancelBooking(id) {
+  return axios
+    .put(BOOKINGS_URL + "/" + id + "/cancel")
+    .then((response) => response.data);
+}
+
 export default {
   getBookingsByAgent,
   acceptBooking,
+  cancelBooking,
 };
