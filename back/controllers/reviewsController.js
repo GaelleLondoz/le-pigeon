@@ -43,11 +43,12 @@ const update = (req, res) => {
 
 const destroy = (req, res) => {
   const id = req.params.id;
-
+  console.log(id)
   Review.destroy({
     where: { id: id },
   })
-    .then((review) => res.status(200).res.sendStatus(review))
+
+    .then(() => res.status(200).json({ message: 'review deleted' }))
     .catch((e) => res.status(500).send(e));
 };
 

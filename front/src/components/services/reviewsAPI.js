@@ -18,15 +18,17 @@ function createReview(review) {
 }
 
 function deleteReview(id) {
-
     return axios
         .delete(`/reviews/${id}`)
         .then((response) => response.status)
-        .then((status) => {
-            if (status === 200) {
-                return true;
-            }
-        });
+        .catch(e => {
+            console.log(e)
+        })
+        // .then((status) => {
+        //     if (status === 200) {
+        //         return true;
+        //     }
+        // });
 }
 
 export default {

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+// import AuthContext from "../../contexts/AuthContext";
 import ReviewsAPI from "../components/services/reviewsAPI";
 
 import Form from "../components/reviews/Form"
@@ -26,15 +27,43 @@ export default ({ match }) => {
     };
 
 
+    // const { isAuthenticated } = useContext(AuthContext);
+
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault()
+    //     if (isAuthenticated) {
+
+    //         try {
+
+    //             await ReviewsAPI.createReview({ review: review });
+    //             // fetchReviews(props.id)
+    //         } catch (error) {
+    //             throw error.response;
+    //         }
 
 
+    //     } else {
+    //         alert("connectez-vous")
+    //     }
+    // };
+
+
+    const [currentItem, setCurrentItem] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(-1);
+
+
+    const refreshList = () => {
+        fetchReviews(id)
+        setCurrentItem(null);
+        setCurrentIndex(-1);
+    };
 
 
     return (
         <>
             <div className="card">
-                <List reviews={reviews} id={id} />
-                <Form id={id} reviews={reviews} />
+                <List reviews={reviews} id={id} refreshList={refreshList}/>
+                <Form id={id} refreshList={refreshList} />
             </div>
         </>
     )

@@ -3,20 +3,20 @@ import Avatar from "@material-ui/core/Avatar";
 import { Rating } from '@material-ui/lab';
 import moment from "moment";
 import 'moment/locale/fr'
+
+
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import AuthContext from "../../contexts/AuthContext";
 import userAPI from "../services/userAPI";
 import ReviewsAPI from "../services/reviewsAPI";
 
 // sass
 import "../../assets/sass/components/review.scss";
-export default ({ review }, props) => {
-
-
+export default (props) => {
+    const { review } = props
     const { isAuthenticated } = useContext(AuthContext);
 
-
+    const [displayFlash, setDisplayFlash] = useState(false);
     useEffect(() => {
         fetchUser(props.id);
 
@@ -26,12 +26,9 @@ export default ({ review }, props) => {
         id: null
     });
 
-    const userId = null
-
     const fetchUser = async (id) => {
         try {
             const { user } = await userAPI.getUser();
-
             setUser({ ...user, id: user.id });
 
         } catch (error) {
@@ -39,19 +36,19 @@ export default ({ review }, props) => {
         }
     };
 
-
-    const handleDelete = async (id) => {
+    const handleDelete = async () => {  
         try {
-            await ReviewsAPI.deleteReview(id);
-
+            await ReviewsAPI.deleteReview(review.id);
+            props.test()
+            props.onDelete(true)
         } catch (error) {
-            throw error.response;
+            console.log(error.response)
         }
-
     };
 
     return (
         <li className="review-item">
+            
             <div className="review-item__top">
                 <div className="review-item__top-left">
                     <Avatar
@@ -78,7 +75,7 @@ export default ({ review }, props) => {
             <div className="review-item__bottom">
                 <p>{review.comment}</p>
             </div>
-            {isAuthenticated && review.author.id === user.id ? <div><DeleteIcon onClick={handleDelete.bind(null, review.id)} /><EditIcon /></div> : ""}
+            {isAuthenticated && review.author.id === user.id ? <div><DeleteIcon onClick={handleDelete} /></div> : ""}
 
 
 
