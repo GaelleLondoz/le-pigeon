@@ -5,25 +5,34 @@ module.exports = (sequelize, DataTypes) => {
     {
       date: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: false,
       },
 
       status: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       userID: {
         type: DataTypes.INTEGER,
-        allowNull: false
-      }
+        allowNull: false,
+      },
+      agentID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {}
   );
-  Booking.associate = function(models) {
+  Booking.associate = function (models) {
     // associations can be defined here
     Booking.belongsTo(models.User, {
       foreignKey: "userID",
-      allowNull: false
+      allowNull: false,
+      as: "booker",
+    });
+    Booking.belongsTo(models.User, {
+      foreignKey: "agentID",
+      allowNull: false,
     });
     //Association with Location
     Booking.hasMany(models.BookingLocation);

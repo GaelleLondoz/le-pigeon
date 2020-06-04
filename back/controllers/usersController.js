@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
+const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { getHash } = require("../helpers/index");
-const { User } = require("../models");
+const { User, UserRole, Review, Role } = require("../models");
 
 const index = (req, res) => {
     return User.findAll()
@@ -68,7 +69,9 @@ const login = async(req, res) => {
                         lastName: user.lastName,
                         avatar: user.avatar,
                     };
-                    let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "6000000" });
+                    let token = jwt.sign(payload, process.env.JWT_SECRET, {
+                        expiresIn: "6000000",
+                    });
 
                     res.json({ msg: "ok", token: token, user: payload });
                 } else {
@@ -81,7 +84,7 @@ const login = async(req, res) => {
     }
 };
 
-const me = (req, res) => {
+const me = async(req, res) => {
     const headerAuth = req.headers.authorization;
     console.log({
         req,
@@ -97,33 +100,134 @@ const me = (req, res) => {
                 token: headerAuth,
                 user: checkStatus,
             });
-        } else {
-            res.status(401).json({
-                msg: "Unauthorized",
+            const user = await User.findOne({
+                where: {
+                    email,
+                },
+            });
+            console.log(user);
+
+            if (!user) {
+                res.status(401).json({ message: "No such user found" });
+            }
+            bcrypt.compare(password, user.password, function(err, result) {
+                if (result) {
+                    let payload = {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        avatar: user.avatar,
+                    };
+                    let token = jwt.sign(payload, process.env.JWT_SECRET, {
+                        expiresIn: "6000000",
+                    });
+
+                    res.json({ msg: "ok", token: token });
+                } else {
+                    res.status(401).json({
+                        msg: "Unauthorized",
+                    });
+                }
             });
         }
     } catch (e) {
         throw e;
     }
 };
-
 const logout = (req, res) => {
     const headerAuth = req.headers.authorization;
     const verifyOptions = {
-        expiresIn: "0"
+        expiresIn: "0",
     };
 
-    const checkStatus = jwt.verify(headerAuth, process.env.JWT_SECRET, verifyOptions);
-    console.log({ checkStatus })
+    const checkStatus = jwt.verify(
+        headerAuth,
+        process.env.JWT_SECRET,
+        verifyOptions
+    );
+    console.log({ checkStatus });
     if (checkStatus != null) {
-        res.status(200).json({})
+        res.status(200).json({});
     } else {
         res.status(401).json({
             msg: "Unauthorized",
         });
     }
-}
+};
 
+const getRoleUser = async(req, res) => {
+    const id = req.user.id;
+    console.log("role userrrr");
+    try {
+        const role = await UserRole.findOne({
+            where: { userID: id },
+            include: [{
+                model: Role,
+                attributes: ["name"],
+            }, ],
+        });
+        if (!role) {
+            return res.status(404).json({ msg: "Role Not Found" });
+        }
+        return res.status(200).json(role);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ msg: "Error Server" });
+    }
+};
+
+const getProfileAgent = async(req, res) => {
+    const id = req.params.id;
+    //Verify if user connected is same of id
+    /*
+                                        if (req.user.id != id) {
+                                          return res.status(403).json({ msg: "Access Denied" });
+                                        }
+                                        */
+
+    try {
+        const agent = await UserRole.findOne({
+            where: { userID: id, roleID: 2 },
+            include: [{
+                model: User,
+                attributes: ["firstName", "lastName", "email", "userName", "avatar"],
+            }, ],
+        });
+        if (!agent) {
+            return res.status(404).json({ msg: "Agent Not Found" });
+        }
+        return res.status(200).json(agent);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const editProfileAgent = async(req, res) => {
+    const id = req.params.id;
+    const { firstName, lastName, userName, email } = req.body.User;
+    const { language, price } = req.body;
+
+    try {
+        await User.update({
+            firstName,
+            lastName,
+            userName,
+            email,
+        }, {
+            where: { id },
+        });
+        await UserRole.update({
+            language,
+            price,
+        }, {
+            where: { userID: id },
+        });
+        return res.status(200).json({ msg: "Test Updated Agent" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ msg: "Error Server" });
+    }
+};
 module.exports = {
     index,
     create,
@@ -132,5 +236,8 @@ module.exports = {
     destroy,
     login,
     me,
-    logout
+    logout,
+    getProfileAgent,
+    getRoleUser,
+    editProfileAgent,
 };

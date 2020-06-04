@@ -9,7 +9,7 @@ module.exports = {
       data.push({
         name: faker.address.country(),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       });
     }
     return queryInterface.bulkInsert("Countries", data, {});
@@ -17,5 +17,5 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete("Countries", null, {});
-  }
+  },
 };
