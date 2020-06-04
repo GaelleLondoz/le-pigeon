@@ -5,6 +5,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InfoIcon from "@material-ui/icons/Info";
+import Alert from "@material-ui/lab/Alert";
 import { formatDateWithHour } from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
@@ -12,18 +13,27 @@ import BookingAPI from "../../components/services/bookingAPI";
 
 const CardAgendaBooking = ({ booking }) => {
   const [status, setStatus] = useState(booking.status);
+  const [showFlash, setShowFlash] = useState(false);
 
   const handleAcceptBooking = async () => {
     try {
       await BookingAPI.acceptBooking(booking.id);
       setStatus("Acceptée");
-      console.log("Booking accepted");
+      setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3000);
     } catch (error) {
       console.log(error.response);
     }
   };
   return (
     <div className="profile-agent-agenda-card">
+      {showFlash && (
+        <Alert variant="filled" severity="success">
+          Réservation acceptée
+        </Alert>
+      )}
       <div className="profile-agent-agenda-card-info">
         <EventIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
