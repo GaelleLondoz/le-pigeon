@@ -11,13 +11,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Flash({status = "success"}) {
-  const classes = useStyles();
+export default function Flash({ status = "", text = "" }) {
 
+  const classes = useStyles();
+  console.log({ status })
   return (
     <div className={classes.root}>
       <Alert variant="filled" severity={status}>
-        This is a success alert — check it out!
+        {text}
       </Alert>
     </div>
   );

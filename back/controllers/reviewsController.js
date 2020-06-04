@@ -9,6 +9,8 @@ const index = (req, res) => {
 
 const create = (req, res) => {
   const newReview = req.body.review;
+  newReview.status = "PENDING"
+
 
   return Review.create(newReview)
     .then(review => {
@@ -27,7 +29,6 @@ const findOne = (req, res) => {
 
 const update = (req, res) => {
   const id = req.params.id;
-
   Review.update(req.body, {
     where: { id: id }
   })
@@ -43,7 +44,6 @@ const update = (req, res) => {
 
 const destroy = (req, res) => {
   const id = req.params.id;
-  console.log(id)
   Review.destroy({
     where: { id: id },
   })

@@ -9,6 +9,18 @@ function createReview(review) {
 
     return axios
         .post("/reviews", review)
+
+        .then((response) => response.status)
+        .then((status) => {
+            if (status === 200) {
+                return true;
+            }
+        });
+}
+
+function updateReview(id, review) {
+    return axios
+        .put(`/reviews/${id}`, review)
         .then((response) => response.status)
         .then((status) => {
             if (status === 200) {
@@ -24,15 +36,11 @@ function deleteReview(id) {
         .catch(e => {
             console.log(e)
         })
-        // .then((status) => {
-        //     if (status === 200) {
-        //         return true;
-        //     }
-        // });
 }
 
 export default {
     getReviews,
     createReview,
-    deleteReview
+    deleteReview,
+    updateReview
 };

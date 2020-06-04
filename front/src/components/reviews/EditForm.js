@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import ReviewsAPI from "../services/reviewsAPI";
@@ -12,6 +13,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import { Rating } from '@material-ui/lab';
+
+import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -28,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ReviewForm = (props) => {
+const EditReviewForm = (props) => {
     // use style from material-ui
     const classes = useStyles();
 
@@ -65,13 +74,6 @@ const ReviewForm = (props) => {
                 await ReviewsAPI.createReview({ review: review });
                 props.handleRefreshList()
                 props.onCreate(true)
-                setReview({
-                    agentID: review.agentID,
-                    authorID: review.authorID,
-                    comment: "",
-                    rating: 0
-                })
-                console.log(review)
             } catch (error) {
                 throw error.response;
             }
@@ -92,41 +94,59 @@ const ReviewForm = (props) => {
 
     return (
         <div>
-            <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <div>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        id="review"
-                        label="Review"
-                        name="comment"
-                        autoComplete="review"
-                        value={review.comment}
-                        onChange={handleUpdate}
-                        multiline
-                        rows={4}
-                        autoFocus
-                    />
-                    <Rating
-                        name="rating"
-                        value={parseInt(review.rating)}
-                        onChange={handleUpdate}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+            >
+                <DialogTitle id="form-dialog-title">Edit</DialogTitle>
+                <DialogContent>
 
-                        className={classes.submit}
-                    >
-                        Envoyer
+                    <form className={classes.form} onSubmit={handleUpdate}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            id="review"
+                            label="Review"
+                            name="comment"
+                            autoComplete="review"
+                            value={review.comment}
+                            onChange={handleChange}
+                            multiline
+                            rows={4}
+                            autoFocus
+
+                        />
+                        <Rating
+                            name="rating"
+                            value={review.rating}
+                            onChange={handleChange}
+
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+
+                            className={classes.submit}
+                        >
+                            Update
                         </Button>
-                </div>
-            </form>
+                    </form>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Annuler
+            </Button>
+
+                </DialogActions>
+            </Dialog>
+
+
         </div>
     );
 };
 
-export default ReviewForm;
+export default EditReviewForm;

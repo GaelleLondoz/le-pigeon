@@ -37,3 +37,19 @@
     }
   }
 }
+
+.toggledText span.trimmed {
+  display: none;
+}
+.read-more .more:before {
+  content: "Read More";
+}
+.showAll .toggledText span.morePoints {
+  display: none;
+}
+.showAll .toggledText span.trimmed {
+  display: inline;
+}
+.showAll .read-more .more:before {
+  content: "Read Less";
+}
