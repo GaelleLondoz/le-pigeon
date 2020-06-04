@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Button } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
@@ -8,8 +8,20 @@ import InfoIcon from "@material-ui/icons/Info";
 import { formatDateWithHour } from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
+import BookingAPI from "../../components/services/bookingAPI";
 
 const CardAgendaBooking = ({ booking }) => {
+  const [status, setStatus] = useState(booking.status);
+
+  const handleAcceptBooking = async () => {
+    try {
+      await BookingAPI.acceptBooking(booking.id);
+      setStatus("Acceptée");
+      console.log("Booking accepted");
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   return (
     <div className="profile-agent-agenda-card">
       <div className="profile-agent-agenda-card-info">
@@ -20,9 +32,9 @@ const CardAgendaBooking = ({ booking }) => {
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
-        <CheckBoxIcon style={{ fill: changeColorIconStatus(booking.status) }} />
+        <CheckBoxIcon style={{ fill: changeColorIconStatus(status) }} />
         <Typography component="p">
-          Status : <strong>{booking.status}</strong>
+          Status : <strong>{status}</strong>
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
@@ -41,7 +53,7 @@ const CardAgendaBooking = ({ booking }) => {
           <strong>{booking.BookingLocations[0].Location.name}</strong>
         </Typography>
       </div>
-      {booking.status === "En cours" && (
+      {status === "En cours" && (
         <div className="profile-agent-agenda-actions">
           <Button
             variant="contained"
@@ -50,7 +62,11 @@ const CardAgendaBooking = ({ booking }) => {
           >
             Annuler
           </Button>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAcceptBooking}
+          >
             Accepter
           </Button>
         </div>

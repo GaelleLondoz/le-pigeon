@@ -7,6 +7,13 @@ function getBookingsByAgent(id) {
     .then((response) => response.data);
 }
 
+function acceptBooking(id) {
+  return axios
+    .put(BOOKINGS_URL + "/" + id + "/accept")
+    .then((response) => response.data);
+}
+
 export default {
   getBookingsByAgent,
+  acceptBooking,
 };
