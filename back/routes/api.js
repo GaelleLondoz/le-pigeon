@@ -33,6 +33,7 @@ router.get("/me", usersController.me);
 router.get("/bookings", checkAuth, bookingsController.index);
 router.post("/bookings", checkAuth, bookingsController.create);
 router.get("/bookings/:id", checkAuth, bookingsController.findOne);
+router.get("/bookings/:id/accept", checkAuth, bookingsController.acceptBooking);
 router.put("/bookings/:id", checkAuth, bookingsController.update);
 router.delete("/bookings/:id", checkAuth, bookingsController.destroy);
 router.get(
