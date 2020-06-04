@@ -48,6 +48,7 @@ const ShowDestination = ({ destination, pictures }) => {
   };
 
   const fetchInfoLocation = () => {
+    if (destination.Destination.lat === undefined) return;
     fetch(
       `https://api.opencagedata.com/geocode/v1/json?q=${destination.Destination.lat}%2C+${destination.Destination.lng}&key=${process.env.REACT_APP_API_KEY_OPENCAGE_NAIM}`
     )
@@ -70,6 +71,8 @@ const ShowDestination = ({ destination, pictures }) => {
   useEffect(() => {
     fetchInfoLocation();
   }, [destination]);
+
+  console.log(destination.Destination.lat);
 
   return (
     <section className="travel-details">
