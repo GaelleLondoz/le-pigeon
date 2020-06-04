@@ -19,7 +19,7 @@ const CardAgendaBooking = ({ booking }) => {
   const handleAcceptBooking = async () => {
     try {
       await BookingAPI.acceptBooking(booking.id);
-      setStatus("Acceptée");
+      setStatus("ACCEPTED");
       setShowFlash(true);
       setTimeout(() => {
         setShowFlash(false);
@@ -64,7 +64,7 @@ const CardAgendaBooking = ({ booking }) => {
           <strong>{booking.BookingLocations[0].Location.name}</strong>
         </Typography>
       </div>
-      {status === "En cours" && (
+      {status === "PENDING" && (
         <div className="profile-agent-agenda-actions">
           <Button
             variant="contained"
