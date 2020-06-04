@@ -89,7 +89,7 @@ const acceptBooking = async (req, res) => {
   try {
     await Booking.update(
       {
-        status: "Acceptée",
+        status: "ACCEPTED",
       },
       {
         where: { id },

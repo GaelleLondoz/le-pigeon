@@ -1,8 +1,8 @@
 export const changeColorIconStatus = (status) => {
-  if (status === "Acceptée" || status === "ACCEPT") {
+  if (status === "Acceptée" || status === "ACCEPTED") {
     return "green";
   }
-  if (status === "En cours" || status === "READ") {
+  if (status === "En cours" || status === "PENDING") {
     return "orange";
   }
   if (status === "Annulée" || status === "CANCELLED") {

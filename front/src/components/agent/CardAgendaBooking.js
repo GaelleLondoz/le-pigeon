@@ -9,6 +9,7 @@ import Alert from "@material-ui/lab/Alert";
 import { formatDateWithHour } from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
+import { changeStatusToFrench } from "../../helpers/changeStatusToFrench";
 import BookingAPI from "../../components/services/bookingAPI";
 
 const CardAgendaBooking = ({ booking }) => {
@@ -44,7 +45,7 @@ const CardAgendaBooking = ({ booking }) => {
       <div className="profile-agent-agenda-card-info">
         <CheckBoxIcon style={{ fill: changeColorIconStatus(status) }} />
         <Typography component="p">
-          Status : <strong>{status}</strong>
+          Status : <strong>{changeStatusToFrench(status)}</strong>
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
