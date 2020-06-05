@@ -7,14 +7,28 @@ import {
   Tabs,
   Tab,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import TabPanel from "../../components/agent/TabPanel";
 import BookingsAPI from "../../components/services/bookingAPI";
 import CardAgendaBooking from "../../components/agent/CardAgendaBooking";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    height: "auto",
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 const Agenda = () => {
   const url = window.location.href;
   const id = +url.substring(url.lastIndexOf("/") + 1);
+  const classes = useStyles();
 
   const [valueTab, setValueTab] = useState(0);
   const [bookings, setBookings] = useState([]);
@@ -41,7 +55,7 @@ const Agenda = () => {
   }, [id]);
   return (
     <section className="profile-agent-agenda">
-      <AppBar
+      {/* <AppBar
         position="static"
         style={{
           maxWidth: "500px",
@@ -105,7 +119,65 @@ const Agenda = () => {
             )}
           </Grid>
         </Container>
-      </TabPanel>
+      </TabPanel> */}
+
+      <div className={classes.root}>
+        <Tabs
+          orientation="vertical"
+          //variant="scrollable"
+          value={valueTab}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          className={classes.tabs}
+        >
+          <Tab label="A venir" />
+          <Tab label="Passée" />
+        </Tabs>
+        <TabPanel value={valueTab} index={0}>
+          <Typography variant="h5">
+            Liste de vos prochaines réservations
+          </Typography>
+          <Grid container>
+            {notBookings ? (
+              <Grid item xs={12}>
+                <p>{notBookings}</p>
+              </Grid>
+            ) : (
+              bookings.map((booking) => {
+                return (
+                  compareCurrentDate(booking.date) && (
+                    <Grid item xs={12} key={booking.id}>
+                      <CardAgendaBooking booking={booking} />
+                    </Grid>
+                  )
+                );
+              })
+            )}
+          </Grid>
+        </TabPanel>
+        <TabPanel value={valueTab} index={1}>
+          <Typography variant="h5">
+            Liste de vos réservations passées
+          </Typography>
+          <Grid container>
+            {notBookings ? (
+              <Grid item xs={12}>
+                <p>{notBookings}</p>
+              </Grid>
+            ) : (
+              bookings.map((booking) => {
+                return (
+                  !compareCurrentDate(booking.date) && (
+                    <Grid item xs={12} key={booking.id}>
+                      <CardAgendaBooking booking={booking} />
+                    </Grid>
+                  )
+                );
+              })
+            )}
+          </Grid>
+        </TabPanel>
+      </div>
     </section>
   );
 };

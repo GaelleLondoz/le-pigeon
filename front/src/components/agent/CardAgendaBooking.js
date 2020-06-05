@@ -1,17 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Button } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InfoIcon from "@material-ui/icons/Info";
+import Alert from "@material-ui/lab/Alert";
 import { formatDateWithHour } from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
+import { changeStatusToFrench } from "../../helpers/changeStatusToFrench";
+import BookingAPI from "../../components/services/bookingAPI";
 
 const CardAgendaBooking = ({ booking }) => {
+  const [status, setStatus] = useState(booking.status);
+  const [showFlash, setShowFlash] = useState(false);
+  const [messageFlash, setMessageFlash] = useState("");
+
+  const handleAcceptBookingClick = async () => {
+    try {
+      await BookingAPI.acceptBooking(booking.id);
+      setStatus("ACCEPTED");
+      setMessageFlash("La réservation a bien été acceptée");
+      setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const handleCancelBookingClick = async () => {
+    try {
+      await BookingAPI.cancelBooking(booking.id);
+      setStatus("CANCELLED");
+      setMessageFlash("La réservation a bien été annulée");
+      setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   return (
     <div className="profile-agent-agenda-card">
+      {showFlash && (
+        <Alert variant="filled" severity="success">
+          {messageFlash}
+        </Alert>
+      )}
       <div className="profile-agent-agenda-card-info">
         <EventIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
@@ -20,9 +59,9 @@ const CardAgendaBooking = ({ booking }) => {
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
-        <CheckBoxIcon style={{ fill: changeColorIconStatus(booking.status) }} />
+        <CheckBoxIcon style={{ fill: changeColorIconStatus(status) }} />
         <Typography component="p">
-          Status : <strong>{booking.status}</strong>
+          Status : <strong>{changeStatusToFrench(status)}</strong>
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
@@ -41,16 +80,21 @@ const CardAgendaBooking = ({ booking }) => {
           <strong>{booking.BookingLocations[0].Location.name}</strong>
         </Typography>
       </div>
-      {booking.status === "En cours" && (
+      {status === "PENDING" && (
         <div className="profile-agent-agenda-actions">
           <Button
             variant="contained"
             color="secondary"
             style={{ marginRight: "10px" }}
+            onClick={handleCancelBookingClick}
           >
             Annuler
           </Button>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAcceptBookingClick}
+          >
             Accepter
           </Button>
         </div>
