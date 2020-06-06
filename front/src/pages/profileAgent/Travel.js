@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
+const addInputPicturesStyles = {
+  transition: "all 1s ease-out",
+};
+
 const Travel = () => {
   const classes = useStyles();
   const url = window.location.href;
@@ -69,7 +73,6 @@ const Travel = () => {
   };
 
   const handlePlacesLatLngChange = (suggestion) => {
-    console.log(suggestion);
     setNewDestination({
       ...newDestination,
       lat: suggestion.latlng.lat,
