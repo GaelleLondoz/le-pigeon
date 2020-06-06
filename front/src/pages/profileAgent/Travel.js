@@ -155,7 +155,6 @@ const Travel = () => {
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
-
   //console.log(newDestination);
 
   return (
