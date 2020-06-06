@@ -142,7 +142,7 @@ const Travel = () => {
   };
 
   const handlePicturesChange = (e, index) => {
-    const newPicture = newDestination.pictures;
+    const newPicture = newDestination.pictures.slice();
     newPicture.push(e.target.files);
     setNewDestination({ ...newDestination, pictures: newPicture });
     console.log(newDestination);
