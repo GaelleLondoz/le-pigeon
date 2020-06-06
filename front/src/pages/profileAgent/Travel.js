@@ -32,10 +32,6 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
-const addInputPicturesStyles = {
-  transition: "all 1s ease-out",
-};
-
 const Travel = () => {
   const classes = useStyles();
   const url = window.location.href;
@@ -52,6 +48,7 @@ const Travel = () => {
     lat: "",
     lng: "",
     date: "",
+    pictures: [],
   });
   const [pictures, setPictures] = useState([]);
 
@@ -88,6 +85,14 @@ const Travel = () => {
     reader.readAsDataURL(file);
   };
 
+  const createMultipleImages = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setNewDestination({ ...newDestination, pictures: e.target.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleFileChange = (event) => {
     const files = event.target.files || event.dataTransfer.files;
     createImage(files[0]);
@@ -96,14 +101,19 @@ const Travel = () => {
   const handleNewDestinationSubmit = async (e) => {
     e.preventDefault();
     setSendDestinationLoading(true);
-    try {
-      await UserDestinationsAPI.create(newDestination);
-      setSendDestinationLoading(false);
-      fetchDestinations(id);
-    } catch (error) {
-      setSendDestinationLoading(false);
-      console.log(error.response);
+    for (let i = 0; i < newDestination.pictures.length; i++) {
+      //console.log(newDestination.pictures[i][0]);
+      createMultipleImages(newDestination.pictures[i][0]);
     }
+    console.log(newDestination);
+    // try {
+    //   await UserDestinationsAPI.create(newDestination);
+    //   setSendDestinationLoading(false);
+    //   fetchDestinations(id);
+    // } catch (error) {
+    //   setSendDestinationLoading(false);
+    //   console.log(error.response);
+    // }
   };
 
   //gestion du changement de page
@@ -132,8 +142,10 @@ const Travel = () => {
   };
 
   const handlePicturesChange = (e, index) => {
-    pictures[index].picture = e.target.files;
-    setPictures(pictures);
+    const newPicture = newDestination.pictures;
+    newPicture.push(e.target.files);
+    setNewDestination({ ...newDestination, pictures: newPicture });
+    console.log(newDestination);
   };
 
   const handlePictureRemove = (e, id) => {
@@ -143,6 +155,8 @@ const Travel = () => {
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
+
+  //console.log(newDestination);
 
   return (
     <section className="profile-agent-destinations">
