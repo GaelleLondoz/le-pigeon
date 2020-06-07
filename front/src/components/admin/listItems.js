@@ -85,13 +85,5 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Vente Annuelle" />
     </ListItem> */}
-    {/* <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItem>
-      <ListItemText primary="Vente Annuelle" />
-    </ListItem> */}
   </div>
 );
