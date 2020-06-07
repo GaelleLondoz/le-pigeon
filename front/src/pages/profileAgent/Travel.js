@@ -4,9 +4,7 @@ import {
   Grid,
   Typography,
   Button,
-  Select,
   TextField,
-  Input,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
@@ -14,6 +12,7 @@ import CardDestination from "../../components/agent/CardDestination";
 import LoaderButton from "../../components/loaders/LoaderButton";
 import Places from "../../components/algolia/Places";
 import Paginator from "../../components/Pagination";
+import { getBase64 } from "../../helpers/getBase64";
 
 const useStyles = makeStyles((theme) => ({
   buttonAddDestination: {
@@ -50,7 +49,6 @@ const Travel = () => {
     date: "",
     pictures: [],
   });
-  const [pictures, setPictures] = useState([]);
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -77,76 +75,46 @@ const Travel = () => {
     });
   };
 
-  const createImage = (file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setNewDestination({ ...newDestination, coverImage: e.target.result });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const createMultipleImages = (file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      let data = [];
-      // setNewDestination({
-      //   ...newDestination,
-      //   pictures: e.target.result,
-      // });
-      data.push(e.target.result);
-      setPictures(data);
-      setNewDestination({ ...newDestination, pictures: data });
-    };
-    reader.readAsDataURL(file);
-    console.log(pictures);
-  };
-
-  // const uploadsImages = (images) => {
-  //   //console.log(images.length);
-  //   let imgs = [];
-  //   imgs.push(images);
-  //   for (let i = 0; i < imgs.length; i++) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       imgs[i] = e.target.result;
-  //     };
-  //     reader.readAsDataURL(imgs[i][0]);
-  //   }
-  //   console.log(imgs);
-  //   //setNewDestination({ ...newDestination, pictures: imgs });
-  //   //console.log(imgs);
-  //   //reader.readAsDataURL(file);
+  // const createImage = (file) => {
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     setNewDestination({ ...newDestination, coverImage: e.target.result });
+  //   };
+  //   reader.readAsDataURL(file);
   // };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const files = event.target.files || event.dataTransfer.files;
-    createImage(files[0]);
+    //createImage(files[0]);
+    await getBase64(files[0]).then((result) =>
+      setNewDestination({ ...newDestination, coverImage: result })
+    );
   };
 
   const handlePicturesChange = (e) => {
-    //setNewDestination({ ...newDestination, pictures: e.target.files });
-    setPictures(e.target.files);
+    let files = Array.from(e.target.files);
+    files = files.map(async (file) => ({
+      content: await getBase64(file),
+      // fileName: file.name,
+      // contentType: file.type,
+      // length: file.size,
+    }));
+    Promise.all(files).then((result) =>
+      setNewDestination({ ...newDestination, pictures: result })
+    );
   };
 
   const handleNewDestinationSubmit = async (e) => {
     e.preventDefault();
     setSendDestinationLoading(true);
-    for (let i = 0; i < pictures.length; i++) {
-      //console.log(pictures[i]);
-      //console.log(newDestination.pictures[i]);
-      //createMultipleImages(newDestination.pictures[i]);
-      createMultipleImages(pictures[i]);
+    try {
+      await UserDestinationsAPI.create(newDestination);
+      setSendDestinationLoading(false);
+      fetchDestinations(id);
+    } catch (error) {
+      setSendDestinationLoading(false);
+      console.log(error.response);
     }
-    //await uploadsImages(newDestination.pictures);
-    //console.log(newDestination);
-    // try {
-    //   await UserDestinationsAPI.create(newDestination);
-    //   setSendDestinationLoading(false);
-    //   fetchDestinations(id);
-    // } catch (error) {
-    //   setSendDestinationLoading(false);
-    //   console.log(error.response);
-    // }
   };
 
   //gestion du changement de page
@@ -173,8 +141,6 @@ const Travel = () => {
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
-  console.log(newDestination);
-  console.log(pictures);
   return (
     <section className="profile-agent-destinations">
       <Container>
