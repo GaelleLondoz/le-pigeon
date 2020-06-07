@@ -10,6 +10,7 @@ import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
 import Footer from "./components/Footer";
 import ChatBox from "./components/chatbox/ChatBox";
+import AdminDashboard from "./components/admin/AdminDashboard";
 import AuthAPI from "./components/services/authAPI";
 import userAPI from "./components/services/userAPI";
 import AuthContext from "./contexts/AuthContext";
@@ -73,6 +74,7 @@ const App = () => {
           <Switch>
             {/*<Route exact path="/" component={Home} />*/}
             <Route exact path="/chat" component={ChatBox} />
+            <Route exact path="/admin" component={AdminDashboard} />
             <Route exact path="/" component={Home} />
             <Route exact path="/connect" component={Connect} />
             <Route exact path="/help" component={Help} />
