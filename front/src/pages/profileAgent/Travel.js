@@ -88,24 +88,57 @@ const Travel = () => {
   const createMultipleImages = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      setNewDestination({ ...newDestination, pictures: e.target.result });
+      let data = [];
+      // setNewDestination({
+      //   ...newDestination,
+      //   pictures: e.target.result,
+      // });
+      data.push(e.target.result);
+      setPictures(data);
+      setNewDestination({ ...newDestination, pictures: data });
     };
     reader.readAsDataURL(file);
+    console.log(pictures);
   };
+
+  // const uploadsImages = (images) => {
+  //   //console.log(images.length);
+  //   let imgs = [];
+  //   imgs.push(images);
+  //   for (let i = 0; i < imgs.length; i++) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       imgs[i] = e.target.result;
+  //     };
+  //     reader.readAsDataURL(imgs[i][0]);
+  //   }
+  //   console.log(imgs);
+  //   //setNewDestination({ ...newDestination, pictures: imgs });
+  //   //console.log(imgs);
+  //   //reader.readAsDataURL(file);
+  // };
 
   const handleFileChange = (event) => {
     const files = event.target.files || event.dataTransfer.files;
     createImage(files[0]);
   };
 
+  const handlePicturesChange = (e) => {
+    //setNewDestination({ ...newDestination, pictures: e.target.files });
+    setPictures(e.target.files);
+  };
+
   const handleNewDestinationSubmit = async (e) => {
     e.preventDefault();
     setSendDestinationLoading(true);
-    for (let i = 0; i < newDestination.pictures.length; i++) {
-      //console.log(newDestination.pictures[i][0]);
-      createMultipleImages(newDestination.pictures[i][0]);
+    for (let i = 0; i < pictures.length; i++) {
+      //console.log(pictures[i]);
+      //console.log(newDestination.pictures[i]);
+      //createMultipleImages(newDestination.pictures[i]);
+      createMultipleImages(pictures[i]);
     }
-    console.log(newDestination);
+    //await uploadsImages(newDestination.pictures);
+    //console.log(newDestination);
     // try {
     //   await UserDestinationsAPI.create(newDestination);
     //   setSendDestinationLoading(false);
@@ -137,26 +170,11 @@ const Travel = () => {
     }
   };
 
-  const addInputPicture = () => {
-    setPictures([...pictures, { id: Math.random(), picture: "" }]);
-  };
-
-  const handlePicturesChange = (e, index) => {
-    const newPicture = newDestination.pictures.slice();
-    newPicture.push(e.target.files);
-    setNewDestination({ ...newDestination, pictures: newPicture });
-    console.log(newDestination);
-  };
-
-  const handlePictureRemove = (e, id) => {
-    setPictures(pictures.filter((picture) => picture.id !== id));
-  };
-
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
-  //console.log(newDestination);
-
+  console.log(newDestination);
+  console.log(pictures);
   return (
     <section className="profile-agent-destinations">
       <Container>
@@ -233,48 +251,16 @@ const Travel = () => {
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
-                <Button
-                  onClick={addInputPicture}
-                  variant="contained"
-                  color="primary"
-                >
-                  + Ajouter des images
-                </Button>
-                {pictures.map((picture, index) => {
-                  return (
-                    <div key={picture.id}>
-                      <Grid container alignItems="center">
-                        <Grid item xs={10}>
-                          <TextField
-                            style={{ marginTop: "20px" }}
-                            //value={picture}
-                            onChange={(e) => handlePicturesChange(e, index)}
-                            name="pictures"
-                            fullWidth
-                            type="file"
-                            variant="outlined"
-                            //label="Image de couverture"
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Button
-                            onClick={(e) => handlePictureRemove(e, picture.id)}
-                            type="button"
-                            variant="contained"
-                            color="secondary"
-                            style={{
-                              marginTop: "20px",
-                              marginLeft: "10px",
-                              padding: "16px 16px",
-                            }}
-                          >
-                            X
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </div>
-                  );
-                })}
+                <TextField
+                  //value={newDestination.coverImage}
+                  onChange={handlePicturesChange}
+                  name="pictures"
+                  fullWidth
+                  type="file"
+                  variant="outlined"
+                  inputProps={{ multiple: true }}
+                  //label="Image de couverture"
+                />
               </Grid>
               <Grid item className={classes.gridInput}>
                 <Button
