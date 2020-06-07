@@ -34,9 +34,6 @@ export default function Chart() {
   return (
     <React.Fragment>
       <Title>{currentDate}</Title>
-  return (
-    <React.Fragment>
-      <Title>Today</Title>
       <ResponsiveContainer>
         <LineChart
           data={data}
