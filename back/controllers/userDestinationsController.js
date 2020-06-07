@@ -25,21 +25,8 @@ const create = async (req, res) => {
   fs.writeFile(rootFile, file[1], "base64", function (err) {
     console.log(err);
   });
-  //Trouvez une solution => lorsque le continent ou le pays existe déjà en base de donnée, il l'enregistre quand meme, => Doublon!!
   try {
-    // const continent = await Continent.create({
-    //   name: req.body.continent,
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // });
-    // const country = await Country.create({
-    //   name: req.body.country,
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-    // });
     const destination = await Destination.create({
-      //countryID: country.id,
-      //continentID: continent.id,
       name: req.body.name,
       lat: req.body.lat,
       lng: req.body.lng,
@@ -55,6 +42,32 @@ const create = async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+    //Verify if user send pictures
+    if (req.body.pictures.length > 0) {
+      for (let i = 0; i < req.body.pictures.length; i++) {
+        const file = req.body.pictures[i].content.split(";base64,");
+        const extension = file[0].replace("data:image/", "");
+        const filename = makeKey(10);
+        const rootFile = [
+          __dirname + "/../storage/destination/",
+          filename,
+          "." + extension,
+        ].join("");
+        const fileSendToDatabase = filename + "." + extension;
+        fs.writeFile(rootFile, file[1], "base64", function (err) {
+          console.log(err);
+        });
+        await PictureDestination.create({
+          userID: id,
+          destinationID: destination.id,
+          path: fileSendToDatabase,
+          name: destination.name,
+          alt: destination.name,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+    }
     return res.status(200).json({ msg: "Destination created successfully" });
   } catch (error) {
     console.log(error);

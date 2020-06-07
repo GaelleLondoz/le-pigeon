@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Avatar, Grid, Box } from "@material-ui/core";
+import { Container, Typography, Avatar, Grid } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import UsersAPI from "../../components/services/userAPI";
 import ReviewsAPI from "../../components/services/reviewAPI";

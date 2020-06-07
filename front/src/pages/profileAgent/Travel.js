@@ -4,9 +4,7 @@ import {
   Grid,
   Typography,
   Button,
-  Select,
   TextField,
-  Input,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
@@ -14,6 +12,7 @@ import CardDestination from "../../components/agent/CardDestination";
 import LoaderButton from "../../components/loaders/LoaderButton";
 import Places from "../../components/algolia/Places";
 import Paginator from "../../components/Pagination";
+import { getBase64 } from "../../helpers/getBase64";
 
 const useStyles = makeStyles((theme) => ({
   buttonAddDestination: {
@@ -48,8 +47,8 @@ const Travel = () => {
     lat: "",
     lng: "",
     date: "",
+    pictures: [],
   });
-  const [pictures, setPictures] = useState([]);
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -69,7 +68,6 @@ const Travel = () => {
   };
 
   const handlePlacesLatLngChange = (suggestion) => {
-    console.log(suggestion);
     setNewDestination({
       ...newDestination,
       lat: suggestion.latlng.lat,
@@ -77,17 +75,33 @@ const Travel = () => {
     });
   };
 
-  const createImage = (file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setNewDestination({ ...newDestination, coverImage: e.target.result });
-    };
-    reader.readAsDataURL(file);
+  // const createImage = (file) => {
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     setNewDestination({ ...newDestination, coverImage: e.target.result });
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
+
+  const handleFileChange = async (event) => {
+    const files = event.target.files || event.dataTransfer.files;
+    //createImage(files[0]);
+    await getBase64(files[0]).then((result) =>
+      setNewDestination({ ...newDestination, coverImage: result })
+    );
   };
 
-  const handleFileChange = (event) => {
-    const files = event.target.files || event.dataTransfer.files;
-    createImage(files[0]);
+  const handlePicturesChange = (e) => {
+    let files = Array.from(e.target.files);
+    files = files.map(async (file) => ({
+      content: await getBase64(file),
+      // fileName: file.name,
+      // contentType: file.type,
+      // length: file.size,
+    }));
+    Promise.all(files).then((result) =>
+      setNewDestination({ ...newDestination, pictures: result })
+    );
   };
 
   const handleNewDestinationSubmit = async (e) => {
@@ -124,23 +138,9 @@ const Travel = () => {
     }
   };
 
-  const addInputPicture = () => {
-    setPictures([...pictures, { id: Math.random(), picture: "" }]);
-  };
-
-  const handlePicturesChange = (e, index) => {
-    pictures[index].picture = e.target.files;
-    setPictures(pictures);
-  };
-
-  const handlePictureRemove = (e, id) => {
-    setPictures(pictures.filter((picture) => picture.id !== id));
-  };
-
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
-
   return (
     <section className="profile-agent-destinations">
       <Container>
@@ -217,48 +217,16 @@ const Travel = () => {
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
-                <Button
-                  onClick={addInputPicture}
-                  variant="contained"
-                  color="primary"
-                >
-                  + Ajouter des images
-                </Button>
-                {pictures.map((picture, index) => {
-                  return (
-                    <div key={picture.id}>
-                      <Grid container alignItems="center">
-                        <Grid item xs={10}>
-                          <TextField
-                            style={{ marginTop: "20px" }}
-                            //value={picture}
-                            onChange={(e) => handlePicturesChange(e, index)}
-                            name="pictures"
-                            fullWidth
-                            type="file"
-                            variant="outlined"
-                            //label="Image de couverture"
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Button
-                            onClick={(e) => handlePictureRemove(e, picture.id)}
-                            type="button"
-                            variant="contained"
-                            color="secondary"
-                            style={{
-                              marginTop: "20px",
-                              marginLeft: "10px",
-                              padding: "16px 16px",
-                            }}
-                          >
-                            X
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </div>
-                  );
-                })}
+                <TextField
+                  //value={newDestination.coverImage}
+                  onChange={handlePicturesChange}
+                  name="pictures"
+                  fullWidth
+                  type="file"
+                  variant="outlined"
+                  inputProps={{ multiple: true }}
+                  //label="Image de couverture"
+                />
               </Grid>
               <Grid item className={classes.gridInput}>
                 <Button
