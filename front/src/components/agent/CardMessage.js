@@ -38,13 +38,13 @@ const CardMessage = ({ message }) => {
   const handleNewMessageSubmit = async (e) => {
     e.preventDefault();
     console.log(message);
-    // try {
-    //   await MessagesAPI.create(message.sender.id, newMessage);
-    //   setNewMessage({ content: "" });
-    //   toast.success("Votre message a bien été envoyé");
-    // } catch (error) {
-    //   console.log(error.response);
-    // }
+    try {
+      await MessageAPI.create(message.senderID, newMessage);
+      setNewMessage({ content: "" });
+      setShowNewMessage(false);
+    } catch (error) {
+      console.log(error.response);
+    }
   };
   return (
     <>
@@ -123,7 +123,7 @@ const CardMessage = ({ message }) => {
                 >
                   Fermer
                 </Button>
-                <Button variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="primary">
                   Envoyer
                 </Button>
               </div>

@@ -91,6 +91,24 @@ const changeStatusMessage = async (req, res) => {
   }
 };
 
+const newMessage = async (req, res) => {
+  const id = req.params.id;
+  const message = req.body.content;
+
+  try {
+    await Message.create({
+      senderID: req.user.id,
+      receiverID: id,
+      content: message,
+      status: "NO-READ",
+    });
+    return res.status(200).json({ msg: "Message created successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
+
 module.exports = {
   index,
   create,
@@ -100,4 +118,5 @@ module.exports = {
   getAllMessagesByUser,
   changeStatusMessage,
   findMessages,
+  newMessage,
 };

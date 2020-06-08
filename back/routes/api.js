@@ -76,6 +76,7 @@ router.put(
   checkAuth,
   messagesController.changeStatusMessage
 );
+router.post("/messages/:id", checkAuth, messagesController.newMessage);
 
 // destinations
 router.get(

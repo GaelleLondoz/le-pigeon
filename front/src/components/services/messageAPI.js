@@ -38,6 +38,11 @@ function changeMessageStatus(id, status) {
     .put(MESSAGES_URL + "/" + id + "/changestatus/" + status)
     .then((response) => response.data);
 }
+function create(id, message) {
+  return axios
+    .post(MESSAGES_URL + "/" + id, message)
+    .then((response) => response.data);
+}
 
 export default {
   getAllMessageByUser,
@@ -45,4 +50,5 @@ export default {
   addMessage,
   getMessages,
   updateMessageStatus,
+  create,
 };
