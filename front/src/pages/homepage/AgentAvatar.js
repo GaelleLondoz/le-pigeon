@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Grid, Typography, Avatar, Link } from "@material-ui/core";
+import CardAgent from "../../components/agent/CardAgent";
 
 const AgentAvatar = () => {
   return (
@@ -8,7 +9,7 @@ const AgentAvatar = () => {
         <Typography variant="h2">Des agents à l'écoute</Typography>
         <Grid container spacing={7} justify="center">
           <Grid item xs={12} md={3}>
-            <div className="container-avatar">
+            {/* <div className="container-avatar">
               <Link href="#">
                 <Avatar
                   alt="Remy Sharp"
@@ -17,10 +18,11 @@ const AgentAvatar = () => {
               </Link>
               <Typography paragraph={true}>Pierre</Typography>
               <Typography variant="h6">Australie</Typography>
-            </div>
+            </div> */}
+            <CardAgent />
           </Grid>
           <Grid item xs={12} md={3}>
-            <div className="container-avatar">
+            {/* <div className="container-avatar">
               <Link href="#">
                 <Avatar
                   alt="Remy Sharp"
@@ -29,10 +31,11 @@ const AgentAvatar = () => {
               </Link>
               <Typography paragraph={true}>Justine</Typography>
               <Typography variant="h6">Usa</Typography>
-            </div>
+            </div> */}
+            <CardAgent />
           </Grid>
           <Grid item xs={12} md={3}>
-            <div className="container-avatar">
+            {/* <div className="container-avatar">
               <Link href="#">
                 <Avatar
                   alt="Remy Sharp"
@@ -41,10 +44,11 @@ const AgentAvatar = () => {
               </Link>
               <Typography paragraph={true}>Paul</Typography>
               <Typography variant="h6">Thaïlande</Typography>
-            </div>
+            </div> */}
+            <CardAgent />
           </Grid>
           <Grid item xs={12} md={3}>
-            <div className="container-avatar">
+            {/* <div className="container-avatar">
               <Link href="#">
                 <Avatar
                   alt="Remy Sharp"
@@ -53,7 +57,8 @@ const AgentAvatar = () => {
               </Link>
               <Typography paragraph={true}>Marie</Typography>
               <Typography variant="h6">Brézil</Typography>
-            </div>
+            </div> */}
+            <CardAgent />
           </Grid>
         </Grid>
       </Container>
