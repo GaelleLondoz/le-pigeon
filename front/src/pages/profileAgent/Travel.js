@@ -219,6 +219,8 @@ const Travel = () => {
                 <TextField
                   value={newDestination.remarks}
                   onChange={handleNewDestinationChange}
+                  multiline
+                  rows="4"
                   name="remarks"
                   fullWidth
                   variant="outlined"
