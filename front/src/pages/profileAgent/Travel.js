@@ -7,6 +7,8 @@ import {
   TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
+import Slide from "@material-ui/core/Slide";
 import UserDestinationsAPI from "../../components/services/userDestinationsAPI";
 import CardDestination from "../../components/agent/CardDestination";
 import LoaderButton from "../../components/loaders/LoaderButton";
@@ -55,6 +57,8 @@ const Travel = () => {
   const [sendDestinationLoading, setSendDestinationLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [showFlash, setShowFlash] = useState(false);
 
   const handleDestinationFormClick = () => {
     setOpenForm(!openForm);
@@ -107,14 +111,20 @@ const Travel = () => {
   const handleNewDestinationSubmit = async (e) => {
     e.preventDefault();
     setSendDestinationLoading(true);
-    // try {
-    //   await UserDestinationsAPI.create(newDestination);
-    //   setSendDestinationLoading(false);
-    //   fetchDestinations(id);
-    // } catch (error) {
-    //   setSendDestinationLoading(false);
-    //   console.log(error.response);
-    // }
+    try {
+      await UserDestinationsAPI.create(newDestination);
+      setSendDestinationLoading(false);
+      setNewDestination({});
+      setOpenForm(false);
+      setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 5000);
+      fetchDestinations(id);
+    } catch (error) {
+      setSendDestinationLoading(false);
+      console.log(error.response);
+    }
   };
 
   //gestion du changement de page
@@ -154,8 +164,19 @@ const Travel = () => {
           className={classes.buttonAddDestination}
           onClick={handleDestinationFormClick}
         >
-          Nouvelle destination
+          + Nouvelle destination
         </Button>
+        {showFlash && (
+          <Slide direction="down" in={showFlash} mountOnEnter unmountOnExit>
+            <Alert
+              variant="filled"
+              severity="success"
+              style={{ marginTop: "20px" }}
+            >
+              Nouvelle destination ajoutée
+            </Alert>
+          </Slide>
+        )}
         {openForm && (
           <form
             className=""
