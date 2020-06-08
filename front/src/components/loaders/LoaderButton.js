@@ -14,6 +14,7 @@ const LoaderButton = ({
   size = 25,
   text = "",
   onClick,
+  colorLoader = "#fff",
 }) => {
   const classes = useStyles();
   return (
@@ -25,7 +26,11 @@ const LoaderButton = ({
       color={colorButton}
     >
       {loadingButton ? (
-        <CircularProgress color={classes.loaderButton.color} size={size} />
+        <CircularProgress
+          color={classes.loaderButton.color}
+          style={{ color: colorLoader }}
+          size={size}
+        />
       ) : (
         text
       )}

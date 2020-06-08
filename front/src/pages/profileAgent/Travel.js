@@ -107,14 +107,14 @@ const Travel = () => {
   const handleNewDestinationSubmit = async (e) => {
     e.preventDefault();
     setSendDestinationLoading(true);
-    try {
-      await UserDestinationsAPI.create(newDestination);
-      setSendDestinationLoading(false);
-      fetchDestinations(id);
-    } catch (error) {
-      setSendDestinationLoading(false);
-      console.log(error.response);
-    }
+    // try {
+    //   await UserDestinationsAPI.create(newDestination);
+    //   setSendDestinationLoading(false);
+    //   fetchDestinations(id);
+    // } catch (error) {
+    //   setSendDestinationLoading(false);
+    //   console.log(error.response);
+    // }
   };
 
   //gestion du changement de page
