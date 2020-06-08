@@ -35,7 +35,7 @@ function getAllMessageByUser(id) {
 }
 function changeMessageStatus(id, status) {
   return axios
-    .put(MESSAGES_URL + "/" + id + "/changestatus", status)
+    .put(MESSAGES_URL + "/" + id + "/changestatus/" + status)
     .then((response) => response.data);
 }
 
