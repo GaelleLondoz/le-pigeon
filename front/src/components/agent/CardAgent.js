@@ -7,31 +7,17 @@ const CardAgent = ({ agent, avgRatings }) => {
     <div className="card testimonials testimonial-card">
       <div className="card-up info-color"></div>
       <div className="avatar mx-auto white">
-        {/* <Link to={"/agent/" + agent.id}> */}
-        <Link to="/agent/2">
-          {/* <img src={agent.avatar} className="rounded-circle img-fluid" /> */}
-          <img
-            src="https://randomuser.me/api/portraits/women/82.jpg"
-            className="rounded-circle"
-          />
+        <Link to={"/agent/" + agent.id}>
+          <img src={agent.avatar} className="rounded-circle img-fluid" />
         </Link>
       </div>
       <div className="card-body">
         <h4 className="font-weight-bold mb-4">
-          {/* {agent.firstName} {agent.lastName} */}
-          Jean Christian
+          {agent.firstName} {agent.lastName}
         </h4>
-        {/* <Rating name="rating" value={avgRatings} readOnly /> */}
-        <Rating name="rating" value={2} readOnly />
+        <Rating name="rating" value={+avgRatings} readOnly />
         <hr />
-        <p className="dark-grey-text mt-4">
-          {/*<i className="fa fa-quote-left pr-2"></i>
-                    Lorem ipsum dolor
-                    sit amet eos
-                    adipisci, consectetur adipisicing elit.
-                    */}
-          Thaïlande
-        </p>
+        <p className="dark-grey-text mt-4">Thaïlande</p>
       </div>
     </div>
   );

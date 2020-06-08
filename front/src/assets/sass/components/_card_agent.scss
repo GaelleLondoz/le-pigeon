@@ -57,6 +57,11 @@ section#agent-avatar {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     padding: 1.25rem;
+    .MuiRating-root {
+      .MuiSvgIcon-root {
+        color: inherit;
+      }
+    }
   }
   .rounded-circle {
     border-radius: 50% !important;
