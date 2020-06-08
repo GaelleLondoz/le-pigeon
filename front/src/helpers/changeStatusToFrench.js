@@ -11,6 +11,8 @@ export const changeStatusBookingToFrench = (status) => {
 export const changeStatusMessageToFrench = (status) => {
   if (status === "READ") {
     return "Lu";
+  } else if (status === "ANSWERED") {
+    return "Répondu";
   } else {
     return "Non-lu";
   }

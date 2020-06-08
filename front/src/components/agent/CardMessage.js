@@ -6,6 +6,7 @@ import { formatDate } from "../../helpers/formatDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import MessageAPI from "../../components/services/messageAPI";
 import { changeStatusMessageToFrench } from "../../helpers/changeStatusToFrench";
+import LoaderButton from "../../components/loaders/LoaderButton";
 
 const CardMessage = ({ message }) => {
   const [showMessage, setShowMessage] = useState(false);
@@ -14,6 +15,7 @@ const CardMessage = ({ message }) => {
     content: "",
   });
   const [status, setStatus] = useState(message.status);
+  const [newMessageLoading, setNewMessageLoading] = useState(false);
 
   const handleShowMessageClick = async () => {
     setShowMessage(!showMessage);
@@ -37,12 +39,16 @@ const CardMessage = ({ message }) => {
 
   const handleNewMessageSubmit = async (e) => {
     e.preventDefault();
-    console.log(message);
+    setNewMessageLoading(true);
     try {
       await MessageAPI.create(message.senderID, newMessage);
+      await MessageAPI.changeMessageStatus(message.id, "answered");
+      setNewMessageLoading(false);
+      setStatus("ANSWERED");
       setNewMessage({ content: "" });
       setShowNewMessage(false);
     } catch (error) {
+      setNewMessageLoading(false);
       console.log(error.response);
     }
   };
@@ -123,9 +129,13 @@ const CardMessage = ({ message }) => {
                 >
                   Fermer
                 </Button>
-                <Button type="submit" variant="contained" color="primary">
+                {/* <Button type="submit" variant="contained" color="primary">
                   Envoyer
-                </Button>
+                </Button> */}
+                <LoaderButton
+                  loadingButton={newMessageLoading}
+                  text="Envoyer"
+                />
               </div>
             </form>
           </div>
