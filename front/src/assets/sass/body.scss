@@ -189,6 +189,9 @@ section.profile-agent-account {
       }
       .MuiRating-root {
         margin: 20px 0;
+        .MuiSvgIcon-root {
+          color: inherit;
+        }
       }
     }
   }

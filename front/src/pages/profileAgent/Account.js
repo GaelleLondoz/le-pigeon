@@ -121,7 +121,6 @@ const Account = () => {
         ])
       : ""
   );
-
   return (
     <section className="profile-agent-account">
       <Container>
@@ -225,6 +224,7 @@ const Account = () => {
                   name="read-only"
                   value={+avgRatings.avgRatings}
                   readOnly
+                  precision={0.5}
                 />
                 <Typography component="p">
                   {avgRatings.countComments} commentaire(s)
