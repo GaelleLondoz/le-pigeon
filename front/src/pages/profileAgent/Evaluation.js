@@ -105,6 +105,7 @@ const Evaluation = () => {
                   name="read-only"
                   value={+avgRatings.avgRatings}
                   readOnly
+                  precision={0.5}
                 />
               </div>
             </Grid>

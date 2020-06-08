@@ -268,6 +268,11 @@ section.profile-agent-evaluation {
         height: 120px;
         margin: 10px auto;
       }
+      .MuiRating-root {
+        .MuiSvgIcon-root {
+          color: inherit;
+        }
+      }
     }
   }
   h5 {
@@ -281,6 +286,11 @@ section.profile-agent-evaluation {
     //max-width: 600px;
     .MuiRating-root {
       margin: 20px 0;
+    }
+    .MuiRating-root {
+      .MuiSvgIcon-root {
+        color: inherit;
+      }
     }
   }
 }
