@@ -80,7 +80,7 @@ const CardAgendaBooking = ({ booking }) => {
           <strong>{booking.BookingLocations[0].Location.name}</strong>
         </Typography>
       </div>
-      {status === "PENDING" && (
+      {status === "PENDING" && compareCurrentDate(booking.date) && (
         <div className="profile-agent-agenda-actions">
           <Button
             variant="contained"
