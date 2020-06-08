@@ -72,10 +72,11 @@ router.get(
   messagesController.getAllMessagesByUser
 );
 router.put(
-  "/messages/:id/changestatus",
+  "/messages/:id/changestatus/:status",
   checkAuth,
   messagesController.changeStatusMessage
 );
+router.post("/messages/:id", checkAuth, messagesController.newMessage);
 
 // destinations
 router.get(

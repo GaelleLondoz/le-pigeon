@@ -35,7 +35,12 @@ function getAllMessageByUser(id) {
 }
 function changeMessageStatus(id, status) {
   return axios
-    .put(MESSAGES_URL + "/" + id + "/changestatus", status)
+    .put(MESSAGES_URL + "/" + id + "/changestatus/" + status)
+    .then((response) => response.data);
+}
+function create(id, message) {
+  return axios
+    .post(MESSAGES_URL + "/" + id, message)
     .then((response) => response.data);
 }
 
@@ -45,4 +50,5 @@ export default {
   addMessage,
   getMessages,
   updateMessageStatus,
+  create,
 };
