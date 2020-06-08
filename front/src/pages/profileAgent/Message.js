@@ -48,7 +48,9 @@ const Message = () => {
       <Container>
         <Typography variant="h5">Liste de vos messages</Typography>
         <p>Vous avez actuellement {messages.length} message(s)</p>
-        <p style={{ fontWeight: "bold" }}>Page {currentPage}</p>
+        {messages.length > 5 && (
+          <p style={{ fontWeight: "bold" }}>Page {currentPage}</p>
+        )}
         {notMessages ? (
           <p>{notMessages}</p>
         ) : (
