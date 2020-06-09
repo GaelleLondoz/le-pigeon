@@ -20,7 +20,6 @@ import CardComment from "../components/agent/CardComment";
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
   const ITEMS_PER_PAGE = 6;
-  const REVIEWS_PER_PAGE = 6;
 
   const [agent, setAgent] = useState({
     User: {
@@ -197,7 +196,7 @@ const ShowAgent = ({ match }) => {
               </div>
             );
           })}
-          {reviews.length > 1 && (
+          {reviews.length > 6 && (
             <Paginator
               length={reviews.length}
               page={currentReviewsPage}
