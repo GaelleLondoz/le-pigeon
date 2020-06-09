@@ -1,11 +1,12 @@
-import React, { useState, useContext } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
 import ReviewsAPI from "../services/reviewsAPI";
-import Button from "@material-ui/core/Button";
+import userAPI from "../services/userAPI";
 import { makeStyles } from "@material-ui/core/styles";
 
+import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
-
+import Rating from '@material-ui/lab/Rating';
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -22,12 +23,30 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ReviewForm = ({ history }) => {
+const ReviewForm = (props) => {
+
+    useEffect(() => {
+        fetchUser(props.id);
+    }, []);
+
+    const { isAuthenticated } = useContext(AuthContext);
 
     const [review, setReview] = useState({
+        agentID: 0,
+        authorID: 0,
         comment: "",
-        rating: null
+        rating: 0
     });
+
+    const fetchUser = async (id) => {
+        try {
+            const { user } = await userAPI.getUser();
+
+            setReview({ ...review, authorID: user.id, agentID: parseInt(id) });
+        } catch (error) {
+            throw error.response;
+        }
+    };
 
     const handleChange = (event) => {
         const value = event.currentTarget.value;
@@ -39,14 +58,17 @@ const ReviewForm = ({ history }) => {
         event.preventDefault();
         try {
             await ReviewsAPI.createReview({ review: review });
+            props.onSubmit()
         } catch (error) {
             throw error.response;
         }
     };
+
+
     const classes = useStyles();
     return (
         <div>
-            <form className={classes.root} noValidate autoComplete="off">
+            <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <div>
                     <TextField
                         variant="outlined"
@@ -54,23 +76,26 @@ const ReviewForm = ({ history }) => {
                         fullWidth
                         id="review"
                         label="Review"
-                        name="review"
+                        name="comment"
                         autoComplete="review"
                         value={review.comment}
                         onChange={handleChange}
                         multiline
                         rows={4}
-                        defaultValue="Default Value"
-
-                        errorMessages={["Champ obligatoire*", "Email non valide"]}
                         autoFocus
+                    />
+                    <Rating
+                        name="rating"
+                        value={parseInt(review.rating)}
+                        onChange={handleChange}
+
                     />
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
-                        onClick={handleSubmit}
+
                         className={classes.submit}
                     >
                         Envoyer

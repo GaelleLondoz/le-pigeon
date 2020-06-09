@@ -1,8 +1,6 @@
 import React from "react";
 import Item from "./Item"
 
-
-
 export default (props) => {
     return (
         <ul className="review-items">

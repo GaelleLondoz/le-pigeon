@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 const sequelize = require("sequelize");
-=======
->>>>>>> feature review
 const { Review, User } = require("../models");
 
 const index = (req, res) => {
@@ -12,22 +9,18 @@ const index = (req, res) => {
 
 const create = (req, res) => {
   const newReview = req.body.review;
+
   return Review.create(newReview)
-    .then((review) => res.status(200).send(review))
-    .catch((e) => res.status(500).send(e));
+    .then(review => {
+      res.status(200).send(review)
+    }
+    )
+    .catch(e => res.status(500).send(e));
 };
 
 const findOne = (req, res) => {
   const id = req.params.id;
   return Review.findByPk(id)
-<<<<<<< HEAD
-    .then((review) => res.status(200).send(review))
-    .catch((e) => res.status(500).send(e));
-};
-
-const update = (req, res) => {
-  const id = req.params.id;
-=======
     .then(review => res.status(200).send(review))
     .catch(e => res.status(500).send(e));
 }
@@ -40,7 +33,6 @@ const update = (req, res) => {
   })
     .then(review => res.status(200).send(review))
     .catch(e => res.status(500).send(e));
->>>>>>> feature review
 
   Review.update(req.body, {
     where: { id: id },
@@ -53,7 +45,6 @@ const destroy = (req, res) => {
   const id = req.params.id;
 
   Review.destroy({
-<<<<<<< HEAD
     where: { id: id },
   })
     .then((review) => res.status(200).res.sendStatus(review))
@@ -107,12 +98,6 @@ const getAllCommentsReviewByAgent = async (req, res) => {
     console.log(error);
     return res.status(500).json({ msg: "Error Server" });
   }
-=======
-    where: { id: id }
-  })
-    .then(review => res.status(200).res.sendStatus(review))
-    .catch(e => res.status(500).send(e));
->>>>>>> feature review
 };
 
 const reviewsByAgent = (req, res) => {
@@ -139,11 +124,11 @@ module.exports = {
   findOne,
   update,
   destroy,
-<<<<<<< HEAD
+  reviewsByAgent,
   getAvgRatingsAgent,
   getAllCommentsReviewByAgent,
 };
-=======
-  reviewsByAgent
-};
->>>>>>> feature review
+
+
+
+
