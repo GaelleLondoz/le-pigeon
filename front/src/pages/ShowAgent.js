@@ -15,6 +15,7 @@ import ReviewsAPI from "../components/services/reviewAPI";
 import UserDestinationAPI from "../components/services/userDestinationsAPI";
 import CardDestination from "../components/agent/CardDestination";
 import Paginator from "../components/Pagination";
+import CardComment from "../components/agent/CardComment";
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
@@ -34,6 +35,7 @@ const ShowAgent = ({ match }) => {
     countComments: "",
   });
   const [destinations, setDestinations] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchAgent = async (id) => {
@@ -60,7 +62,16 @@ const ShowAgent = ({ match }) => {
       const data = await UserDestinationAPI.getAllDestinationsByUser(id);
       setDestinations(data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
+    }
+  };
+
+  const fetchReviewsByAgent = async (id) => {
+    try {
+      const data = await ReviewsAPI.getCommentsByAgent(id);
+      setReviews(data);
+    } catch (error) {
+      console.log(error.response);
     }
   };
 
@@ -88,9 +99,14 @@ const ShowAgent = ({ match }) => {
     fetchDestinationsByAgent(id);
   }, [id]);
 
+  useEffect(() => {
+    fetchReviewsByAgent(id);
+  }, [id]);
+
   //   console.log(agent);
   //   console.log(avgRatings);
   //   console.log(destinations);
+  console.log(reviews);
   return (
     <section id="public-agent-profile">
       <Container>
@@ -132,12 +148,12 @@ const ShowAgent = ({ match }) => {
         <Box className="destinations" component="div">
           <Typography variant="h2">Mes destinations</Typography>
 
-          <div className="destinations-label">
+          {/* <div className="destinations-label">
             <Chip label="Laos" color="secondary" />
             <Chip label="Vietnam" color="secondary" />
             <Chip label="Australie" color="secondary" />
             <Chip label="Europe" color="secondary" />
-          </div>
+          </div> */}
           <Grid container>
             {paginatedDestinations.map((destination) => {
               return (
@@ -160,30 +176,14 @@ const ShowAgent = ({ match }) => {
           <Typography variant="h3">
             Ce que les voyageurs disent de Pierre
           </Typography>
-          <Grid container spacing={7}>
-            <Grid item xs={12} md={6} className="card-comment">
-              <Paper xs={12} md={6}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://randomuser.me/api/portraits/men/36.jpg"
-                />
-                <Typography paragraph={true}>
-                  Pierre est un vrai globe-trotteur....
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={6} className="card-comment">
-              <Paper xs={12} md={6}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://randomuser.me/api/portraits/men/36.jpg"
-                />
-                <Typography paragraph={true}>
-                  Il m’a aidé à organiser mon voyage en Asie du Suf et...
-                </Typography>
-              </Paper>
-            </Grid>
-          </Grid>
+
+          {reviews.map((review) => {
+            return (
+              <div key={review.id} className="card-comments-agent">
+                <CardComment comment={review} />
+              </div>
+            );
+          })}
         </Box>
       </Container>
     </section>

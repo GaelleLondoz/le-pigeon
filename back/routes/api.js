@@ -56,7 +56,6 @@ router.get(
 );
 router.get(
   "/reviews/comments/agent/:id",
-  checkAuth,
   reviewsController.getAllCommentsReviewByAgent
 );
 
