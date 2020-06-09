@@ -16,6 +16,7 @@ import UserDestinationAPI from "../components/services/userDestinationsAPI";
 import CardDestination from "../components/agent/CardDestination";
 import Paginator from "../components/Pagination";
 import CardComment from "../components/agent/CardComment";
+import Form from "../components/reviews/Form"
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
@@ -38,6 +39,18 @@ const ShowAgent = ({ match }) => {
   const [reviews, setReviews] = useState([]);
   const [currentDestinationPage, setCurrentDestinationPage] = useState(1);
   const [currentReviewsPage, setCurrentReviewPage] = useState(1);
+
+  // config dialog from create state open / close
+  const [open, setOpen] = useState(false)
+
+  const handleOpenFormCreate = (status) => {
+    setOpen(status)
+  }
+
+  const handleOpen = () => {
+    // open Dialog
+    handleOpenFormCreate(true)
+  };
 
   const fetchAgent = async (id) => {
     try {
@@ -129,7 +142,7 @@ const ShowAgent = ({ match }) => {
                 <Avatar alt="Remy Sharp" src={agent.User.avatar} />
                 <Rating
                   name="read-only"
-                  value={avgRatings.avgRatings}
+                  value={parseInt(avgRatings.avgRatings)}
                   precision={0.5}
                   readOnly
                 />
@@ -189,10 +202,15 @@ const ShowAgent = ({ match }) => {
             Ce que les voyageurs disent de {agent.User.firstName}
           </Typography>
 
+          <Typography component="a" onClick={handleOpen}>
+            Donner votre avis
+          </Typography>
+
           {paginatedReviews.map((review) => {
+            if (review.status !== "PUBLISHED") return
             return (
               <div key={review.id} className="card-comments-agent">
-                <CardComment comment={review} />
+                <CardComment comment={review} comments={reviews} agentId={id} />
               </div>
             );
           })}
@@ -205,6 +223,15 @@ const ShowAgent = ({ match }) => {
             />
           )}
         </Box>
+        {open &&
+          <Form
+            id={id}
+            // handleRefreshList={handleRefreshList}
+            open={open}
+            onOpen={handleOpenFormCreate}
+          // onCreate={handleCreateItem}
+          />
+        }
       </Container>
     </section>
   );

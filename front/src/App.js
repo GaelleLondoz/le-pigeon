@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,7 +11,7 @@ import Head from "./components/Head";
 import Footer from "./components/Footer";
 import ChatBox from "./components/chatbox/ChatBox";
 import AuthAPI from "./components/services/authAPI";
-//import userAPI from "./components/services/userAPI";
+import userAPI from "./components/services/userAPI";
 import AuthContext from "./contexts/AuthContext";
 
 import Home from "./pages/Home";
@@ -40,6 +40,20 @@ const App = () => {
   );
 
   const [currentUser, setCurrentUser] = useState({});
+
+  // fetch user
+  const fetchUser = async () => {
+    try {
+      const { user } = await userAPI.getUser()
+      setCurrentUser(user)
+    } catch (error) {
+      throw error.response;
+    }
+  };
+
+  useEffect(() => {
+    isAuthenticated && fetchUser()
+  }, []);
 
   const NavBarWithRouter = withRouter(Nav);
 

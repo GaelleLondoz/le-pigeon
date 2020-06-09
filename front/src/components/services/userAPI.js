@@ -11,15 +11,11 @@ function getProfileUser(id) {
     .then((response) => response.data);
 }
 
-
-
-
 function getProfileAgent(id) {
   return axios
     .get(USERS_URL + "/profile/agent/" + id)
     .then((response) => response.data);
 }
-
 
 function getDestinationByUser(id, destinationId) {
   return axios

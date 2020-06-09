@@ -61,7 +61,7 @@ const getAvgRatingsAgent = async (req, res) => {
 
   try {
     const avgRatings = await Review.findAll({
-      where: { agentID: id },
+      where: { agentID: id, status: "PUBLISHED" },
       attributes: [
         [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
         [sequelize.fn("COUNT", sequelize.col("comment")), "countComments"],
@@ -82,7 +82,7 @@ const getAllCommentsReviewByAgent = async (req, res) => {
   try {
     const comments = await Review.findAll({
       where: { agentID: id },
-      attributes: ["id", "comment", "rating", "authorID"],
+      attributes: ["id", "comment", "rating", "authorID", "status"],
       include: [
         {
           model: User,
