@@ -26,6 +26,7 @@ import PrivateRoute from "./components/redirections/PrivateRoutes";
 import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRoutes";
 import ProfileAgent from "./pages/profileAgent";
 import ShowTravelDetails from "./pages/profileAgent/ShowTravelDetails";
+import ShowAgent from "./pages/ShowAgent";
 
 AuthAPI.setup();
 const App = () => {
@@ -58,6 +59,7 @@ const App = () => {
             <Route exact path="/help" component={Help} />
             <Route exact path="/message" component={Messages} />
             <Route exact path="/become-agent" component={BecomeAgent} />
+            <Route exact path="/agent/:id" component={ShowAgent} />
             <LoginNotAllowedRoutes exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute
