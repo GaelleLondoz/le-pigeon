@@ -9,13 +9,11 @@ import 'moment/locale/fr'
 
 // material-ui 
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import { Rating } from '@material-ui/lab';
-
+import { Grid, Box, DialogActions, DialogContent, DialogTitle, Dialog, Button } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
     form: {
-        width: "50%", // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
     submit: {
@@ -28,10 +26,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 const ReviewForm = (props) => {
     // use style from material-ui
     const classes = useStyles();
 
+    // fetch user and reviews
     useEffect(() => {
         fetchUser(props.id);
         setReviews(props.reviews)
@@ -41,6 +41,11 @@ const ReviewForm = (props) => {
     const { isAuthenticated } = useContext(AuthContext);
 
     // reviews
+    const [reviews, setReviews] = useState(
+        []
+    )
+
+    // review
     const [review, setReview] = useState({
         agentID: 0,
         authorID: 0,
@@ -48,16 +53,35 @@ const ReviewForm = (props) => {
         rating: 0
     });
 
-    const [reviews, setReviews] = useState(
-        []
-    )
+    // user info for review
+    const fetchUser = async (id) => {
+        try {
+            const { user } = await userAPI.getUser();
+            setReview({ ...review, authorID: user.id, agentID: parseInt(id) });
+        } catch (error) {
+            throw error.response;
+        }
+    };
 
+    // config dialog state open / close
+    const { open } = props
+    const handleOpenFormCreate = (status) => {
+        props.onOpen(status)
+    }
+
+    const handleClose = () => {
+        // close dialog
+        handleOpenFormCreate(false)
+    };
+
+    // action update item
     const handleUpdate = (event) => {
         const value = event.currentTarget.value;
         const name = event.currentTarget.name;
         setReview({ ...review, [name]: value });
     };
 
+    // action submit item
     const handleSubmit = async (event) => {
         event.preventDefault()
         if (isAuthenticated) {
@@ -71,7 +95,7 @@ const ReviewForm = (props) => {
                     comment: "",
                     rating: 0
                 })
-                console.log(review)
+                handleClose()
             } catch (error) {
                 throw error.response;
             }
@@ -80,51 +104,65 @@ const ReviewForm = (props) => {
         }
     };
 
-    // user info for review
-    const fetchUser = async (id) => {
-        try {
-            const { user } = await userAPI.getUser();
-            setReview({ ...review, authorID: user.id, agentID: parseInt(id) });
-        } catch (error) {
-            throw error.response;
-        }
-    };
+
 
     return (
         <div>
-            <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <div>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        id="review"
-                        label="Review"
-                        name="comment"
-                        autoComplete="review"
-                        value={review.comment}
-                        onChange={handleUpdate}
-                        multiline
-                        rows={4}
-                        autoFocus
-                    />
-                    <Rating
-                        name="rating"
-                        value={parseInt(review.rating)}
-                        onChange={handleUpdate}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+                maxWidth='sm'
+                fullWidth
+            >
+                <DialogTitle id="form-dialog-title">Donner votre avis</DialogTitle>
+                <DialogContent>
+                    <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
 
-                        className={classes.submit}
-                    >
-                        Envoyer
+                        <Grid
+                            container
+                            direction="column"
+                            justify="center"
+                            alignItems="flex-start"
+                        >
+                            <Rating
+                                name="rating"
+                                value={parseInt(review.rating)}
+                                onChange={handleUpdate}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                id="review"
+                                label="Partagez votre opinion"
+                                name="comment"
+                                autoComplete="review"
+                                value={review.comment}
+                                onChange={handleUpdate}
+                                multiline
+                                rows={4}
+                                autoFocus
+                            />
+
+                            <Box alignSelf="flex-end">
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+
+                                >
+                                    Partager
                         </Button>
-                </div>
-            </form>
+                            </Box>
+                        </Grid>
+                    </form>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">Annuler</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

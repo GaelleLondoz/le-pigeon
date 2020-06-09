@@ -3,38 +3,22 @@ import AuthContext from "../../contexts/AuthContext";
 import userAPI from "../services/userAPI";
 import ReviewsAPI from "../services/reviewsAPI";
 
-import Button from "@material-ui/core/Button";
-import TextField from '@material-ui/core/TextField';
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-
-import DialogTitle from "@material-ui/core/DialogTitle";
-import ReadMoreReact from 'read-more-react';
-
-
-
-
-
-
-// externe libraries
+// external libraries
 // moment
 import moment from "moment";
 import 'moment/locale/fr'
 
 // material-ui 
-import { makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
 import { Rating } from '@material-ui/lab';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { makeStyles, Avatar, Grid, Button, Dialog, TextField, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+
 // custom style
 import "../../assets/sass/components/review.scss";
 
-
 const useStyles = makeStyles((theme) => ({
     form: {
-        width: "50%", // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
     submit: {
@@ -48,74 +32,53 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default (props) => {
-
+    // config dialog state open / close
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
+        // open Dialog
         setOpen(true);
-        props.onUpdate(false)
     };
     const handleClose = () => {
+        // close dialog
         setOpen(false);
-        props.onUpdate(true)
     };
 
+    // style from material-ui
     const classes = useStyles();
-
-
-
-
 
     // reviews
     const [review, setReview] = useState(props.review);
-    const [reviewUp, setReviewUp] = useState(review);
+    const [reviewUpdated, setReviewUpdated] = useState(review);
 
-    // let [readMoreParams, setReadMoreParams] = useState({
-    //     text: review.comment,
-    //     minimumLength: 5,
-    //     idealLength: 10,
-    //     maxLength: 15,
-    //     readMoreText: "... Plus"
-    // })
     const handleChange = (event) => {
         let value = event.currentTarget.value;
         const name = event.currentTarget.name;
-        if (name === "rating") { value = parseInt(value) }
-        console.log({ name })
-        console.log({ value })
-        setReviewUp({ ...reviewUp, [name]: value });
-
-
+        // transform rating to int
+        if (name === "rating") {
+            value = parseInt(value)
+        }
+        // set review updated
+        setReviewUpdated({ ...reviewUpdated, [name]: value });
     };
 
+    // action update item
     const handleUpdate = async (event) => {
-        console.log(reviewUp)
         event.preventDefault()
-        setReview(reviewUp);
-        await ReviewsAPI.updateReview(review.id, reviewUp)
-        // .then(response => {
+        // update review from reviewUpdated
+        setReview(reviewUpdated);
+        await ReviewsAPI.updateReview(review.id, reviewUpdated)
 
-
+        // refresh list
         props.handleRefreshList();
-        // setReadMoreParams({ text: reviewUp.comment })
 
-
+        // close dialog
         setOpen(false);
-        props.onUpdate(true)
-
-        // })
-        // .catch(e => {
-        //     console.log(e);
-        // });
     };
 
 
     // check if user authenticated
     const { isAuthenticated } = useContext(AuthContext);
-
-    // init state for alert notification
-    const [displayFlash, setDisplayFlash] = useState(false);
-
 
     // user
     useEffect(() => {
@@ -130,38 +93,55 @@ export default (props) => {
         try {
             const { user } = await userAPI.getUser();
             setUser({ ...user, id: user.id });
-
         } catch (error) {
             throw error.response;
         }
     };
 
-
-    window.onclick = function (event) {
-        if (event.target.className == 'more') {
-            event.preventDefault();
-            event.target.parentElement.parentElement.classList.toggle('showAll');
-
-        }
-    }
-
-
     // action delete item
     const handleDelete = async () => {
-
         try {
-            props.reviews.reverse().indexOf(review) + 1 === (props.reviews.length) ? props.onDelete(true, true) : props.onDelete(true, false)
+            // check if last review and last of page from pagination -- go back to preview page
+            let indexReview = props.reviews.reverse().indexOf(review) + 1
+            let reviewsLength = props.reviews.length
+
+            if ((indexReview === reviewsLength) || ((indexReview === 0) && (indexReview < reviewsLength))) {
+                props.onDelete(true, true)
+            } else {
+                props.onDelete(true, false)
+            }
+
+            // delete from database
             await ReviewsAPI.deleteReview(review.id);
+
+            // refresh list
             props.handleRefreshList()
         } catch (error) {
             console.log(error.response)
         }
     };
 
+    // action read more if long review
+    const handleReadMore = () => {
+        var dots = document.getElementById("dots");
+        var moreText = document.getElementById("more");
+        var btnText = document.getElementById("read-more");
 
+        if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            btnText.innerHTML = 'Lire plus';
+            moreText.style.display = "none";
+        } else {
+            dots.style.display = "none";
+            btnText.innerHTML = 'Lire moins';
+            moreText.style.display = "inline";
+        }
+    }
 
     return (
+
         <li className="review-item">
+
             <div className="review-item__top">
                 <div className="review-item__top-left">
                     <Avatar
@@ -178,77 +158,68 @@ export default (props) => {
                 </div>
                 <div className="review__rating">
                     <Rating
-                        name="hover-feedback"
+                        name="rating"
                         value={review.rating}
                         precision={0.5}
                         readOnly
                     />
                 </div>
             </div>
-            <div className="review-item__bottom">
+            {review.comment.length > 200 ? <div className="review-item__bottom"><p className="review__comment">{review.comment.substr(0, 200)}<span id="dots">...</span><span id="more">{review.comment.substr(61)}</span></p><Button color="primary" onClick={handleReadMore} id="read-more">Lire plus</Button></div> : <div className="review-item__bottom"><p className="review__comment">{review.comment}</p></div>}
 
-                {/* <p className="toggledText" id={"shrinkMe" + props.reviews.reverse().indexOf(review)}>{review.comment} </p> */}
-
-                <p>{review.comment.substr(0, 60)}</p>
-                <p>{review.comment.substr(61)}</p>
-
-            </div>
             {isAuthenticated && review.author.id === user.id ? <div><DeleteIcon onClick={handleDelete} /><EditIcon onClick={handleOpen} /></div> : ""}
-
-
 
             <Dialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title"
+                maxWidth='sm'
+                fullWidth
             >
-                <DialogTitle id="form-dialog-title">Edit</DialogTitle>
+                <DialogTitle id="form-dialog-title">Éditer</DialogTitle>
                 <DialogContent>
-
                     <form className={classes.form} onSubmit={handleUpdate}>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            id="review"
-                            label="Review"
-                            name="comment"
-                            autoComplete="review"
-                            value={reviewUp.comment}
-                            onChange={handleChange}
-
-                            multiline
-                            rows={4}
-                            autoFocus
-
-                        />
-                        <Rating
-                            name="rating"
-                            value={parseInt(reviewUp.rating)}
-                            onChange={handleChange}
-
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-
-                            className={classes.submit}
+                        <Grid
+                            container
+                            direction="column"
+                            justify="center"
+                            alignItems="flex-start"
                         >
-                            Update
-                        </Button>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                id="review"
+                                label="Review"
+                                name="comment"
+                                autoComplete="review"
+                                value={reviewUpdated.comment}
+                                onChange={handleChange}
+                                multiline
+                                rows={4}
+                                autoFocus
+                            />
+                            <Rating
+                                name="rating"
+                                value={parseInt(reviewUpdated.rating)}
+                                onChange={handleChange}
+                            />
+                            <Button
+                                type="submit"
+
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >Mettre à jour</Button>
+                        </Grid>
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Annuler
-            </Button>
-
+                    <Button onClick={handleClose} color="primary">Annuler</Button>
                 </DialogActions>
             </Dialog>
 
-        </li>
+        </li >
 
     )
 }

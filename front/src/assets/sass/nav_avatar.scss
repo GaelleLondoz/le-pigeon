@@ -1,23 +1,21 @@
 @import "variables";
 
 .NavAvatar button {
-    height: 45px !important;
-    width: 45px !important;
-    color: $dark-blue;
-    &:hover{
-        color: $main-blue;
-
-    }
+  height: 45px !important;
+  width: 45px !important;
+  color: $dark-blue;
+  &:hover {
+    color: $main-blue;
+  }
 }
 
-li {
-    &:hover{
-        background-color: $light-grey !important;
-    }
-    & a {
-        color: $dark-blue;
-        text-decoration: none;
-        font-weight: bolder;
-    }
-}
-
+// li {
+//   &:hover {
+//     background-color: $light-grey !important;
+//   }
+//   & a {
+//     color: $dark-blue;
+//     text-decoration: none;
+//     font-weight: bolder;
+//   }
+// }

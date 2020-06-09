@@ -18,16 +18,11 @@ router.get("/users/agents/best", usersController.getBestAgents);
 router.get("/users/agent/:id/public", usersController.getPublicProfileAgent);
 router.put("/users/:id", checkAuth, usersController.update);
 router.delete("/users/:id", checkAuth, usersController.destroy);
-router.get(
-  "/users/profile/agent/:id",
-  checkAuth,
-  usersController.getProfileAgent
-);
+router.get("/users/profile/agent/:id", checkAuth, usersController.getProfileAgent);
 router.get("/users/me/roles", checkAuth, usersController.getRoleUser);
 router.put("/users/agent/:id", checkAuth, usersController.editProfileAgent);
 router.get("/users/:id/reviews", usersController.getReviews);
 router.get("/users/:id/messages", usersController.getMessages);
-
 // login auth
 router.post("/login", usersController.login);
 router.post("/logout", checkAuth, usersController.logout);
