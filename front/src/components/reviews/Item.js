@@ -1,5 +1,6 @@
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
+import { Rating } from '@material-ui/lab';
 
 export default ({ review }) => {
 
@@ -11,9 +12,16 @@ export default ({ review }) => {
             />
             <p>{review.author.firstName}</p>
             <p>{review.author.lastName}</p>
-            <p>{review.rating}</p>
+
+            <Rating
+                name="hover-feedback"
+                value={review.rating}
+                precision={0.5}
+                readOnly
+            />
+
             <p>{review.comment}</p>
-            <p>{review.createdAt}</p>
+            <p>{review.createdAt.toISOString()}</p>
         </li>
     )
 }

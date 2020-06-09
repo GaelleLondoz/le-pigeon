@@ -68,12 +68,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
 
     Review.belongsTo(models.User, { foreignKey: 'agentID', targetKey: 'id', as: 'agent', allowNull: false });
-<<<<<<< HEAD
-    Review.belongsTo(models.User, { foreignKey: 'authorID', targetKey: "id", as: 'author', allowNull: false });
-
-=======
     Review.belongsTo(models.User, { foreignKey: 'authorID', targetKey: 'id', as: 'author', allowNull: false });
->>>>>>> feature review
   };
   return Review;
 };
