@@ -14,6 +14,8 @@ const userDestinationsController = require("../controllers/userDestinationsContr
 router.get("/users", usersController.index);
 router.post("/users", usersController.create);
 router.get("/users/:id", usersController.findOne);
+router.get("/users/agents/best", usersController.getBestAgents);
+router.get("/users/agent/:id/public", usersController.getPublicProfileAgent);
 router.put("/users/:id", checkAuth, usersController.update);
 router.delete("/users/:id", checkAuth, usersController.destroy);
 router.get(
@@ -50,12 +52,10 @@ router.put("/reviews/:id", checkAuth, reviewsController.update);
 router.delete("/reviews/:id", checkAuth, reviewsController.destroy);
 router.get(
   "/reviews/avgratings/agent/:id",
-  checkAuth,
   reviewsController.getAvgRatingsAgent
 );
 router.get(
   "/reviews/comments/agent/:id",
-  checkAuth,
   reviewsController.getAllCommentsReviewByAgent
 );
 
@@ -81,17 +81,14 @@ router.post("/messages/:id", checkAuth, messagesController.newMessage);
 // destinations
 router.get(
   "/destinations/users/:id",
-  checkAuth,
   userDestinationsController.getAllDestinationsByUser
 );
 router.get(
   "/destinations/users/:id/destination/:destinationId/pictures",
-  checkAuth,
   userDestinationsController.getPicturesDestinationByDestination
 );
 router.get(
   "/users/:id/destination/:destinationId",
-  checkAuth,
   userDestinationsController.getDestinationByUser
 );
 // router.get(
