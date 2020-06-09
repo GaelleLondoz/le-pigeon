@@ -12,10 +12,6 @@ import RateReviewIcon from "@material-ui/icons/RateReview";
 import PaymentIcon from "@material-ui/icons/Payment";
 import PersonIcon from "@material-ui/icons/Person";
 import LayersIcon from "@material-ui/icons/Layers";
-import AssignmentIcon from "@material-ui/icons/Assignment";
-import RateReviewIcon from "@material-ui/icons/RateReview";
-import PaymentIcon from "@material-ui/icons/Payment";
-import PersonIcon from "@material-ui/icons/Person";
 
 export const mainListItems = (
   <div>
