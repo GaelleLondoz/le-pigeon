@@ -73,4 +73,5 @@ export default {
   editProfileAgent,
   getBestAgents,
   getPublicProfileAgent,
+  getProfileUser
 };

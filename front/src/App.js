@@ -78,7 +78,7 @@ const App = () => {
               component={ProfileAgent}
             />
 
-            <Route exact path="/users" component={PersonList} />
+
 
             <Route exact path="/users/:id" component={Profile} />
           </Switch>

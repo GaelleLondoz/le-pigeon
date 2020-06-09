@@ -212,26 +212,7 @@ const getProfileAgent = async (req, res) => {
     console.log(error);
   }
 }
-const getReviews = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const reviews = await User.findAll({
-      where: { id },
-      include: [
-        {
-          model: Review,
-          as: "reviews"
-        }
-      ]
-    }
-    );
-    console.log(reviews)
-    return res.status(200).json(reviews);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "Server Error" });
-  }
-};
+
 
 const getReviews = async (req, res) => {
   const { id } = req.params;
@@ -290,7 +271,6 @@ const getMessages = async (req, res) => {
 
 
 const editProfileAgent = async (req, res) => {
-<<<<<<< HEAD
   const id = req.params.id;
   const { firstName, lastName, userName, email } = req.body.User;
   const { language, price } = req.body;
@@ -409,46 +389,6 @@ module.exports = {
   editProfileAgent,
   getBestAgents,
   getPublicProfileAgent,
-=======
-    const id = req.params.id;
-    const { firstName, lastName, userName, email } = req.body.User;
-    const { language, price } = req.body;
-
-    try {
-        await User.update({
-            firstName,
-            lastName,
-            userName,
-            email,
-        }, {
-            where: { id },
-        });
-        await UserRole.update({
-            language,
-            price,
-        }, {
-            where: { userID: id },
-        });
-        return res.status(200).json({ msg: "Test Updated Agent" });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ msg: "Error Server" });
-    }
-};
-
-module.exports = {
-    index,
-    create,
-    findOne,
-    update,
-    destroy,
-    login,
-    me,
-    logout,
-    getProfileAgent,
-    getRoleUser,
-    editProfileAgent,
-    getReviews,
-    getMessages
->>>>>>> rebase
+  getReviews,
+  getMessages
 };
