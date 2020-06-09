@@ -14,9 +14,11 @@ import UserAPI from "../components/services/userAPI";
 import ReviewsAPI from "../components/services/reviewAPI";
 import UserDestinationAPI from "../components/services/userDestinationsAPI";
 import CardDestination from "../components/agent/CardDestination";
+import Paginator from "../components/Pagination";
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
+  const ITEMS_PER_PAGE = 6;
 
   const [agent, setAgent] = useState({
     User: {
@@ -32,6 +34,7 @@ const ShowAgent = ({ match }) => {
     countComments: "",
   });
   const [destinations, setDestinations] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchAgent = async (id) => {
     try {
@@ -61,6 +64,17 @@ const ShowAgent = ({ match }) => {
     }
   };
 
+  const handlePaginationChange = (e, page) => {
+    setCurrentPage(page);
+    //window.scrollTo(0, 0);
+  };
+
+  const paginatedDestinations = Paginator.getData(
+    destinations,
+    currentPage,
+    ITEMS_PER_PAGE
+  );
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchAgent(id);
@@ -74,9 +88,9 @@ const ShowAgent = ({ match }) => {
     fetchDestinationsByAgent(id);
   }, [id]);
 
-  console.log(agent);
-  console.log(avgRatings);
-  console.log(destinations);
+  //   console.log(agent);
+  //   console.log(avgRatings);
+  //   console.log(destinations);
   return (
     <section id="public-agent-profile">
       <Container>
@@ -125,7 +139,7 @@ const ShowAgent = ({ match }) => {
             <Chip label="Europe" color="secondary" />
           </div>
           <Grid container>
-            {destinations.map((destination) => {
+            {paginatedDestinations.map((destination) => {
               return (
                 <Grid key={destination.id} item xs={12} md={4}>
                   <CardDestination destination={destination} />
@@ -133,6 +147,14 @@ const ShowAgent = ({ match }) => {
               );
             })}
           </Grid>
+          {destinations.length > 6 && (
+            <Paginator
+              length={destinations.length}
+              page={currentPage}
+              onPageChanged={handlePaginationChange}
+              itemsByPage={ITEMS_PER_PAGE}
+            />
+          )}
         </Box>
         <Box component="div" className="container-card-comment">
           <Typography variant="h3">

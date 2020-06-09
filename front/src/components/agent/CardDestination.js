@@ -81,7 +81,7 @@ const CardDestination = ({ destination }) => {
       <CardActions>
         <Link
           to={
-            "/profile/agent/" +
+            "/agent/" +
             destination.UserId +
             "/destination/" +
             destination.Destination.id

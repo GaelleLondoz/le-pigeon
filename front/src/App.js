@@ -62,9 +62,9 @@ const App = () => {
             <Route exact path="/agent/:id" component={ShowAgent} />
             <LoginNotAllowedRoutes exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <PrivateRoute
+            <Route
               exact
-              path="/profile/agent/:id/destination/:destinationId"
+              path="/agent/:id/destination/:destinationId"
               component={ShowTravelDetails}
             />
             <PrivateRoute

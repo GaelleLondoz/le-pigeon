@@ -86,12 +86,10 @@ router.get(
 );
 router.get(
   "/destinations/users/:id/destination/:destinationId/pictures",
-  checkAuth,
   userDestinationsController.getPicturesDestinationByDestination
 );
 router.get(
   "/users/:id/destination/:destinationId",
-  checkAuth,
   userDestinationsController.getDestinationByUser
 );
 // router.get(

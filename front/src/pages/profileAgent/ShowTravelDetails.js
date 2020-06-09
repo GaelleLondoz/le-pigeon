@@ -46,7 +46,7 @@ const ShowTravelDetails = ({ match }) => {
   }, [id, destinationId]);
 
   //console.log(destination);
-  console.log(pictures);
+  // console.log(pictures);
 
   return <ShowDestination destination={destination} pictures={pictures} />;
 };
