@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Box,
@@ -10,8 +10,56 @@ import {
   Paper,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
+import UserAPI from "../components/services/userAPI";
+import ReviewsAPI from "../components/services/reviewAPI";
 
-const ShowAgent = () => {
+const ShowAgent = ({ match }) => {
+  const id = match.params.id;
+
+  const [agent, setAgent] = useState({
+    User: {
+      firstName: "",
+      lastName: "",
+      avatar: "",
+    },
+    language: "",
+    price: "",
+  });
+  const [avgRatings, setAvgRatings] = useState({
+    avgRatings: "",
+    countComments: "",
+  });
+
+  const fetchAgent = async (id) => {
+    try {
+      const data = await UserAPI.getPublicProfileAgent(id);
+      setAgent(data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const fetchAvgRatings = async (id) => {
+    try {
+      const data = await ReviewsAPI.getAvgRatings(id);
+      const { avgRatings, countComments } = data[0];
+      setAvgRatings({ avgRatings, countComments });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchAgent(id);
+  }, [id]);
+
+  useEffect(() => {
+    fetchAvgRatings(id);
+  }, [id]);
+
+  console.log(agent);
+  console.log(avgRatings);
   return (
     <section id="public-agent-profile">
       <Container>
@@ -19,22 +67,30 @@ const ShowAgent = () => {
           <Grid container spacing={5} justify="center">
             <Grid item xs={12} md={4}>
               <Box component="div" className="container-avatar">
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://randomuser.me/api/portraits/men/36.jpg"
+                <Avatar alt="Remy Sharp" src={agent.User.avatar} />
+                <Rating
+                  name="read-only"
+                  value={avgRatings.avgRatings}
+                  precision={0.5}
+                  readOnly
                 />
-                <Rating name="read-only" value={4} readOnly />
-                <Typography paragraph={true}>27 commentaires</Typography>
+                <Typography paragraph={true}>
+                  {avgRatings.countComments} commentaire(s)
+                </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} md={8} className="container-text">
               <Typography component="p">
-                Je m'appelle Pierre, Lorem ipsum dolor sit amet consectetur,
-                adipisicing elit. Ullam illum laboriosam numquam nesciunt error,
-                voluptas cum atque provident veritatis vitae.
+                Je m'appelle{" "}
+                <strong>
+                  {agent.User.firstName} {agent.User.lastName}
+                </strong>
+                , Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Ullam illum laboriosam numquam nesciunt error, voluptas cum
+                atque provident veritatis vitae.
               </Typography>
               <Box component="div" className="price">
-                <Typography component="p">15 € / heure</Typography>
+                <Typography component="p">{agent.price} € / heure</Typography>
                 <Button size="medium" variant="contained" color="secondary">
                   Réserver un rendez-vous
                 </Button>

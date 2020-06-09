@@ -290,6 +290,28 @@ const getBestAgents = async (req, res) => {
     return res.status(500).json({ msg: "Error Server" });
   }
 };
+
+const getPublicProfileAgent = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const agent = await UserRole.findOne({
+      where: { userID: id },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "firstName", "lastName", "avatar"],
+        },
+      ],
+    });
+    if (!agent) {
+      return res.status(404).json({ msg: "Agent Not Found" });
+    }
+    return res.status(200).json(agent);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   index,
   create,
@@ -303,4 +325,5 @@ module.exports = {
   getRoleUser,
   editProfileAgent,
   getBestAgents,
+  getPublicProfileAgent,
 };

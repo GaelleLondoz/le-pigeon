@@ -43,6 +43,11 @@ function getBestAgents() {
     .get(USERS_URL + "/agents/best")
     .then((response) => response.data);
 }
+function getPublicProfileAgent(id) {
+  return axios
+    .get(USERS_URL + "/agent/" + id + "/public")
+    .then((response) => response.data);
+}
 
 /**
  * Every times refresh page, verify if a token, if a token => set request header
@@ -56,4 +61,5 @@ export default {
   getRoleUser,
   editProfileAgent,
   getBestAgents,
+  getPublicProfileAgent,
 };

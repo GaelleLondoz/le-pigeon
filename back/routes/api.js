@@ -15,6 +15,7 @@ router.get("/users", usersController.index);
 router.post("/users", usersController.create);
 router.get("/users/:id", usersController.findOne);
 router.get("/users/agents/best", usersController.getBestAgents);
+router.get("/users/agent/:id/public", usersController.getPublicProfileAgent);
 router.put("/users/:id", checkAuth, usersController.update);
 router.delete("/users/:id", checkAuth, usersController.destroy);
 router.get(
@@ -51,7 +52,6 @@ router.put("/reviews/:id", checkAuth, reviewsController.update);
 router.delete("/reviews/:id", checkAuth, reviewsController.destroy);
 router.get(
   "/reviews/avgratings/agent/:id",
-  checkAuth,
   reviewsController.getAvgRatingsAgent
 );
 router.get(
