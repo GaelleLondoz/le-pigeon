@@ -12,6 +12,8 @@ import {
 import Rating from "@material-ui/lab/Rating";
 import UserAPI from "../components/services/userAPI";
 import ReviewsAPI from "../components/services/reviewAPI";
+import UserDestinationAPI from "../components/services/userDestinationsAPI";
+import CardDestination from "../components/agent/CardDestination";
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
@@ -29,6 +31,7 @@ const ShowAgent = ({ match }) => {
     avgRatings: "",
     countComments: "",
   });
+  const [destinations, setDestinations] = useState([]);
 
   const fetchAgent = async (id) => {
     try {
@@ -49,6 +52,15 @@ const ShowAgent = ({ match }) => {
     }
   };
 
+  const fetchDestinationsByAgent = async (id) => {
+    try {
+      const data = await UserDestinationAPI.getAllDestinationsByUser(id);
+      setDestinations(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchAgent(id);
@@ -58,8 +70,13 @@ const ShowAgent = ({ match }) => {
     fetchAvgRatings(id);
   }, [id]);
 
+  useEffect(() => {
+    fetchDestinationsByAgent(id);
+  }, [id]);
+
   console.log(agent);
   console.log(avgRatings);
+  console.log(destinations);
   return (
     <section id="public-agent-profile">
       <Container>
@@ -100,12 +117,22 @@ const ShowAgent = ({ match }) => {
         </Box>
         <Box className="destinations" component="div">
           <Typography variant="h2">Mes destinations</Typography>
+
           <div className="destinations-label">
             <Chip label="Laos" color="secondary" />
             <Chip label="Vietnam" color="secondary" />
             <Chip label="Australie" color="secondary" />
             <Chip label="Europe" color="secondary" />
           </div>
+          <Grid container>
+            {destinations.map((destination) => {
+              return (
+                <Grid key={destination.id} item xs={12} md={4}>
+                  <CardDestination destination={destination} />
+                </Grid>
+              );
+            })}
+          </Grid>
         </Box>
         <Box component="div" className="container-card-comment">
           <Typography variant="h3">

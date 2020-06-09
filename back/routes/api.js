@@ -82,7 +82,6 @@ router.post("/messages/:id", checkAuth, messagesController.newMessage);
 // destinations
 router.get(
   "/destinations/users/:id",
-  checkAuth,
   userDestinationsController.getAllDestinationsByUser
 );
 router.get(
