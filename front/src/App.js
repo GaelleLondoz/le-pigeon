@@ -4,6 +4,7 @@ import {
   Switch,
   Route,
   withRouter,
+  useParams
 } from "react-router-dom";
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
@@ -20,7 +21,7 @@ import Messages from "./pages/Messages";
 import BecomeAgent from "./pages/BecomeAgent";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import PersonList from "./components/profiles/Profile";
+import Profile from "./pages/Profile";
 
 
 import "./assets/sass/body.scss";
@@ -32,6 +33,8 @@ import ShowAgent from "./pages/ShowAgent";
 
 AuthAPI.setup();
 const App = () => {
+
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     AuthAPI.isAuthenticated()
   );
@@ -77,6 +80,7 @@ const App = () => {
 
             <Route exact path="/users" component={PersonList} />
 
+            <Route exact path="/users/:id" component={Profile} />
           </Switch>
         </main>
         {/*<Footer />*/}

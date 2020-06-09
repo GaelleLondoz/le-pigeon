@@ -18,6 +18,7 @@ router.get("/users/agents/best", usersController.getBestAgents);
 router.get("/users/agent/:id/public", usersController.getPublicProfileAgent);
 router.put("/users/:id", checkAuth, usersController.update);
 router.delete("/users/:id", checkAuth, usersController.destroy);
+<<<<<<< HEAD
 router.get(
   "/users/profile/agent/:id",
   checkAuth,
@@ -25,6 +26,10 @@ router.get(
 );
 router.get("/users/me/roles", checkAuth, usersController.getRoleUser);
 router.put("/users/agent/:id", checkAuth, usersController.editProfileAgent);
+=======
+router.get("/users/:id/reviews", usersController.getReviews);
+router.get("/users/:id/messages", usersController.getMessages);
+>>>>>>> feature review
 
 // login auth
 router.post("/login", usersController.login);
@@ -50,6 +55,7 @@ router.post("/reviews", checkAuth, reviewsController.create);
 router.get("/reviews/:id", reviewsController.findOne);
 router.put("/reviews/:id", checkAuth, reviewsController.update);
 router.delete("/reviews/:id", checkAuth, reviewsController.destroy);
+<<<<<<< HEAD
 router.get(
   "/reviews/avgratings/agent/:id",
   reviewsController.getAvgRatingsAgent
@@ -58,6 +64,9 @@ router.get(
   "/reviews/comments/agent/:id",
   reviewsController.getAllCommentsReviewByAgent
 );
+=======
+router.get("/reviews/agent/:agentID", reviewsController.reviewsByAgent);
+>>>>>>> feature review
 
 // messages
 router.get("/messages", checkAuth, messagesController.index);

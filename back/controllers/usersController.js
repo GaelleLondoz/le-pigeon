@@ -2,8 +2,11 @@ const bcrypt = require("bcrypt");
 const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { getHash } = require("../helpers/index");
+
 const { User, UserRole, Review, Role } = require("../models");
+
 const db = require("../models/index");
+
 
 const index = (req, res) => {
   return User.findAll()
@@ -179,6 +182,7 @@ const getRoleUser = async (req, res) => {
   }
 };
 
+
 const getProfileAgent = async (req, res) => {
   const id = req.params.id;
   //Verify if user connected is same of id
@@ -187,6 +191,7 @@ const getProfileAgent = async (req, res) => {
         return res.status(403).json({ msg: "Access Denied" });
     }
   */
+
 
   try {
     const agent = await UserRole.findOne({
@@ -201,11 +206,68 @@ const getProfileAgent = async (req, res) => {
     if (!agent) {
       return res.status(404).json({ msg: "Agent Not Found" });
     }
+
     return res.status(200).json(agent);
   } catch (error) {
     console.log(error);
   }
+}
+const getReviews = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const reviews = await User.findAll({
+      where: { id },
+      include: [
+        {
+          model: Review,
+          as: "reviews"
+        }
+      ]
+    }
+    );
+    console.log(reviews)
+    return res.status(200).json(reviews);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server Error" });
+  }
 };
+
+const getMessages = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const messages = await User.findAll({
+      where: { id },
+      include: [
+        {
+          model: Message,
+          nested: true
+        }
+      ]
+    });
+    console.log(messages)
+    return res.status(200).json(messages);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server Error" });
+  }
+};
+
+// const getReviews = async (req, res) => {
+//   const id = req.params.id;
+//   User.findByPk(id)
+// .getReviews()
+// reviews = await User.sequelize.query(`SELECT u.firstName, u.lastName, u.avatar, r.rating, r.comment, r.createdAt FROM Users as u INNER JOIN Reviews as r on u.id = r.authorID where r.agentID =  ${id}`, {
+// type: User.sequelize.QueryTypes.SELECT
+// })
+//     .then((user) => {
+//       res.status(200).send(user);
+//       console.log(user)
+//     })
+//     .catch((e) => res.status(500).send(e));
+// }
+
+
 
 const editProfileAgent = async (req, res) => {
   const id = req.params.id;
