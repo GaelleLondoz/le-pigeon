@@ -20,6 +20,7 @@ import CardComment from "../components/agent/CardComment";
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
   const ITEMS_PER_PAGE = 6;
+  const REVIEWS_PER_PAGE = 6;
 
   const [agent, setAgent] = useState({
     User: {
@@ -36,7 +37,8 @@ const ShowAgent = ({ match }) => {
   });
   const [destinations, setDestinations] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentDestinationPage, setCurrentDestinationPage] = useState(1);
+  const [currentReviewsPage, setCurrentReviewPage] = useState(1);
 
   const fetchAgent = async (id) => {
     try {
@@ -75,14 +77,25 @@ const ShowAgent = ({ match }) => {
     }
   };
 
-  const handlePaginationChange = (e, page) => {
-    setCurrentPage(page);
+  const handlePaginationDestinationChange = (e, page) => {
+    setCurrentDestinationPage(page);
+    //window.scrollTo(0, 0);
+  };
+
+  const handlePaginationReviewChange = (e, page) => {
+    setCurrentReviewPage(page);
     //window.scrollTo(0, 0);
   };
 
   const paginatedDestinations = Paginator.getData(
     destinations,
-    currentPage,
+    currentDestinationPage,
+    ITEMS_PER_PAGE
+  );
+
+  const paginatedReviews = Paginator.getData(
+    reviews,
+    currentReviewsPage,
     ITEMS_PER_PAGE
   );
 
@@ -166,24 +179,32 @@ const ShowAgent = ({ match }) => {
           {destinations.length > 6 && (
             <Paginator
               length={destinations.length}
-              page={currentPage}
-              onPageChanged={handlePaginationChange}
+              page={currentDestinationPage}
+              onPageChanged={handlePaginationDestinationChange}
               itemsByPage={ITEMS_PER_PAGE}
             />
           )}
         </Box>
         <Box component="div" className="container-card-comment">
           <Typography variant="h3">
-            Ce que les voyageurs disent de Pierre
+            Ce que les voyageurs disent de {agent.User.firstName}
           </Typography>
 
-          {reviews.map((review) => {
+          {paginatedReviews.map((review) => {
             return (
               <div key={review.id} className="card-comments-agent">
                 <CardComment comment={review} />
               </div>
             );
           })}
+          {reviews.length > 1 && (
+            <Paginator
+              length={reviews.length}
+              page={currentReviewsPage}
+              onPageChanged={handlePaginationReviewChange}
+              itemsByPage={ITEMS_PER_PAGE}
+            />
+          )}
         </Box>
       </Container>
     </section>
