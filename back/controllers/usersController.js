@@ -3,6 +3,7 @@ const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { getHash } = require("../helpers/index");
 const { User, UserRole, Review, Role } = require("../models");
+const db = require("../models/index");
 
 const index = (req, res) => {
   return User.findAll()
@@ -256,26 +257,30 @@ const getBestAgents = async (req, res) => {
     //   ],
     //   group: ["agent.id", "review.id"],
     // });
-    const agents = await User.findAll({
-      order: sequelize.literal("avgRatings DESC"),
-      limit: 4,
-      attributes: [
-        "id",
-        "firstName",
-        "lastName",
-        "avatar",
-        [sequelize.fn("AVG", sequelize.col("reviews.rating")), "avgRatings"],
-      ],
-      include: [
-        {
-          model: Review,
-          as: "reviews",
-          attributes: [],
-          duplicating: false,
-        },
-      ],
-      group: ["user.id", "reviews.agentID"],
-    });
+    // const agents = await User.findAll({
+    //   order: sequelize.literal("avgRatings DESC"),
+    //   limit: 4,
+    //   attributes: [
+    //     "id",
+    //     "firstName",
+    //     "lastName",
+    //     "avatar",
+    //     [sequelize.fn("AVG", sequelize.col("reviews.rating")), "avgRatings"],
+    //   ],
+    //   include: [
+    //     {
+    //       model: Review,
+    //       as: "reviews",
+    //       attributes: [],
+    //       duplicating: false,
+    //     },
+    //   ],
+    //   group: ["user.id", "user.firstName", "user.lastName", "reviews.agentID"],
+    // });
+    const agents = await db.sequelize.query(
+      "SELECT Users.id, Users.firstName, Users.lastName, Users.avatar, AVG(Reviews.rating) AS avgRatings, UserRoles.roleID FROM Users JOIN Reviews ON Users.id = Reviews.agentID JOIN UserRoles ON UserRoles.roleID = 2 GROUP BY Users.firstName, Users.lastName, Reviews.agentID ORDER BY avgRatings DESC LIMIT 4",
+      { type: sequelize.QueryTypes.SELECT }
+    );
     if (!agents) {
       return res.status(404).json({ msg: "Agents Not Found" });
     }
