@@ -6,7 +6,7 @@ import { Typography, Avatar, Grid } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
-const CardComment = ({ comment, agentId }) => {
+const CardComment = ({ comment, handleRefreshList }) => {
   console.log(comment);
   // check if user authenticated
   const { isAuthenticated, currentUser } = useContext(AuthContext);
@@ -28,7 +28,7 @@ const CardComment = ({ comment, agentId }) => {
       await ReviewsAPI.deleteReview(comment.id);
 
       // refresh list
-      // props.handleRefreshList()
+      handleRefreshList()
     } catch (error) {
       console.log(error.response)
     }
