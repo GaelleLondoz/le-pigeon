@@ -99,6 +99,10 @@ const ShowAgent = ({ match }) => {
     //window.scrollTo(0, 0);
   };
 
+  const handleRefreshList = (id) => {
+    fetchReviewsByAgent(id)
+  }
+
   const paginatedDestinations = Paginator.getData(
     destinations,
     currentDestinationPage,
@@ -210,7 +214,7 @@ const ShowAgent = ({ match }) => {
             if (review.status !== "PUBLISHED") return
             return (
               <div key={review.id} className="card-comments-agent">
-                <CardComment comment={review} comments={reviews} agentId={id} />
+                <CardComment comment={review} comments={reviews} agentId={id} handleRefreshList={handleRefreshList} />
               </div>
             );
           })}
