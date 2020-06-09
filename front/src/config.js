@@ -15,3 +15,4 @@ export const REVIEWS_URL = API_URL + "/reviews";
 export const USER_DESTINATIONS_URL = API_URL + "/destinations";
 
 export const BOOKINGS_URL = API_URL + "/bookings";
+

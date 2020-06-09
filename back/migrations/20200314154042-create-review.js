@@ -58,7 +58,7 @@ module.exports = {
         references: {
           model: "Users",
           key: "id",
-        },
+        }
       },
 
       authorID: {

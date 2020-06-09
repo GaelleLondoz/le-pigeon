@@ -20,6 +20,8 @@ import Messages from "./pages/Messages";
 import BecomeAgent from "./pages/BecomeAgent";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import PersonList from "./components/profiles/Profile";
+
 
 import "./assets/sass/body.scss";
 import PrivateRoute from "./components/redirections/PrivateRoutes";
@@ -72,6 +74,9 @@ const App = () => {
               path="/profile/agent/:id"
               component={ProfileAgent}
             />
+
+            <Route exact path="/users" component={PersonList} />
+
           </Switch>
         </main>
         {/*<Footer />*/}
