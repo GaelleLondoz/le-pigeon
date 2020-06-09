@@ -29,10 +29,11 @@ const data = [
 
 export default function Chart() {
   const theme = useTheme();
+  const currentDate = new Date(Date.now()).toDateString();
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>{currentDate}</Title>
       <ResponsiveContainer>
         <LineChart
           data={data}
