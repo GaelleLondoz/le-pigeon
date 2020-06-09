@@ -233,6 +233,27 @@ const getReviews = async (req, res) => {
   }
 };
 
+const getReviews = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const reviews = await User.findAll({
+      where: { id },
+      include: [
+        {
+          model: Review,
+          as: "reviews"
+        }
+      ]
+    }
+    );
+    console.log(reviews)
+    return res.status(200).json(reviews);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server Error" });
+  }
+};
+
 const getMessages = async (req, res) => {
   const { id } = req.params;
   try {
@@ -266,7 +287,6 @@ const getMessages = async (req, res) => {
 //     })
 //     .catch((e) => res.status(500).send(e));
 // }
-
 
 
 const editProfileAgent = async (req, res) => {

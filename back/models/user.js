@@ -32,9 +32,16 @@ module.exports = (sequelize, DataTypes) => {
   );
   User.associate = function (models) {
     // associations can be defined here
+<<<<<<< HEAD
     User.hasMany(models.Booking, { foreignKey: "id" });
     User.hasMany(models.Review, { foreignKey: "id", as: "reviews" });
     User.hasMany(models.Message, { foreignKey: "id" });
+=======
+
+    User.hasMany(models.Booking, { foreignKey: 'id' });
+    User.hasMany(models.Review, { foreignKey: 'id', as: "reviews" });
+    User.hasMany(models.Message, { foreignKey: 'id' });
+>>>>>>> rebase
     User.hasMany(models.UserDestination);
     User.hasMany(models.PictureDestination);
     User.hasMany(models.UserRole);
