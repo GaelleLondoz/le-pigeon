@@ -38,6 +38,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       agentID: {
         type: DataTypes.INTEGER,
+        allowNull: false
+      },
+
+      authorID: {
+
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
 
@@ -53,25 +59,21 @@ module.exports = (sequelize, DataTypes) => {
 
       rating: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: false
       },
+
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
     },
     {}
   );
   Review.associate = function (models) {
     // associations can be defined here
-    Review.belongsTo(models.User, {
-      foreignKey: "agentID",
-      targetKey: "id",
-      as: "agent",
-      allowNull: false,
-    });
-    Review.belongsTo(models.User, {
-      foreignKey: "authorID",
-      targetKey: "id",
-      as: "author",
-      allowNull: false,
-    });
+
+    Review.belongsTo(models.User, { foreignKey: 'agentID', targetKey: 'id', as: 'agent', allowNull: false });
+    Review.belongsTo(models.User, { foreignKey: 'authorID', targetKey: 'id', as: 'author', allowNull: false });
   };
   return Review;
 };

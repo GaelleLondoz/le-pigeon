@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   withRouter,
+  useParams
 } from "react-router-dom";
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
 import Footer from "./components/Footer";
 import ChatBox from "./components/chatbox/ChatBox";
 import AuthAPI from "./components/services/authAPI";
-//import userAPI from "./components/services/userAPI";
+import userAPI from "./components/services/userAPI";
 import AuthContext from "./contexts/AuthContext";
 
 import Home from "./pages/Home";
@@ -20,6 +21,8 @@ import Messages from "./pages/Messages";
 import BecomeAgent from "./pages/BecomeAgent";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+
 
 import "./assets/sass/body.scss";
 import PrivateRoute from "./components/redirections/PrivateRoutes";
@@ -30,11 +33,27 @@ import ShowAgent from "./pages/ShowAgent";
 
 AuthAPI.setup();
 const App = () => {
+
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     AuthAPI.isAuthenticated()
   );
 
   const [currentUser, setCurrentUser] = useState({});
+
+  // fetch user
+  const fetchUser = async () => {
+    try {
+      const { user } = await userAPI.getUser()
+      setCurrentUser(user)
+    } catch (error) {
+      throw error.response;
+    }
+  };
+
+  useEffect(() => {
+    isAuthenticated && fetchUser()
+  }, []);
 
   const NavBarWithRouter = withRouter(Nav);
 
@@ -72,6 +91,10 @@ const App = () => {
               path="/profile/agent/:id"
               component={ProfileAgent}
             />
+
+
+
+            <Route exact path="/users/:id" component={Profile} />
           </Switch>
         </main>
         {/*<Footer />*/}

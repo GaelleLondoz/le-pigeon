@@ -35,10 +35,8 @@
   background-color: $light-blue !important;
   @include small {
     background-color: $light-grey !important;
- 
   }
 }
-
 
 .logo {
   font-size: 35px !important;
@@ -76,7 +74,7 @@
   margin-left: 30px;
   margin-right: 60px;
   border-radius: 20px;
-  @include margins-nav; 
+  @include margins-nav;
   border: none;
   height: 40px !important;
   padding-left: 10px;
@@ -104,7 +102,6 @@
   background-color: $light-blue !important;
   @include small {
     background-color: $light-grey !important;
- 
   }
 }
 
@@ -160,9 +157,9 @@
 .makeStyles-sectionMobile-4 > .MuiIconButton-root:hover {
   background-color: $light-blue !important;
 }
-.MuiSvgIcon-root {
-  color: $dark-blue;
-}
+// .MuiSvgIcon-root {
+//   color: $dark-blue;
+// }
 
 // menu in 3dots
 .MuiListItem-gutters {
@@ -188,14 +185,13 @@
   top: 48px !important;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
-  color: $dark-blue;
+  // color: $dark-blue;
   & .MuiSvgIcon-root {
     margin-left: -10px;
   }
   & a {
     font-weight: normal !important;
   }
-
 }
 
 //avatar menu

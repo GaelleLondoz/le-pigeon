@@ -9,20 +9,31 @@ const index = (req, res) => {
 
 const create = (req, res) => {
   const newReview = req.body.review;
+  newReview.status = "PENDING"
+
+
   return Review.create(newReview)
-    .then((review) => res.status(200).send(review))
-    .catch((e) => res.status(500).send(e));
+    .then(review => {
+      res.status(200).send(review)
+    }
+    )
+    .catch(e => res.status(500).send(e));
 };
 
 const findOne = (req, res) => {
   const id = req.params.id;
   return Review.findByPk(id)
-    .then((review) => res.status(200).send(review))
-    .catch((e) => res.status(500).send(e));
-};
+    .then(review => res.status(200).send(review))
+    .catch(e => res.status(500).send(e));
+}
 
 const update = (req, res) => {
   const id = req.params.id;
+  Review.update(req.body, {
+    where: { id: id }
+  })
+    .then(review => res.status(200).send(review))
+    .catch(e => res.status(500).send(e));
 
   Review.update(req.body, {
     where: { id: id },
@@ -33,11 +44,11 @@ const update = (req, res) => {
 
 const destroy = (req, res) => {
   const id = req.params.id;
-
   Review.destroy({
     where: { id: id },
   })
-    .then((review) => res.status(200).res.sendStatus(review))
+
+    .then(() => res.status(200).json({ message: 'review deleted' }))
     .catch((e) => res.status(500).send(e));
 };
 
@@ -50,7 +61,7 @@ const getAvgRatingsAgent = async (req, res) => {
 
   try {
     const avgRatings = await Review.findAll({
-      where: { agentID: id },
+      where: { agentID: id, status: "PUBLISHED" },
       attributes: [
         [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
         [sequelize.fn("COUNT", sequelize.col("comment")), "countComments"],
@@ -71,7 +82,7 @@ const getAllCommentsReviewByAgent = async (req, res) => {
   try {
     const comments = await Review.findAll({
       where: { agentID: id },
-      attributes: ["id", "comment", "rating", "authorID"],
+      attributes: ["id", "comment", "rating", "authorID", "status"],
       include: [
         {
           model: User,
@@ -90,12 +101,35 @@ const getAllCommentsReviewByAgent = async (req, res) => {
   }
 };
 
+const reviewsByAgent = (req, res) => {
+  const id = req.params.agentID;
+  Review.findAll({
+    where: { agentID: id },
+    include: [
+      {
+        model: User,
+        as: "author"
+      }
+    ]
+  })
+    .then(review => {
+      console.log(review)
+      res.status(200).send(review)
+    })
+    .catch(e => res.status(500).send(e));
+
+}
 module.exports = {
   index,
   create,
   findOne,
   update,
   destroy,
+  reviewsByAgent,
   getAvgRatingsAgent,
   getAllCommentsReviewByAgent,
 };
+
+
+
+

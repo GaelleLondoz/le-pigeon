@@ -39,5 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.PictureDestination);
     User.hasMany(models.UserRole);
   };
+
+
   return User;
 };

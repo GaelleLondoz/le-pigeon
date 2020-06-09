@@ -58,7 +58,7 @@ module.exports = {
         references: {
           model: "Users",
           key: "id",
-        },
+        }
       },
 
       authorID: {
@@ -76,6 +76,10 @@ module.exports = {
       rating: {
         allowNull: false,
         type: Sequelize.INTEGER,
+      },
+      status: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

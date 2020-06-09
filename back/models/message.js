@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Message.associate = function(models) {
+  Message.associate = function (models) {
     // associations can be defined here
-      Message.belongsTo(models.User, { foreignKey: 'receiverID', targetKey: 'id', as: 'receiver', allowNull: false });
-      Message.belongsTo(models.User, { foreignKey: 'senderID', senderId: 'id', as: 'sender', allowNull: false });
+    Message.belongsTo(models.User, { foreignKey: 'receiverID', as: 'receiver', allowNull: false });
+    Message.belongsTo(models.User, { foreignKey: 'senderID', as: 'sender', allowNull: false });
   };
   return Message;
 }

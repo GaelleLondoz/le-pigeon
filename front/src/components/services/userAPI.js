@@ -5,11 +5,18 @@ async function getUser() {
   const token = window.localStorage.getItem("authToken");
   return await axios.get(USER_URL).then((response) => response.data);
 }
+function getProfileUser(id) {
+  return axios
+    .get(USERS_URL + `/${id}`)
+    .then((response) => response.data);
+}
+
 function getProfileAgent(id) {
   return axios
     .get(USERS_URL + "/profile/agent/" + id)
     .then((response) => response.data);
 }
+
 function getDestinationByUser(id, destinationId) {
   return axios
     .get(USERS_URL + "/" + id + "/destination/" + destinationId)
@@ -62,4 +69,5 @@ export default {
   editProfileAgent,
   getBestAgents,
   getPublicProfileAgent,
+  getProfileUser
 };

@@ -163,7 +163,6 @@ let Nav = ({ history }) => {
   const renderMobileMenu = (
     <RootRef rootRef={domRef}>
       <Menu
-        className="MobileMainMenu"
         anchorEl={mobileMoreAnchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         id={mobileMenuId}
@@ -173,7 +172,6 @@ let Nav = ({ history }) => {
         onClose={handleMobileMenuClose}
       >
         <MenuItem>
-        <MenuItem onClick={handleMenuClose}>
           <IconButton aria-label="show 4 new mails" color="inherit">
             <Badge badgeContent={4} color="secondary">
               <MailIcon />
@@ -198,27 +196,6 @@ let Nav = ({ history }) => {
             <AgentIcon />
           </IconButton>
           <p>Devenir Agent</p>
-          <Link to="/message" className="navElement">
-            Messages
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <IconButton aria-label="se connecter" color="inherit">
-            <PowerIcon />
-          </IconButton>
-          <Link>Se connecter</Link>
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <IconButton aria-label="aide" color="inherit">
-            <HelpIcon />
-          </IconButton>
-          <Link>Aide</Link>
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <IconButton aria-label="devenir agent" color="inherit">
-            <AgentIcon />
-          </IconButton>
-          <Link>Devenir Agent</Link>
         </MenuItem>
         <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton
@@ -230,8 +207,6 @@ let Nav = ({ history }) => {
             <AccountCircle />
           </IconButton>
           <p>Profile</p>
-          <Link>Profile</Link>
-        </MenuItem>
         </MenuItem>
       </Menu>
     </RootRef>
@@ -262,7 +237,9 @@ let Nav = ({ history }) => {
     }
   };
 
-  // menu principal //////
+
+
+  // return (
 
   const fetchRoleUser = async () => {
     try {
