@@ -151,11 +151,7 @@ export default function AdminDashboard() {
             Dashboard
           </Typography>
           <IconButton color="inherit">
-<<<<<<< HEAD
             <Badge badgeContent={0} color="secondary">
-=======
-            <Badge badgeContent={4} color="secondary">
->>>>>>> Initial commit
               <NotificationsIcon />
             </Badge>
           </IconButton>

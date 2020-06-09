@@ -7,15 +7,15 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PeopleIcon from "@material-ui/icons/People";
 import BarChartIcon from "@material-ui/icons/BarChart";
-<<<<<<< HEAD
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import PaymentIcon from "@material-ui/icons/Payment";
 import PersonIcon from "@material-ui/icons/Person";
-=======
 import LayersIcon from "@material-ui/icons/Layers";
 import AssignmentIcon from "@material-ui/icons/Assignment";
->>>>>>> Initial commit
+import RateReviewIcon from "@material-ui/icons/RateReview";
+import PaymentIcon from "@material-ui/icons/Payment";
+import PersonIcon from "@material-ui/icons/Person";
 
 export const mainListItems = (
   <div>
@@ -27,7 +27,6 @@ export const mainListItems = (
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-<<<<<<< HEAD
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Users" />
@@ -61,55 +60,23 @@ export const mainListItems = (
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Rapports" />
-=======
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Orders" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
->>>>>>> Initial commit
     </ListItem>
   </div>
 );
 
 export const secondaryListItems = (
   <div>
-<<<<<<< HEAD
     <ListSubheader inset>Rapports consolidés</ListSubheader>
-=======
-    <ListSubheader inset>Saved reports</ListSubheader>
->>>>>>> Initial commit
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-<<<<<<< HEAD
       <ListItemText primary="Mois" />
-=======
-      <ListItemText primary="Current month" />
->>>>>>> Initial commit
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-<<<<<<< HEAD
       <ListItemText primary="Trimestre" />
     </ListItem>
     {/* <ListItem button>
@@ -118,15 +85,13 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Vente Annuelle" />
     </ListItem> */}
-=======
-      <ListItemText primary="Last quarter" />
-    </ListItem>
-    <ListItem button>
+    {/* <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
     </ListItem>
->>>>>>> Initial commit
+      <ListItemText primary="Vente Annuelle" />
+    </ListItem> */}
   </div>
 );
