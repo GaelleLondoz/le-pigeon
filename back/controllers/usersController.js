@@ -275,6 +275,8 @@ const editProfileAgent = async (req, res) => {
   // const agent = await User.findOne({
   //   where: { id },
   // });
+  // console.log({ avatar });
+  // console.log({currentAvatar: agent.avatar})
 
   const file = avatar.split(";base64,");
   const extension = file[0].replace("data:image/", "");
