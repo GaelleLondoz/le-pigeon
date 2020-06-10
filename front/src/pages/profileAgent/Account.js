@@ -14,6 +14,7 @@ import UsersAPI from "../../components/services/userAPI";
 import ReviewsAPI from "../../components/services/reviewAPI";
 import EditAgentModal from "../../components/modals/EditAgentModal";
 import userDestinationsAPI from "../../components/services/userDestinationsAPI";
+import { getBase64 } from "../../helpers/getBase64";
 
 const Account = () => {
   const url = window.location.href;
@@ -77,6 +78,7 @@ const Account = () => {
       await UsersAPI.editProfileAgent(id, agent);
       setSendEditAgentLoading(false);
       setShowFlash(true);
+      fetchAgent(id);
     } catch (error) {
       setSendEditAgentLoading(false);
       console.log(error.response);
@@ -97,6 +99,19 @@ const Account = () => {
         ...agent.User,
         [name]: value,
       },
+    });
+  };
+
+  const handleFileChange = async (event) => {
+    const files = event.target.files || event.dataTransfer.files;
+    await getBase64(files[0]).then((result) => {
+      setAgent({
+        ...agent,
+        User: {
+          ...agent.User,
+          avatar: result,
+        },
+      });
     });
   };
 
@@ -140,6 +155,7 @@ const Account = () => {
           onChangeUser={handleUserChange}
           onSubmit={handleEditAgentSubmit}
           sendEditAgentLoading={sendEditAgentLoading}
+          onHandleFileChange={handleFileChange}
         />
         <div className="profile-agent-account-content">
           <Grid container spacing={5}>
@@ -218,7 +234,7 @@ const Account = () => {
               <div className="profile-agent-account-avatar">
                 <Avatar
                   alt={"Pigeon | Avatar de l'agent " + agent.User.firstName}
-                  src={agent.User.avatar}
+                  src={"http://localhost:5000/avatar/" + agent.User.avatar}
                 />
                 <Rating
                   name="read-only"

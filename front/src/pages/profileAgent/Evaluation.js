@@ -116,9 +116,10 @@ const Evaluation = () => {
         {noComments ? (
           <Typography component="p">{noComments}</Typography>
         ) : (
-          paginatedComments.map((comment) => (
-            <CardComment key={comment.id} comment={comment} />
-          ))
+          paginatedComments.map((comment) => {
+            if (comment.status !== "PUBLISHED") return;
+            return <CardComment key={comment.id} comment={comment} />;
+          })
         )}
         {comments.length > 5 && (
           <Paginator

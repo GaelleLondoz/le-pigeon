@@ -17,6 +17,7 @@ const EditAgentModal = ({
   onChangeUser,
   onSubmit,
   sendEditAgentLoading,
+  onHandleFileChange,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -103,15 +104,18 @@ const EditAgentModal = ({
               <Grid item xs={11}>
                 <TextField
                   margin="dense"
-                  name="price"
+                  name="avatar"
                   label="Avatar"
                   type="file"
                   fullWidth
-                  onChange={onChange}
+                  onChange={onHandleFileChange}
                 />
               </Grid>
               <Grid item xs={1}>
-                <Avatar alt="Remy Sharp" src={agent.User.avatar} />
+                <Avatar
+                  alt={"Pigeon | Avatar de " + agent.User.firstName}
+                  src={"http://localhost:5000/avatar/" + agent.User.avatar}
+                />
               </Grid>
             </Grid>
           </form>
