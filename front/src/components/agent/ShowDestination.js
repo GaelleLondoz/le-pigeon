@@ -98,6 +98,14 @@ const ShowDestination = ({ destination, pictures }) => {
                 className={classes.coverImage}
               /> */}
               <Swiper {...params} shouldSwiperUpdate>
+                <img
+                  alt={destination.Destination.name}
+                  src={
+                    "http://localhost:5000/destination/" +
+                    destination.Destination.coverImage
+                  }
+                  className={classes.picture}
+                />
                 {pictures.map((picture) => (
                   <div key={picture.id}>
                     <img
