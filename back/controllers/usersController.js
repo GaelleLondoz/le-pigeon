@@ -271,6 +271,11 @@ const editProfileAgent = async (req, res) => {
   const { firstName, lastName, userName, email, avatar } = req.body.User;
   const { language, price } = req.body;
 
+  //TODO => verify if user have a avatar and delete the old file avatar
+  // const agent = await User.findOne({
+  //   where: { id },
+  // });
+
   const file = avatar.split(";base64,");
   const extension = file[0].replace("data:image/", "");
   const filename = makeKey(10);
@@ -280,8 +285,6 @@ const editProfileAgent = async (req, res) => {
     "." + extension,
   ].join("");
   const fileSendToDatabase = filename + "." + extension;
-
-  //TODO => verify if user have a avatar and delete the old file avatar
 
   fs.writeFile(rootFile, file[1], "base64", function (err) {
     console.log(err);

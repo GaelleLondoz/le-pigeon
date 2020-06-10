@@ -78,6 +78,7 @@ const Account = () => {
       await UsersAPI.editProfileAgent(id, agent);
       setSendEditAgentLoading(false);
       setShowFlash(true);
+      fetchAgent(id);
     } catch (error) {
       setSendEditAgentLoading(false);
       console.log(error.response);
