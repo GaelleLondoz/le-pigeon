@@ -1,7 +1,7 @@
 "use strict";
 
 const faker = require("faker");
-const {getHash} = require("../helpers/index")
+const { getHash } = require("../helpers/index");
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -15,9 +15,10 @@ module.exports = {
         userName: faker.internet.userName(),
         email: faker.internet.email(),
         password: getHash("password"),
-        avatar: faker.image.avatar(),
+        avatar: "n949NmPh02.jpeg",
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        isAgent: false,
       });
     }
     return queryInterface.bulkInsert("Users", data, {});
@@ -25,5 +26,5 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete("Users", null, {});
-  }
+  },
 };
