@@ -16,7 +16,7 @@ import UserDestinationAPI from "../components/services/userDestinationsAPI";
 import CardDestination from "../components/agent/CardDestination";
 import Paginator from "../components/Pagination";
 import CardComment from "../components/agent/CardComment";
-import Form from "../components/reviews/Form"
+import Form from "../components/reviews/Form";
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
@@ -41,15 +41,15 @@ const ShowAgent = ({ match }) => {
   const [currentReviewsPage, setCurrentReviewPage] = useState(1);
 
   // config dialog from create state open / close
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const handleOpenFormCreate = (status) => {
-    setOpen(status)
-  }
+    setOpen(status);
+  };
 
   const handleOpen = () => {
     // open Dialog
-    handleOpenFormCreate(true)
+    handleOpenFormCreate(true);
   };
 
   const fetchAgent = async (id) => {
@@ -100,8 +100,8 @@ const ShowAgent = ({ match }) => {
   };
 
   const handleRefreshList = (id) => {
-    fetchReviewsByAgent(id)
-  }
+    fetchReviewsByAgent(id);
+  };
 
   const paginatedDestinations = Paginator.getData(
     destinations,
@@ -143,7 +143,10 @@ const ShowAgent = ({ match }) => {
           <Grid container spacing={5} justify="center">
             <Grid item xs={12} md={4}>
               <Box component="div" className="container-avatar">
-                <Avatar alt="Remy Sharp" src={agent.User.avatar} />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={"http://localhost:5000/avatar/" + agent.User.avatar}
+                />
                 <Rating
                   name="read-only"
                   value={parseInt(avgRatings.avgRatings)}
@@ -211,10 +214,15 @@ const ShowAgent = ({ match }) => {
           </Typography>
 
           {paginatedReviews.map((review) => {
-            if (review.status !== "PUBLISHED") return
+            if (review.status !== "PUBLISHED") return;
             return (
               <div key={review.id} className="card-comments-agent">
-                <CardComment comment={review} comments={reviews} agentId={id} handleRefreshList={handleRefreshList} />
+                <CardComment
+                  comment={review}
+                  comments={reviews}
+                  agentId={id}
+                  handleRefreshList={handleRefreshList}
+                />
               </div>
             );
           })}
@@ -227,15 +235,15 @@ const ShowAgent = ({ match }) => {
             />
           )}
         </Box>
-        {open &&
+        {open && (
           <Form
             id={id}
             // handleRefreshList={handleRefreshList}
             open={open}
             onOpen={handleOpenFormCreate}
-          // onCreate={handleCreateItem}
+            // onCreate={handleCreateItem}
           />
-        }
+        )}
       </Container>
     </section>
   );
