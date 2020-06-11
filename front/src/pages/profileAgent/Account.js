@@ -128,14 +128,17 @@ const Account = () => {
   }, [id]);
 
   const initialPosition = [];
+
   destinations.map((destination, index) =>
-    index === 0
+    destination && index === 0
       ? initialPosition.push([
           destination.Destination.lat,
           destination.Destination.lng,
         ])
-      : ""
+      : initialPosition.push([50.503887, 4.469936])
   );
+
+  //console.log(initialPosition[0]);
   return (
     <section className="profile-agent-account">
       <Container>
