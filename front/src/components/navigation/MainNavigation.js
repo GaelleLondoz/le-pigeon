@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 // import AppBar from "@material-ui/core/AppBar";
@@ -18,6 +18,8 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
+import AuthContext from "../../contexts/AuthContext";
+import AuthAPI from "../services/authAPI";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +51,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainNavigation = () => {
+const MainNavigation = ({ history }) => {
+  const { isAuthenticated, setIsAuthenticated, currentUser } = useContext(
+    AuthContext
+  );
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -60,6 +65,17 @@ const MainNavigation = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogOut = async () => {
+    try {
+      await AuthAPI.logout();
+      setIsAuthenticated(false);
+      history.replace("/");
+    } catch (error) {
+      throw error.response;
+    }
+  };
+  console.log(currentUser);
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -78,23 +94,32 @@ const MainNavigation = () => {
             </Link>
           </Typography>
           <MenuList className={classes.menuList}>
-            <MenuItem className={classes.menuItem}>Se connecter</MenuItem>
-            <MenuItem className={classes.menuItem}>Aide</MenuItem>
+            <MenuItem component={Link} to="/login" className={classes.menuItem}>
+              Se connecter
+            </MenuItem>
+            <MenuItem component={Link} to="/help" className={classes.menuItem}>
+              Aide
+            </MenuItem>
             <MenuItem className={classes.menuItem}>
               <Button color="secondary" variant="contained">
                 Devenez agent !
               </Button>
             </MenuItem>
-            <MenuItem className={classes.menuItem}>
-              <Button
-                className={classes.menuItem}
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              </Button>
-            </MenuItem>
+            {isAuthenticated && (
+              <MenuItem className={classes.menuItem}>
+                <Button
+                  className={classes.menuItem}
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                >
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={"http://localhost:5000/avatar/" + currentUser.avatar}
+                  />
+                </Button>
+              </MenuItem>
+            )}
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -129,7 +154,7 @@ const MainNavigation = () => {
               >
                 Ajouter un voyage
               </MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleLogOut}>Logout</MenuItem>
             </Menu>
           </MenuList>
         </Toolbar>

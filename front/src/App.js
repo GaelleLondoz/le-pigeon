@@ -55,6 +55,7 @@ const App = () => {
   }, []);
 
   const NavBarWithRouter = withRouter(Nav);
+  const MainNavigationWithRouter = withRouter(MainNavigation);
 
   const contextValue = {
     isAuthenticated,
@@ -68,7 +69,7 @@ const App = () => {
       <Router>
         <Head />
         <NavBarWithRouter />
-        <MainNavigation />
+        <MainNavigationWithRouter />
         <main>
           <Switch>
             {/*<Route exact path="/" component={Home} />*/}
