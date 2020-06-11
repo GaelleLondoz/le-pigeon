@@ -75,7 +75,7 @@ const MainNavigation = ({ history }) => {
       throw error.response;
     }
   };
-  console.log(currentUser);
+  //console.log(currentUser);
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -101,6 +101,15 @@ const MainNavigation = ({ history }) => {
                 className={classes.menuItem}
               >
                 Se connecter
+              </MenuItem>
+            )}
+            {isAuthenticated && (
+              <MenuItem
+                component={Link}
+                to={"/profile/agent/" + currentUser.id}
+                className={classes.menuItem}
+              >
+                Message
               </MenuItem>
             )}
             <MenuItem component={Link} to="/help" className={classes.menuItem}>
