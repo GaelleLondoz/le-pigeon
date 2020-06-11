@@ -58,11 +58,11 @@ const MainNavigation = ({ history }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
+  const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleAvatarClose = () => {
     setAnchorEl(null);
   };
 
@@ -94,9 +94,15 @@ const MainNavigation = ({ history }) => {
             </Link>
           </Typography>
           <MenuList className={classes.menuList}>
-            <MenuItem component={Link} to="/login" className={classes.menuItem}>
-              Se connecter
-            </MenuItem>
+            {!isAuthenticated && (
+              <MenuItem
+                component={Link}
+                to="/login"
+                className={classes.menuItem}
+              >
+                Se connecter
+              </MenuItem>
+            )}
             <MenuItem component={Link} to="/help" className={classes.menuItem}>
               Aide
             </MenuItem>
@@ -111,11 +117,15 @@ const MainNavigation = ({ history }) => {
                   className={classes.menuItem}
                   aria-controls="simple-menu"
                   aria-haspopup="true"
-                  onClick={handleClick}
+                  onClick={handleAvatarClick}
                 >
                   <Avatar
-                    alt="Remy Sharp"
-                    src={"http://localhost:5000/avatar/" + currentUser.avatar}
+                    alt={"Le Pigeon | Avatar de " + currentUser.firstName}
+                    src={
+                      currentUser.avatar !== undefined
+                        ? "http://localhost:5000/avatar/" + currentUser.avatar
+                        : null
+                    }
                   />
                 </Button>
               </MenuItem>
@@ -125,32 +135,40 @@ const MainNavigation = ({ history }) => {
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
-              onClose={handleClose}
+              onClose={handleAvatarClose}
             >
-              <MenuItem component={Link} to="/tralala" onClick={handleClose}>
+              <MenuItem
+                component={Link}
+                to={"/profile/agent/" + currentUser.id}
+                onClick={handleAvatarClose}
+              >
                 Mon tableau de bord
               </MenuItem>
               <MenuItem
                 component={Link}
-                to="/mes-demandes"
-                onClick={handleClose}
+                to={"/profile/agent/" + currentUser.id}
+                onClick={handleAvatarClose}
               >
                 Mes demandes de voyage
               </MenuItem>
               <MenuItem
                 component={Link}
-                to="/mes-destinations"
-                onClick={handleClose}
+                to={"/profile/agent/" + currentUser.id}
+                onClick={handleAvatarClose}
               >
                 Mes destinations
               </MenuItem>
-              <MenuItem component={Link} to="/tralala" onClick={handleClose}>
+              <MenuItem
+                component={Link}
+                to="/tralala"
+                onClick={handleAvatarClose}
+              >
                 Mon profil
               </MenuItem>
               <MenuItem
                 component={Link}
-                to="/nouveau-voyage"
-                onClick={handleClose}
+                to={"/profile/agent/" + currentUser.id}
+                onClick={handleAvatarClose}
               >
                 Ajouter un voyage
               </MenuItem>

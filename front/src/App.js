@@ -68,7 +68,7 @@ const App = () => {
     <AuthContext.Provider value={contextValue}>
       <Router>
         <Head />
-        <NavBarWithRouter />
+        {/* <NavBarWithRouter /> */}
         <MainNavigationWithRouter />
         <main>
           <Switch>

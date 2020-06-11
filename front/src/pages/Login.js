@@ -78,7 +78,7 @@ const Login = ({ history }) => {
       setIsAuthenticated(true);
       setCurrentUser(connectedUser);
       console.log({ CURRENTUSER: connectedUser });
-      // history.replace("/");
+      history.replace("/");
     } catch (error) {
       throw error.response;
     }
