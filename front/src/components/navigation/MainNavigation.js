@@ -59,9 +59,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MainNavigation = ({ history }) => {
-  const { isAuthenticated, setIsAuthenticated, currentUser } = useContext(
-    AuthContext
-  );
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+    currentUser,
+    setCurrentUser,
+  } = useContext(AuthContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -77,6 +80,7 @@ const MainNavigation = ({ history }) => {
     try {
       await AuthAPI.logout();
       setIsAuthenticated(false);
+      setCurrentUser({});
       history.replace("/");
     } catch (error) {
       throw error.response;
@@ -122,13 +126,15 @@ const MainNavigation = ({ history }) => {
             <MenuItem component={Link} to="/help" className={classes.menuItem}>
               Aide
             </MenuItem>
-            {isAuthenticated && !currentUser.isAgent && (
+
+            {!currentUser.isAgent && (
               <MenuItem className={classes.menuItem}>
                 <Button color="secondary" variant="contained">
                   Devenez agent !
                 </Button>
               </MenuItem>
             )}
+
             {isAuthenticated && (
               <MenuItem className={classes.menuItem}>
                 <Button
