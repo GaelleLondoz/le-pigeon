@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
   withRouter,
-  useParams
+  useParams,
 } from "react-router-dom";
 import Nav from "./components/navigation/Nav";
 import Head from "./components/Head";
@@ -24,18 +24,16 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 
-
 import "./assets/sass/body.scss";
 import PrivateRoute from "./components/redirections/PrivateRoutes";
 import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRoutes";
 import ProfileAgent from "./pages/profileAgent";
 import ShowTravelDetails from "./pages/profileAgent/ShowTravelDetails";
 import ShowAgent from "./pages/ShowAgent";
+import MainNavigation from "./components/navigation/MainNavigation";
 
 AuthAPI.setup();
 const App = () => {
-
-
   const [isAuthenticated, setIsAuthenticated] = useState(
     AuthAPI.isAuthenticated()
   );
@@ -45,15 +43,15 @@ const App = () => {
   // fetch user
   const fetchUser = async () => {
     try {
-      const { user } = await userAPI.getUser()
-      setCurrentUser(user)
+      const { user } = await userAPI.getUser();
+      setCurrentUser(user);
     } catch (error) {
       throw error.response;
     }
   };
 
   useEffect(() => {
-    isAuthenticated && fetchUser()
+    isAuthenticated && fetchUser();
   }, []);
 
   const NavBarWithRouter = withRouter(Nav);
@@ -70,6 +68,7 @@ const App = () => {
       <Router>
         <Head />
         <NavBarWithRouter />
+        <MainNavigation />
         <main>
           <Switch>
             {/*<Route exact path="/" component={Home} />*/}
@@ -93,8 +92,6 @@ const App = () => {
               path="/profile/agent/:id"
               component={ProfileAgent}
             />
-
-
 
             <Route exact path="/users/:id" component={Profile} />
           </Switch>
