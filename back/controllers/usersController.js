@@ -73,6 +73,7 @@ const login = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             avatar: user.avatar,
+            isAgent: user.isAgent,
           };
           let token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "6000000",
@@ -122,6 +123,7 @@ const me = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             avatar: user.avatar,
+            isAgent: user.isAgent,
           };
           let token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "6000000",
