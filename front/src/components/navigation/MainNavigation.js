@@ -122,11 +122,13 @@ const MainNavigation = ({ history }) => {
             <MenuItem component={Link} to="/help" className={classes.menuItem}>
               Aide
             </MenuItem>
-            <MenuItem className={classes.menuItem}>
-              <Button color="secondary" variant="contained">
-                Devenez agent !
-              </Button>
-            </MenuItem>
+            {isAuthenticated && !currentUser.isAgent && (
+              <MenuItem className={classes.menuItem}>
+                <Button color="secondary" variant="contained">
+                  Devenez agent !
+                </Button>
+              </MenuItem>
+            )}
             {isAuthenticated && (
               <MenuItem className={classes.menuItem}>
                 <Button
@@ -153,41 +155,51 @@ const MainNavigation = ({ history }) => {
               open={Boolean(anchorEl)}
               onClose={handleAvatarClose}
             >
-              <MenuItem
-                component={Link}
-                to={"/profile/agent/" + currentUser.id}
-                onClick={handleAvatarClose}
-              >
-                Mon tableau de bord
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to={"/profile/agent/" + currentUser.id}
-                onClick={handleAvatarClose}
-              >
-                Mes demandes de voyage
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to={"/profile/agent/" + currentUser.id}
-                onClick={handleAvatarClose}
-              >
-                Mes destinations
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/tralala"
-                onClick={handleAvatarClose}
-              >
-                Mon profil
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to={"/profile/agent/" + currentUser.id}
-                onClick={handleAvatarClose}
-              >
-                Ajouter un voyage
-              </MenuItem>
+              {currentUser.isAgent && (
+                <MenuItem
+                  component={Link}
+                  to={"/profile/agent/" + currentUser.id}
+                  onClick={handleAvatarClose}
+                >
+                  Mon tableau de bord
+                </MenuItem>
+              )}
+              {currentUser.isAgent && (
+                <MenuItem
+                  component={Link}
+                  to={"/profile/agent/" + currentUser.id}
+                  onClick={handleAvatarClose}
+                >
+                  Mes demandes de voyage
+                </MenuItem>
+              )}
+              {currentUser.isAgent && (
+                <MenuItem
+                  component={Link}
+                  to={"/profile/agent/" + currentUser.id}
+                  onClick={handleAvatarClose}
+                >
+                  Mes destinations
+                </MenuItem>
+              )}
+              {!currentUser.isAgent && (
+                <MenuItem
+                  component={Link}
+                  to={"/profile/user/" + currentUser.id}
+                  onClick={handleAvatarClose}
+                >
+                  Mon profil
+                </MenuItem>
+              )}
+              {currentUser.isAgent && (
+                <MenuItem
+                  component={Link}
+                  to={"/profile/agent/" + currentUser.id}
+                  onClick={handleAvatarClose}
+                >
+                  Ajouter un voyage
+                </MenuItem>
+              )}
               <MenuItem onClick={handleLogOut}>Logout</MenuItem>
             </Menu>
           </MenuList>
