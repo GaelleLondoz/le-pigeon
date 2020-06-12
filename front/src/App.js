@@ -31,6 +31,8 @@ import ProfileAgent from "./pages/profileAgent";
 import ShowTravelDetails from "./pages/profileAgent/ShowTravelDetails";
 import ShowAgent from "./pages/ShowAgent";
 import MainNavigation from "./components/navigation/MainNavigation";
+import MainNabv from "./components/navigation/MainNav";
+import MainNav from "./components/navigation/MainNav";
 
 AuthAPI.setup();
 const App = () => {
@@ -56,6 +58,7 @@ const App = () => {
 
   const NavBarWithRouter = withRouter(Nav);
   const MainNavigationWithRouter = withRouter(MainNavigation);
+  const MainNavWithRouter = withRouter(MainNav);
 
   const contextValue = {
     isAuthenticated,
@@ -69,7 +72,8 @@ const App = () => {
       <Router>
         <Head />
         {/* <NavBarWithRouter /> */}
-        <MainNavigationWithRouter />
+        {/* <MainNavigationWithRouter /> */}
+        <MainNavWithRouter />
         <main>
           <Switch>
             {/*<Route exact path="/" component={Home} />*/}
