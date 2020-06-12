@@ -39,9 +39,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menuList: {
     display: "flex",
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
+    // [theme.breakpoints.down("sm")]: {
+    //   display: "none",
+    // },
   },
   menuItem: {
     "&:hover": {
@@ -51,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     backgroundColor: "#009fb7",
-    [theme.breakpoints.down("sm")]: {
-      paddingTop: "13px",
-      paddingBottom: "13px",
-    },
+    // [theme.breakpoints.down("sm")]: {
+    //   paddingTop: "13px",
+    //   paddingBottom: "13px",
+    // },
   },
 }));
 
