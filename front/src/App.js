@@ -30,8 +30,7 @@ import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRout
 import ProfileAgent from "./pages/profileAgent";
 import ShowTravelDetails from "./pages/profileAgent/ShowTravelDetails";
 import ShowAgent from "./pages/ShowAgent";
-import MainNavigation from "./components/navigation/MainNavigation";
-import MainNabv from "./components/navigation/MainNav";
+//import MainNavigation from "./components/navigation/MainNavigation";
 import MainNav from "./components/navigation/MainNav";
 
 AuthAPI.setup();
@@ -56,8 +55,8 @@ const App = () => {
     isAuthenticated && fetchUser();
   }, []);
 
-  const NavBarWithRouter = withRouter(Nav);
-  const MainNavigationWithRouter = withRouter(MainNavigation);
+  // const NavBarWithRouter = withRouter(Nav);
+  // const MainNavigationWithRouter = withRouter(MainNavigation);
   const MainNavWithRouter = withRouter(MainNav);
 
   const contextValue = {
