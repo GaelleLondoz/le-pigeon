@@ -11,6 +11,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import PaymentIcon from "@material-ui/icons/Payment";
 import PersonIcon from "@material-ui/icons/Person";
+import LayersIcon from "@material-ui/icons/Layers";
 
 export const mainListItems = (
   <div>
@@ -78,14 +79,6 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Vente Annuelle" />
-    </ListItem> */}
-    {/* <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItem>
       <ListItemText primary="Vente Annuelle" />
     </ListItem> */}
   </div>
