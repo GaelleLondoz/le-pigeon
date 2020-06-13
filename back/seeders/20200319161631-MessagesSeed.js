@@ -4,7 +4,7 @@ const faker = require("faker");
 module.exports = {
   up: (queryInterface, Sequelize) => {
     let data = [];
-    const dataStatus = ["SEND", "READ", "CANCELLED"];
+    const dataStatus = ["READ", "NO-READ", "ANSWERED"];
     let count = 30;
     while (count--) {
       data.push({
@@ -13,7 +13,7 @@ module.exports = {
         content: faker.lorem.sentence(50),
         status: faker.random.arrayElement(dataStatus),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       });
     }
     return queryInterface.bulkInsert("Messages", data, {});
@@ -21,5 +21,5 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete("Messages", null, {});
-  }
+  },
 };

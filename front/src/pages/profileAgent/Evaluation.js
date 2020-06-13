@@ -100,7 +100,10 @@ const Evaluation = () => {
                 {avgRatings.countComments} commentaire(s).
               </Typography>
               <div className="profile-agent-evaluation-info">
-                <Avatar alt="Remy Sharp" src={agent.User.avatar} />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={"http://localhost:5000/avatar/" + agent.User.avatar}
+                />
                 <Rating
                   name="read-only"
                   value={+avgRatings.avgRatings}

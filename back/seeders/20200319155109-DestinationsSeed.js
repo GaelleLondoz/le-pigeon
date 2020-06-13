@@ -1,10 +1,10 @@
 "use strict";
 const faker = require("faker");
 const coverImages = [
-  "8gnGjHRiAi.jpeg",
-  "irm9GOgwfs.jpeg",
-  "mJn1sDw9qs.jpeg",
-  "x71mUNxK5K.jpeg",
+  "HmdUOE8RD2.jpeg",
+  "oOCLWIHtpQ.jpeg",
+  "ozl5wXpxA5.jpeg",
+  "pF6NUrGBx3.jpeg",
 ];
 
 module.exports = {
