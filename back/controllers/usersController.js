@@ -1,12 +1,13 @@
 const bcrypt = require("bcrypt");
 const sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 const { getHash } = require("../helpers/index");
 
 const { User, UserRole, Review, Role } = require("../models");
 
 const db = require("../models/index");
-
+const { makeKey } = require("../helpers");
 
 const index = (req, res) => {
   return User.findAll()
@@ -72,6 +73,7 @@ const login = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             avatar: user.avatar,
+            isAgent: user.isAgent,
           };
           let token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "6000000",
@@ -121,6 +123,7 @@ const me = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             avatar: user.avatar,
+            isAgent: user.isAgent,
           };
           let token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "6000000",
@@ -182,7 +185,6 @@ const getRoleUser = async (req, res) => {
   }
 };
 
-
 const getProfileAgent = async (req, res) => {
   const id = req.params.id;
   //Verify if user connected is same of id
@@ -191,7 +193,6 @@ const getProfileAgent = async (req, res) => {
         return res.status(403).json({ msg: "Access Denied" });
     }
   */
-
 
   try {
     const agent = await UserRole.findOne({
@@ -211,8 +212,7 @@ const getProfileAgent = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-}
-
+};
 
 const getReviews = async (req, res) => {
   const { id } = req.params;
@@ -222,12 +222,11 @@ const getReviews = async (req, res) => {
       include: [
         {
           model: Review,
-          as: "reviews"
-        }
-      ]
-    }
-    );
-    console.log(reviews)
+          as: "reviews",
+        },
+      ],
+    });
+    console.log(reviews);
     return res.status(200).json(reviews);
   } catch (error) {
     console.log(error);
@@ -243,11 +242,11 @@ const getMessages = async (req, res) => {
       include: [
         {
           model: Message,
-          nested: true
-        }
-      ]
+          nested: true,
+        },
+      ],
     });
-    console.log(messages)
+    console.log(messages);
     return res.status(200).json(messages);
   } catch (error) {
     console.log(error);
@@ -269,11 +268,31 @@ const getMessages = async (req, res) => {
 //     .catch((e) => res.status(500).send(e));
 // }
 
-
 const editProfileAgent = async (req, res) => {
   const id = req.params.id;
-  const { firstName, lastName, userName, email } = req.body.User;
+  const { firstName, lastName, userName, email, avatar } = req.body.User;
   const { language, price } = req.body;
+
+  //TODO => verify if user have a avatar and delete the old file avatar
+  // const agent = await User.findOne({
+  //   where: { id },
+  // });
+  // console.log({ avatar });
+  // console.log({currentAvatar: agent.avatar})
+
+  const file = avatar.split(";base64,");
+  const extension = file[0].replace("data:image/", "");
+  const filename = makeKey(10);
+  const rootFile = [
+    __dirname + "/../storage/avatar/",
+    filename,
+    "." + extension,
+  ].join("");
+  const fileSendToDatabase = filename + "." + extension;
+
+  fs.writeFile(rootFile, file[1], "base64", function (err) {
+    console.log(err);
+  });
 
   try {
     await User.update(
@@ -282,6 +301,7 @@ const editProfileAgent = async (req, res) => {
         lastName,
         userName,
         email,
+        avatar: fileSendToDatabase,
       },
       {
         where: { id },
@@ -390,5 +410,5 @@ module.exports = {
   getBestAgents,
   getPublicProfileAgent,
   getReviews,
-  getMessages
+  getMessages,
 };

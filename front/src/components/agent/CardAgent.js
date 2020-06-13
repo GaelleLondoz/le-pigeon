@@ -8,7 +8,15 @@ const CardAgent = ({ agent, avgRatings }) => {
       <div className="card-up info-color"></div>
       <div className="avatar mx-auto white">
         <Link to={"/agent/" + agent.id}>
-          <img src={agent.avatar} className="rounded-circle img-fluid" />
+          <img
+            src={
+              agent.avatar.length < 16
+                ? "http://localhost:5000/avatar/" + agent.avatar
+                : agent.avatar
+            }
+            className="rounded-circle img-fluid"
+          />
+          ))
         </Link>
       </div>
       <div className="card-body">

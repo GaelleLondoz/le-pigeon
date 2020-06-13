@@ -44,6 +44,7 @@ const CardAgendaBooking = ({ booking }) => {
       console.log(error.response);
     }
   };
+  console.log(booking);
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (

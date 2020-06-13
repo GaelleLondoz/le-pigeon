@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      isAgent: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {}
   );
@@ -39,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.PictureDestination);
     User.hasMany(models.UserRole);
   };
-
 
   return User;
 };

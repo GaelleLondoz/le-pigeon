@@ -19,8 +19,9 @@ const CardMessage = ({ message }) => {
 
   const handleShowMessageClick = async () => {
     setShowMessage(!showMessage);
-    setStatus("READ");
+    status === "ANSWERED" ? setStatus("ANSWERED") : setStatus("READ");
     try {
+      if (status === "ANSWERED") return;
       await MessageAPI.changeMessageStatus(message.id, "read");
     } catch (error) {
       console.log(error.response);
@@ -47,6 +48,7 @@ const CardMessage = ({ message }) => {
       setStatus("ANSWERED");
       setNewMessage({ content: "" });
       setShowNewMessage(false);
+      setShowMessage(false);
     } catch (error) {
       setNewMessageLoading(false);
       console.log(error.response);
