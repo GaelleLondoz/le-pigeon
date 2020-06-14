@@ -9,6 +9,7 @@ const reviewsController = require("../controllers/reviewsController");
 const messagesController = require("../controllers/messagesController");
 const checkAuth = require("../middlewares/checkAuth");
 const userDestinationsController = require("../controllers/userDestinationsController");
+const faqsController = require("../controllers/faqsController");
 
 // users
 router.get("/users", usersController.index);
@@ -42,11 +43,10 @@ router.get(
   bookingsController.getBookingsByAgent
 );
 
+// reviews
 router.get("/reviews", reviewsController.index);
 router.post("/reviews", reviewsController.create);
 router.get("/reviews/:id", reviewsController.findOne);
-
-
 router.get(
   "/reviews/avgratings/agent/:id",
   reviewsController.getAvgRatingsAgent
@@ -55,11 +55,8 @@ router.get(
   "/reviews/comments/agent/:id",
   reviewsController.getAllCommentsReviewByAgent
 );
-
-
 router.put("/reviews/:id", reviewsController.update);
 router.delete("/reviews/:id", reviewsController.destroy);
-
 router.get("/reviews/agent/:agentID", reviewsController.reviewsByAgent);
 
 
@@ -100,5 +97,16 @@ router.get(
 //   userDestinationsController.getAllContinents
 // );
 router.post("/destinations/new", checkAuth, userDestinationsController.create);
+
+// faqs
+router.get("/faqs", faqsController.index);
+router.post("/faqs", faqsController.create);
+router.get("/faqs/:id", faqsController.findOne);
+router.put("/faqs/:id", faqsController.update);
+router.delete("/faqs/:id", faqsController.destroy);
+router.get("/faqs-featured", faqsController.findAllFaqsFeatured);
+router.get("/faqs-agents", faqsController.findAllFaqsAgents);
+router.get("/faqs-futur-travellers", faqsController.findAllFaqsFuturTravellers);
+router.get("/faqs-others", faqsController.findAllFaqsOthers);
 
 module.exports = router;
