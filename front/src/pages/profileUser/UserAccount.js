@@ -13,6 +13,7 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import UserAPI from "../../components/services/userAPI";
 import { formatDate } from "../../helpers/formatDate";
 import { getBase64 } from "../../helpers/getBase64";
+import LoaderButton from "../../components/loaders/LoaderButton";
 
 const UserAccount = ({ match }) => {
   const { id } = match.params;
@@ -24,6 +25,8 @@ const UserAccount = ({ match }) => {
     avatar: "",
     createdAt: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [showFlash, setShowFlash] = useState(false);
 
   const fetchUser = async (id) => {
     try {
@@ -37,9 +40,12 @@ const UserAccount = ({ match }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await UserAPI.editProfileUser(id, user);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error.response);
     }
   };
@@ -138,9 +144,10 @@ const UserAccount = ({ match }) => {
                 type="file"
                 fullWidth
               />
-              <Button variant="contained" color="primary" type="submit">
+              {/* <Button variant="contained" color="primary" type="submit">
                 Mettre à jour
-              </Button>
+              </Button> */}
+              <LoaderButton text="Mettre à jour" loadingButton={loading} />
             </form>
           </div>
         </Container>
