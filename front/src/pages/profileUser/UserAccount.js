@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Avatar, Typography } from "@material-ui/core";
+import { Container, Avatar, Typography, TextField } from "@material-ui/core";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import EmailIcon from "@material-ui/icons/Email";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import UserAPI from "../../components/services/userAPI";
+import { formatDate } from "../../helpers/formatDate";
+import { getBase64 } from "../../helpers/getBase64";
 
 const UserAccount = ({ match }) => {
   const { id } = match.params;
@@ -27,6 +29,17 @@ const UserAccount = ({ match }) => {
     }
   };
 
+  const handleChange = (e) => {
+    setUser({ ...user, [e.currentTarget.name]: e.currentTarget.value });
+  };
+
+  const handleAvatarChange = async (e) => {
+    const files = e.target.files || e.dataTransfer.files;
+    await getBase64(files[0]).then((result) => {
+      setUser({ ...user, avatar: result });
+    });
+  };
+
   useEffect(() => {
     fetchUser(id);
   }, [id]);
@@ -39,27 +52,78 @@ const UserAccount = ({ match }) => {
         <Container>
           <div className="container-header">
             <Avatar
-              alt="Remy Sharp"
-              src="https://randomuser.me/api/portraits/men/35.jpg"
+              alt={"Le Pigeon | Avatar de " + user.firstName}
+              src={"http://localhost:5000/avatar/" + user.avatar}
             />
             <div className="container-info">
               <div className="profile-user-account-info">
                 <AccountBoxIcon />
-                <Typography component="p">Jean Dubosq</Typography>
-              </div>
-              <div className="profile-user-account-info">
-                <EmailIcon />
-                <Typography component="p">Email</Typography>
+                <Typography component="p">
+                  {user.firstName} {user.lastName}
+                </Typography>
               </div>
               <div className="profile-user-account-info">
                 <AssignmentIndIcon />
-                <Typography component="p">Username</Typography>
+                <Typography component="p">{user.userName}</Typography>
+              </div>
+              <div className="profile-user-account-info">
+                <EmailIcon />
+                <Typography component="p">{user.email}</Typography>
               </div>
               <div className="profile-user-account-info">
                 <CalendarTodayIcon />
-                <Typography component="p">Membre depuis le </Typography>
+                <Typography component="p">
+                  Membre depuis le {formatDate(user.createdAt)}
+                </Typography>
               </div>
             </div>
+          </div>
+        </Container>
+      </section>
+      <section id="profile-user-account-form">
+        <Container>
+          <Typography variant="h5" align="center">
+            Vous souhaitez modifier votre profil {user.firstName} ?
+          </Typography>
+          <div className="container-form">
+            <form>
+              <TextField
+                variant="outlined"
+                name="firstName"
+                value={user.firstName}
+                onChange={handleChange}
+                fullWidth
+              />
+              <TextField
+                variant="outlined"
+                name="lastName"
+                value={user.lastName}
+                onChange={handleChange}
+                fullWidth
+              />
+              <TextField
+                variant="outlined"
+                name="userName"
+                value={user.userName}
+                onChange={handleChange}
+                fullWidth
+              />
+              <TextField
+                variant="outlined"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                fullWidth
+              />
+              <TextField
+                variant="outlined"
+                name="avatar"
+                //value={user.avatar}
+                onChange={handleAvatarChange}
+                type="file"
+                fullWidth
+              />
+            </form>
           </div>
         </Container>
       </section>

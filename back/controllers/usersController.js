@@ -398,6 +398,11 @@ const getPublicProfileAgent = async (req, res) => {
 
 const getProfileUser = async (req, res) => {
   const id = req.params.id;
+  console.log(req.user.id);
+  console.log(id);
+  if (parseInt(id) !== req.user.id) {
+    return res.status(403).json({ msg: "Access Denied" });
+  }
   try {
     const user = await User.findOne({
       where: { id },
@@ -406,6 +411,7 @@ const getProfileUser = async (req, res) => {
         "firstName",
         "lastName",
         "userName",
+        "email",
         "avatar",
         "createdAt",
       ],

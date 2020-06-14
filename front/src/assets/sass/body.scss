@@ -479,3 +479,17 @@ section#profile-user-account-header {
     }
   }
 }
+section#profile-user-account-form {
+  margin-top: 100px;
+  div.container-form {
+    margin-top: 50px;
+    //text-align: center;
+    max-width: 500px;
+    margin: 50px auto;
+    form {
+      .MuiFormControl-root {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
