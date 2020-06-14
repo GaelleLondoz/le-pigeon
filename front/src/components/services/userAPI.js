@@ -6,9 +6,7 @@ async function getUser() {
   return await axios.get(USER_URL).then((response) => response.data);
 }
 function getProfileUser(id) {
-  return axios
-    .get(USERS_URL + `/${id}`)
-    .then((response) => response.data);
+  return axios.get(USERS_URL + `/${id}`).then((response) => response.data);
 }
 
 function getProfileAgent(id) {
@@ -55,6 +53,11 @@ function getPublicProfileAgent(id) {
     .get(USERS_URL + "/agent/" + id + "/public")
     .then((response) => response.data);
 }
+function getInfoUser(id) {
+  return axios
+    .get(USERS_URL + "/profile/user/" + id)
+    .then((response) => response.data);
+}
 
 /**
  * Every times refresh page, verify if a token, if a token => set request header
@@ -69,5 +72,6 @@ export default {
   editProfileAgent,
   getBestAgents,
   getPublicProfileAgent,
-  getProfileUser
+  getProfileUser,
+  getInfoUser,
 };

@@ -461,12 +461,20 @@ section#profile-user-account-header {
     .container-info {
       display: flex;
       flex-direction: column;
-
+      align-content: center;
       .profile-user-account-info {
         display: flex;
         align-items: center;
-        justify-content: center;
+        //justify-content: center;
         margin-bottom: 10px;
+        .MuiSvgIcon-root {
+          margin-right: 10px;
+          color: #009fb7;
+          font-size: 30px;
+        }
+        p {
+          font-weight: bold;
+        }
       }
     }
   }
