@@ -14,6 +14,7 @@ import UserAPI from "../../components/services/userAPI";
 import { formatDate } from "../../helpers/formatDate";
 import { getBase64 } from "../../helpers/getBase64";
 import LoaderButton from "../../components/loaders/LoaderButton";
+import Flash from "../../components/alerts/Flash";
 
 const UserAccount = ({ match }) => {
   const { id } = match.params;
@@ -44,6 +45,10 @@ const UserAccount = ({ match }) => {
     try {
       await UserAPI.editProfileUser(id, user);
       setLoading(false);
+      setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3000);
     } catch (error) {
       setLoading(false);
       console.log(error.response);
@@ -103,6 +108,9 @@ const UserAccount = ({ match }) => {
       </section>
       <section id="profile-user-account-form">
         <Container>
+          {showFlash && (
+            <Flash status="success" text="Votre profil a bien été mis à jour" />
+          )}
           <Typography variant="h5" align="center">
             Vous souhaitez modifier votre profil {user.firstName} ?
           </Typography>
@@ -144,9 +152,6 @@ const UserAccount = ({ match }) => {
                 type="file"
                 fullWidth
               />
-              {/* <Button variant="contained" color="primary" type="submit">
-                Mettre à jour
-              </Button> */}
               <LoaderButton text="Mettre à jour" loadingButton={loading} />
             </form>
           </div>
