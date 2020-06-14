@@ -1,7 +1,12 @@
 import React from "react";
+import Header from "./faq/Header";
 
-function Help() {
-  return <h2>How can we help you?</h2>;
+const Help = () => {
+    return (
+        <div id="help">
+            <Header />
+        </div>
+    )
 }
 
 export default Help;
