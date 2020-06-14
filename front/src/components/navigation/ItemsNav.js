@@ -22,7 +22,11 @@ const ItemsNav = ({
       {isAuthenticated && (
         <MenuItem
           component={Link}
-          to={"/profile/agent/" + currentUser.id}
+          to={
+            currentUser.isAgent
+              ? "/profile/agent/" + currentUser.id
+              : "/profile/user/" + currentUser.id + "/message"
+          }
           className={classes.menuItem}
         >
           Message
