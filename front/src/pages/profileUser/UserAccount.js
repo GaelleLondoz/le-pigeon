@@ -46,6 +46,7 @@ const UserAccount = ({ match }) => {
       await UserAPI.editProfileUser(id, user);
       setLoading(false);
       setShowFlash(true);
+      fetchUser(id);
       setTimeout(() => {
         setShowFlash(false);
       }, 3000);

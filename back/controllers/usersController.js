@@ -398,8 +398,6 @@ const getPublicProfileAgent = async (req, res) => {
 
 const getProfileUser = async (req, res) => {
   const id = req.params.id;
-  console.log(req.user.id);
-  console.log(id);
   if (parseInt(id) !== req.user.id) {
     return res.status(403).json({ msg: "Access Denied" });
   }
@@ -429,23 +427,35 @@ const getProfileUser = async (req, res) => {
 const editProfileUser = async (req, res) => {
   const id = req.params.id;
   const { firstName, lastName, userName, email, avatar } = req.body;
+  let fileSendToDatabase;
   if (parseInt(id) !== req.user.id) {
     return res.status(403).json({ msg: "Access Denied" });
   }
 
-  const file = avatar.split(";base64,");
-  const extension = file[0].replace("data:image/", "");
-  const filename = makeKey(10);
-  const rootFile = [
-    __dirname + "/../storage/avatar/",
-    filename,
-    "." + extension,
-  ].join("");
-  const fileSendToDatabase = filename + "." + extension;
-
-  fs.writeFile(rootFile, file[1], "base64", function (err) {
-    console.log(err);
+  const currentUser = await User.findOne({
+    where: { id },
+    raw: true,
   });
+
+  // Verify if user change avatar or not
+  // Todo => if user change avatar, delete old avatar in folder avatar
+  if (avatar !== currentUser.avatar) {
+    const file = avatar.split(";base64,");
+    const extension = file[0].replace("data:image/", "");
+    const filename = makeKey(10);
+    const rootFile = [
+      __dirname + "/../storage/avatar/",
+      filename,
+      "." + extension,
+    ].join("");
+    fileSendToDatabase = filename + "." + extension;
+
+    fs.writeFile(rootFile, file[1], "base64", function (err) {
+      console.log(err);
+    });
+  } else {
+    fileSendToDatabase = currentUser.avatar;
+  }
 
   try {
     await User.update(
