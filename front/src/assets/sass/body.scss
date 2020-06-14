@@ -444,3 +444,30 @@ section#public-agent-profile {
     }
   }
 }
+
+// Profile User
+section#profile-user-account-header {
+  //margin-top: 100px;
+  background-color: #f5f5f5;
+  .container-header {
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    .MuiAvatar-root {
+      width: 150px;
+      height: 150px;
+    }
+    .container-info {
+      display: flex;
+      flex-direction: column;
+
+      .profile-user-account-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
