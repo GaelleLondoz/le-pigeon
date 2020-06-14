@@ -1,9 +1,15 @@
 #header-help {
-    width: 100vw;
-    height: 32vw;
-    min-height: 10rem;
-    max-height: 17rem;
-    background-image: linear-gradient(to top, #03588c, #2a6a99, #437ca6, #5b8fb2, #73a2bf);
-    position: relative;
-
+  width: 100vw;
+  height: 32vw;
+  min-height: 10rem;
+  max-height: 17rem;
+  background-image: linear-gradient(
+    to top,
+    #03588c,
+    #2a6a99,
+    #437ca6,
+    #5b8fb2,
+    #73a2bf
+  );
+  position: relative;
 }
