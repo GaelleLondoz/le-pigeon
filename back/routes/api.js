@@ -33,6 +33,7 @@ router.get(
   checkAuth,
   usersController.getProfileUser
 );
+router.put("/users/user/:id", checkAuth, usersController.editProfileUser);
 // login auth
 router.post("/login", usersController.login);
 router.post("/logout", checkAuth, usersController.logout);

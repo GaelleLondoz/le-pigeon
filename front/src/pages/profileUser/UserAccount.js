@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Avatar, Typography, TextField } from "@material-ui/core";
+import {
+  Container,
+  Avatar,
+  Typography,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import EmailIcon from "@material-ui/icons/Email";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
@@ -24,6 +30,15 @@ const UserAccount = ({ match }) => {
       const data = await UserAPI.getInfoUser(id);
       const { firstName, lastName, userName, email, avatar, createdAt } = data;
       setUser({ firstName, lastName, userName, email, avatar, createdAt });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await UserAPI.editProfileUser(id, user);
     } catch (error) {
       console.log(error.response);
     }
@@ -86,7 +101,7 @@ const UserAccount = ({ match }) => {
             Vous souhaitez modifier votre profil {user.firstName} ?
           </Typography>
           <div className="container-form">
-            <form>
+            <form onSubmit={handleSubmit}>
               <TextField
                 variant="outlined"
                 name="firstName"
@@ -123,6 +138,9 @@ const UserAccount = ({ match }) => {
                 type="file"
                 fullWidth
               />
+              <Button variant="contained" color="primary" type="submit">
+                Mettre à jour
+              </Button>
             </form>
           </div>
         </Container>

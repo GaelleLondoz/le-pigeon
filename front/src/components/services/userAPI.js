@@ -58,6 +58,11 @@ function getInfoUser(id) {
     .get(USERS_URL + "/profile/user/" + id)
     .then((response) => response.data);
 }
+function editProfileUser(id, data) {
+  return axios
+    .put(USERS_URL + "/user/" + id, data)
+    .then((response) => response.data);
+}
 
 /**
  * Every times refresh page, verify if a token, if a token => set request header
@@ -74,4 +79,5 @@ export default {
   getPublicProfileAgent,
   getProfileUser,
   getInfoUser,
+  editProfileUser,
 };

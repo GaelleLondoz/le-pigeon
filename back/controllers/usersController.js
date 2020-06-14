@@ -425,6 +425,45 @@ const getProfileUser = async (req, res) => {
     return res.status(500).json({ msg: "Error Server" });
   }
 };
+
+const editProfileUser = async (req, res) => {
+  const id = req.params.id;
+  const { firstName, lastName, userName, email, avatar } = req.body;
+  if (parseInt(id) !== req.user.id) {
+    return res.status(403).json({ msg: "Access Denied" });
+  }
+
+  const file = avatar.split(";base64,");
+  const extension = file[0].replace("data:image/", "");
+  const filename = makeKey(10);
+  const rootFile = [
+    __dirname + "/../storage/avatar/",
+    filename,
+    "." + extension,
+  ].join("");
+  const fileSendToDatabase = filename + "." + extension;
+
+  fs.writeFile(rootFile, file[1], "base64", function (err) {
+    console.log(err);
+  });
+
+  try {
+    await User.update(
+      {
+        firstName,
+        lastName,
+        email,
+        userName,
+        avatar: fileSendToDatabase,
+      },
+      { where: { id } }
+    );
+    return res.status(200).json({ msg: "User updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   index,
   create,
@@ -442,4 +481,5 @@ module.exports = {
   getReviews,
   getMessages,
   getProfileUser,
+  editProfileUser,
 };
