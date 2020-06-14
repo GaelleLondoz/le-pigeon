@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -10,31 +10,6 @@ import Title from "./Title";
 import Button from "@material-ui/core/Button";
 import bookingAPI from "../services/bookingAPI";
 
-const rows = [];
-//Retrieve Bookings
-async function initBookings() {
-  const bookings = await bookingAPI.getBookings();
-  const entries = bookings.entries();
-  for (const [i, item] of entries) {
-    var __FOUND = rows.find(function (post, index) {
-      if (post.id == item.id) {
-        console.log("FOUND!!!!");
-        return true;
-      }
-    });
-    if (!__FOUND) {
-      let row = {
-        id: item.id,
-        date: item.date,
-        status: item.status,
-        username: item.firstNameName + " " + item.lastName,
-        agentname: item.agentName,
-      };
-      rows.push(row);
-    }
-  }
-}
-
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -45,11 +20,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//Retrieve Bookings from database
-initBookings();
-//End Retrieve
 export default function Bookings() {
   const classes = useStyles();
+  const array = [];
+  const [bookingsList, setBookingsList] = useState(array);
+
+  const initBookings = async () => {
+    let data = [];
+    const bookings = await bookingAPI.getBookings();
+    const entries = bookings.entries();
+    for (const [i, item] of entries) {
+      //Check if the booking is already existing within the list
+      const result = data.find((row) => row.id == item.id);
+      //If booking do not exist then add it
+      if (!result) {
+        let row = {
+          id: item.id,
+          date: new Date(item.date).toDateString(),
+          status: item.status,
+          username: item.firstName + " " + item.lastName,
+          agentname: "",
+        };
+        data.push(row);
+      }
+      //otherwise search the row and update agent name
+      else {
+        var foundIndex = data.findIndex((row) => row.id == item.id);
+        data[foundIndex].agentname = item.firstName + " " + item.lastName;
+      }
+    }
+    setBookingsList(data);
+  };
+
+  useEffect(() => {
+    initBookings();
+  });
+
   return (
     <React.Fragment>
       <Table size="small">
@@ -78,7 +84,7 @@ export default function Bookings() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {bookingsList.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.status}</TableCell>

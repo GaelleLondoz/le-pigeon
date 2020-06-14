@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -10,24 +10,6 @@ import Title from "./Title";
 import Button from "@material-ui/core/Button";
 import userAPI from "../services/userAPI";
 
-const rows = [];
-//Retrieve users
-async function initUsers() {
-  const users = await userAPI.getUsers();
-  const entries = users.entries();
-  for (const [i, item] of entries) {
-    let row = {
-      id: item.id,
-      firstName: item.firstName,
-      lastName: item.lastName,
-      username: item.userName,
-      email: item.email,
-      isAgent: item.isAgent,
-    };
-    rows.push(row);
-  }
-}
-
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -38,13 +20,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//Retrieve users from database
-initUsers();
-//End Retrieve
 export default function Users() {
   const classes = useStyles();
+  const array = [];
+  const [usersList, setUsersList] = useState(array);
 
-  console.log({ rows: rows });
+  const initUsers = async () => {
+    let data = [];
+    const users = await userAPI.getUsers();
+    const entries = users.entries();
+    for (const [i, item] of entries) {
+      let row = {
+        id: item.id,
+        firstName: item.firstName,
+        lastName: item.lastName,
+        username: item.userName,
+        email: item.email,
+        isAgent: item.isAgent,
+      };
+      data.push(row);
+    }
+    setUsersList(data);
+  };
+
+  useEffect(() => {
+    initUsers();
+  });
   return (
     <React.Fragment>
       <Table size="small">
@@ -74,7 +75,7 @@ export default function Users() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {usersList.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.firstName}</TableCell>
               <TableCell>{row.lastName}</TableCell>

@@ -35,15 +35,6 @@ export default function PrimaryListItems(props) {
       </ListItem>
       <ListItem
         button
-        onClick={(event) => props.handleClick({ selection: "roles" })}
-      >
-        <ListItemIcon>
-          <PersonIcon />
-        </ListItemIcon>
-        <ListItemText primary="Roles" />
-      </ListItem>
-      <ListItem
-        button
         onClick={(event) => props.handleClick({ selection: "bookings" })}
       >
         <ListItemIcon>
@@ -59,6 +50,15 @@ export default function PrimaryListItems(props) {
           <RateReviewIcon />
         </ListItemIcon>
         <ListItemText primary="Reviews" />
+      </ListItem>
+      <ListItem
+        button
+        onClick={(event) => props.handleClick({ selection: "roles" })}
+      >
+        <ListItemIcon>
+          <PersonIcon />
+        </ListItemIcon>
+        <ListItemText primary="Roles" />
       </ListItem>
       <ListItem
         button

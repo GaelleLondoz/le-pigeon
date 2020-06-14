@@ -22,6 +22,8 @@ import Deposits from "./Deposits";
 import Orders from "./Orders";
 import Users from "./Users";
 import Bookings from "./Bookings";
+import Reviews from "./Reviews";
+import Roles from "./Roles";
 import Main from "./Main";
 
 const drawerWidth = 240;
@@ -114,6 +116,7 @@ export default function AdminDashboard() {
   const [isRapport, setRapports] = React.useState(false);
   const [isRole, setRoles] = React.useState(false);
   const [isDashboard, setDashboard] = React.useState(true);
+  const [dashboardText, setdashboardText] = React.useState("Dashboard");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -131,6 +134,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setdashboardText("Users");
         break;
       case "roles":
         setRoles(true);
@@ -140,6 +144,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setdashboardText("Roles");
         break;
       case "bookings":
         setBookings(true);
@@ -149,6 +154,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setdashboardText("Bookings");
         break;
       case "reviews":
         setReviews(true);
@@ -158,6 +164,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setdashboardText("Reviews");
         break;
       case "paiements":
         setPaiements(true);
@@ -167,6 +174,7 @@ export default function AdminDashboard() {
         setReviews(false);
         setRapports(false);
         setDashboard(false);
+        setdashboardText("Paiements");
         break;
       case "rapports":
         setRapports(true);
@@ -176,6 +184,7 @@ export default function AdminDashboard() {
         setReviews(false);
         setPaiements(false);
         setDashboard(false);
+        setdashboardText("Rapports");
         break;
       case "dashboard":
         setDashboard(true);
@@ -185,6 +194,7 @@ export default function AdminDashboard() {
         setReviews(false);
         setPaiements(false);
         setRapports(false);
+        setdashboardText("Dashboard");
     }
   };
 
@@ -218,7 +228,7 @@ export default function AdminDashboard() {
             noWrap
             className={classes.title}
           >
-            Dashboard
+            {dashboardText}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={0} color="secondary">
@@ -252,12 +262,12 @@ export default function AdminDashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {isUSer && <Users />}
-            {isRole && <div></div>}
             {isBooking && <Bookings />}
+            {isUSer && <Users />}
+            {isRole && <Roles />}
             {isPaiement && <div></div>}
             {isRapport && <div></div>}
-            {isReview && <div></div>}
+            {isReview && <Reviews />}
             {isDashboard && <Main />}
           </Grid>
         </Container>

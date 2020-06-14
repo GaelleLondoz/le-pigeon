@@ -7,10 +7,6 @@ import Orders from "./Orders";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
-function preventDefault(event) {
-  event.preventDefault();
-}
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({

@@ -9,6 +9,7 @@ const reviewsController = require("../controllers/reviewsController");
 const messagesController = require("../controllers/messagesController");
 const checkAuth = require("../middlewares/checkAuth");
 const userDestinationsController = require("../controllers/userDestinationsController");
+const rolesController = require("../controllers/rolesController");
 
 // users
 router.get("/users", usersController.index);
@@ -37,9 +38,9 @@ router.put("/bookings/:id/cancel", checkAuth, bookingsController.cancelBooking);
 router.put("/bookings/:id", checkAuth, bookingsController.update);
 router.delete("/bookings/:id", checkAuth, bookingsController.destroy);
 router.get(
-  "/bookings/agent/:id",
-  checkAuth,
-  bookingsController.getBookingsByAgent
+    "/bookings/agent/:id",
+    checkAuth,
+    bookingsController.getBookingsByAgent
 );
 
 router.get("/reviews", reviewsController.index);
@@ -48,12 +49,12 @@ router.get("/reviews/:id", reviewsController.findOne);
 
 
 router.get(
-  "/reviews/avgratings/agent/:id",
-  reviewsController.getAvgRatingsAgent
+    "/reviews/avgratings/agent/:id",
+    reviewsController.getAvgRatingsAgent
 );
 router.get(
-  "/reviews/comments/agent/:id",
-  reviewsController.getAllCommentsReviewByAgent
+    "/reviews/comments/agent/:id",
+    reviewsController.getAllCommentsReviewByAgent
 );
 
 
@@ -71,34 +72,41 @@ router.get("/messages/:receiverID", checkAuth, messagesController.findMessages);
 router.put("/messages/:id/:status", checkAuth, messagesController.update);
 router.delete("/messages/:id", checkAuth, messagesController.destroy);
 router.get(
-  "/messages/users/:id",
-  checkAuth,
-  messagesController.getAllMessagesByUser
+    "/messages/users/:id",
+    checkAuth,
+    messagesController.getAllMessagesByUser
 );
 router.put(
-  "/messages/:id/changestatus/:status",
-  checkAuth,
-  messagesController.changeStatusMessage
+    "/messages/:id/changestatus/:status",
+    checkAuth,
+    messagesController.changeStatusMessage
 );
 router.post("/messages/:id", checkAuth, messagesController.newMessage);
 
 // destinations
 router.get(
-  "/destinations/users/:id",
-  userDestinationsController.getAllDestinationsByUser
+    "/destinations/users/:id",
+    userDestinationsController.getAllDestinationsByUser
 );
 router.get(
-  "/destinations/users/:id/destination/:destinationId/pictures",
-  userDestinationsController.getPicturesDestinationByDestination
+    "/destinations/users/:id/destination/:destinationId/pictures",
+    userDestinationsController.getPicturesDestinationByDestination
 );
 router.get(
-  "/users/:id/destination/:destinationId",
-  userDestinationsController.getDestinationByUser
+    "/users/:id/destination/:destinationId",
+    userDestinationsController.getDestinationByUser
 );
 // router.get(
 //   "/destinations/continents",
 //   userDestinationsController.getAllContinents
 // );
 router.post("/destinations/new", checkAuth, userDestinationsController.create);
+
+// roles
+router.get("/roles", checkAuth, rolesController.index);
+router.post("/roles", checkAuth, rolesController.create);
+router.get("/roles/:id", checkAuth, rolesController.findOne);
+router.put("/roles/:id", checkAuth, rolesController.update);
+router.delete("/roles/:id", checkAuth, rolesController.destroy);
 
 module.exports = router;
