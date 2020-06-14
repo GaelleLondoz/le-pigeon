@@ -96,10 +96,28 @@ const ItemsNav = ({
         {!currentUser.isAgent && (
           <MenuItem
             component={Link}
-            to={"/profile/user/" + currentUser.id}
+            to={"/profile/user/" + currentUser.id + "/account"}
             onClick={handleAvatarClose}
           >
             Mon profil
+          </MenuItem>
+        )}
+        {!currentUser.isAgent && (
+          <MenuItem
+            component={Link}
+            to={"/profile/user/" + currentUser.id + "/message"}
+            onClick={handleAvatarClose}
+          >
+            Mes messages
+          </MenuItem>
+        )}
+        {!currentUser.isAgent && (
+          <MenuItem
+            component={Link}
+            to={"/profile/user/" + currentUser.id + "/booking"}
+            onClick={handleAvatarClose}
+          >
+            Mes réservations
           </MenuItem>
         )}
         {currentUser.isAgent && (
