@@ -48,7 +48,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
       console.log(error.response);
     }
   };
-  console.log(booking);
+  //console.log(booking);
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (
