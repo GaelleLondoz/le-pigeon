@@ -22,7 +22,11 @@ const ItemsNav = ({
       {isAuthenticated && (
         <MenuItem
           component={Link}
-          to={"/profile/agent/" + currentUser.id}
+          to={
+            currentUser.isAgent
+              ? "/profile/agent/" + currentUser.id
+              : "/profile/user/" + currentUser.id + "/message"
+          }
           className={classes.menuItem}
         >
           Message
@@ -96,10 +100,28 @@ const ItemsNav = ({
         {!currentUser.isAgent && (
           <MenuItem
             component={Link}
-            to={"/profile/user/" + currentUser.id}
+            to={"/profile/user/" + currentUser.id + "/account"}
             onClick={handleAvatarClose}
           >
             Mon profil
+          </MenuItem>
+        )}
+        {!currentUser.isAgent && (
+          <MenuItem
+            component={Link}
+            to={"/profile/user/" + currentUser.id + "/message"}
+            onClick={handleAvatarClose}
+          >
+            Mes messages
+          </MenuItem>
+        )}
+        {!currentUser.isAgent && (
+          <MenuItem
+            component={Link}
+            to={"/profile/user/" + currentUser.id + "/booking"}
+            onClick={handleAvatarClose}
+          >
+            Mes réservations
           </MenuItem>
         )}
         {currentUser.isAgent && (

@@ -444,3 +444,52 @@ section#public-agent-profile {
     }
   }
 }
+
+// Profile User
+section#profile-user-account-header {
+  //margin-top: 100px;
+  background-color: #f5f5f5;
+  .container-header {
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    .MuiAvatar-root {
+      width: 150px;
+      height: 150px;
+    }
+    .container-info {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      .profile-user-account-info {
+        display: flex;
+        align-items: center;
+        //justify-content: center;
+        margin-bottom: 10px;
+        .MuiSvgIcon-root {
+          margin-right: 10px;
+          color: #009fb7;
+          font-size: 30px;
+        }
+        p {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+section#profile-user-account-form {
+  margin-top: 100px;
+  div.container-form {
+    margin-top: 50px;
+    //text-align: center;
+    max-width: 500px;
+    margin: 50px auto;
+    form {
+      .MuiFormControl-root {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

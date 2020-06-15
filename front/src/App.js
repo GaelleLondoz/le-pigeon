@@ -32,6 +32,9 @@ import ShowTravelDetails from "./pages/profileAgent/ShowTravelDetails";
 import ShowAgent from "./pages/ShowAgent";
 //import MainNavigation from "./components/navigation/MainNavigation";
 import MainNav from "./components/navigation/MainNav";
+import UserAccount from "./pages/profileUser/UserAccount";
+import UserMessage from "./pages/profileUser/UserMessage";
+import UserBooking from "./pages/profileUser/UserBooking";
 
 AuthAPI.setup();
 const App = () => {
@@ -95,6 +98,21 @@ const App = () => {
               exact
               path="/profile/agent/:id"
               component={ProfileAgent}
+            />
+            <PrivateRoute
+              exact
+              path="/profile/user/:id/account"
+              component={UserAccount}
+            />
+            <PrivateRoute
+              exact
+              path="/profile/user/:id/message"
+              component={UserMessage}
+            />
+            <PrivateRoute
+              exact
+              path="/profile/user/:id/booking"
+              component={UserBooking}
             />
 
             <Route exact path="/users/:id" component={Profile} />
