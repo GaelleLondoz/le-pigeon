@@ -50,77 +50,16 @@ const Agenda = () => {
     }
   };
 
+  //Callback to child CardAgendaBooking
+  const fetchUserBookingsCallBack = async (id) => {
+    await fetchBookings(id);
+  };
+
   useEffect(() => {
     fetchBookings(id);
   }, [id]);
   return (
     <section className="profile-agent-agenda">
-      {/* <AppBar
-        position="static"
-        style={{
-          maxWidth: "500px",
-          backgroundColor: "lightGray",
-          color: "black",
-        }}
-      >
-        <Tabs
-          value={valueTab}
-          onChange={handleChange}
-          aria-label="tabs profile agent"
-        >
-          <Tab label="A venir" />
-          <Tab label="Passée" />
-        </Tabs>
-      </AppBar>
-      <TabPanel value={valueTab} index={0}>
-        <Container>
-          <Typography variant="h5">
-            Liste de vos prochaines réservations
-          </Typography>
-          <Grid container>
-            {notBookings ? (
-              <Grid item xs={12}>
-                <p>{notBookings}</p>
-              </Grid>
-            ) : (
-              bookings.map((booking) => {
-                return (
-                  compareCurrentDate(booking.date) && (
-                    <Grid item xs={12} key={booking.id}>
-                      <CardAgendaBooking booking={booking} />
-                    </Grid>
-                  )
-                );
-              })
-            )}
-          </Grid>
-        </Container>
-      </TabPanel>
-      <TabPanel value={valueTab} index={1}>
-        <Container>
-          <Typography variant="h5">
-            Liste de vos réservations passées
-          </Typography>
-          <Grid container>
-            {notBookings ? (
-              <Grid item xs={12}>
-                <p>{notBookings}</p>
-              </Grid>
-            ) : (
-              bookings.map((booking) => {
-                return (
-                  !compareCurrentDate(booking.date) && (
-                    <Grid item xs={12} key={booking.id}>
-                      <CardAgendaBooking booking={booking} />
-                    </Grid>
-                  )
-                );
-              })
-            )}
-          </Grid>
-        </Container>
-      </TabPanel> */}
-
       <div className={classes.root}>
         <Tabs
           orientation="vertical"
@@ -147,7 +86,10 @@ const Agenda = () => {
                 return (
                   compareCurrentDate(booking.date) && (
                     <Grid item xs={12} key={booking.id}>
-                      <CardAgendaBooking booking={booking} />
+                      <CardAgendaBooking
+                        booking={booking}
+                        onFetchBookings={() => fetchUserBookingsCallBack(id)}
+                      />
                     </Grid>
                   )
                 );
@@ -169,7 +111,10 @@ const Agenda = () => {
                 return (
                   !compareCurrentDate(booking.date) && (
                     <Grid item xs={12} key={booking.id}>
-                      <CardAgendaBooking booking={booking} />
+                      <CardAgendaBooking
+                        booking={booking}
+                        onFetchBookings={() => fetchUserBookingsCallBack(id)}
+                      />
                     </Grid>
                   )
                 );
