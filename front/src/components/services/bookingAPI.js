@@ -22,10 +22,15 @@ async function getBookings() {
   const token = window.localStorage.getItem("authToken");
   return await axios.get(BOOKINGS_URL).then((response) => response.data);
 }
-
+function getBookingsByUser(id) {
+  return axios
+    .get(BOOKINGS_URL + "/user/" + id)
+    .then((response) => response.data);
+}
 export default {
   getBookingsByAgent,
   acceptBooking,
   cancelBooking,
   getBookings,
+  getBookingsByUser,
 };

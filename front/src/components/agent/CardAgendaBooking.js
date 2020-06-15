@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Typography, Button } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
@@ -11,11 +11,13 @@ import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import { changeStatusBookingToFrench } from "../../helpers/changeStatusToFrench";
 import BookingAPI from "../../components/services/bookingAPI";
+import AuthContext from "../../contexts/AuthContext";
 
-const CardAgendaBooking = ({ booking }) => {
+const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
   const [showFlash, setShowFlash] = useState(false);
   const [messageFlash, setMessageFlash] = useState("");
+  const { currentUser } = useContext(AuthContext);
 
   const handleAcceptBookingClick = async () => {
     try {
@@ -23,6 +25,7 @@ const CardAgendaBooking = ({ booking }) => {
       setStatus("ACCEPTED");
       setMessageFlash("La réservation a bien été acceptée");
       setShowFlash(true);
+      onFetchBookings();
       setTimeout(() => {
         setShowFlash(false);
       }, 3000);
@@ -37,6 +40,7 @@ const CardAgendaBooking = ({ booking }) => {
       setStatus("CANCELLED");
       setMessageFlash("La réservation a bien été annulée");
       setShowFlash(true);
+      onFetchBookings();
       setTimeout(() => {
         setShowFlash(false);
       }, 3000);
@@ -44,7 +48,7 @@ const CardAgendaBooking = ({ booking }) => {
       console.log(error.response);
     }
   };
-  console.log(booking);
+  //console.log(booking);
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (
@@ -67,12 +71,21 @@ const CardAgendaBooking = ({ booking }) => {
       </div>
       <div className="profile-agent-agenda-card-info">
         <AccountBoxIcon style={{ fill: "#750D37" }} />
-        <Typography component="p">
-          Auteur de la réservation :{" "}
-          <strong>
-            {booking.booker.firstName} {booking.booker.lastName}
-          </strong>
-        </Typography>
+        {currentUser.isAgent ? (
+          <Typography component="p">
+            Auteur de la réservation :{" "}
+            <strong>
+              {booking.booker.firstName} {booking.booker.lastName}
+            </strong>
+          </Typography>
+        ) : (
+          <Typography component="p">
+            Réservation avec l'agent :{" "}
+            <strong>
+              {booking.agent.firstName} {booking.agent.lastName}
+            </strong>
+          </Typography>
+        )}
       </div>
       <div className="profile-agent-agenda-card-info">
         <LocationOnIcon style={{ fill: "#750D37" }} />
@@ -81,25 +94,27 @@ const CardAgendaBooking = ({ booking }) => {
           <strong>{booking.BookingLocations[0].Location.name}</strong>
         </Typography>
       </div>
-      {status === "PENDING" && compareCurrentDate(booking.date) && (
-        <div className="profile-agent-agenda-actions">
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ marginRight: "10px" }}
-            onClick={handleCancelBookingClick}
-          >
-            Annuler
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAcceptBookingClick}
-          >
-            Accepter
-          </Button>
-        </div>
-      )}
+      {status === "PENDING" &&
+        compareCurrentDate(booking.date) &&
+        currentUser.isAgent && (
+          <div className="profile-agent-agenda-actions">
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ marginRight: "10px" }}
+              onClick={handleCancelBookingClick}
+            >
+              Annuler
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAcceptBookingClick}
+            >
+              Accepter
+            </Button>
+          </div>
+        )}
       {!compareCurrentDate(booking.date) && (
         <div className="profile-agent-agenda-card-info">
           <InfoIcon />

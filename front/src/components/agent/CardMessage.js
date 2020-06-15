@@ -60,7 +60,7 @@ const CardMessage = ({ message }) => {
         <div className="card-agent-messages-profile-info">
           <CheckBoxIcon style={{ fill: changeColorIconStatus(status) }} />
           <Typography component="p">
-            Status : {changeStatusMessageToFrench(status)}
+            Status : <strong>{changeStatusMessageToFrench(status)}</strong>
           </Typography>
         </div>
         <div className="card-agent-messages-profile-info">
@@ -73,7 +73,10 @@ const CardMessage = ({ message }) => {
           className="card-agent-messages-profile-info"
           style={{ marginTop: "20px", alignItems: "center" }}
         >
-          <Avatar alt="Remy Sharp" src={message.sender.avatar} />
+          <Avatar
+            alt="Remy Sharp"
+            src={"http://localhost:5000/avatar/" + message.sender.avatar}
+          />
           <Typography component="p">
             Par {message.sender.firstName} {message.sender.lastName}
           </Typography>
