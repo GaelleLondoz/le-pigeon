@@ -18,9 +18,14 @@ function cancelBooking(id) {
     .put(BOOKINGS_URL + "/" + id + "/cancel")
     .then((response) => response.data);
 }
+async function getBookings() {
+  const token = window.localStorage.getItem("authToken");
+  return await axios.get(BOOKINGS_URL).then((response) => response.data);
+}
 
 export default {
   getBookingsByAgent,
   acceptBooking,
   cancelBooking,
+  getBookings,
 };

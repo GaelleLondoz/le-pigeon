@@ -10,7 +10,6 @@ import Alert from "@material-ui/lab/Alert";
 var localVideo;
 var localStream;
 var remoteVideo;
-var remoteStream;
 var peerConnection;
 var uuid;
 var message;
