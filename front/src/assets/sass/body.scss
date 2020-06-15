@@ -201,7 +201,8 @@ section.profile-agent-account {
     }
   }
 }
-section.profile-agent-messages {
+section.profile-agent-messages,
+section#profile-user-messages {
   h5 {
     font-weight: bold;
   }
@@ -491,5 +492,11 @@ section#profile-user-account-form {
         margin-bottom: 20px;
       }
     }
+  }
+}
+section#profile-user-messages {
+  margin-top: 80px;
+  h5 {
+    margin-bottom: 20px;
   }
 }
