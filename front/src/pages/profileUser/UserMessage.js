@@ -32,7 +32,7 @@ const UserMessage = ({ match }) => {
         <Typography variant="h5">Liste de vos messages</Typography>
         <Typography component="p" style={{ marginBottom: "30px" }}>
           John Doe, vous avez actuellement <strong>{messages.length}</strong>{" "}
-          messages
+          messages.
         </Typography>
         {notMessages ? (
           <p>{notMessages}</p>

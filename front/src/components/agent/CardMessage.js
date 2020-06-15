@@ -60,7 +60,7 @@ const CardMessage = ({ message }) => {
         <div className="card-agent-messages-profile-info">
           <CheckBoxIcon style={{ fill: changeColorIconStatus(status) }} />
           <Typography component="p">
-            Status : {changeStatusMessageToFrench(status)}
+            Status : <strong>{changeStatusMessageToFrench(status)}</strong>
           </Typography>
         </div>
         <div className="card-agent-messages-profile-info">
