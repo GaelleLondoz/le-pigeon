@@ -10,6 +10,7 @@ const messagesController = require("../controllers/messagesController");
 const checkAuth = require("../middlewares/checkAuth");
 const userDestinationsController = require("../controllers/userDestinationsController");
 const rolesController = require("../controllers/rolesController");
+const faqsController = require("../controllers/faqsController");
 
 // users
 router.get("/users", usersController.index);
@@ -19,11 +20,21 @@ router.get("/users/agents/best", usersController.getBestAgents);
 router.get("/users/agent/:id/public", usersController.getPublicProfileAgent);
 router.put("/users/:id", checkAuth, usersController.update);
 router.delete("/users/:id", checkAuth, usersController.destroy);
-router.get("/users/profile/agent/:id", checkAuth, usersController.getProfileAgent);
+router.get(
+  "/users/profile/agent/:id",
+  checkAuth,
+  usersController.getProfileAgent
+);
 router.get("/users/me/roles", checkAuth, usersController.getRoleUser);
 router.put("/users/agent/:id", checkAuth, usersController.editProfileAgent);
 router.get("/users/:id/reviews", usersController.getReviews);
 router.get("/users/:id/messages", usersController.getMessages);
+router.get(
+  "/users/profile/user/:id",
+  checkAuth,
+  usersController.getProfileUser
+);
+router.put("/users/user/:id", checkAuth, usersController.editProfileUser);
 // login auth
 router.post("/login", usersController.login);
 router.post("/logout", checkAuth, usersController.logout);
@@ -43,11 +54,10 @@ router.get(
     bookingsController.getBookingsByAgent
 );
 
+// reviews
 router.get("/reviews", reviewsController.index);
 router.post("/reviews", reviewsController.create);
 router.get("/reviews/:id", reviewsController.findOne);
-
-
 router.get(
     "/reviews/avgratings/agent/:id",
     reviewsController.getAvgRatingsAgent
@@ -56,13 +66,9 @@ router.get(
     "/reviews/comments/agent/:id",
     reviewsController.getAllCommentsReviewByAgent
 );
-
-
 router.put("/reviews/:id", reviewsController.update);
 router.delete("/reviews/:id", reviewsController.destroy);
-
 router.get("/reviews/agent/:agentID", reviewsController.reviewsByAgent);
-
 
 // messages
 router.get("/messages", checkAuth, messagesController.index);
@@ -102,11 +108,23 @@ router.get(
 // );
 router.post("/destinations/new", checkAuth, userDestinationsController.create);
 
+
 // roles
 router.get("/roles", checkAuth, rolesController.index);
 router.post("/roles", checkAuth, rolesController.create);
 router.get("/roles/:id", checkAuth, rolesController.findOne);
 router.put("/roles/:id", checkAuth, rolesController.update);
 router.delete("/roles/:id", checkAuth, rolesController.destroy);
+
+// faqs
+router.get("/faqs", faqsController.index);
+router.post("/faqs", faqsController.create);
+router.get("/faqs/:id", faqsController.findOne);
+router.put("/faqs/:id", faqsController.update);
+router.delete("/faqs/:id", faqsController.destroy);
+router.get("/faqs-featured", faqsController.findAllFaqsFeatured);
+router.get("/faqs-agents", faqsController.findAllFaqsAgents);
+router.get("/faqs-futur-travellers", faqsController.findAllFaqsFuturTravellers);
+router.get("/faqs-others", faqsController.findAllFaqsOthers);
 
 module.exports = router;

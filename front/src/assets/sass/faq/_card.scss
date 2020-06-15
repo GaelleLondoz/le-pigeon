@@ -1,0 +1,128 @@
+.faq {
+  &__categories {
+    margin: auto !important;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.07);
+    text-align: left;
+    position: relative;
+    transform: translateY(-50%);
+    justify-content: space-around;
+
+    @media (min-width: 768px) {
+      padding: 4rem;
+      flex-direction: row;
+    }
+  }
+  &__categorie {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: 0.4s ease-in-out all;
+    @media (min-width: 768px) {
+      width: calc(100% / 3);
+      flex-direction: column;
+      justify-content: center;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    img {
+      max-width: 20%;
+      width: auto;
+      height: 3rem;
+      padding: 0.5rem;
+      @media (min-width: 768px) {
+        max-width: 40%;
+        height: 5rem;
+      }
+    }
+
+    h5 {
+      font-size: 1rem !important;
+      padding-left: 1rem;
+
+      @media (min-width: 768px) {
+        padding-left: 0rem;
+      }
+    }
+  }
+}
+.card-faq {
+  &__container {
+    margin: auto !important;
+  }
+
+  display: inline-block;
+  padding: 2rem;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.07);
+  box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.07);
+  text-align: left;
+  margin-bottom: 20px;
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  break-inside: avoid-column;
+  position: relative;
+  .question {
+    p {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  }
+  .answer {
+    display: none;
+    height: 0;
+    transition: 0.4s all ease-in-out;
+  }
+
+  .card-faq__read-more-less {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: $primary-font;
+
+    & > span {
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .more {
+      display: flex;
+    }
+    .less {
+      display: none;
+    }
+
+    .arrow-icon {
+      color: #bcbcbc;
+    }
+  }
+  &.expanded {
+    .answer {
+      display: flex;
+      height: auto;
+    }
+
+    .card-faq__read-more-less {
+      .more {
+        display: none;
+      }
+
+      .less {
+        display: flex;
+      }
+    }
+  }
+}

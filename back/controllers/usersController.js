@@ -106,36 +106,36 @@ const me = async (req, res) => {
         token: headerAuth,
         user: checkStatus,
       });
-      const user = await User.findOne({
-        where: {
-          email,
-        },
-      });
-      console.log(user);
+      // const user = await User.findOne({
+      //   where: {
+      //     email,
+      //   },
+      // });
+      // console.log(user);
 
-      if (!user) {
-        res.status(401).json({ message: "No such user found" });
-      }
-      bcrypt.compare(password, user.password, function (err, result) {
-        if (result) {
-          let payload = {
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            avatar: user.avatar,
-            isAgent: user.isAgent,
-          };
-          let token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: "6000000",
-          });
+      // if (!user) {
+      //   res.status(401).json({ message: "No such user found" });
+      // }
+      // bcrypt.compare(password, user.password, function (err, result) {
+      //   if (result) {
+      //     let payload = {
+      //       id: user.id,
+      //       firstName: user.firstName,
+      //       lastName: user.lastName,
+      //       avatar: user.avatar,
+      //       isAgent: user.isAgent,
+      //     };
+      //     let token = jwt.sign(payload, process.env.JWT_SECRET, {
+      //       expiresIn: "6000000",
+      //     });
 
-          res.json({ msg: "ok", token: token });
-        } else {
-          res.status(401).json({
-            msg: "Unauthorized",
-          });
-        }
-      });
+      //     res.json({ msg: "ok", token: token });
+      //   } else {
+      //     res.status(401).json({
+      //       msg: "Unauthorized",
+      //     });
+      //   }
+      // });
     }
   } catch (e) {
     throw e;
@@ -395,6 +395,85 @@ const getPublicProfileAgent = async (req, res) => {
     return res.status(500).json({ msg: "Error Server" });
   }
 };
+
+const getProfileUser = async (req, res) => {
+  const id = req.params.id;
+  if (parseInt(id) !== req.user.id) {
+    return res.status(403).json({ msg: "Access Denied" });
+  }
+  try {
+    const user = await User.findOne({
+      where: { id },
+      attributes: [
+        "id",
+        "firstName",
+        "lastName",
+        "userName",
+        "email",
+        "avatar",
+        "createdAt",
+      ],
+    });
+    if (!user) {
+      return res.status(404).json({ msg: "User Not Found" });
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
+
+const editProfileUser = async (req, res) => {
+  const id = req.params.id;
+  const { firstName, lastName, userName, email, avatar } = req.body;
+  let fileSendToDatabase;
+  if (parseInt(id) !== req.user.id) {
+    return res.status(403).json({ msg: "Access Denied" });
+  }
+
+  const currentUser = await User.findOne({
+    where: { id },
+    raw: true,
+  });
+
+  // Verify if user change avatar or not
+  // Todo => if user change avatar, delete old avatar in folder avatar
+  if (avatar !== currentUser.avatar) {
+    const file = avatar.split(";base64,");
+    const extension = file[0].replace("data:image/", "");
+    const filename = makeKey(10);
+    const rootFile = [
+      __dirname + "/../storage/avatar/",
+      filename,
+      "." + extension,
+    ].join("");
+    fileSendToDatabase = filename + "." + extension;
+
+    fs.writeFile(rootFile, file[1], "base64", function (err) {
+      console.log(err);
+    });
+  } else {
+    fileSendToDatabase = currentUser.avatar;
+  }
+
+  try {
+    await User.update(
+      {
+        firstName,
+        lastName,
+        email,
+        userName,
+        avatar: fileSendToDatabase,
+      },
+      { where: { id } }
+    );
+    return res.status(200).json({ msg: "User updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   index,
   create,
@@ -411,4 +490,6 @@ module.exports = {
   getPublicProfileAgent,
   getReviews,
   getMessages,
+  getProfileUser,
+  editProfileUser,
 };
