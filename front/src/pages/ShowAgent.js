@@ -17,6 +17,7 @@ import CardDestination from "../components/agent/CardDestination";
 import Paginator from "../components/Pagination";
 import CardComment from "../components/agent/CardComment";
 import Form from "../components/reviews/Form";
+import Flash from "../components/alerts/Flash"
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
@@ -37,20 +38,11 @@ const ShowAgent = ({ match }) => {
   });
   const [destinations, setDestinations] = useState([]);
   const [reviews, setReviews] = useState([]);
+
   const [currentDestinationPage, setCurrentDestinationPage] = useState(1);
   const [currentReviewsPage, setCurrentReviewPage] = useState(1);
-
-  // config dialog from create state open / close
+  const [displayFlash, setDisplayFlash] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const handleOpenFormCreate = (status) => {
-    setOpen(status);
-  };
-
-  const handleOpen = () => {
-    // open Dialog
-    handleOpenFormCreate(true);
-  };
 
   const fetchAgent = async (id) => {
     try {
@@ -89,6 +81,8 @@ const ShowAgent = ({ match }) => {
     }
   };
 
+
+
   const handlePaginationDestinationChange = (e, page) => {
     setCurrentDestinationPage(page);
     //window.scrollTo(0, 0);
@@ -102,6 +96,39 @@ const ShowAgent = ({ match }) => {
   const handleRefreshList = (id) => {
     fetchReviewsByAgent(id);
   };
+
+  const handleOpenFormCreate = (status) => {
+    setOpen(status);
+  };
+
+  const handleCreateItem = (status) => {
+    const messageAlert = "Votre review a bien été ajoutée, elle sera publée une fois validée par nos administrateurs"
+    loadAlertInfos(status, messageAlert)
+  }
+
+  const handleDeleteItem = (status) => {
+    const messageAlert = "Votre review a bien été supprimée"
+    loadAlertInfos(status, messageAlert)
+    handleRefreshList(id)
+  }
+
+  const handleOpen = () => {
+    handleOpenFormCreate(true);
+  };
+
+  const loadAlertInfos = (status, messageAlert) => {
+    setDisplayFlash({
+      status: status,
+      messageAlert: messageAlert
+    })
+
+    setTimeout(function () {
+      setDisplayFlash({
+        status: false,
+        messageAlert: ""
+      })
+    }, 3000);
+  }
 
   const paginatedDestinations = Paginator.getData(
     destinations,
@@ -132,12 +159,17 @@ const ShowAgent = ({ match }) => {
     fetchReviewsByAgent(id);
   }, [id]);
 
+
+
   //   console.log(agent);
   //   console.log(avgRatings);
   //   console.log(destinations);
-  console.log(reviews);
+  // console.log(reviews);
   return (
     <section id="public-agent-profile">
+      <div className="alert-container">
+        {displayFlash.status && <Flash status="success" text={displayFlash.messageAlert} />}
+      </div>
       <Container>
         <Box className="agent-information" component="div">
           <Grid container spacing={5} justify="center">
@@ -209,23 +241,24 @@ const ShowAgent = ({ match }) => {
             Ce que les voyageurs disent de {agent.User.firstName}
           </Typography>
 
-          <Typography component="a" onClick={handleOpen}>
+          <Button size="medium" variant="contained" color="secondary" onClick={handleOpen}>
             Donner votre avis
-          </Typography>
+                </Button>
+
 
           {paginatedReviews.map((review) => {
-            if (review.status !== "PUBLISHED") return;
+
             return (
               <div key={review.id} className="card-comments-agent">
                 <CardComment
                   comment={review}
-                  comments={reviews}
                   agentId={id}
-                  handleRefreshList={handleRefreshList}
+                  onDelete={handleDeleteItem}
                 />
               </div>
             );
           })}
+
           {reviews.length > 6 && (
             <Paginator
               length={reviews.length}
@@ -238,10 +271,9 @@ const ShowAgent = ({ match }) => {
         {open && (
           <Form
             id={id}
-            // handleRefreshList={handleRefreshList}
             open={open}
             onOpen={handleOpenFormCreate}
-            // onCreate={handleCreateItem}
+            onCreate={handleCreateItem}
           />
         )}
       </Container>

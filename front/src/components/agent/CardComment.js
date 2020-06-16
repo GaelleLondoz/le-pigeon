@@ -1,40 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import ReviewsAPI from "../services/reviewsAPI";
 import Rating from "@material-ui/lab/Rating";
-import { Typography, Avatar, Grid } from "@material-ui/core";
+import { Typography, Avatar, Grid, Button } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 
-const CardComment = ({ comment, handleRefreshList }) => {
-  console.log(comment);
-  // check if user authenticated
+const CardComment = ({ comment, onDelete }) => {
   const { isAuthenticated, currentUser } = useContext(AuthContext);
 
-  // action delete item
   const handleDelete = async () => {
     try {
-      // // check if last review and last of page from pagination -- go back to preview page
-      // let indexReview = props.reviews.reverse().indexOf(review) + 1
-      // let reviewsLength = props.reviews.length
-
-      // if ((indexReview === reviewsLength) || ((indexReview === 0) && (indexReview < reviewsLength))) {
-      //   props.onDelete(true, true)
-      // } else {
-      //   props.onDelete(true, false)
-      // }
-
-      // delete from database
       await ReviewsAPI.deleteReview(comment.id);
-
-      // refresh list
-      handleRefreshList()
+      onDelete(true)
     } catch (error) {
       console.log(error.response)
     }
   };
 
-  // action read more if long review
   const handleReadMore = () => {
     var dots = document.getElementById("dots");
     var moreText = document.getElementById("more");
@@ -70,9 +52,9 @@ const CardComment = ({ comment, handleRefreshList }) => {
             readOnly
             precision={0.5}
           />
-          <Typography component="p">{comment.comment}</Typography>
-          {console.log({ isAuthenticated })}
-          {console.log({ check: comment.authorID === currentUser.id, "comment.authorID": comment.authorID, id: currentUser.id })}
+
+          {comment.comment.length > 200 ? <div className="review-item"><p className="review__comment">{comment.comment.substr(0, 200)}<span id="dots">...</span><span id="more">{comment.comment.substr(61)}</span></p><Button color="primary" onClick={handleReadMore} id="read-more">Lire plus</Button></div> : <div className="review-item"><p className="review__comment">{comment.comment}</p></div>}
+
           {isAuthenticated && comment.authorID === currentUser.id ? <div><DeleteIcon onClick={handleDelete} /></div> : ""}
         </div>
       </Grid>

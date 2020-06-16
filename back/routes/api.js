@@ -75,6 +75,11 @@ router.put("/reviews/:id", reviewsController.update);
 router.delete("/reviews/:id", reviewsController.destroy);
 router.get("/reviews/agent/:agentID", reviewsController.reviewsByAgent);
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> correction pagination review
 // messages
 router.get("/messages", checkAuth, messagesController.index);
 router.post("/messages", checkAuth, messagesController.create);

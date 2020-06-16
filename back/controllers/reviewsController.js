@@ -89,6 +89,7 @@ const getAvgRatingsAgent = async(req, res) => {
     }
 };
 
+<<<<<<< HEAD
 const getAllCommentsReviewByAgent = async(req, res) => {
     const id = req.params.id;
     try {
@@ -108,6 +109,25 @@ const getAllCommentsReviewByAgent = async(req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({ msg: "Error Server" });
+=======
+const getAllCommentsReviewByAgent = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const comments = await Review.findAll({
+      // added status: "PUBLISHED"
+      where: { agentID: id, status: "PUBLISHED" },
+      attributes: ["id", "comment", "rating", "authorID", "status"],
+      include: [
+        {
+          model: User,
+          as: "author",
+          attributes: ["firstName", "lastName", "avatar"],
+        },
+      ],
+    });
+    if (!comments) {
+      return res.status(404).json({ msg: "Comments Not Found" });
+>>>>>>> correction pagination review
     }
 };
 
@@ -127,7 +147,9 @@ const reviewsByAgent = (req, res) => {
         .catch(e => res.status(500).send(e));
 
 }
+
 module.exports = {
+<<<<<<< HEAD
     index,
     create,
     findOne,
@@ -137,3 +159,18 @@ module.exports = {
     getAvgRatingsAgent,
     getAllCommentsReviewByAgent,
 };
+=======
+  index,
+  create,
+  findOne,
+  update,
+  destroy,
+  reviewsByAgent,
+  getAvgRatingsAgent,
+  getAllCommentsReviewByAgent
+};
+
+
+
+
+>>>>>>> correction pagination review
