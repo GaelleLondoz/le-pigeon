@@ -2,42 +2,53 @@ const { Booking } = require("../models");
 
 const index = (req, res) => {
   return Booking.findAll()
-    .then(bookings => res.status(200).send(bookings))
-    .catch(e => res.status(500).send(e));
+    .then((bookings) => res.status(200).send(bookings))
+    .catch((e) => res.status(500).send(e));
 };
 
 const create = (req, res) => {
+  const id = req.params.id;
   const newBooking = req.body.booking;
-  return Booking.create(newBooking)
-    .then(booking => res.status(200).send(booking))
-    .catch(e => res.status(500).send(e));
+  console.log(req.body.booking.date);
+  return Booking.create({
+    userID: req.user.id,
+    agentID: 1, // ID de l'agent doit figurer dans l'URL côté FRONT,
+    status: "Le test est concluant 01/06",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    //Viens de formulaire
+    date: req.body.booking.date,
+    type: req.body.booking.type,
+  })
+    .then((booking) => res.status(200).send(booking))
+    .catch((e) => res.status(500).send(e));
 };
 
 const findOne = (req, res) => {
-    const id = req.params.id;
-    return Booking.findByPk(id)
-    .then(booking => res.status(200).send(booking))
-    .catch(e => res.status(500).send(e));
-}
+  const id = req.params.id;
+  return Booking.findByPk(id)
+    .then((booking) => res.status(200).send(booking))
+    .catch((e) => res.status(500).send(e));
+};
 
 const update = (req, res) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    Booking.update(req.body, {
-        where: { id: id }
-    })
-    .then(booking => res.status(200).send(booking))
-    .catch(e => res.status(500).send(e));
-}
+  Booking.update(req.body, {
+    where: { id: id },
+  })
+    .then((booking) => res.status(200).send(booking))
+    .catch((e) => res.status(500).send(e));
+};
 
 const destroy = (req, res) => {
-    const id = req.params.id;
-  
-    Booking.destroy({
-      where: { id: id }
-    })
-    .then(Booking => res.status(200).send(Booking))
-    .catch(e => res.status(500).send(e));
+  const id = req.params.id;
+
+  Booking.destroy({
+    where: { id: id },
+  })
+    .then((Booking) => res.status(200).send(Booking))
+    .catch((e) => res.status(500).send(e));
 };
 
 module.exports = {
@@ -45,5 +56,5 @@ module.exports = {
   create,
   findOne,
   update,
-  destroy
+  destroy,
 };
