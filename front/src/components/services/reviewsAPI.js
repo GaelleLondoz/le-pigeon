@@ -39,6 +39,7 @@ function deleteReview(id) {
 }
 
 function getAvgRatings(id) {
+
     return axios
         .get(API_URL + `/reviews/avgratings/agent/${id}`)
         .then((response) => response.data);
@@ -49,11 +50,13 @@ function getCommentsByAgent(id) {
         .then((response) => response.data);
 }
 
+
 export default {
     getReviews,
     createReview,
     deleteReview,
     updateReview,
     getAvgRatings,
-    getCommentsByAgent
+    getCommentsByAgent,
+
 };

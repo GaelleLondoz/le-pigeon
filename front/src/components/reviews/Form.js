@@ -9,9 +9,9 @@ import 'moment/locale/fr'
 
 // material-ui 
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from '@material-ui/core/TextField';
 import { Rating } from '@material-ui/lab';
 import { Grid, Box, DialogActions, DialogContent, DialogTitle, Dialog, Button } from "@material-ui/core";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 const useStyles = makeStyles((theme) => ({
     form: {
         marginTop: theme.spacing(1),
@@ -87,7 +87,6 @@ const ReviewForm = (props) => {
         if (isAuthenticated) {
             try {
                 await ReviewsAPI.createReview({ review: review });
-                props.handleRefreshList()
                 props.onCreate(true)
                 setReview({
                     agentID: review.agentID,
@@ -117,7 +116,7 @@ const ReviewForm = (props) => {
             >
                 <DialogTitle id="form-dialog-title">Donner votre avis</DialogTitle>
                 <DialogContent>
-                    <form className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
+                    <ValidatorForm className={classes.form} noValidate autoComplete="off" onSubmit={handleSubmit}>
 
                         <Grid
                             container
@@ -126,11 +125,14 @@ const ReviewForm = (props) => {
                             alignItems="flex-start"
                         >
                             <Rating
+                                validators={["required"]}
+                                errorMessages={["Champ obligatoire*"]}
                                 name="rating"
                                 value={parseInt(review.rating)}
                                 onChange={handleUpdate}
                             />
-                            <TextField
+                            <TextValidator
+                                required
                                 variant="outlined"
                                 margin="normal"
                                 fullWidth
@@ -143,6 +145,8 @@ const ReviewForm = (props) => {
                                 multiline
                                 rows={4}
                                 autoFocus
+                                validators={["required"]}
+                                errorMessages={["Champ obligatoire*"]}
                             />
 
                             <Box alignSelf="flex-end">
@@ -157,7 +161,7 @@ const ReviewForm = (props) => {
                         </Button>
                             </Box>
                         </Grid>
-                    </form>
+                    </ValidatorForm>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Annuler</Button>

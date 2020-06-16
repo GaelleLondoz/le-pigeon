@@ -115,7 +115,7 @@ const App = () => {
               component={UserBooking}
             />
 
-            <Route exact path="/users/:id" component={Profile} />
+            {/* <Route exact path="/users/:id" component={Profile} /> */}
           </Switch>
         </main>
         {/*<Footer />*/}

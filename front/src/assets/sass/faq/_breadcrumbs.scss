@@ -14,26 +14,26 @@
     transition: 0.4s ease-in-out opacity;
   }
 
-  &.faqs-selected {
-    .breadcrumbs-featured {
-      color: #bcbcbc;
-      cursor: pointer;
-    }
+  .breadcrumbs-arrow {
+    color: #bcbcbc;
+    font-size: 1rem;
+    margin: 0 0.3rem;
+  }
 
+  .current-faqs {
+    font-weight: bold;
+  }
+
+  .breadcrumbs-featured {
+    color: #bcbcbc;
+    cursor: pointer;
+  }
+
+  &.faqs-selected {
     .breadcrumbs-featured,
     .breadcrumbs-arrow,
     .current-faqs {
       opacity: 1;
-    }
-
-    .breadcrumbs-arrow {
-      color: #bcbcbc;
-      font-size: 1rem;
-      margin: 0 0.3rem;
-    }
-
-    .current-faqs {
-      font-weight: bold;
     }
   }
 }
