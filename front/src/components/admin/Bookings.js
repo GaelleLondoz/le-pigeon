@@ -6,6 +6,9 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Title from "./Title";
 import Button from "@material-ui/core/Button";
 import bookingAPI from "../services/bookingAPI";
@@ -25,6 +28,9 @@ export default function Bookings() {
   const array = [];
   const [bookingsList, setBookingsList] = useState(array);
   const [load, setLoad] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [add, setAdd] = useState(false);
+  const [currentRow, setCurrentRow] = useState({});
 
   const initBookings = async () => {
     let data = [];
@@ -53,6 +59,21 @@ export default function Bookings() {
     setBookingsList(data);
   };
 
+  const alertBox = (event, row) => {
+    setOpen(true);
+    setCurrentRow(row);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setAdd(false);
+  };
+  const handleDelete = async () => {
+    await bookingAPI.deleteBooking(currentRow.id);
+    setLoad(true);
+    setOpen(false);
+  };
+
   useEffect(() => {
     if (load) {
       initBookings();
@@ -62,16 +83,35 @@ export default function Bookings() {
 
   return (
     <React.Fragment>
+      {open && (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to permanently delete booking for " +
+              currentRow.username +
+              " and " +
+              currentRow.agentname +
+              "?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleDelete} color="primary" autoFocus>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>
               <Title>Bookings</Title>
-            </TableCell>
-            <TableCell>
-              <Button variant="contained" color="primary" component="span">
-                Add
-              </Button>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -95,7 +135,12 @@ export default function Bookings() {
               <TableCell>{row.username}</TableCell>
               <TableCell>{row.agentname}</TableCell>
               <TableCell align="right">
-                <Button variant="contained" color="primary" component="span">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  onClick={(event) => alertBox(event, row)}
+                >
                   Delete
                 </Button>
               </TableCell>

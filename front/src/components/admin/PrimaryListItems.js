@@ -65,7 +65,7 @@ export default function PrimaryListItems(props) {
         <ListItemIcon>
           <PaymentIcon />
         </ListItemIcon>
-        <ListItemText primary="Paiements" />
+        <ListItemText primary="Payments" />
       </ListItem>
       <ListItem
         button
@@ -74,7 +74,7 @@ export default function PrimaryListItems(props) {
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Rapports" />
+        <ListItemText primary="Reporting" />
       </ListItem>
     </div>
   );

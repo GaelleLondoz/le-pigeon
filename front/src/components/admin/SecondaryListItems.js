@@ -8,18 +8,18 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 export default function SecondaryListItems(props) {
   return (
     <div>
-      <ListSubheader inset>Rapports consolidés</ListSubheader>
+      <ListSubheader inset>Consolidate Reports</ListSubheader>
       <ListItem button>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Mois" />
+        <ListItemText primary="Month" />
       </ListItem>
       <ListItem button>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Trimestre" />
+        <ListItemText primary="Trimester" />
       </ListItem>
       {/* <ListItem button>
       <ListItemIcon>
