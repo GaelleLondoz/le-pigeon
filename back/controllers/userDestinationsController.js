@@ -11,6 +11,50 @@ const { makeKey } = require("../helpers");
 
 const create = async (req, res) => {
   const id = req.user.id;
+  //Validation
+  const errors = [];
+  if (req.body.lat === "" || req.body.lng === "") {
+    errors.push({ target: "latlng", msg: "Veuillez renseigner une ville !" });
+  }
+  if (req.body.name === "") {
+    errors.push({
+      target: "name",
+      msg: "Veuillez renseigner un titre à votre destination !",
+    });
+  } else if (req.body.name.length < 10 || req.body.name > 30) {
+    errors.push({
+      target: "name",
+      msg:
+        "Le titre de votre destination doit contenir entre 10 et 30 caractères !",
+    });
+  }
+  if (req.body.date === "") {
+    errors.push({
+      target: "date",
+      msg: "Veuillez renseigner une date à votre destination !",
+    });
+  }
+  if (req.body.remarks === "") {
+    errors.push({
+      target: "remarks",
+      msg: "Veuillez renseigner une description de votre destination !",
+    });
+  } else if (req.body.remarks.length < 100) {
+    errors.push({
+      target: "remarks",
+      msg:
+        "La description de votre destination doit contenir au moins 50 caractères !",
+    });
+  }
+  if (req.body.coverImage === "") {
+    errors.push({
+      target: "coverImage",
+      msg: "Veuillez séléctionner une image principale de votre destination !",
+    });
+  }
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
   const file = req.body.coverImage.split(";base64,");
   const extension = file[0].replace("data:image/", "");
   const filename = makeKey(10);
