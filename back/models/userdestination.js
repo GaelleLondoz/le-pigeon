@@ -25,14 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         UserDestination.belongsTo(models.User, {
             foreignKey: "userID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         UserDestination.belongsTo(models.Destination, {
             foreignKey: "destinationID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
     };
     return UserDestination;

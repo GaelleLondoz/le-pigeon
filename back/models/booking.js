@@ -27,15 +27,11 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "userID",
             allowNull: false,
             as: "booker",
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         Booking.belongsTo(models.User, {
             foreignKey: "agentID",
             allowNull: false,
             as: "agent",
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         //Association with Location
         Booking.hasMany(models.BookingLocation);

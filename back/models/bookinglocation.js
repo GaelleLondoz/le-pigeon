@@ -17,14 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         BookingLocation.belongsTo(models.Booking, {
             foreignKey: "bookingID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         BookingLocation.belongsTo(models.Location, {
             foreignKey: "locationID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
     };
     return BookingLocation;

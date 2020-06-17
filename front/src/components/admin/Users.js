@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -6,9 +6,16 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Title from "./Title";
 import Button from "@material-ui/core/Button";
 import userAPI from "../services/userAPI";
+import AuthContext from "../../contexts/AuthContext";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -18,6 +25,23 @@ const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
   },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
 export default function Users() {
@@ -25,6 +49,18 @@ export default function Users() {
   const array = [];
   const [usersList, setUsersList] = useState(array);
   const [load, setLoad] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [add, setAdd] = useState(false);
+  const [currentRow, setCurrentRow] = useState({});
+  const { currentUser } = useContext(AuthContext);
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    userName: "",
+    email: "",
+    password: "",
+    avatar: "",
+  });
 
   const initUsers = async () => {
     let data = [];
@@ -43,13 +79,38 @@ export default function Users() {
     }
     setUsersList(data);
   };
-  const handleAdd = (event) => {
-    console.log({ EVENT: event });
+  const alertBox = (event, row) => {
+    setOpen(true);
+    setCurrentRow(row);
   };
-  const handleDelete = async (event, row) => {
-    console.log({ ROWINFO: row });
-    await userAPI.deleteUser(row.id);
+  const addDialog = (event) => {
+    setAdd(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setAdd(false);
+  };
+  const handleDelete = async () => {
+    await userAPI.deleteUser(currentRow.id);
     setLoad(true);
+    setOpen(false);
+  };
+
+  const handleUser = (event) => {
+    const value = event.currentTarget.value;
+    const name = event.currentTarget.name;
+    setUser({ ...user, [name]: value });
+  };
+
+  const handleSubscribe = async (event) => {
+    event.preventDefault();
+    try {
+      await userAPI.createUser({ user: user });
+    } catch (error) {
+      throw error.response;
+    }
+    setLoad(true);
+    setAdd(false);
   };
   useEffect(() => {
     if (load) {
@@ -59,6 +120,132 @@ export default function Users() {
   });
   return (
     <React.Fragment>
+      {open && (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to permanently delete user " +
+              currentRow.username +
+              "?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleDelete} color="primary" autoFocus>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+
+      {add && (
+        <Dialog
+          open={add}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+          scroll="body"
+        >
+          <DialogTitle id="form-dialog-title">Add new user</DialogTitle>
+          <DialogContent>
+            <ValidatorForm className={classes.form} onSubmit={handleSubscribe}>
+              <TextValidator
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="firstName"
+                label="First Name"
+                name="firstName"
+                autoComplete="firtName"
+                value={user.firstName}
+                onChange={handleUser}
+                validators={["required"]}
+                errorMessages={["Required field*"]}
+                autoFocus
+              />
+              <TextValidator
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="lastName"
+                value={user.lastName}
+                onChange={handleUser}
+                validators={["required"]}
+                errorMessages={["Required field*"]}
+                autoFocus
+              />
+              <TextValidator
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="userName"
+                label="User Name"
+                name="userName"
+                autoComplete="userName"
+                value={user.userName}
+                onChange={handleUser}
+                validators={["required"]}
+                errorMessages={["Required field*"]}
+                autoFocus
+              />
+              <TextValidator
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="email"
+                label="Email"
+                name="email"
+                autoComplete="email"
+                value={user.email}
+                onChange={handleUser}
+                validators={["required", "isEmail"]}
+                errorMessages={["Required field*", "No valid email"]}
+                autoFocus
+              />
+              <TextValidator
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                value={user.password}
+                onChange={handleUser}
+                validators={["required"]}
+                errorMessages={["Required field*"]}
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Submit
+              </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+            </ValidatorForm>
+          </DialogContent>
+        </Dialog>
+      )}
+
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -70,7 +257,7 @@ export default function Users() {
                 variant="contained"
                 color="primary"
                 component="span"
-                onClick={(event) => handleAdd(event)}
+                onClick={(event) => addDialog(event)}
               >
                 Add
               </Button>
@@ -99,14 +286,25 @@ export default function Users() {
               <TableCell>{row.email}</TableCell>
               <TableCell>{row.isAgent ? "Y" : "N"}</TableCell>
               <TableCell align="right">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component="span"
-                  onClick={(event) => handleDelete(event, row)}
-                >
-                  Delete
-                </Button>
+                {currentUser.id === row.id ? (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    component="span"
+                    disabled={true}
+                  >
+                    Connected
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    onClick={(event) => alertBox(event, row)}
+                  >
+                    Delete
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}

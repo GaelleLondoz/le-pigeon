@@ -74,16 +74,12 @@ module.exports = (sequelize, DataTypes) => {
             targetKey: "id",
             as: "agent",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         Review.belongsTo(models.User, {
             foreignKey: "authorID",
             targetKey: "id",
             as: "author",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
     };
     return Review;

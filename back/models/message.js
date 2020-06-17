@@ -28,15 +28,11 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "receiverID",
             as: "receiver",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         Message.belongsTo(models.User, {
             foreignKey: "senderID",
             as: "sender",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
     };
     return Message;

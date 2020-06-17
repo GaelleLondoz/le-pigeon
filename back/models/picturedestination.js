@@ -29,14 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         PictureDestination.belongsTo(models.User, {
             foreignKey: "userID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         PictureDestination.belongsTo(models.Destination, {
             foreignKey: "destinationID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
     };
     return PictureDestination;

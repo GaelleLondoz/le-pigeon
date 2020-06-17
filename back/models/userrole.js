@@ -25,14 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         UserRole.belongsTo(models.User, {
             foreignKey: "userID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         UserRole.belongsTo(models.Role, {
             foreignKey: "roleID",
             allowNull: false,
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
     };
     return UserRole;

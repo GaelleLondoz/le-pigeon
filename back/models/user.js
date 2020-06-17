@@ -37,19 +37,13 @@ module.exports = (sequelize, DataTypes) => {
         // associations can be defined here
         User.hasMany(models.Booking, {
             foreignKey: "id",
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         User.hasMany(models.Review, {
             foreignKey: "id",
             as: "reviews",
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         User.hasMany(models.Message, {
             foreignKey: "id",
-            onUpdate: "CASCADE",
-            onDelete: "CASCADE",
         });
         User.hasMany(models.UserDestination);
         User.hasMany(models.PictureDestination);
