@@ -24,6 +24,7 @@ export default function Roles() {
   const classes = useStyles();
   const array = [];
   const [rolesList, setRolesList] = useState(array);
+  const [load, setLoad] = useState(true);
 
   const initRoles = async () => {
     let data = [];
@@ -40,7 +41,10 @@ export default function Roles() {
   };
 
   useEffect(() => {
-    initRoles();
+    if (load) {
+      initRoles();
+      setLoad(false);
+    }
   });
   return (
     <React.Fragment>

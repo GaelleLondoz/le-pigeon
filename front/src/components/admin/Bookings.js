@@ -24,6 +24,7 @@ export default function Bookings() {
   const classes = useStyles();
   const array = [];
   const [bookingsList, setBookingsList] = useState(array);
+  const [load, setLoad] = useState(true);
 
   const initBookings = async () => {
     let data = [];
@@ -53,7 +54,10 @@ export default function Bookings() {
   };
 
   useEffect(() => {
-    initBookings();
+    if (load) {
+      initBookings();
+      setLoad(false);
+    }
   });
 
   return (

@@ -24,6 +24,7 @@ export default function Reviews() {
   const classes = useStyles();
   const array = [];
   const [ratingsList, setRatingsList] = useState(array);
+  const [load, setLoad] = useState(true);
 
   const initRatings = async () => {
     let data = [];
@@ -54,7 +55,10 @@ export default function Reviews() {
   };
 
   useEffect(() => {
-    initRatings();
+    if (load) {
+      initRatings();
+      setLoad(false);
+    }
   });
 
   return (

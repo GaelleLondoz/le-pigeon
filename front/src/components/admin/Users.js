@@ -24,6 +24,7 @@ export default function Users() {
   const classes = useStyles();
   const array = [];
   const [usersList, setUsersList] = useState(array);
+  const [load, setLoad] = useState(true);
 
   const initUsers = async () => {
     let data = [];
@@ -42,9 +43,19 @@ export default function Users() {
     }
     setUsersList(data);
   };
-
+  const handleAdd = (event) => {
+    console.log({ EVENT: event });
+  };
+  const handleDelete = async (event, row) => {
+    console.log({ ROWINFO: row });
+    await userAPI.deleteUser(row.id);
+    setLoad(true);
+  };
   useEffect(() => {
-    initUsers();
+    if (load) {
+      initUsers();
+      setLoad(false);
+    }
   });
   return (
     <React.Fragment>
@@ -55,7 +66,12 @@ export default function Users() {
               <Title>Users</Title>
             </TableCell>
             <TableCell>
-              <Button variant="contained" color="primary" component="span">
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                onClick={(event) => handleAdd(event)}
+              >
                 Add
               </Button>
             </TableCell>
@@ -83,7 +99,12 @@ export default function Users() {
               <TableCell>{row.email}</TableCell>
               <TableCell>{row.isAgent ? "Y" : "N"}</TableCell>
               <TableCell align="right">
-                <Button variant="contained" color="primary" component="span">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  onClick={(event) => handleDelete(event, row)}
+                >
                   Delete
                 </Button>
               </TableCell>
