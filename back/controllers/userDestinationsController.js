@@ -21,6 +21,12 @@ const create = async (req, res) => {
       target: "name",
       msg: "Veuillez renseigner un titre à votre destination !",
     });
+  } else if (req.body.name.length < 10 || req.body.name > 50) {
+    errors.push({
+      target: "name",
+      msg:
+        "Le titre de votre destination doit contenir entre 10 et 50 caractères !",
+    });
   }
   if (req.body.date === "") {
     errors.push({
@@ -32,6 +38,12 @@ const create = async (req, res) => {
     errors.push({
       target: "remarks",
       msg: "Veuillez renseigner une description de votre destination !",
+    });
+  } else if (req.body.remarks.length < 50) {
+    errors.push({
+      target: "remarks",
+      msg:
+        "La description de votre destination doit contenir au moins 50 caractères !",
     });
   }
   if (req.body.coverImage === "") {

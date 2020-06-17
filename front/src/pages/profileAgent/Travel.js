@@ -167,8 +167,6 @@ const Travel = () => {
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
-
-  console.log(errors);
   return (
     <section className="profile-agent-destinations">
       <Container>
