@@ -43,7 +43,6 @@ const create = async (req, res) => {
   if (errors.length > 0) {
     return res.status(400).json({ errors });
   }
-  return res.status(200).json({ msg: "Test validation ok" });
   const file = req.body.coverImage.split(";base64,");
   const extension = file[0].replace("data:image/", "");
   const filename = makeKey(10);
