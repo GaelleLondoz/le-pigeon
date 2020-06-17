@@ -21,11 +21,11 @@ const create = async (req, res) => {
       target: "name",
       msg: "Veuillez renseigner un titre à votre destination !",
     });
-  } else if (req.body.name.length < 10 || req.body.name > 50) {
+  } else if (req.body.name.length < 10 || req.body.name > 30) {
     errors.push({
       target: "name",
       msg:
-        "Le titre de votre destination doit contenir entre 10 et 50 caractères !",
+        "Le titre de votre destination doit contenir entre 10 et 30 caractères !",
     });
   }
   if (req.body.date === "") {
@@ -39,7 +39,7 @@ const create = async (req, res) => {
       target: "remarks",
       msg: "Veuillez renseigner une description de votre destination !",
     });
-  } else if (req.body.remarks.length < 50) {
+  } else if (req.body.remarks.length < 100) {
     errors.push({
       target: "remarks",
       msg:
