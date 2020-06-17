@@ -41,17 +41,13 @@ const findOne = (req, res) => {
 
 const update = (req, res) => {
     const id = req.params.id;
-    Review.update(req.body, {
-            where: { id: id }
-        })
-        .then(review => res.status(200).send(review))
-        .catch(e => res.status(500).send(e));
+    const statusData = {
+        status: req.params.status,
+    };
 
-    Review.update(req.body, {
-            where: { id: id },
-        })
-        .then((review) => res.status(200).send(review))
-        .catch((e) => res.status(500).send(e));
+    Review.update(statusData, {
+        where: { id: id },
+    }).then(review => res.status(200).send(review)).catch(e => res.status(500).send(e));
 };
 
 const destroy = (req, res) => {

@@ -6,9 +6,15 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import Title from "./Title";
 import Button from "@material-ui/core/Button";
 import reviewAPI from "../services/reviewAPI";
+import reviewsAPI from "../services/reviewsAPI";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -25,15 +31,15 @@ export default function Reviews() {
   const array = [];
   const [ratingsList, setRatingsList] = useState(array);
   const [load, setLoad] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [currentRow, setCurrentRow] = useState({});
 
   const initRatings = async () => {
     let data = [];
     const ratings = await reviewAPI.getRatings();
     const entries = ratings.entries();
     for (const [i, item] of entries) {
-      //Check if the booking is already existing within the list
       const result = data.find((row) => row.id == item.id);
-      //If booking do not exist then add it
       if (!result) {
         let row = {
           id: item.id,
@@ -54,6 +60,26 @@ export default function Reviews() {
     setRatingsList(data);
   };
 
+  const alertBox = (event, row) => {
+    setOpen(true);
+    setCurrentRow(row);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handlePublish = async () => {
+    console.log({ ROW: currentRow });
+    try {
+      await reviewAPI.updateReviewStatus(currentRow.id, "PUBLISHED");
+    } catch (error) {
+      throw error.response;
+    }
+
+    setLoad(true);
+    setOpen(false);
+  };
+
   useEffect(() => {
     if (load) {
       initRatings();
@@ -63,16 +89,33 @@ export default function Reviews() {
 
   return (
     <React.Fragment>
+      {open && (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to publish rewiew from " +
+              currentRow.authorname +
+              "?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handlePublish} color="primary" autoFocus>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>
               <Title>Reviews</Title>
-            </TableCell>
-            <TableCell>
-              <Button variant="contained" color="primary" component="span">
-                Add
-              </Button>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -98,9 +141,25 @@ export default function Reviews() {
               <TableCell>{row.authorname}</TableCell>
               <TableCell>{row.agentname}</TableCell>
               <TableCell align="right">
-                <Button variant="contained" color="primary" component="span">
-                  Publish
-                </Button>
+                {row.status === "PUBLISHED" ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    disabled={true}
+                  >
+                    Published
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    onClick={(event) => alertBox(event, row)}
+                  >
+                    Publish
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}

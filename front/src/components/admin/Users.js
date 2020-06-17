@@ -236,7 +236,7 @@ export default function Users() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={handleClose}
               >
                 Cancel
