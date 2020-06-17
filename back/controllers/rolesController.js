@@ -36,8 +36,8 @@ const destroy = (req, res) => {
     Role.destroy({
             where: { id: id },
         })
-        .then((Role) => res.status(200).send(Role))
-        .catch((e) => res.status(500).send(e));
+        .then((Role) => res.sendStatus(200).send(Role))
+        .catch((e) => res.sendStatus(500).send(e));
 };
 
 
