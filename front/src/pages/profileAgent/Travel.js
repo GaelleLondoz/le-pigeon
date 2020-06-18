@@ -51,6 +51,13 @@ const Travel = () => {
     date: "",
     pictures: [],
   });
+  const [errors, setErrors] = useState({
+    name: "",
+    coverImage: "",
+    remarks: "",
+    latlng: "",
+    date: "",
+  });
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -114,6 +121,7 @@ const Travel = () => {
     try {
       await UserDestinationsAPI.create(newDestination);
       setSendDestinationLoading(false);
+      setErrors({});
       setNewDestination({});
       setOpenForm(false);
       setShowFlash(true);
@@ -123,6 +131,14 @@ const Travel = () => {
       fetchDestinations(id);
     } catch (error) {
       setSendDestinationLoading(false);
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
       console.log(error.response);
     }
   };
@@ -193,19 +209,35 @@ const Travel = () => {
                     handlePlacesLatLngChange(suggestion)
                   }
                 />
+                {errors.latlng && (
+                  <p
+                    style={{
+                      marginLeft: "14px",
+                      marginRight: "14px",
+                      fontSize: "0.75rem",
+                      color: "#f44336",
+                      marginTop: "3px",
+                    }}
+                  >
+                    {errors.latlng}
+                  </p>
+                )}
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
+                  error={errors.name ? true : false}
                   value={newDestination.name}
                   onChange={handleNewDestinationChange}
                   name="name"
                   variant="outlined"
                   fullWidth
                   label="Donnez un titre à votre voyage"
+                  helperText={errors.name && errors.name}
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
+                  error={errors.date ? true : false}
                   value={newDestination.date}
                   onChange={handleNewDestinationChange}
                   name="date"
@@ -213,10 +245,12 @@ const Travel = () => {
                   fullWidth
                   //label="Date de votre destination"
                   type="date"
+                  helperText={errors.date && errors.date}
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
+                  error={errors.remarks ? true : false}
                   value={newDestination.remarks}
                   onChange={handleNewDestinationChange}
                   multiline
@@ -226,16 +260,19 @@ const Travel = () => {
                   variant="outlined"
                   label="Remarque"
                   type="textarea"
+                  helperText={errors.remarks && errors.remarks}
                 />
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField
                   //value={newDestination.coverImage}
+                  error={errors.coverImage ? true : false}
                   onChange={handleFileChange}
                   name="coverImage"
                   fullWidth
                   type="file"
                   variant="outlined"
+                  helperText={errors.coverImage && errors.coverImage}
                   //label="Image de couverture"
                 />
               </Grid>
