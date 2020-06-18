@@ -27,10 +27,17 @@ function getBookingsByUser(id) {
     .get(BOOKINGS_URL + "/user/" + id)
     .then((response) => response.data);
 }
+function deleteBooking(id) {
+  return axios
+    .delete(BOOKINGS_URL + `/${id}`)
+    .then((response) => response.data);
+}
+
 export default {
   getBookingsByAgent,
   acceptBooking,
   cancelBooking,
   getBookings,
   getBookingsByUser,
+  deleteBooking,
 };

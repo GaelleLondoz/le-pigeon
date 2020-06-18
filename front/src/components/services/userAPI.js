@@ -64,6 +64,10 @@ function editProfileUser(id, data) {
     .then((response) => response.data);
 }
 
+function deleteUser(id) {
+  return axios.delete(USERS_URL + `/${id}`).then((response) => response.data);
+}
+
 /**
  * Every times refresh page, verify if a token, if a token => set request header
  */
@@ -80,4 +84,5 @@ export default {
   getProfileUser,
   getInfoUser,
   editProfileUser,
+  deleteUser,
 };

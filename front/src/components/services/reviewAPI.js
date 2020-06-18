@@ -19,8 +19,14 @@ function getRatings() {
         .then((response) => response.data);
 }
 
+function updateReviewStatus(id, status) {
+    return axios
+        .put(REVIEWS_URL + "/" + id + "/" + status)
+        .then((response) => response.data);
+}
 export default {
     getAvgRatings,
     getCommentsByAgent,
     getRatings,
+    updateReviewStatus,
 };

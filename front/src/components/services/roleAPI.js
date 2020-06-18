@@ -28,9 +28,13 @@ async function updateRoleName(params) {
         });
 }
 
+function deleteRole(id) {
+    return axios.delete(ROLES_URL + `/${id}`).then((response) => response.data);
 
+}
 export default {
     getRoles,
     addRole,
     updateRoleName,
+    deleteRole
 };

@@ -164,7 +164,7 @@ const Login = ({ history }) => {
           aria-labelledby="form-dialog-title"
           scroll="body"
         >
-          ><DialogTitle id="form-dialog-title">Inscrivez-vous</DialogTitle>
+          <DialogTitle id="form-dialog-title">Inscrivez-vous</DialogTitle>
           <DialogContent>
             <ValidatorForm className={classes.form} onSubmit={handleSubscribe}>
               <TextValidator
