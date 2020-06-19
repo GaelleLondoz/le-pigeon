@@ -60,7 +60,7 @@ export default function PrimaryListItems(props) {
       </ListItem>
       <ListItem
         button
-        onClick={(event) => props.handleClick({ selection: "paiements" })}
+        onClick={(event) => props.handleClick({ selection: "payments" })}
       >
         <ListItemIcon>
           <PaymentIcon />
@@ -69,12 +69,12 @@ export default function PrimaryListItems(props) {
       </ListItem>
       <ListItem
         button
-        onClick={(event) => props.handleClick({ selection: "rapports" })}
+        onClick={(event) => props.handleClick({ selection: "reportings" })}
       >
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Reporting" />
+        <ListItemText primary="Reportings" />
       </ListItem>
     </div>
   );
