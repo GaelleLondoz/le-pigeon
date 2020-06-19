@@ -104,7 +104,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
               style={{ marginRight: "10px" }}
               onClick={handleCancelBookingClick}
             >
-              Annuler
+              Refuser
             </Button>
             <Button
               variant="contained"
