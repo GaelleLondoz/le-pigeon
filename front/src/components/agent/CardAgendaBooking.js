@@ -54,8 +54,22 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     }
   };
 
+  const handleUpdateBookingSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await BookingAPI.updateBookingDate(booking.id, { date: bookingDate });
+      onFetchBookings();
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   const handleUpdateBookingClick = () => {
     setShowFormUpdateBooking(!showFormUpdateBooking);
+  };
+
+  const handleDateChange = (e) => {
+    setBookingDate(e.target.value);
   };
   //console.log(booking);
   console.log(bookingDate);
@@ -141,7 +155,10 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
           </div>
         )}
       {showFormUpdateBooking && (
-        <form style={{ marginTop: "20px" }}>
+        <form
+          style={{ marginTop: "20px" }}
+          onSubmit={handleUpdateBookingSubmit}
+        >
           <Grid container>
             <Grid item xs={12}>
               <TextField
@@ -152,10 +169,11 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                onChange={handleDateChange}
               />
             </Grid>
             <Grid item xs={12} style={{ marginTop: "15px" }}>
-              <Button variant="contained" color="primary">
+              <Button variant="contained" color="primary" type="submit">
                 Confirmer la modification
               </Button>
             </Grid>
