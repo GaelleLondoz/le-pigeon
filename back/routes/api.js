@@ -25,6 +25,8 @@ router.get(
     checkAuth,
     usersController.getProfileAgent
 );
+router.put("/users/role/:id", checkAuth, usersController.setRoleAdminByUserID);
+router.get("/users/role/:id", checkAuth, usersController.getRoleByUserID);
 router.get("/users/me/roles", checkAuth, usersController.getRoleUser);
 router.put("/users/agent/:id", checkAuth, usersController.editProfileAgent);
 router.get("/users/:id/reviews", usersController.getReviews);

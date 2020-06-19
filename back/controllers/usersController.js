@@ -17,9 +17,16 @@ const index = (req, res) => {
 
 const create = (req, res) => {
     const newUser = req.body.user;
+    //const updatedAt = new Date(Date.now()).toDateString();
+    const updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
     newUser.password = getHash(newUser.password);
     return User.create(newUser)
-        .then((user) => res.status(200).send(user))
+        .then((user) => {
+            const result = db.sequelize.query(
+                "INSERT INTO userroles (userID,roleID,language,updatedAt) values (" + user.id + ",(select id from roles WHERE name='ROLE_USER'),'French'," + `'${updatedAt}'` + ")", { type: sequelize.QueryTypes.INSERT }
+            );
+            return res.status(200).send(user)
+        })
         .catch((e) => res.status(500).send(e));
 };
 
@@ -454,6 +461,42 @@ const editProfileUser = async(req, res) => {
         return res.status(500).json({ msg: "Error Server" });
     }
 };
+const getRoleByUserID = async(req, res) => {
+    const id = req.params.id;
+    try {
+        const role = await UserRole.findOne({
+            where: { userID: id },
+            include: [{
+                model: Role,
+                attributes: ["name"],
+            }, ],
+        });
+        if (!role) {
+            return res.status(404).json({ msg: "Role Not Found" });
+        }
+        return res.status(200).json(role);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ msg: "Error Server" });
+    }
+};
+
+const setRoleAdminByUserID = async(req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await db.sequelize.query(
+            "UPDATE userroles SET userroles.roleID = (select roles.id from roles where name like 'ROLE_ADMIN') WHERE userroles.userID=" + id, { type: sequelize.QueryTypes.UPDATE }
+        );
+        if (!result) {
+            return res.status(403).json({ msg: "Role Not Found" });
+        }
+        return res.status(200).json(result);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ msg: "Error Server" });
+    }
+};
+
 module.exports = {
     index,
     create,
@@ -472,4 +515,6 @@ module.exports = {
     getMessages,
     getProfileUser,
     editProfileUser,
+    getRoleByUserID,
+    setRoleAdminByUserID,
 };

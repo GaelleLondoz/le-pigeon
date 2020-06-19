@@ -166,7 +166,7 @@ export default function AdminDashboard() {
         setDashboard(false);
         setdashboardText("Reviews");
         break;
-      case "paiements":
+      case "payments":
         setPaiements(true);
         setUsers(false);
         setRoles(false);
@@ -174,9 +174,9 @@ export default function AdminDashboard() {
         setReviews(false);
         setRapports(false);
         setDashboard(false);
-        setdashboardText("Paiements");
+        setdashboardText("Payments");
         break;
-      case "rapports":
+      case "reportings":
         setRapports(true);
         setUsers(false);
         setRoles(false);
@@ -184,7 +184,7 @@ export default function AdminDashboard() {
         setReviews(false);
         setPaiements(false);
         setDashboard(false);
-        setdashboardText("Rapports");
+        setdashboardText("Reportings");
         break;
       case "dashboard":
         setDashboard(true);

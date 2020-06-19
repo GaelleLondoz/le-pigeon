@@ -51,6 +51,7 @@ export default function Users() {
   const [load, setLoad] = useState(true);
   const [open, setOpen] = useState(false);
   const [add, setAdd] = useState(false);
+  const [admin, setAdmin] = useState(false);
   const [currentRow, setCurrentRow] = useState({});
   const { currentUser } = useContext(AuthContext);
   const [user, setUser] = useState({
@@ -75,12 +76,24 @@ export default function Users() {
         email: item.email,
         isAgent: item.isAgent,
       };
+      try {
+        const { Role } = await userAPI.getRoleByUserID(row.id);
+        row.role = Role.name;
+      } catch (error) {
+        throw error.response;
+      }
       data.push(row);
     }
     setUsersList(data);
   };
-  const alertBox = (event, row) => {
-    setOpen(true);
+  const alertBox = (event, row, status) => {
+    switch (status) {
+      case "DELETE":
+        setOpen(true);
+        break;
+      case "ADMIN":
+        setAdmin(true);
+    }
     setCurrentRow(row);
   };
   const addDialog = (event) => {
@@ -89,6 +102,7 @@ export default function Users() {
   const handleClose = () => {
     setOpen(false);
     setAdd(false);
+    setAdmin(false);
   };
   const handleDelete = async () => {
     await userAPI.deleteUser(currentRow.id);
@@ -111,6 +125,16 @@ export default function Users() {
     }
     setLoad(true);
     setAdd(false);
+  };
+
+  const handleAdmin = async (event) => {
+    try {
+      await userAPI.setRoleAdminByUserID(currentRow.id);
+    } catch (error) {
+      throw error.response;
+    }
+    setLoad(true);
+    setAdmin(false);
   };
   useEffect(() => {
     if (load) {
@@ -142,7 +166,28 @@ export default function Users() {
           </DialogActions>
         </Dialog>
       )}
-
+      {admin && (
+        <Dialog
+          open={admin}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to permanently set " +
+              currentRow.username +
+              " as ADMINISTRATOR?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleAdmin} color="primary" autoFocus>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
       {add && (
         <Dialog
           open={add}
@@ -293,17 +338,36 @@ export default function Users() {
                     component="span"
                     disabled={true}
                   >
-                    Connected
+                    Connect
                   </Button>
-                ) : (
+                ) : row.role === "ROLE_ADMIN" ? (
                   <Button
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     component="span"
-                    onClick={(event) => alertBox(event, row)}
+                    disabled={true}
                   >
-                    Delete
+                    Admin
                   </Button>
+                ) : (
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component="span"
+                      onClick={(event) => alertBox(event, row, "DELETE")}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      component="span"
+                      onClick={(event) => alertBox(event, row, "ADMIN")}
+                    >
+                      Admin
+                    </Button>
+                  </div>
                 )}
               </TableCell>
             </TableRow>
