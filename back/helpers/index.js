@@ -19,7 +19,13 @@ const makeKey = (length) => {
   return result;
 };
 
+const validateEmail = (email) => {
+  const regex = /^[^@]+@[^@]+\.[^@]+$/;
+  return regex.test(email);
+};
+
 module.exports = {
   getHash,
   makeKey,
+  validateEmail,
 };
