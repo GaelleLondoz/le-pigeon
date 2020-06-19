@@ -15,6 +15,7 @@ import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import { changeStatusBookingToFrench } from "../../helpers/changeStatusToFrench";
 import BookingAPI from "../../components/services/bookingAPI";
 import AuthContext from "../../contexts/AuthContext";
+import LoaderButton from "../loaders/LoaderButton";
 
 const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
@@ -26,6 +27,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [errors, setErrors] = useState({
     date: "",
   });
+  const [loadingUpdateBooking, setLoadingUpdateBooking] = useState(false);
 
   const handleAcceptBookingClick = async () => {
     try {
@@ -59,8 +61,10 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
 
   const handleUpdateBookingSubmit = async (e) => {
     e.preventDefault();
+    setLoadingUpdateBooking(true);
     try {
       await BookingAPI.updateBookingDate(booking.id, { date: bookingDate });
+      setLoadingUpdateBooking(false);
       setErrors({});
       setShowFormUpdateBooking(false);
       setMessageFlash("La réservation a bien été modifiée");
@@ -70,6 +74,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         setShowFlash(false);
       }, 3000);
     } catch (error) {
+      setLoadingUpdateBooking(false);
       const { errors } = error.response.data;
       if (errors) {
         const apiErrors = {};
@@ -90,7 +95,6 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     setBookingDate(e.target.value);
   };
   //console.log(booking);
-  console.log(bookingDate);
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (
@@ -193,9 +197,13 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
               />
             </Grid>
             <Grid item xs={12} style={{ marginTop: "15px" }}>
-              <Button variant="contained" color="primary" type="submit">
+              {/* <Button variant="contained" color="primary" type="submit">
                 Confirmer la modification
-              </Button>
+              </Button> */}
+              <LoaderButton
+                loadingButton={loadingUpdateBooking}
+                text="Confirmer la modification"
+              />
             </Grid>
           </Grid>
         </form>
