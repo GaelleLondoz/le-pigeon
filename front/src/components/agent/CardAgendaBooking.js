@@ -115,6 +115,15 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
             </Button>
           </div>
         )}
+      {status === "ACCEPTED" &&
+        currentUser.isAgent &&
+        compareCurrentDate(booking.date) && (
+          <div className="profile-agent-agenda-actions">
+            <Button variant="contained" color="primary">
+              Modifier la réservation
+            </Button>
+          </div>
+        )}
       {!compareCurrentDate(booking.date) && (
         <div className="profile-agent-agenda-card-info">
           <InfoIcon />
