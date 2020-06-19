@@ -18,6 +18,7 @@ const EditAgentModal = ({
   onSubmit,
   sendEditAgentLoading,
   onHandleFileChange,
+  errors,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -46,6 +47,7 @@ const EditAgentModal = ({
         <DialogContent>
           <form>
             <TextField
+              error={errors.firstName ? true : false}
               autoFocus
               margin="dense"
               name="firstName"
@@ -54,8 +56,10 @@ const EditAgentModal = ({
               fullWidth
               value={agent.User.firstName}
               onChange={onChangeUser}
+              helperText={errors.firstName && errors.firstName}
             />
             <TextField
+              error={errors.lastName ? true : false}
               margin="dense"
               name="lastName"
               label="Nom"
@@ -63,6 +67,7 @@ const EditAgentModal = ({
               fullWidth
               value={agent.User.lastName}
               onChange={onChangeUser}
+              helperText={errors.lastName && errors.lastName}
             />
             <TextField
               margin="dense"
@@ -74,6 +79,7 @@ const EditAgentModal = ({
               onChange={onChangeUser}
             />
             <TextField
+              error={errors.email ? true : false}
               margin="dense"
               name="email"
               label="Adresse email"
@@ -81,8 +87,10 @@ const EditAgentModal = ({
               fullWidth
               value={agent.User.email}
               onChange={onChangeUser}
+              helperText={errors.email && errors.email}
             />
             <TextField
+              error={errors.language ? true : false}
               margin="dense"
               name="language"
               label="Votre langue"
@@ -90,8 +98,10 @@ const EditAgentModal = ({
               fullWidth
               value={agent.language}
               onChange={onChange}
+              helperText={errors.language && errors.language}
             />
             <TextField
+              error={errors.price ? true : false}
               margin="dense"
               name="price"
               label="Votre prix"
@@ -99,6 +109,7 @@ const EditAgentModal = ({
               fullWidth
               value={agent.price}
               onChange={onChange}
+              helperText={errors.price && errors.price}
             />
             <Grid container alignItems="center">
               <Grid item xs={11}>
