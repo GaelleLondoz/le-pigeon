@@ -1,12 +1,15 @@
 import React, { useState, useContext } from "react";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, TextField } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InfoIcon from "@material-ui/icons/Info";
 import Alert from "@material-ui/lab/Alert";
-import { formatDateWithHour } from "../../helpers/formatDate";
+import {
+  formatDateWithHour,
+  formatEnglishDateWithHour,
+} from "../../helpers/formatDate";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import { changeStatusBookingToFrench } from "../../helpers/changeStatusToFrench";
@@ -17,7 +20,9 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
   const [showFlash, setShowFlash] = useState(false);
   const [messageFlash, setMessageFlash] = useState("");
+  const [showFormUpdateBooking, setShowFormUpdateBooking] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const [bookingDate, setBookingDate] = useState(booking.date);
 
   const handleAcceptBookingClick = async () => {
     try {
@@ -48,7 +53,12 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
       console.log(error.response);
     }
   };
+
+  const handleUpdateBookingClick = () => {
+    setShowFormUpdateBooking(!showFormUpdateBooking);
+  };
   //console.log(booking);
+  console.log(bookingDate);
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (
@@ -119,11 +129,28 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         currentUser.isAgent &&
         compareCurrentDate(booking.date) && (
           <div className="profile-agent-agenda-actions">
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleUpdateBookingClick}
+            >
               Modifier la réservation
             </Button>
           </div>
         )}
+      {showFormUpdateBooking && (
+        <form style={{ marginTop: "20px" }}>
+          <TextField
+            type="datetime-local"
+            defaultValue={formatEnglishDateWithHour(bookingDate)}
+            variant="outlined"
+            name="date"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </form>
+      )}
       {!compareCurrentDate(booking.date) && (
         <div className="profile-agent-agenda-card-info">
           <InfoIcon />
