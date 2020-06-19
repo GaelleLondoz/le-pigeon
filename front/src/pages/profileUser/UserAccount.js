@@ -28,6 +28,11 @@ const UserAccount = ({ match }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
 
   const fetchUser = async (id) => {
     try {
@@ -45,6 +50,7 @@ const UserAccount = ({ match }) => {
     try {
       await UserAPI.editProfileUser(id, user);
       setLoading(false);
+      setErrors({});
       setShowFlash(true);
       fetchUser(id);
       setTimeout(() => {
@@ -52,6 +58,14 @@ const UserAccount = ({ match }) => {
       }, 3000);
     } catch (error) {
       setLoading(false);
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
       console.log(error.response);
     }
   };
@@ -118,6 +132,8 @@ const UserAccount = ({ match }) => {
           <div className="container-form">
             <form onSubmit={handleSubmit}>
               <TextField
+                error={errors.firstName ? true : false}
+                helperText={errors.firstName && errors.firstName}
                 variant="outlined"
                 name="firstName"
                 value={user.firstName}
@@ -125,6 +141,8 @@ const UserAccount = ({ match }) => {
                 fullWidth
               />
               <TextField
+                error={errors.lastName ? true : false}
+                helperText={errors.lastName && errors.lastName}
                 variant="outlined"
                 name="lastName"
                 value={user.lastName}
@@ -139,6 +157,8 @@ const UserAccount = ({ match }) => {
                 fullWidth
               />
               <TextField
+                error={errors.email ? true : false}
+                helperText={errors.email && errors.email}
                 variant="outlined"
                 name="email"
                 value={user.email}
