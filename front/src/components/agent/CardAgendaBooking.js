@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Typography, Button, TextField } from "@material-ui/core";
+import { Typography, Button, TextField, Grid } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -131,24 +131,35 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
           <div className="profile-agent-agenda-actions">
             <Button
               variant="contained"
-              color="primary"
+              color={showFormUpdateBooking ? "secondary" : "primary"}
               onClick={handleUpdateBookingClick}
             >
-              Modifier la réservation
+              {showFormUpdateBooking
+                ? "Fermer la modification"
+                : "Modifier la réservation"}
             </Button>
           </div>
         )}
       {showFormUpdateBooking && (
         <form style={{ marginTop: "20px" }}>
-          <TextField
-            type="datetime-local"
-            defaultValue={formatEnglishDateWithHour(bookingDate)}
-            variant="outlined"
-            name="date"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+          <Grid container>
+            <Grid item xs={12}>
+              <TextField
+                type="datetime-local"
+                defaultValue={formatEnglishDateWithHour(bookingDate)}
+                variant="outlined"
+                name="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "15px" }}>
+              <Button variant="contained" color="primary">
+                Confirmer la modification
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       )}
       {!compareCurrentDate(booking.date) && (
