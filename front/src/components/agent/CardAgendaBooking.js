@@ -62,7 +62,13 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     try {
       await BookingAPI.updateBookingDate(booking.id, { date: bookingDate });
       setErrors({});
+      setShowFormUpdateBooking(false);
+      setMessageFlash("La réservation a bien été modifiée");
+      setShowFlash(true);
       onFetchBookings();
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3000);
     } catch (error) {
       const { errors } = error.response.data;
       if (errors) {
