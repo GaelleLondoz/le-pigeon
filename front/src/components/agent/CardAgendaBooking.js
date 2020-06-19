@@ -23,6 +23,9 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [showFormUpdateBooking, setShowFormUpdateBooking] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [bookingDate, setBookingDate] = useState(booking.date);
+  const [errors, setErrors] = useState({
+    date: "",
+  });
 
   const handleAcceptBookingClick = async () => {
     try {
@@ -58,8 +61,17 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     e.preventDefault();
     try {
       await BookingAPI.updateBookingDate(booking.id, { date: bookingDate });
+      setErrors({});
       onFetchBookings();
     } catch (error) {
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
       console.log(error.response);
     }
   };
@@ -170,6 +182,8 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
                   shrink: true,
                 }}
                 onChange={handleDateChange}
+                error={errors.date ? true : false}
+                helperText={errors.date && errors.date}
               />
             </Grid>
             <Grid item xs={12} style={{ marginTop: "15px" }}>

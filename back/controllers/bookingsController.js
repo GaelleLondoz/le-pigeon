@@ -1,6 +1,7 @@
 const { Booking, BookingLocation, Location, User } = require("../models");
 const sequelize = require("sequelize");
 const db = require("../models/index");
+const { compareCurrentDate } = require("../helpers");
 
 const index = async (req, res) => {
   /*     return Booking.findAll()
@@ -184,8 +185,21 @@ const updateDateBooking = async (req, res) => {
   const id = req.params.id;
   const { date } = req.body;
   const currentUser = req.user;
+
   if (!currentUser.isAgent) {
     return res.status(403).json({ msg: "Access Denied" });
+  }
+
+  //Validation
+  const errors = [];
+
+  if (!compareCurrentDate(date)) {
+    errors.push({
+      target: "date",
+      msg:
+        "La date de réservation doit être supérieure à la date d'aujourd'hui !",
+    });
+    return res.status(400).json({ errors });
   }
 
   try {

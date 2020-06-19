@@ -24,8 +24,14 @@ const validateEmail = (email) => {
   return regex.test(email);
 };
 
+const compareCurrentDate = (date) => {
+  const DATE = Date.now();
+  return new Date(date).getTime() > new Date(DATE).getTime();
+};
+
 module.exports = {
   getHash,
   makeKey,
   validateEmail,
+  compareCurrentDate,
 };
