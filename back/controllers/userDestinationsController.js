@@ -43,7 +43,7 @@ const create = async (req, res) => {
     errors.push({
       target: "remarks",
       msg:
-        "La description de votre destination doit contenir au moins 50 caractères !",
+        "La description de votre destination doit contenir au moins 100 caractères !",
     });
   }
   if (req.body.coverImage === "") {

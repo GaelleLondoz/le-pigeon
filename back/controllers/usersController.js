@@ -504,10 +504,55 @@ const editProfileUser = async (req, res) => {
     return res.status(403).json({ msg: "Access Denied" });
   }
 
+  const emailExist = await User.findOne({
+    where: { email },
+  });
+
   const currentUser = await User.findOne({
     where: { id },
     raw: true,
   });
+
+  const errors = [];
+
+  if (firstName === "") {
+    errors.push({
+      target: "firstName",
+      msg: "Veuillez renseigner votre prénom !",
+    });
+  } else if (firstName.length < 2 || firstName.length > 30) {
+    errors.push({
+      target: "firstName",
+      msg: "Votre prénom doit contenir entre 2 et 30 caractères !",
+    });
+  }
+
+  if (lastName === "") {
+    errors.push({ target: "lastName", msg: "Veuillez renseigner votre nom !" });
+  } else if (lastName.length < 2 || lastName.length > 30) {
+    errors.push({
+      target: "lastName",
+      msg: "Votre nom doit contenir entre 2 et 30 caractères !",
+    });
+  }
+
+  if (email === "") {
+    errors.push({
+      target: "email",
+      msg: "Veuillez renseigner votre adresse email !",
+    });
+  } else if (!validateEmail(email)) {
+    errors.push({
+      target: "email",
+      msg: "Votre renseigner une adresse email valide !",
+    });
+  } else if (emailExist && emailExist.email !== currentUser.email) {
+    errors.push({ target: "email", msg: "Cette adresse email existe déjà !" });
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
 
   // Verify if user change avatar or not
   // Todo => if user change avatar, delete old avatar in folder avatar
