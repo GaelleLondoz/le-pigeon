@@ -32,6 +32,7 @@ export default function Reviews() {
   const [ratingsList, setRatingsList] = useState(array);
   const [load, setLoad] = useState(true);
   const [open, setOpen] = useState(false);
+  const [cancel, setCancel] = useState(false);
   const [currentRow, setCurrentRow] = useState({});
 
   const initRatings = async () => {
@@ -60,24 +61,38 @@ export default function Reviews() {
     setRatingsList(data);
   };
 
-  const alertBox = (event, row) => {
-    setOpen(true);
+  const alertBox = (event, row, status) => {
+    switch (status) {
+      case "PUBLISH":
+        setOpen(true);
+        break;
+      case "UNPUBLISH":
+        setCancel(true);
+    }
     setCurrentRow(row);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setCancel(false);
   };
   const handlePublish = async () => {
-    console.log({ ROW: currentRow });
     try {
       await reviewAPI.updateReviewStatus(currentRow.id, "PUBLISHED");
     } catch (error) {
       throw error.response;
     }
-
     setLoad(true);
     setOpen(false);
+  };
+  const handleCancel = async () => {
+    try {
+      await reviewAPI.updateReviewStatus(currentRow.id, "PENDING");
+    } catch (error) {
+      throw error.response;
+    }
+    setLoad(true);
+    setCancel(false);
   };
 
   useEffect(() => {
@@ -106,6 +121,28 @@ export default function Reviews() {
               Cancel
             </Button>
             <Button onClick={handlePublish} color="primary" autoFocus>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+      {cancel && (
+        <Dialog
+          open={cancel}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Do you want to unpublish rewiew from " +
+              currentRow.authorname +
+              "?"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleCancel} color="primary" autoFocus>
               Ok
             </Button>
           </DialogActions>
@@ -146,16 +183,16 @@ export default function Reviews() {
                     variant="contained"
                     color="primary"
                     component="span"
-                    disabled={true}
+                    onClick={(event) => alertBox(event, row, "UNPUBLISH")}
                   >
-                    Published
+                    Cancel
                   </Button>
                 ) : (
                   <Button
                     variant="contained"
                     color="primary"
                     component="span"
-                    onClick={(event) => alertBox(event, row)}
+                    onClick={(event) => alertBox(event, row, "PUBLISH")}
                   >
                     Publish
                   </Button>

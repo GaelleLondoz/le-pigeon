@@ -68,6 +68,14 @@ function deleteUser(id) {
   return axios.delete(USERS_URL + `/${id}`).then((response) => response.data);
 }
 
+function getRoleByUserID(id) {
+  return axios.get(USERS_URL + "/role/" + id).then((response) => response.data);
+}
+
+function setRoleAdminByUserID(id) {
+  return axios.put(USERS_URL + "/role/" + id).then((response) => response.data);
+}
+
 /**
  * Every times refresh page, verify if a token, if a token => set request header
  */
@@ -85,4 +93,6 @@ export default {
   getInfoUser,
   editProfileUser,
   deleteUser,
+  getRoleByUserID,
+  setRoleAdminByUserID,
 };
