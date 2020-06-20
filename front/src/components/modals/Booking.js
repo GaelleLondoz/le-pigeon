@@ -124,6 +124,18 @@ export default function FormDialog() {
                 format="dd-MM-yyyy hh:mm"
               />
             </MuiPickersUtilsProvider>
+            <TextField
+              id="standard-full-width"
+              label="Message"
+              style={{ margin: 8 }}
+              placeholder="Dites nous tout"
+              helperText=""
+              fullWidth
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
 
             <DialogContentText>
               Que préférez-vous comme rendez-vous?
