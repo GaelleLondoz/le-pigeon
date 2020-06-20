@@ -8,7 +8,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import Alert from "@material-ui/lab/Alert";
 import {
   formatDateWithHour,
-  formatEnglishDateWithHour,
+  formatDateWithHourToEnglish,
 } from "../../helpers/formatDate";
 import {
   compareCurrentDate,
@@ -110,7 +110,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         <EventIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
           Réservation prévu le{" "}
-          <strong>{formatDateWithHour(booking.date)}</strong>
+          <strong>{formatDateWithHour(bookingDate)}</strong>
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
@@ -189,7 +189,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
             <Grid item xs={12}>
               <TextField
                 type="datetime-local"
-                defaultValue={formatEnglishDateWithHour(bookingDate)}
+                defaultValue={formatDateWithHourToEnglish(bookingDate)}
                 variant="outlined"
                 name="date"
                 InputLabelProps={{
