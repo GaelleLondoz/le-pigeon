@@ -5,12 +5,14 @@ import Plan from "./homepage/Plan";
 import AgentAvatar from "./homepage/AgentAvatar";
 import Articles from "./homepage/Articles";
 import Booking from "../components/modals/Booking";
+import Community from "../components/modals/Community";
 
 const Home = () => {
   return (
     <div>
       <Header />
       <Booking />
+      <Community />
 
       <Plan />
       <AgentAvatar />
