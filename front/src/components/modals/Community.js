@@ -108,11 +108,31 @@ export default function FormDialog() {
           onClose={handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Prenez Rendez-Vous</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            Rejoignez notre superbe communauté
+          </DialogTitle>
 
           <DialogContent>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DateTimePicker
+              <TextField
+                id="outlined-basic"
+                label="Nom"
+                variant="outlined"
+                mx="auto"
+              />
+              <TextField
+                id="outlined-basic"
+                label="Prénom"
+                variant="outlined"
+              />
+              <TextField id="outlined-basic" label="Email" variant="outlined" />
+              <TextField
+                id="outlined-basic"
+                label="Pays Visités"
+                variant="outlined"
+              />
+
+              {/* <DateTimePicker
                 label="DateTimePicker"
                 inputVariant="outlined"
                 name="date"
@@ -122,20 +142,8 @@ export default function FormDialog() {
                 disablePast
                 onChange={handledDateChange}
                 format="dd-MM-yyyy hh:mm"
-              />
+              /> */}
             </MuiPickersUtilsProvider>
-            <TextField
-              id="standard-full-width"
-              label="Message"
-              style={{ margin: 8 }}
-              placeholder="Dites nous tout"
-              helperText=""
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
 
             <DialogContentText>
               Que préférez-vous comme rendez-vous?
@@ -161,6 +169,11 @@ export default function FormDialog() {
                   control={<Radio />}
                   label="Par Vidéo Conf"
                 />
+                <FormControlLabel
+                  value="Par Vidéo Conf"
+                  control={<Radio />}
+                  label="Travailler chez Le Pigeon"
+                />
               </RadioGroup>
 
               {showFlash && (
@@ -178,7 +191,7 @@ export default function FormDialog() {
                 variant="outlined"
                 onClick={handleSubmit}
               >
-                Book now !
+                Envoyer !
               </Button>
             </FormControl>
           </DialogActions>
