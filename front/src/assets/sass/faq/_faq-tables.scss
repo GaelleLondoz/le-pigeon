@@ -1,0 +1,65 @@
+.faqs__tables {
+  & > div {
+    margin: 2rem 0;
+    box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.07);
+    & > div {
+      box-shadow: none;
+    }
+  }
+
+  main.makeStyles-content-171 {
+    background-color: #fcfcfc;
+  }
+
+  .MTableToolbar-root-401,
+  .Component-paginationToolbar-398,
+  .MTableToolbar-actions-404 .MuiIconButton-root,
+  .MTablePaginationInner-root-465,
+  .MTablePaginationInner-root-465 span,
+  .MuiSelect-icon {
+    color: #fff;
+  }
+
+  .MTableToolbar-root-401 {
+    padding-right: 8px;
+    table-layout: auto;
+    display: flex;
+    border-radius: 5px 5px 0 0;
+    background-color: #009fb7;
+    width: 100%;
+    text-align: left;
+    break-inside: avoid-column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .MTableToolbar-actions-404 .MuiIconButton-root {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .MuiIconButton-root:hover {
+    background-color: #00a0b7 !important;
+    color: white;
+  }
+
+  .Component-paginationToolbar-398 {
+    border-radius: 0 0 5px 5px;
+    background-color: #009fb7;
+    width: 100%;
+  }
+
+  .MuiTableRow-head > th {
+    background: #f6f6f6;
+    border-bottom: none;
+  }
+
+  table > thead > tr > th.MuiTableCell-head:nth-child(1),
+  table > thead > tr > th.MuiTableCell-head:nth-child(4) {
+    width: 12% !important;
+  }
+
+  table > tbody > tr > td:nth-child(1) > div {
+    justify-content: center;
+  }
+}
