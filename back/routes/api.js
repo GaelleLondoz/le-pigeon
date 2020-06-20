@@ -21,9 +21,9 @@ router.get("/users/agent/:id/public", usersController.getPublicProfileAgent);
 router.put("/users/:id", checkAuth, usersController.update);
 router.delete("/users/:id", checkAuth, usersController.destroy);
 router.get(
-    "/users/profile/agent/:id",
-    checkAuth,
-    usersController.getProfileAgent
+  "/users/profile/agent/:id",
+  checkAuth,
+  usersController.getProfileAgent
 );
 router.put("/users/role/:id", checkAuth, usersController.setRoleAdminByUserID);
 router.get("/users/role/:id", checkAuth, usersController.getRoleByUserID);
@@ -32,9 +32,9 @@ router.put("/users/agent/:id", checkAuth, usersController.editProfileAgent);
 router.get("/users/:id/reviews", usersController.getReviews);
 router.get("/users/:id/messages", usersController.getMessages);
 router.get(
-    "/users/profile/user/:id",
-    checkAuth,
-    usersController.getProfileUser
+  "/users/profile/user/:id",
+  checkAuth,
+  usersController.getProfileUser
 );
 router.put("/users/user/:id", checkAuth, usersController.editProfileUser);
 // login auth
@@ -51,14 +51,19 @@ router.put("/bookings/:id/cancel", checkAuth, bookingsController.cancelBooking);
 router.put("/bookings/:id", checkAuth, bookingsController.update);
 router.delete("/bookings/:id", checkAuth, bookingsController.destroy);
 router.get(
-    "/bookings/agent/:id",
-    checkAuth,
-    bookingsController.getBookingsByAgent
+  "/bookings/agent/:id",
+  checkAuth,
+  bookingsController.getBookingsByAgent
 );
 router.get(
-    "/bookings/user/:id",
-    checkAuth,
-    bookingsController.getBookingsByUser
+  "/bookings/user/:id",
+  checkAuth,
+  bookingsController.getBookingsByUser
+);
+router.put(
+  "/bookings/:id/update",
+  checkAuth,
+  bookingsController.updateDateBooking
 );
 
 // reviews
@@ -66,12 +71,12 @@ router.get("/reviews", reviewsController.index);
 router.post("/reviews", reviewsController.create);
 router.get("/reviews/:id", reviewsController.findOne);
 router.get(
-    "/reviews/avgratings/agent/:id",
-    reviewsController.getAvgRatingsAgent
+  "/reviews/avgratings/agent/:id",
+  reviewsController.getAvgRatingsAgent
 );
 router.get(
-    "/reviews/comments/agent/:id",
-    reviewsController.getAllCommentsReviewByAgent
+  "/reviews/comments/agent/:id",
+  reviewsController.getAllCommentsReviewByAgent
 );
 router.put("/reviews/:id/:status", reviewsController.update);
 router.delete("/reviews/:id", reviewsController.destroy);
@@ -85,29 +90,29 @@ router.get("/messages/:receiverID", checkAuth, messagesController.findMessages);
 router.put("/messages/:id/:status", checkAuth, messagesController.update);
 router.delete("/messages/:id", checkAuth, messagesController.destroy);
 router.get(
-    "/messages/users/:id",
-    checkAuth,
-    messagesController.getAllMessagesByUser
+  "/messages/users/:id",
+  checkAuth,
+  messagesController.getAllMessagesByUser
 );
 router.put(
-    "/messages/:id/changestatus/:status",
-    checkAuth,
-    messagesController.changeStatusMessage
+  "/messages/:id/changestatus/:status",
+  checkAuth,
+  messagesController.changeStatusMessage
 );
 router.post("/messages/:id", checkAuth, messagesController.newMessage);
 
 // destinations
 router.get(
-    "/destinations/users/:id",
-    userDestinationsController.getAllDestinationsByUser
+  "/destinations/users/:id",
+  userDestinationsController.getAllDestinationsByUser
 );
 router.get(
-    "/destinations/users/:id/destination/:destinationId/pictures",
-    userDestinationsController.getPicturesDestinationByDestination
+  "/destinations/users/:id/destination/:destinationId/pictures",
+  userDestinationsController.getPicturesDestinationByDestination
 );
 router.get(
-    "/users/:id/destination/:destinationId",
-    userDestinationsController.getDestinationByUser
+  "/users/:id/destination/:destinationId",
+  userDestinationsController.getDestinationByUser
 );
 // router.get(
 //   "/destinations/continents",
