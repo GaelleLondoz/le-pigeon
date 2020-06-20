@@ -13,12 +13,13 @@ const create = (req, res) => {
   return Booking.create({
     userID: req.user.id,
     agentID: 1, // ID de l'agent doit figurer dans l'URL côté FRONT,
-    status: "Le test est concluant 01/06",
+    status: "Le test est concluant",
+    message: "req.body.message",
     createdAt: Date.now(),
     updatedAt: Date.now(),
     //Viens de formulaire
     date: req.body.booking.date,
-    type: req.body.booking.type,
+    type: "Face à Face au Pigeon",
   })
     .then((booking) => res.status(200).send(booking))
     .catch((e) => res.status(500).send(e));
