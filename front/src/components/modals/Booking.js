@@ -166,7 +166,7 @@ export default function FormDialog() {
                 variant="outlined"
                 onClick={handleSubmit}
               >
-                Envoyer
+                Book now !
               </Button>
             </FormControl>
           </DialogActions>
