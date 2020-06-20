@@ -4,3 +4,9 @@ export const compareCurrentDate = (date) => {
   // return false;
   return new Date(date).getTime() > new Date(DATE).getTime();
 };
+
+export const compareDateForUpdateBooking = (date) => {
+  const TODAY = new Date();
+  TODAY.setDate(TODAY.getDate() + 1);
+  return new Date(date).getTime() > TODAY.getTime();
+};

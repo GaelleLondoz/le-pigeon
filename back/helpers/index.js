@@ -29,9 +29,16 @@ const compareCurrentDate = (date) => {
   return new Date(date).getTime() > new Date(DATE).getTime();
 };
 
+const compareDateForUpdateBooking = (date) => {
+  const TODAY = new Date();
+  TODAY.setDate(TODAY.getDate() + 1);
+  return new Date(date).getTime() > TODAY.getTime();
+};
+
 module.exports = {
   getHash,
   makeKey,
   validateEmail,
   compareCurrentDate,
+  compareDateForUpdateBooking,
 };

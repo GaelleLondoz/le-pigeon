@@ -10,7 +10,10 @@ import {
   formatDateWithHour,
   formatEnglishDateWithHour,
 } from "../../helpers/formatDate";
-import { compareCurrentDate } from "../../helpers/compareCurrentDate";
+import {
+  compareCurrentDate,
+  compareDateForUpdateBooking,
+} from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import { changeStatusBookingToFrench } from "../../helpers/changeStatusToFrench";
 import BookingAPI from "../../components/services/bookingAPI";
@@ -95,6 +98,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     setBookingDate(e.target.value);
   };
   //console.log(booking);
+  console.log(bookingDate);
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (
@@ -163,7 +167,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         )}
       {status === "ACCEPTED" &&
         currentUser.isAgent &&
-        compareCurrentDate(booking.date) && (
+        compareDateForUpdateBooking(booking.date) && (
           <div className="profile-agent-agenda-actions">
             <Button
               variant="contained"

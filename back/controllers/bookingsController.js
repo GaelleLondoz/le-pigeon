@@ -1,7 +1,10 @@
 const { Booking, BookingLocation, Location, User } = require("../models");
 const sequelize = require("sequelize");
 const db = require("../models/index");
-const { compareCurrentDate } = require("../helpers");
+const {
+  compareCurrentDate,
+  compareDateForUpdateBooking,
+} = require("../helpers");
 
 const index = async (req, res) => {
   /*     return Booking.findAll()
@@ -193,11 +196,11 @@ const updateDateBooking = async (req, res) => {
   //Validation
   const errors = [];
 
-  if (!compareCurrentDate(date)) {
+  if (!compareDateForUpdateBooking(date)) {
     errors.push({
       target: "date",
       msg:
-        "La date de réservation doit être supérieure à la date d'aujourd'hui !",
+        "La date de réservation doit être supérieure à la date d'aujourd'hui plus un jour !",
     });
     return res.status(400).json({ errors });
   }
