@@ -96,7 +96,9 @@ export default function FaqMaterialTable(props) {
             <MaterialTable
                 localization={{
                     body: {
-                        editRow: { deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?' },
+                        editRow: {
+                            deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?', cancelTooltip: "Annuler", saveTooltip: "Enregistrer"
+                        },
                         deleteTooltip: "Supprimer",
                         editTooltip: "Éditer",
                         addTooltip: "Ajouter",
@@ -104,6 +106,7 @@ export default function FaqMaterialTable(props) {
                     },
                     toolbar: {
                         searchPlaceholder: "Rechercher",
+                        searchTooltip: "Rechercher"
                     },
                     pagination: {
                         labelRowsSelect: "lignes",
