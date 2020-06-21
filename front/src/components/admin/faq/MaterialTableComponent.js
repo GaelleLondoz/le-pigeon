@@ -99,7 +99,8 @@ export default function FaqMaterialTable(props) {
                         editRow: { deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?' },
                         deleteTooltip: "Supprimer",
                         editTooltip: "Éditer",
-                        addTooltip: "Ajouter"
+                        addTooltip: "Ajouter",
+                        emptyDataSourceMessage: "Aucun résultat à afficher"
                     },
                     toolbar: {
                         searchPlaceholder: "Rechercher",
