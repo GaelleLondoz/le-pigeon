@@ -97,7 +97,9 @@ export default function FaqMaterialTable(props) {
                 localization={{
                     body: {
                         editRow: {
-                            deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?', cancelTooltip: "Annuler", saveTooltip: "Enregistrer"
+                            deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?',
+                            cancelTooltip: "Annuler",
+                            saveTooltip: "Enregistrer"
                         },
                         deleteTooltip: "Supprimer",
                         editTooltip: "Éditer",
