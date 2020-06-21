@@ -46,9 +46,16 @@
   & > div:nth-child(1) > div > .MuiToolbar-regular .MuiIconButton-root,
   .MuiToolbar-regular .MuiIconButton-label,
   .MuiIconButton-root:hover,
+  .MuiInputBase-input,
+  .MuiInputAdornment-positionStart,
   .MuiToolbar-root .MuiSelect-select,
   .MuiToolbar-root .MuiSelect-icon {
     color: white;
+  }
+  .MuiInput-underline:before,
+  .MuiInput-underline:after,
+  .MuiInput-underline:hover:not(.Mui-disabled):before {
+    border-bottom-color: #fff;
   }
 
   table > tbody > tr > td:nth-child(2) .MuiInputBase-root,

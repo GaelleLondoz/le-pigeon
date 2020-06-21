@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import faqsAPI from "../../services/faqsAPI";
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -94,14 +94,36 @@ export default function FaqMaterialTable(props) {
     return (
         <>
             <MaterialTable
-                localization={{ body: { editRow: { deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?' } } }}
+                localization={{
+                    body: {
+                        editRow: { deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?' },
+                        deleteTooltip: "Supprimer",
+                        editTooltip: "Éditer",
+                        addTooltip: "Ajouter"
+                    },
+                    toolbar: {
+                        searchPlaceholder: "Rechercher",
+                    },
+                    pagination: {
+                        labelRowsSelect: "colonnes",
+                        firstAriaLabel: "Première page",
+                        firstTooltip: "Première page",
+                        lastAriaLabel: "Dernière page",
+                        lastTooltip: "Dernière page",
+                        previousAriaLabel: "Page précédente",
+                        previousTooltip: "Page précédente",
+                        nextAriaLabel: "Page suivante",
+                        nextTooltip: "Page suivante"
+                    }
+                }}
                 defaultSort={'asc'}
                 style={{ width: '100%' }}
                 icons={tableIcons}
-                options={{ search: false, addRowPosition: 'first' }}
+                options={{ addRowPosition: 'first' }}
                 title={props.title}
                 columns={tableColumns.columns}
                 data={props.faqList}
+
                 editable={{
                     onRowAdd: async (faq) => {
                         try {
