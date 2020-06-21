@@ -25,7 +25,13 @@
     justify-content: center;
   }
 
-  & > div:nth-child(1) > div > .MuiToolbar-regular:nth-child(1) {
+  .MuiToolbar-regular {
+    border-radius: 0 0 5px 5px;
+    background-color: #009fb7;
+    width: 100%;
+  }
+
+  & > div:nth-child(1) > .MuiToolbar-regular:nth-child(1) {
     padding-right: 8px;
     table-layout: auto;
     display: flex;
@@ -34,12 +40,6 @@
     break-inside: avoid-column;
     position: relative;
     overflow: hidden;
-  }
-
-  .MuiToolbar-regular {
-    border-radius: 0 0 5px 5px;
-    background-color: #009fb7;
-    width: 100%;
   }
 
   .MuiToolbar-root .MuiTypography-root,
