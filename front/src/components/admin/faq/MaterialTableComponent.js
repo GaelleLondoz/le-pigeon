@@ -119,7 +119,8 @@ export default function FaqMaterialTable(props) {
                         previousAriaLabel: "Page précédente",
                         previousTooltip: "Page précédente",
                         nextAriaLabel: "Page suivante",
-                        nextTooltip: "Page suivante"
+                        nextTooltip: "Page suivante",
+                        labelDisplayedRows: "{from}-{to} sur {count}"
                     }
                 }}
                 defaultSort={'asc'}
