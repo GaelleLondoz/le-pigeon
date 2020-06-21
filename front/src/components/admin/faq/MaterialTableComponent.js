@@ -105,7 +105,7 @@ export default function FaqMaterialTable(props) {
                         searchPlaceholder: "Rechercher",
                     },
                     pagination: {
-                        labelRowsSelect: "colonnes",
+                        labelRowsSelect: "lignes",
                         firstAriaLabel: "Première page",
                         firstTooltip: "Première page",
                         lastAriaLabel: "Dernière page",
