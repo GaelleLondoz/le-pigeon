@@ -13,8 +13,12 @@
   }
 
   table > thead > tr > th.MuiTableCell-head:nth-child(1),
-  table > thead > tr > th.MuiTableCell-head:nth-child(4) {
-    width: 12% !important;
+  table > thead > tr > th.MuiTableCell-head:nth-child(2),
+  table > thead > tr > th.MuiTableCell-head:nth-child(5),
+  table > tbody > tr > td:nth-child(1),
+  table > tbody > tr > td:nth-child(2),
+  table > tbody > tr > td:nth-child(5) {
+    width: 10% !important;
   }
 
   table > tbody > tr > td:nth-child(1) > div {
@@ -38,13 +42,18 @@
     width: 100%;
   }
 
-  .MuiTypography-root,
+  .MuiToolbar-root .MuiTypography-root,
   & > div:nth-child(1) > div > .MuiToolbar-regular .MuiIconButton-root,
   .MuiToolbar-regular .MuiIconButton-label,
   .MuiIconButton-root:hover,
-  .MuiSelect-select,
-  .MuiSelect-icon {
+  .MuiToolbar-root .MuiSelect-select,
+  .MuiToolbar-root .MuiSelect-icon {
     color: white;
+  }
+
+  table > tbody > tr > td:nth-child(2) .MuiInputBase-root,
+  table > tbody > tr > td:nth-child(5) .MuiInputBase-root {
+    width: 100%;
   }
 
   .MuiIconButton-root:hover {

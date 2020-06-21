@@ -43,6 +43,14 @@ export default function FaqMaterialTable(props) {
     const tableColumns = {
         columns: [
             {
+                title: 'Catégorie', field: 'categoryID', lookup: { 1: 'Agents', 2: 'Voyageurs', 3: 'Autres' }, cellStyle: {
+                    textAlign: 'center'
+                },
+                headerStyle: {
+                    textAlign: 'center'
+                }
+            },
+            {
                 title: 'Question', field: 'question', cellStyle: {
                     verticalAlign: 'baseline'
                 },
@@ -82,8 +90,10 @@ export default function FaqMaterialTable(props) {
                     textAlign: 'center'
                 }
 
-            },
-        ]
+            }
+
+        ],
+
 
     }
     return (
@@ -99,11 +109,10 @@ export default function FaqMaterialTable(props) {
                 data={props.faqList}
                 editable={{
                     onRowAdd: async (faq) => {
-                        faq.categoryID = props.categoryID
                         try {
                             await faqsAPI.createFaq({ faq: faq });
                             props.setFaq({
-                                categoryID: props.categoryID,
+                                categoryID: faq.categoryID,
                                 question: faq.question,
                                 answer: faq.answer,
                                 featured: faq.featured

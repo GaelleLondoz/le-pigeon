@@ -3,12 +3,9 @@ import faqsAPI from "../../services/faqsAPI";
 import FaqMaterialTable from './MaterialTableComponent'
 
 export default function Faqs() {
-    const arrayAgents = [];
-    const arrayFuturTravellers = [];
-    const arrayOthers = [];
-    const [faqsAgentsList, setFaqsAgentsList] = useState(arrayAgents);
-    const [faqsFuturTravellersList, setFaqsFuturTravellersList] = useState(arrayFuturTravellers);
-    const [faqsOthersList, setFaqsOthersList] = useState(arrayOthers);
+    const array = [];
+    const [faqsList, setFaqsList] = useState(array);
+
     const [faq, setFaq] = useState({
         categoryID: 0,
         question: "",
@@ -17,12 +14,8 @@ export default function Faqs() {
     });
 
     const initFaqs = async () => {
-        let dataAgents = [];
-        let dataFuturTravellers = [];
-        let dataOthers = [];
-        const faqsAgents = await faqsAPI.getAgentsFaqs();
-        const faqsFuturTravellers = await faqsAPI.getFuturTravellersFaqs();
-        const faqsOthers = await faqsAPI.getOthersFaqs();
+        let data = [];
+        const faqs = await faqsAPI.getFaqs();
 
         const loadFaqsLists = (faqs, setFaqs, data) => {
             const entries = faqs.entries();
@@ -31,6 +24,7 @@ export default function Faqs() {
                 if (!result) {
                     let row = {
                         id: item.id,
+                        categoryID: item.categoryID,
                         question: item.question,
                         answer: item.answer,
                         featured: item.featured
@@ -41,9 +35,7 @@ export default function Faqs() {
             setFaqs(data);
         }
 
-        loadFaqsLists(faqsAgents, setFaqsAgentsList, dataAgents)
-        loadFaqsLists(faqsFuturTravellers, setFaqsFuturTravellersList, dataFuturTravellers)
-        loadFaqsLists(faqsOthers, setFaqsOthersList, dataOthers)
+        loadFaqsLists(faqs, setFaqsList, data)
 
     };
 
@@ -58,9 +50,7 @@ export default function Faqs() {
     return (
         <div className="faqs__tables">
             <React.Fragment >
-                <FaqMaterialTable setFaq={setFaq} faqList={faqsAgentsList} categoryID={1} title={"Questions destinées aux agents"} handleRefreshList={handleRefreshList} />
-                <FaqMaterialTable setFaq={setFaq} faqList={faqsFuturTravellersList} categoryID={2} title={"Questions destinées aux futurs voyageurs"} handleRefreshList={handleRefreshList} />
-                <FaqMaterialTable setFaq={setFaq} faqList={faqsOthersList} categoryID={3} title={"Autres questions"} handleRefreshList={handleRefreshList} />
+                <FaqMaterialTable setFaq={setFaq} faqList={faqsList} title={"Questions fréquemment posées"} handleRefreshList={handleRefreshList} />
             </React.Fragment >
         </div>
     );
