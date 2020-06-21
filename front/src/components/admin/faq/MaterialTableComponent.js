@@ -82,7 +82,7 @@ export default function FaqMaterialTable(props) {
                 )
             },
             {
-                title: 'Mis en avant ?', field: 'featured', className: "test", lookup: { true: 'Oui', false: 'Non' }, cellStyle: {
+                title: 'Question populaire ?', field: 'featured', className: "test", lookup: { true: 'Oui', false: 'Non' }, cellStyle: {
                     textAlign: 'center'
                 },
                 headerStyle: {
