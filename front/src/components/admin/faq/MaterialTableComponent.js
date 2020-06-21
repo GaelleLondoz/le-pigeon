@@ -38,7 +38,6 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-
 export default function FaqMaterialTable(props) {
     const tableColumns = {
         columns: [
@@ -89,15 +88,11 @@ export default function FaqMaterialTable(props) {
                 headerStyle: {
                     textAlign: 'center'
                 }
-
             }
-
         ],
-
-
     }
     return (
-        <div >
+        <>
             <MaterialTable
                 localization={{ body: { editRow: { deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?' } } }}
                 defaultSort={'asc'}
@@ -139,9 +134,8 @@ export default function FaqMaterialTable(props) {
                             console.log(error.response)
                         }
                     }
-                }
-                }
+                }}
             />
-        </div>
+        </>
     );
 }

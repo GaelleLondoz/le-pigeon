@@ -34,9 +34,7 @@ export default function Faqs() {
             }
             setFaqs(data);
         }
-
         loadFaqsLists(faqs, setFaqsList, data)
-
     };
 
     const handleRefreshList = () => {
