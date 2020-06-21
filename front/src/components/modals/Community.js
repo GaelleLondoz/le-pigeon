@@ -12,6 +12,7 @@ import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import bookingAPI from "../services/bookingAPI";
+import communityAPI from "../services/communityAPI";
 
 import { DateTimePicker } from "@material-ui/pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FormDialog() {
   const [open, setOpen] = useState(false);
   const defaultDate = new Date();
+  const defaultName = "Salam";
   const classes = useStyles();
 
   const handleClick = () => {
@@ -54,43 +56,64 @@ export default function FormDialog() {
     return moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
   };
 
-  const [booking, setBooking] = useState({
-    date: defaultDate,
-    type: "",
+  // const [booking, setBooking] = useState({
+  //   date: defaultDate,
+  //   type: "",
+  // });
+  const [user, setUser] = useState({
+    firstName: defaultName,
+    lastName: defaultName,
+    userName: defaultName,
+    email: defaultName,
+    password: defaultName,
+    avatar: defaultName,
   });
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   try {
+  //     await bookingAPI.createBooking({ booking, date: toMysql(booking.date) });
+  //     console.log("Ok, in the DB");
+  //     // await bookingAPI.createBooking({ booking, date: booking.date });
+  //     return setshowFlash(true), console.log("Show me the alert");
+  //   } catch (error) {
+  //     console.log(error.response);
+  //   }
+  // };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await bookingAPI.createBooking({ booking, date: toMysql(booking.date) });
-      console.log("Ok, in the DB");
+      await communityAPI.createCommunity({ user });
+      console.log("Ok, in DB User");
       // await bookingAPI.createBooking({ booking, date: booking.date });
       return setshowFlash(true), console.log("Show me the alert");
     } catch (error) {
       console.log(error.response);
     }
   };
+  // const handleChange = (event) => {
+  //   //Nom du champ
+  //   const name = event.currentTarget.name;
+  //   const value = event.currentTarget.value;
+  //   // setValue(event.target.value);
+  //   setBooking({ ...booking, [name]: value });
+  //   // console.log({ value });
+  //   // console.log(booking);
+  // };
 
-  const handleChange = (event) => {
-    //Nom du champ
-    const name = event.currentTarget.name;
-    const value = event.currentTarget.value;
-    // setValue(event.target.value);
-    setBooking({ ...booking, [name]: value });
-    // console.log({ value });
-    // console.log(booking);
-  };
-
-  const handledDateChange = (date) => {
-    setBooking({ date: date });
-  };
+  // const handledDateChange = (date) => {
+  //   setBooking({ date: date });
+  // };
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   // console.log(booking);
-  console.log("Date", booking.date);
+  // console.log("Date", booking.date);
+  console.log("Name", user);
 
   return (
     <div>
@@ -119,6 +142,7 @@ export default function FormDialog() {
                 label="Nom"
                 variant="outlined"
                 mx="auto"
+                defaultValue=""
               />
               <TextField
                 id="outlined-basic"
@@ -129,6 +153,11 @@ export default function FormDialog() {
               <TextField
                 id="outlined-basic"
                 label="Pays Visités"
+                variant="outlined"
+              />
+              <TextField
+                id="outlined-basic"
+                label="Password"
                 variant="outlined"
               />
 
@@ -157,7 +186,7 @@ export default function FormDialog() {
                 name="type"
                 defaultValue=""
                 // value={booking.type}
-                onChange={handleChange}
+                // onChange={handleChange}
               >
                 <FormControlLabel
                   value="Face à Face"
