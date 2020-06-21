@@ -123,7 +123,6 @@ export default function FaqMaterialTable(props) {
                 title={props.title}
                 columns={tableColumns.columns}
                 data={props.faqList}
-
                 editable={{
                     onRowAdd: async (faq) => {
                         try {
@@ -147,7 +146,6 @@ export default function FaqMaterialTable(props) {
                             console.log(error.response)
                         }
                     },
-
                     onRowDelete: async (faq) => {
                         try {
                             await faqsAPI.deleteFaq(faq.id);
