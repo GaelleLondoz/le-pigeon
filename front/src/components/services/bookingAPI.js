@@ -32,6 +32,11 @@ function deleteBooking(id) {
     .delete(BOOKINGS_URL + `/${id}`)
     .then((response) => response.data);
 }
+function updateBookingDate(id, data) {
+  return axios
+    .put(BOOKINGS_URL + "/" + id + "/update", data)
+    .then((response) => response.data);
+}
 
 export default {
   getBookingsByAgent,
@@ -40,4 +45,5 @@ export default {
   getBookings,
   getBookingsByUser,
   deleteBooking,
+  updateBookingDate,
 };

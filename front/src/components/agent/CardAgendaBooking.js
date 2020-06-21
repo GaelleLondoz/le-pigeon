@@ -1,23 +1,36 @@
 import React, { useState, useContext } from "react";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, TextField, Grid } from "@material-ui/core";
 import EventIcon from "@material-ui/icons/Event";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InfoIcon from "@material-ui/icons/Info";
 import Alert from "@material-ui/lab/Alert";
-import { formatDateWithHour } from "../../helpers/formatDate";
-import { compareCurrentDate } from "../../helpers/compareCurrentDate";
+import {
+  formatDateWithHour,
+  formatDateWithHourToEnglish,
+} from "../../helpers/formatDate";
+import {
+  compareCurrentDate,
+  compareDateForUpdateBooking,
+} from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import { changeStatusBookingToFrench } from "../../helpers/changeStatusToFrench";
 import BookingAPI from "../../components/services/bookingAPI";
 import AuthContext from "../../contexts/AuthContext";
+import LoaderButton from "../loaders/LoaderButton";
 
 const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
   const [showFlash, setShowFlash] = useState(false);
   const [messageFlash, setMessageFlash] = useState("");
+  const [showFormUpdateBooking, setShowFormUpdateBooking] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const [bookingDate, setBookingDate] = useState(booking.date);
+  const [errors, setErrors] = useState({
+    date: "",
+  });
+  const [loadingUpdateBooking, setLoadingUpdateBooking] = useState(false);
 
   const handleAcceptBookingClick = async () => {
     try {
@@ -48,7 +61,44 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
       console.log(error.response);
     }
   };
+
+  const handleUpdateBookingSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingUpdateBooking(true);
+    try {
+      await BookingAPI.updateBookingDate(booking.id, { date: bookingDate });
+      setLoadingUpdateBooking(false);
+      setErrors({});
+      setShowFormUpdateBooking(false);
+      setMessageFlash("La réservation a bien été modifiée");
+      setShowFlash(true);
+      onFetchBookings();
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3000);
+    } catch (error) {
+      setLoadingUpdateBooking(false);
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
+      console.log(error.response);
+    }
+  };
+
+  const handleUpdateBookingClick = () => {
+    setShowFormUpdateBooking(!showFormUpdateBooking);
+  };
+
+  const handleDateChange = (e) => {
+    setBookingDate(e.target.value);
+  };
   //console.log(booking);
+  console.log(bookingDate);
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (
@@ -60,7 +110,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         <EventIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
           Réservation prévu le{" "}
-          <strong>{formatDateWithHour(booking.date)}</strong>
+          <strong>{formatDateWithHour(bookingDate)}</strong>
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
@@ -104,7 +154,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
               style={{ marginRight: "10px" }}
               onClick={handleCancelBookingClick}
             >
-              Annuler
+              Refuser
             </Button>
             <Button
               variant="contained"
@@ -115,6 +165,53 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
             </Button>
           </div>
         )}
+      {status === "ACCEPTED" &&
+        currentUser.isAgent &&
+        compareDateForUpdateBooking(booking.date) && (
+          <div className="profile-agent-agenda-actions">
+            <Button
+              variant="contained"
+              color={showFormUpdateBooking ? "secondary" : "primary"}
+              onClick={handleUpdateBookingClick}
+            >
+              {showFormUpdateBooking
+                ? "Fermer la modification"
+                : "Modifier la réservation"}
+            </Button>
+          </div>
+        )}
+      {showFormUpdateBooking && (
+        <form
+          style={{ marginTop: "20px" }}
+          onSubmit={handleUpdateBookingSubmit}
+        >
+          <Grid container>
+            <Grid item xs={12}>
+              <TextField
+                type="datetime-local"
+                defaultValue={formatDateWithHourToEnglish(bookingDate)}
+                variant="outlined"
+                name="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={handleDateChange}
+                error={errors.date ? true : false}
+                helperText={errors.date && errors.date}
+              />
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: "15px" }}>
+              {/* <Button variant="contained" color="primary" type="submit">
+                Confirmer la modification
+              </Button> */}
+              <LoaderButton
+                loadingButton={loadingUpdateBooking}
+                text="Confirmer la modification"
+              />
+            </Grid>
+          </Grid>
+        </form>
+      )}
       {!compareCurrentDate(booking.date) && (
         <div className="profile-agent-agenda-card-info">
           <InfoIcon />

@@ -19,7 +19,26 @@ const makeKey = (length) => {
   return result;
 };
 
+const validateEmail = (email) => {
+  const regex = /^[^@]+@[^@]+\.[^@]+$/;
+  return regex.test(email);
+};
+
+const compareCurrentDate = (date) => {
+  const DATE = Date.now();
+  return new Date(date).getTime() > new Date(DATE).getTime();
+};
+
+const compareDateForUpdateBooking = (date) => {
+  const TODAY = new Date();
+  TODAY.setDate(TODAY.getDate() + 1);
+  return new Date(date).getTime() > TODAY.getTime();
+};
+
 module.exports = {
   getHash,
   makeKey,
+  validateEmail,
+  compareCurrentDate,
+  compareDateForUpdateBooking,
 };

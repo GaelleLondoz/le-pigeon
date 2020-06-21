@@ -4,7 +4,7 @@ export const changeStatusBookingToFrench = (status) => {
   } else if (status === "ACCEPTED") {
     return "Acceptée";
   } else {
-    return "Annulée";
+    return "Refusée";
   }
 };
 

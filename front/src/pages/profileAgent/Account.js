@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Container,
   Grid,
@@ -42,6 +42,14 @@ const Account = () => {
   const [sendEditAgentLoading, setSendEditAgentLoading] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
 
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    language: "",
+    price: "",
+  });
+
   const fetchAvgRatings = async (id) => {
     try {
       const data = await ReviewsAPI.getAvgRatings(id);
@@ -77,11 +85,19 @@ const Account = () => {
     try {
       await UsersAPI.editProfileAgent(id, agent);
       setSendEditAgentLoading(false);
+      setErrors({});
       setShowFlash(true);
       fetchAgent(id);
     } catch (error) {
       setSendEditAgentLoading(false);
-      console.log(error.response);
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
     }
   };
 
@@ -152,7 +168,6 @@ const Account = () => {
   //     : initialPosition.push([50.503887, 4.469936])
   // );
 
-  console.log(initialPosition[0]);
   return (
     <section className="profile-agent-account">
       <Container>
@@ -173,6 +188,7 @@ const Account = () => {
           onSubmit={handleEditAgentSubmit}
           sendEditAgentLoading={sendEditAgentLoading}
           onHandleFileChange={handleFileChange}
+          errors={errors}
         />
         <div className="profile-agent-account-content">
           <Grid container spacing={5}>
