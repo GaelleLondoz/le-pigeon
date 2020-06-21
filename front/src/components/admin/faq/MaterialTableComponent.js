@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import MaterialTable from 'material-table';
 import faqsAPI from "../../services/faqsAPI";
 import AddBox from '@material-ui/icons/AddBox';
@@ -40,9 +40,7 @@ const tableIcons = {
 
 
 export default function FaqMaterialTable(props) {
-
-    const state = {
-
+    const tableColumns = {
         columns: [
             {
                 title: 'Question', field: 'question', cellStyle: {
@@ -52,7 +50,6 @@ export default function FaqMaterialTable(props) {
                     textAlign: 'center'
                 }, editComponent: props => (
                     <TextField
-
                         style={{ width: '100%' }}
                         multiline
                         value={props.value}
@@ -70,7 +67,6 @@ export default function FaqMaterialTable(props) {
                 },
                 editComponent: props => (
                     <TextField
-
                         style={{ width: '100%' }}
                         multiline
                         value={props.value}
@@ -80,13 +76,9 @@ export default function FaqMaterialTable(props) {
             },
             {
                 title: 'Mis en avant ?', field: 'featured', className: "test", lookup: { true: 'Oui', false: 'Non' }, cellStyle: {
-                    width: 50,
-                    maxWidth: 50,
                     textAlign: 'center'
                 },
                 headerStyle: {
-                    width: 50,
-                    maxWidth: 50,
                     textAlign: 'center'
                 }
 
@@ -97,14 +89,13 @@ export default function FaqMaterialTable(props) {
     return (
         <div >
             <MaterialTable
-
                 localization={{ body: { editRow: { deleteText: 'Êtes-vous certain de vouloir supprimer cette question ?' } } }}
                 defaultSort={'asc'}
                 style={{ width: '100%' }}
                 icons={tableIcons}
                 options={{ search: false, addRowPosition: 'first' }}
                 title={props.title}
-                columns={state.columns}
+                columns={tableColumns.columns}
                 data={props.faqList}
                 editable={{
                     onRowAdd: async (faq) => {

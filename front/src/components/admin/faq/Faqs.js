@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import faqsAPI from "../../services/faqsAPI";
 import FaqMaterialTable from './MaterialTableComponent'
+
 export default function Faqs() {
-    const [load, setLoad] = useState(true);
     const arrayAgents = [];
     const arrayFuturTravellers = [];
     const arrayOthers = [];
@@ -24,7 +24,7 @@ export default function Faqs() {
         const faqsFuturTravellers = await faqsAPI.getFuturTravellersFaqs();
         const faqsOthers = await faqsAPI.getOthersFaqs();
 
-        const loopLists = (faqs, setFaqs, data) => {
+        const loadFaqsLists = (faqs, setFaqs, data) => {
             const entries = faqs.entries();
             for (const [i, item] of entries) {
                 const result = data.find((row) => row.id == item.id);
@@ -41,9 +41,9 @@ export default function Faqs() {
             setFaqs(data);
         }
 
-        loopLists(faqsAgents, setFaqsAgentsList, dataAgents)
-        loopLists(faqsFuturTravellers, setFaqsFuturTravellersList, dataFuturTravellers)
-        loopLists(faqsOthers, setFaqsOthersList, dataOthers)
+        loadFaqsLists(faqsAgents, setFaqsAgentsList, dataAgents)
+        loadFaqsLists(faqsFuturTravellers, setFaqsFuturTravellersList, dataFuturTravellers)
+        loadFaqsLists(faqsOthers, setFaqsOthersList, dataOthers)
 
     };
 
@@ -52,11 +52,8 @@ export default function Faqs() {
     };
 
     useEffect(() => {
-        if (load) {
-            initFaqs();
-            setLoad(false);
-        }
-    });
+        initFaqs();
+    }, []);
 
     return (
         <div className="faqs__tables">
