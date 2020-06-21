@@ -13,20 +13,8 @@ export default function SecondaryListItems(props) {
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Month" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <AssignmentIcon />
-        </ListItemIcon>
         <ListItemText primary="Trimester" />
       </ListItem>
-      {/* <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Vente Annuelle" />
-    </ListItem> */}
     </div>
   );
 }

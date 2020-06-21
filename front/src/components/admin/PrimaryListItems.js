@@ -67,15 +67,6 @@ export default function PrimaryListItems(props) {
         </ListItemIcon>
         <ListItemText primary="Payments" />
       </ListItem>
-      <ListItem
-        button
-        onClick={(event) => props.handleClick({ selection: "reportings" })}
-      >
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Reportings" />
-      </ListItem>
     </div>
   );
 }

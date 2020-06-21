@@ -76,6 +76,18 @@ function setRoleAdminByUserID(id) {
   return axios.put(USERS_URL + "/role/" + id).then((response) => response.data);
 }
 
+function getRecentSales() {
+  return axios
+    .get(USERS_URL + "/sales/recent")
+    .then((response) => response.data);
+}
+
+function getRecentOrders() {
+  return axios
+    .get(USERS_URL + "/orders/recent")
+    .then((response) => response.data);
+}
+
 /**
  * Every times refresh page, verify if a token, if a token => set request header
  */
@@ -95,4 +107,6 @@ export default {
   deleteUser,
   getRoleByUserID,
   setRoleAdminByUserID,
+  getRecentSales,
+  getRecentOrders,
 };
