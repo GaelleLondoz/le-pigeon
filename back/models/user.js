@@ -5,36 +5,36 @@ module.exports = (sequelize, DataTypes) => {
     {
       firstName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       userName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       avatar: {
         type: DataTypes.STRING,
-        allowNull: true
-      }
+        allowNull: true,
+      },
     },
     {}
   );
-  User.associate = function(models) {
+  User.associate = function (models) {
     // associations can be defined here
-    User.hasMany(models.Booking,{foreignKey : 'id'});
-    User.hasMany(models.Review,{foreignKey : 'id'});
-    User.hasMany(models.Message,{foreignKey : 'id'});
+    User.hasMany(models.Booking, { foreignKey: "id" });
+    User.hasMany(models.Review, { foreignKey: "id" });
+    User.hasMany(models.Message, { foreignKey: "id" });
     User.hasMany(models.UserDestination);
     User.hasMany(models.PictureDestination);
     User.hasMany(models.UserRole);

@@ -16,7 +16,7 @@ const create = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((e) => res.status(500).send(e));
 };
-
+console.log("hello");
 const findOne = (req, res) => {
   const id = req.params.id;
   return User.findByPk(id)
@@ -68,7 +68,9 @@ const login = async (req, res) => {
             lastName: user.lastName,
             avatar: user.avatar,
           };
-          let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "6000000" });
+          let token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: "6000000",
+          });
 
           res.json({ msg: "ok", token: token });
         } else {
@@ -110,19 +112,23 @@ const me = (req, res) => {
 const logout = (req, res) => {
   const headerAuth = req.headers.authorization;
   const verifyOptions = {
-    expiresIn: "0"
+    expiresIn: "0",
   };
 
-  const checkStatus = jwt.verify(headerAuth, process.env.JWT_SECRET, verifyOptions);
-  console.log({ checkStatus })
+  const checkStatus = jwt.verify(
+    headerAuth,
+    process.env.JWT_SECRET,
+    verifyOptions
+  );
+  console.log({ checkStatus });
   if (checkStatus != null) {
-    res.status(200).json({})
+    res.status(200).json({});
   } else {
     res.status(401).json({
       msg: "Unauthorized",
     });
   }
-}
+};
 
 module.exports = {
   index,
@@ -132,5 +138,5 @@ module.exports = {
   destroy,
   login,
   me,
-  logout
+  logout,
 };

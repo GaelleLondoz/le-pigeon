@@ -8,13 +8,18 @@ module.exports = {
         {
           name: "ROLE_USER",
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
         {
           name: "ROLE_AGENT",
           createdAt: new Date(),
-          updatedAt: new Date()
-        }
+          updatedAt: new Date(),
+        },
+        {
+          name: "ROLE_COMMUNAUTE",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
@@ -22,5 +27,5 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete("Roles", null, {});
-  }
+  },
 };
