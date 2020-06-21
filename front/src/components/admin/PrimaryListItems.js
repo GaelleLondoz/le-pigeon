@@ -9,6 +9,7 @@ import BarChartIcon from "@material-ui/icons/BarChart";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import PaymentIcon from "@material-ui/icons/Payment";
 import PersonIcon from "@material-ui/icons/Person";
+import LiveHelpIcon from '@material-ui/icons/LiveHelp';
 
 export default function PrimaryListItems(props) {
   return (
@@ -51,6 +52,15 @@ export default function PrimaryListItems(props) {
       </ListItem>
       <ListItem
         button
+        onClick={(event) => props.handleClick({ selection: "faqs" })}
+      >
+        <ListItemIcon>
+          <LiveHelpIcon />
+        </ListItemIcon>
+        <ListItemText primary="Faqs" />
+      </ListItem>
+      <ListItem
+        button
         onClick={(event) => props.handleClick({ selection: "roles" })}
       >
         <ListItemIcon>
@@ -76,6 +86,7 @@ export default function PrimaryListItems(props) {
         </ListItemIcon>
         <ListItemText primary="Reportings" />
       </ListItem>
+
     </div>
   );
 }

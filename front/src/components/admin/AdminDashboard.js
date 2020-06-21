@@ -25,6 +25,7 @@ import Bookings from "./Bookings";
 import Reviews from "./Reviews";
 import Roles from "./Roles";
 import Main from "./Main";
+import Faqs from "./faq/Faqs";
 
 const drawerWidth = 240;
 
@@ -116,6 +117,7 @@ export default function AdminDashboard() {
   const [isRapport, setRapports] = React.useState(false);
   const [isRole, setRoles] = React.useState(false);
   const [isDashboard, setDashboard] = React.useState(true);
+  const [isFaq, setFaqs] = React.useState(false);
   const [dashboardText, setdashboardText] = React.useState("Dashboard");
 
   const handleDrawerOpen = () => {
@@ -134,6 +136,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setFaqs(false);
         setdashboardText("Users");
         break;
       case "roles":
@@ -144,6 +147,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setFaqs(false);
         setdashboardText("Roles");
         break;
       case "bookings":
@@ -154,6 +158,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setFaqs(false);
         setdashboardText("Bookings");
         break;
       case "reviews":
@@ -164,6 +169,7 @@ export default function AdminDashboard() {
         setPaiements(false);
         setRapports(false);
         setDashboard(false);
+        setFaqs(false);
         setdashboardText("Reviews");
         break;
       case "payments":
@@ -174,6 +180,7 @@ export default function AdminDashboard() {
         setReviews(false);
         setRapports(false);
         setDashboard(false);
+        setFaqs(false);
         setdashboardText("Payments");
         break;
       case "reportings":
@@ -184,7 +191,19 @@ export default function AdminDashboard() {
         setReviews(false);
         setPaiements(false);
         setDashboard(false);
+        setFaqs(false);
         setdashboardText("Reportings");
+        break;
+      case "faqs":
+        setFaqs(true);
+        setDashboard(false);
+        setUsers(false);
+        setRoles(false);
+        setBookings(false);
+        setReviews(false);
+        setPaiements(false);
+        setRapports(false);
+        setdashboardText("Faqs");
         break;
       case "dashboard":
         setDashboard(true);
@@ -194,6 +213,7 @@ export default function AdminDashboard() {
         setReviews(false);
         setPaiements(false);
         setRapports(false);
+        setFaqs(false);
         setdashboardText("Dashboard");
     }
   };
@@ -268,6 +288,7 @@ export default function AdminDashboard() {
             {isPaiement && <div></div>}
             {isRapport && <div></div>}
             {isReview && <Reviews />}
+            {isFaq && <Faqs />}
             {isDashboard && <Main />}
           </Grid>
         </Container>
