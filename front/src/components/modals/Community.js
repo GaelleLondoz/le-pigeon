@@ -11,14 +11,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
-import bookingAPI from "../services/bookingAPI";
 import communityAPI from "../services/communityAPI";
-
-import { DateTimePicker } from "@material-ui/pickers";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-
-import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 
@@ -34,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FormDialog() {
   const [open, setOpen] = useState(false);
   const defaultDate = new Date();
-  const defaultName = "Salam";
+  const defaultName = "";
   const classes = useStyles();
 
   const handleClick = () => {
@@ -51,15 +44,6 @@ export default function FormDialog() {
     setOpen(false);
   };
 
-  //Solution: Retirer date de (date)
-  const toMysql = () => {
-    return moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-  };
-
-  // const [booking, setBooking] = useState({
-  //   date: defaultDate,
-  //   type: "",
-  // });
   const [user, setUser] = useState({
     firstName: defaultName,
     lastName: defaultName,
@@ -68,18 +52,6 @@ export default function FormDialog() {
     password: defaultName,
     avatar: defaultName,
   });
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     await bookingAPI.createBooking({ booking, date: toMysql(booking.date) });
-  //     console.log("Ok, in the DB");
-  //     // await bookingAPI.createBooking({ booking, date: booking.date });
-  //     return setshowFlash(true), console.log("Show me the alert");
-  //   } catch (error) {
-  //     console.log(error.response);
-  //   }
-  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -87,24 +59,28 @@ export default function FormDialog() {
     try {
       await communityAPI.createCommunity({ user });
       console.log("Ok, in DB User");
-      // await bookingAPI.createBooking({ booking, date: booking.date });
       return setshowFlash(true), console.log("Show me the alert");
     } catch (error) {
       console.log(error.response);
     }
   };
-  // const handleChange = (event) => {
-  //   //Nom du champ
-  //   const name = event.currentTarget.name;
-  //   const value = event.currentTarget.value;
-  //   // setValue(event.target.value);
-  //   setBooking({ ...booking, [name]: value });
-  //   // console.log({ value });
-  //   // console.log(booking);
-  // };
+  const handleChange = (event) => {
+    //Nom du champ
+    const firstName = event.currentTarget.firstName;
+    const value = event.currentTarget.value;
+    // setValue(event.target.value);
+    // setBooking({ ...booking, [name]: value });
+    setUser({ ...user, [firstName]: value });
+    // console.log({ value });
+    // console.log(booking);
+    console.log({ "First Name": firstName });
+    // console.log({ User: user });
+    console.log({ "C Value": value });
+  };
 
   // const handledDateChange = (date) => {
   //   setBooking({ date: date });
+  //   setUser{ date: date });
   // };
 
   const handleClickOpen = () => {
@@ -113,7 +89,7 @@ export default function FormDialog() {
 
   // console.log(booking);
   // console.log("Date", booking.date);
-  console.log("Name", user);
+  console.log("My Name", user);
 
   return (
     <div>
@@ -136,32 +112,30 @@ export default function FormDialog() {
           </DialogTitle>
 
           <DialogContent>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <TextField
-                id="outlined-basic"
-                label="Nom"
-                variant="outlined"
-                mx="auto"
-                defaultValue=""
-              />
-              <TextField
-                id="outlined-basic"
-                label="Prénom"
-                variant="outlined"
-              />
-              <TextField id="outlined-basic" label="Email" variant="outlined" />
-              <TextField
-                id="outlined-basic"
-                label="Pays Visités"
-                variant="outlined"
-              />
-              <TextField
-                id="outlined-basic"
-                label="Password"
-                variant="outlined"
-              />
+            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}> */}
+            <TextField
+              id="outlined-basic"
+              label="Nom"
+              variant="outlined"
+              mx="auto"
+              // defaultValue=""
+              value={user.firstName}
+              onChange={handleChange}
+            />
+            <TextField id="outlined-basic" label="Prénom" variant="outlined" />
+            <TextField id="outlined-basic" label="Email" variant="outlined" />
+            <TextField
+              id="outlined-basic"
+              label="Pays Visités"
+              variant="outlined"
+            />
+            <TextField
+              id="outlined-basic"
+              label="Password"
+              variant="outlined"
+            />
 
-              {/* <DateTimePicker
+            {/* <DateTimePicker
                 label="DateTimePicker"
                 inputVariant="outlined"
                 name="date"
@@ -172,7 +146,7 @@ export default function FormDialog() {
                 onChange={handledDateChange}
                 format="dd-MM-yyyy hh:mm"
               /> */}
-            </MuiPickersUtilsProvider>
+            {/* </MuiPickersUtilsProvider> */}
 
             <DialogContentText>
               Que préférez-vous comme rendez-vous?
@@ -208,7 +182,7 @@ export default function FormDialog() {
               {showFlash && (
                 <div className={classes.root}>
                   <Alert variant="filled" severity="success">
-                    Votre Rendez-Vous est booké !
+                    Vous faîtes partie de la Pigeon Community
                   </Alert>
                 </div>
               )}
