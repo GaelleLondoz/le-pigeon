@@ -43,7 +43,7 @@ export default function Deposits() {
 
   return (
     <React.Fragment>
-      <Title> Recent Sales </Title>{" "}
+      <Title> Monthly Sales </Title>{" "}
       <Typography component="p" variant="h4">
         € {amount}{" "}
       </Typography>{" "}

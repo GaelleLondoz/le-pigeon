@@ -43,6 +43,7 @@ router.put("/users/user/:id", checkAuth, usersController.editProfileUser);
 router.post("/login", usersController.login);
 router.post("/logout", checkAuth, usersController.logout);
 router.get("/me", usersController.me);
+router.get("/users/me/admin", checkAuth, usersController.admin);
 
 // bookings
 router.get("/bookings", checkAuth, bookingsController.index);

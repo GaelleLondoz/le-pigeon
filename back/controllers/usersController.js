@@ -644,6 +644,24 @@ const getRecentOrders = async(req, res) => {
         return res.status(500).json({ msg: "Error Server" });
     }
 };
+
+const admin = async(req, res) => {
+    const id = req.user.id;
+
+    try {
+        const admin = await db.sequelize.query(
+            "SELECT users.firstName as firstname, users.lastName as lastname from userroles,users " +
+            "WHERE userroles.userID = " + id + " and users.id = userroles.id AND userroles.roleID = (SELECT roles.id FROM roles WHERE roles.name like 'ROLE_ADMIN')", { type: sequelize.QueryTypes.SELECT }
+        );
+        if (!admin) {
+            return res.status(403).json({ msg: "User not administrator" });
+        }
+        return res.status(200).json(admin);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ msg: "Error Server" });
+    }
+};
 module.exports = {
     index,
     create,
@@ -666,4 +684,5 @@ module.exports = {
     setRoleAdminByUserID,
     getRecentSales,
     getRecentOrders,
+    admin,
 };

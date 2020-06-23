@@ -9,12 +9,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import Title from "./Title";
 import Button from "@material-ui/core/Button";
 import reviewAPI from "../services/reviewAPI";
-import reviewsAPI from "../services/reviewsAPI";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -40,7 +37,7 @@ export default function Reviews() {
     const ratings = await reviewAPI.getRatings();
     const entries = ratings.entries();
     for (const [i, item] of entries) {
-      const result = data.find((row) => row.id == item.id);
+      const result = data.find((row) => row.id === item.id);
       if (!result) {
         let row = {
           id: item.id,
@@ -54,7 +51,7 @@ export default function Reviews() {
       }
       //otherwise search the row and update agent name
       else {
-        var foundIndex = data.findIndex((row) => row.id == item.id);
+        var foundIndex = data.findIndex((row) => row.id === item.id);
         data[foundIndex].agentname = item.firstName + " " + item.lastName;
       }
     }

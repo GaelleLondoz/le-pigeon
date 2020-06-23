@@ -26,6 +26,7 @@ import Profile from "./pages/Profile";
 
 import "./assets/sass/body.scss";
 import PrivateRoute from "./components/redirections/PrivateRoutes";
+import AdminRoute from "./components/redirections/AdminRoutes";
 import LoginNotAllowedRoutes from "./components/redirections/LoginNotAllowedRoutes";
 import ProfileAgent from "./pages/profileAgent";
 import ShowTravelDetails from "./pages/profileAgent/ShowTravelDetails";
@@ -40,6 +41,11 @@ AuthAPI.setup();
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     AuthAPI.isAuthenticated()
+  );
+  const [isAdmin, setIsAdmin] = useState(
+    userAPI.isAdmin().then((status) => {
+      setIsAdmin(status);
+    })
   );
 
   const [currentUser, setCurrentUser] = useState({});
@@ -67,6 +73,8 @@ const App = () => {
     setIsAuthenticated,
     currentUser,
     setCurrentUser,
+    isAdmin,
+    setIsAdmin,
   };
 
   return (
@@ -80,7 +88,7 @@ const App = () => {
           <Switch>
             {/*<Route exact path="/" component={Home} />*/}
             <Route exact path="/chat" component={ChatBox} />
-            <Route exact path="/admin" component={AdminDashboard} />
+            <AdminRoute exact path="/admin" component={AdminDashboard} />
             <Route exact path="/" component={Home} />
             <Route exact path="/connect" component={Connect} />
             <Route exact path="/help" component={Help} />

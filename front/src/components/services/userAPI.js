@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USER_URL, USERS_URL } from "../../config";
+import { USER_URL, USERS_URL, ADMIN_URL } from "../../config";
 
 async function getUser() {
   const token = window.localStorage.getItem("authToken");
@@ -88,6 +88,18 @@ function getRecentOrders() {
     .then((response) => response.data);
 }
 
+function isAdmin() {
+  return axios
+    .get(USERS_URL + "/me/admin")
+    .then((response) => response.data)
+    .then((data) => {
+      return Boolean(data.length);
+    })
+    .catch((error) => {
+      console.error(error);
+      return false;
+    });
+}
 /**
  * Every times refresh page, verify if a token, if a token => set request header
  */
@@ -109,4 +121,5 @@ export default {
   setRoleAdminByUserID,
   getRecentSales,
   getRecentOrders,
+  isAdmin,
 };
