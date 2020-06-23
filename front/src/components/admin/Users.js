@@ -340,14 +340,24 @@ export default function Users() {
                     Connect
                   </Button>
                 ) : row.role === "ROLE_ADMIN" ? (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    component="span"
-                    disabled={true}
-                  >
-                    Admin
-                  </Button>
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component="span"
+                      onClick={(event) => alertBox(event, row, "DELETE")}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      component="span"
+                      disabled={true}
+                    >
+                      Admin
+                    </Button>
+                  </div>
                 ) : (
                   <div>
                     <Button
