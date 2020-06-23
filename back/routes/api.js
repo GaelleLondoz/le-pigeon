@@ -117,6 +117,12 @@ router.get(
     "/users/:id/destination/:destinationId",
     userDestinationsController.getDestinationByUser
 );
+router.get(
+    "/destinations",
+    userDestinationsController.getAllDestinationsByUsers
+);
+
+
 // router.get(
 //   "/destinations/continents",
 //   userDestinationsController.getAllContinents
