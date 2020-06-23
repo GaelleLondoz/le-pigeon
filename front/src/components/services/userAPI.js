@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USER_URL, USERS_URL } from "../../config";
+import { USER_URL, USERS_URL, ADMIN_URL } from "../../config";
 
 async function getUser() {
   const token = window.localStorage.getItem("authToken");
@@ -76,6 +76,30 @@ function setRoleAdminByUserID(id) {
   return axios.put(USERS_URL + "/role/" + id).then((response) => response.data);
 }
 
+function getRecentSales() {
+  return axios
+    .get(USERS_URL + "/sales/recent")
+    .then((response) => response.data);
+}
+
+function getRecentOrders() {
+  return axios
+    .get(USERS_URL + "/orders/recent")
+    .then((response) => response.data);
+}
+
+function isAdmin() {
+  return axios
+    .get(USERS_URL + "/me/admin")
+    .then((response) => response.data)
+    .then((data) => {
+      return Boolean(data.length);
+    })
+    .catch((error) => {
+      console.error(error);
+      return false;
+    });
+}
 /**
  * Every times refresh page, verify if a token, if a token => set request header
  */
@@ -95,4 +119,7 @@ export default {
   deleteUser,
   getRoleByUserID,
   setRoleAdminByUserID,
+  getRecentSales,
+  getRecentOrders,
+  isAdmin,
 };

@@ -135,14 +135,25 @@ export default function Bookings() {
               <TableCell>{row.username}</TableCell>
               <TableCell>{row.agentname}</TableCell>
               <TableCell align="right">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component="span"
-                  onClick={(event) => alertBox(event, row)}
-                >
-                  Delete
-                </Button>
+                {row.status === "Acceptée" ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    disabled={true}
+                  >
+                    Delete
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    onClick={(event) => alertBox(event, row)}
+                  >
+                    Delete
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}

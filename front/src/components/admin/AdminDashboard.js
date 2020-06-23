@@ -183,17 +183,6 @@ export default function AdminDashboard() {
         setFaqs(false);
         setdashboardText("Payments");
         break;
-      case "reportings":
-        setRapports(true);
-        setUsers(false);
-        setRoles(false);
-        setBookings(false);
-        setReviews(false);
-        setPaiements(false);
-        setDashboard(false);
-        setFaqs(false);
-        setdashboardText("Reportings");
-        break;
       case "faqs":
         setFaqs(true);
         setDashboard(false);
@@ -286,7 +275,6 @@ export default function AdminDashboard() {
             {isUSer && <Users />}
             {isRole && <Roles />}
             {isPaiement && <div></div>}
-            {isRapport && <div></div>}
             {isReview && <Reviews />}
             {isFaq && <Faqs />}
             {isDashboard && <Main />}

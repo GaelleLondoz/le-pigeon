@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "@material-ui/core/styles";
 import {
   LineChart,
@@ -9,34 +9,42 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Title from "./Title";
-
-// Generate Sales Data
-function createData(time, amount) {
-  return { time, amount };
-}
-
-const data = [
-  createData("00:00", 0),
-  createData("03:00", 300),
-  createData("06:00", 600),
-  createData("09:00", 800),
-  createData("12:00", 1500),
-  createData("15:00", 2000),
-  createData("18:00", 2400),
-  createData("21:00", 2400),
-  createData("24:00", undefined),
-];
+import userAPI from "../services/userAPI";
 
 export default function Chart() {
   const theme = useTheme();
   const currentDate = new Date(Date.now()).toDateString();
+  const array = [];
+  const [salesList, setSalesList] = useState(array);
+  const [load, setLoad] = useState(true);
+
+  const initSales = async () => {
+    let data = [];
+    const sales = await userAPI.getRecentSales();
+    const entries = sales.entries();
+    for (const [i, item] of entries) {
+      let row = {
+        name: item.firstname + " " + item.lastname,
+        amount: item.sales,
+      };
+      data.push(row);
+    }
+    setSalesList(data);
+  };
+
+  useEffect(() => {
+    if (load) {
+      initSales();
+      setLoad(false);
+    }
+  });
 
   return (
     <React.Fragment>
       <Title>{currentDate}</Title>
       <ResponsiveContainer>
         <LineChart
-          data={data}
+          data={salesList}
           margin={{
             top: 16,
             right: 16,
@@ -44,14 +52,14 @@ export default function Chart() {
             left: 24,
           }}
         >
-          <XAxis dataKey="time" stroke={theme.palette.text.secondary} />
+          <XAxis dataKey="name" stroke={theme.palette.text.secondary} />
           <YAxis stroke={theme.palette.text.secondary}>
             <Label
               angle={270}
               position="left"
               style={{ textAnchor: "middle", fill: theme.palette.text.primary }}
             >
-              Sales ($)
+              Sales (€)
             </Label>
           </YAxis>
           <Line

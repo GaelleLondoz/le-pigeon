@@ -77,7 +77,7 @@ const Login = ({ history }) => {
       const connectedUser = await AuthAPI.login({ login: credentials });
       setIsAuthenticated(true);
       setCurrentUser(connectedUser);
-      console.log({ CURRENTUSER: connectedUser });
+    
       history.replace("/");
     } catch (error) {
       throw error.response;
