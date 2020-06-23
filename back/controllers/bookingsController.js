@@ -9,7 +9,6 @@ const index = (req, res) => {
 const create = (req, res) => {
   const id = req.params.id;
   const newBooking = req.body.booking;
-  console.log(req.body.booking.date);
   return Booking.create({
     userID: req.user.id,
     agentID: 1, // ID de l'agent doit figurer dans l'URL côté FRONT,

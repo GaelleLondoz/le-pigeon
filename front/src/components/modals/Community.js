@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FormDialog() {
   const [open, setOpen] = useState(false);
-  const defaultDate = new Date();
   const defaultName = "";
   const classes = useStyles();
 
@@ -45,51 +44,44 @@ export default function FormDialog() {
   };
 
   const [user, setUser] = useState({
-    firstName: defaultName,
-    lastName: defaultName,
-    userName: defaultName,
-    email: defaultName,
-    password: defaultName,
-    avatar: defaultName,
+    firstName: "",
+    lastName: "",
+    userName: "",
+    email: "",
+    password: "",
+    avatar: "",
   });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await communityAPI.createCommunity({ user });
+      await communityAPI.createCommunity({ user, firstName: user.firstName });
       console.log("Ok, in DB User");
       return setshowFlash(true), console.log("Show me the alert");
     } catch (error) {
       console.log(error.response);
     }
   };
+
+  const handleUserChange = () => {
+    console.log("Hello");
+    // setUser({ user: user });
+  };
   const handleChange = (event) => {
     //Nom du champ
     const firstName = event.currentTarget.firstName;
     const value = event.currentTarget.value;
-    // setValue(event.target.value);
-    // setBooking({ ...booking, [name]: value });
     setUser({ ...user, [firstName]: value });
-    // console.log({ value });
-    // console.log(booking);
-    console.log({ "First Name": firstName });
-    // console.log({ User: user });
     console.log({ "C Value": value });
   };
-
-  // const handledDateChange = (date) => {
-  //   setBooking({ date: date });
-  //   setUser{ date: date });
-  // };
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // console.log(booking);
-  // console.log("Date", booking.date);
-  console.log("My Name", user);
+  console.log("My User", user);
+  console.log("My Firstname", user.firstName);
 
   return (
     <div>
@@ -112,15 +104,13 @@ export default function FormDialog() {
           </DialogTitle>
 
           <DialogContent>
-            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}> */}
             <TextField
               id="outlined-basic"
               label="Nom"
               variant="outlined"
               mx="auto"
-              // defaultValue=""
               value={user.firstName}
-              onChange={handleChange}
+              onChange={handleUserChange}
             />
             <TextField id="outlined-basic" label="Prénom" variant="outlined" />
             <TextField id="outlined-basic" label="Email" variant="outlined" />
@@ -135,19 +125,6 @@ export default function FormDialog() {
               variant="outlined"
             />
 
-            {/* <DateTimePicker
-                label="DateTimePicker"
-                inputVariant="outlined"
-                name="date"
-                value={booking.date}
-                // defaultValue={defaultDate}
-                // ampm={false}
-                disablePast
-                onChange={handledDateChange}
-                format="dd-MM-yyyy hh:mm"
-              /> */}
-            {/* </MuiPickersUtilsProvider> */}
-
             <DialogContentText>
               Que préférez-vous comme rendez-vous?
             </DialogContentText>
@@ -159,8 +136,6 @@ export default function FormDialog() {
                 aria-label="Communication"
                 name="type"
                 defaultValue=""
-                // value={booking.type}
-                // onChange={handleChange}
               >
                 <FormControlLabel
                   value="Face à Face"

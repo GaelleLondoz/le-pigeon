@@ -117,8 +117,6 @@ export default function FormDialog() {
                 inputVariant="outlined"
                 name="date"
                 value={booking.date}
-                // defaultValue={defaultDate}
-                // ampm={false}
                 disablePast
                 onChange={handledDateChange}
                 format="dd-MM-yyyy hh:mm"

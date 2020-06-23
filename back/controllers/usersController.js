@@ -12,11 +12,17 @@ const index = (req, res) => {
 const create = (req, res) => {
   const newUser = req.body.user;
   newUser.password = getHash(newUser.password);
-  return User.create(newUser)
+  return User.create({
+    firstName: "Boris",
+    lastName: "Bisa",
+    userName: "bahishak",
+    email: "bahi@gmail.com",
+    password: "Boris",
+    avatar: "Boris",
+  })
     .then((user) => res.status(200).send(user))
     .catch((e) => res.status(500).send(e));
 };
-console.log("hello");
 const findOne = (req, res) => {
   const id = req.params.id;
   return User.findByPk(id)
