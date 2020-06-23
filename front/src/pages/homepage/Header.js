@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import UserDestinationsAPI from "./../../components/services/userDestinationsAPI";
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   Container,
   Grid,
@@ -18,15 +18,21 @@ const Header = () => {
     // const ratings = await reviewAPI.getRatings();
     const entries = destinations.entries();
     for (const [i, item] of entries) {
-      // const result = data.find((row) => row.id === item.id);
+      const result = data.find((row) => row.type === item.Destination.type);
       let row = {
         name: item.Destination.name,
+        type: item.Destination.type,
       };
+      if (!result) {
+        row.type = item.Destination.type;
+      } else {
+        row.type = "";
+      }
       data.push(row);
     }
+    console.log({ data });
     setDestinations(data);
   };
-
 
   useEffect(() => {
     initDestinations();
@@ -41,20 +47,34 @@ const Header = () => {
             <Grid container justify="center" spacing={4}>
               <Grid item>
                 <Autocomplete
-                  id="free-solo-demo"
+                  id="free-solo-demo-2"
                   freeSolo
                   options={destinations.map((option) => option.name)}
                   renderInput={(params) => (
-                    <TextField {...params} id="outlined-basic" label="Quelle région du monde ?" margin="normal" variant="outlined" />
+                    <TextField
+                      {...params}
+                      id="outlined-basic-2"
+                      label="Quelle région du monde ?"
+                      margin="normal"
+                      variant="outlined"
+                    />
                   )}
                 />
-
               </Grid>
               <Grid item>
-                <TextField
-                  id="outlined-basic"
-                  label="Quel type de voyage ?"
-                  variant="outlined"
+                <Autocomplete
+                  id="free-solo-demo"
+                  freeSolo
+                  options={destinations.map((option) => option.type)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      id="outlined-basic"
+                      label="Quel type de voyage ?"
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  )}
                 />
               </Grid>
               <Grid item>

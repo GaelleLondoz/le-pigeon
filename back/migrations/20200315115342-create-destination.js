@@ -28,6 +28,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      type: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       coverImage: {
         type: Sequelize.STRING,
         allowNull: true,
