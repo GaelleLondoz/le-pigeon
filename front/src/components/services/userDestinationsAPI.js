@@ -15,12 +15,18 @@ function getAllPicturesByDestination(id, destinationId) {
   return axios
     .get(
       USER_DESTINATIONS_URL +
-        "/users/" +
-        id +
-        "/destination/" +
-        destinationId +
-        "/pictures"
+      "/users/" +
+      id +
+      "/destination/" +
+      destinationId +
+      "/pictures"
     )
+    .then((response) => response.data);
+}
+
+function getAllDestinationsByUsers() {
+  return axios
+    .get(USER_DESTINATIONS_URL)
     .then((response) => response.data);
 }
 
@@ -28,4 +34,5 @@ export default {
   getAllDestinationsByUser,
   create,
   getAllPicturesByDestination,
+  getAllDestinationsByUsers
 };
