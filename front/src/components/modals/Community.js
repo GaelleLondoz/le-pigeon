@@ -56,7 +56,7 @@ export default function FormDialog() {
     event.preventDefault();
 
     try {
-      await communityAPI.createCommunity({ user, firstName: user.firstName });
+      await communityAPI.createCommunity({ newUser });
       console.log("Ok, in DB User");
       return setshowFlash(true), console.log("Show me the alert");
     } catch (error) {
@@ -65,8 +65,8 @@ export default function FormDialog() {
   };
 
   const handleUserChange = () => {
-    console.log("Hello");
-    // setUser({ user: user });
+    // console.log("Hello");
+    setUser({ user: user });
   };
   const handleChange = (event) => {
     //Nom du champ

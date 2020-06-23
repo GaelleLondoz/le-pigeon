@@ -12,14 +12,7 @@ const index = (req, res) => {
 const create = (req, res) => {
   const newUser = req.body.user;
   newUser.password = getHash(newUser.password);
-  return User.create({
-    firstName: "Boris",
-    lastName: "Bisa",
-    userName: "bahishak",
-    email: "bahi@gmail.com",
-    password: "Boris",
-    avatar: "Boris",
-  })
+  return User.create({ newUser })
     .then((user) => res.status(200).send(user))
     .catch((e) => res.status(500).send(e));
 };

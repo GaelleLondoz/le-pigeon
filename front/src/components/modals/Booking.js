@@ -77,8 +77,6 @@ export default function FormDialog() {
     const value = event.currentTarget.value;
     // setValue(event.target.value);
     setBooking({ ...booking, [name]: value });
-    // console.log({ value });
-    // console.log(booking);
   };
 
   const handledDateChange = (date) => {
