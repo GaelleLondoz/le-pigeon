@@ -11,6 +11,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     let data = [];
     let count = 30;
+    let type = ["Backpacking","Hotel"]
     while (count--) {
       data.push({
         // countryID: faker.random.number({ min: 1, max: 15, precision: 1 }),
@@ -18,6 +19,7 @@ module.exports = {
         name: faker.lorem.sentence(3),
         lat: faker.address.latitude(),
         lng: faker.address.longitude(),
+        type: faker.random.arrayElement(type),
         coverImage: faker.random.arrayElement(coverImages),
         createdAt: new Date(),
         updatedAt: new Date(),
