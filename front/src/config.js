@@ -13,3 +13,5 @@ export const USER_DESTINATIONS_URL = API_URL + "/destinations";
 export const BOOKINGS_URL = API_URL + "/bookings";
 
 export const ROLES_URL = API_URL + "/roles";
+
+export const BOOKING_URL = API_URL + "/bookings";
