@@ -11,7 +11,9 @@ import {
 import userDestinationsAPI from "../../components/services/userDestinationsAPI";
 
 const Header = () => {
+  const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
+  const [cities, setCities] = useState([]);
   const initDestinations = async () => {
     let data = [];
     const destinations = await UserDestinationsAPI.getAllDestinationsByUsers();
@@ -22,6 +24,8 @@ const Header = () => {
       let row = {
         name: item.Destination.name,
         type: item.Destination.type,
+        lat: item.Destination.lat,
+        lng: item.Destination.lng
       };
       if (!result) {
         row.type = item.Destination.type;
@@ -32,11 +36,39 @@ const Header = () => {
     }
     console.log({ data });
     setDestinations(data);
-  };
 
+    // destinations.map(destination => {
+    //   console.log({ destination })
+    // })
+
+    for (let i = 0; i < 2; i++) {
+      fetch(
+        `https://api.opencagedata.com/geocode/v1/json?q=${destinations[i].lat}%2C+${destinations[i].lng}&key=${process.env.REACT_APP_API_KEY_OPENCAGE_GA}`
+      )
+        .then(function (response) {
+          if (response.status !== 200) {
+            console.log(
+              "Looks like there was a problem. Status Code: " + response.status
+            );
+            return;
+          }
+          response.json().then(function (data) {
+            setCities(data);
+          });
+        })
+        .catch(function (err) {
+          console.log("Fetch Error :-S", err);
+        });
+    }
+  };
+  console.log({ cities })
   useEffect(() => {
-    initDestinations();
+    if (mounted) {
+      initDestinations()
+      setMounted(false)
+    }
   }, []);
+
 
   return (
     <section id="header-homepage">
