@@ -37,6 +37,9 @@ function updateBookingDate(id, data) {
     .put(BOOKINGS_URL + "/" + id + "/update", data)
     .then((response) => response.data);
 }
+function createBooking(data) {
+  return axios.post(BOOKINGS_URL, data).then((response) => response.data);
+}
 
 export default {
   getBookingsByAgent,
@@ -46,4 +49,5 @@ export default {
   getBookingsByUser,
   deleteBooking,
   updateBookingDate,
+  createBooking
 };
