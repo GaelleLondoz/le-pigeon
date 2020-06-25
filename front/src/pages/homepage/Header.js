@@ -25,7 +25,7 @@ const Header = () => {
         name: item.Destination.name,
         type: item.Destination.type,
         lat: item.Destination.lat,
-        lng: item.Destination.lng
+        lng: item.Destination.lng,
       };
       if (!result) {
         row.type = item.Destination.type;
@@ -41,9 +41,25 @@ const Header = () => {
     //   console.log({ destination })
     // })
 
-    for (let i = 0; i < 2; i++) {
+    const latlng = [
+      {
+        lat: 51.049999,
+        lng: 3.733333,
+      },
+      {
+        lat: 50.984966,
+        lng: 5.051962,
+      },
+      {
+        lat: 50.843502,
+        lng: 3.604461,
+      },
+    ];
+
+    for (let i = 0; i < latlng.length; i++) {
+      console.log({ destinations: destinations[i] });
       fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${destinations[i].lat}%2C+${destinations[i].lng}&key=${process.env.REACT_APP_API_KEY_OPENCAGE_GA}`
+        `https://api.opencagedata.com/geocode/v1/json?q=${latlng[i].lat}%2C+${latlng[i].lng}&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
       )
         .then(function (response) {
           if (response.status !== 200) {
@@ -61,14 +77,13 @@ const Header = () => {
         });
     }
   };
-  console.log({ cities })
+  console.log({ cities });
   useEffect(() => {
     if (mounted) {
-      initDestinations()
-      setMounted(false)
+      initDestinations();
+      setMounted(false);
     }
   }, []);
-
 
   return (
     <section id="header-homepage">
