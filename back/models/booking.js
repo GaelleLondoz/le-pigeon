@@ -7,34 +7,40 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
 
-            status: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            userID: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
-            agentID: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
-        }, {}
-    );
-    Booking.associate = function(models) {
-        // associations can be defined here
-        Booking.belongsTo(models.User, {
-            foreignKey: "userID",
-            allowNull: false,
-            as: "booker",
-        });
-        Booking.belongsTo(models.User, {
-            foreignKey: "agentID",
-            allowNull: false,
-            as: "agent",
-        });
-        //Association with Location
-        Booking.hasMany(models.BookingLocation);
-    };
-    return Booking;
+
+      status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "En attente"
+      },
+      userID: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 2
+      },
+      agentID: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 2
+      },
+    },
+    {}
+  );
+  Booking.associate = function (models) {
+    // associations can be defined here
+    Booking.belongsTo(models.User, {
+      foreignKey: "userID",
+      allowNull: false,
+      as: "booker",
+    });
+    Booking.belongsTo(models.User, {
+      foreignKey: "agentID",
+      allowNull: false,
+      as: "agent",
+    });
+    //Association with Location
+    Booking.hasMany(models.BookingLocation);
+  };
+  return Booking;
 };
+
