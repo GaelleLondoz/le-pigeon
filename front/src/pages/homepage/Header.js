@@ -11,11 +11,13 @@ import {
 import userDestinationsAPI from "../../components/services/userDestinationsAPI";
 
 const Header = () => {
+  const [cities, setCities] = useState([]);
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
-  const [cities, setCities] = useState([]);
   const initDestinations = async () => {
+    //let cities = [];
     let data = [];
+    let dataCities = [];
     const destinations = await UserDestinationsAPI.getAllDestinationsByUsers();
     // const ratings = await reviewAPI.getRatings();
     const entries = destinations.entries();
@@ -55,7 +57,6 @@ const Header = () => {
         lng: 3.604461,
       },
     ];
-
     for (let i = 0; i < latlng.length; i++) {
       console.log({ destinations: destinations[i] });
       fetch(
@@ -68,22 +69,30 @@ const Header = () => {
             );
             return;
           }
-          response.json().then(function (data) {
-            setCities(data);
+          response.json().then(function ({ results }) {
+            //console.log({ results });
+            //console.log(data);
+            //setCities(results);
+            dataCities.push(results[0]);
+            //console.log({ response: cities });
           });
         })
         .catch(function (err) {
           console.log("Fetch Error :-S", err);
         });
     }
+    setCities(dataCities);
+    //console.log({ dataCities });
+    //console.log({ cities });
   };
-  console.log({ cities });
   useEffect(() => {
     if (mounted) {
       initDestinations();
       setMounted(false);
     }
   }, []);
+
+  console.log(cities);
 
   return (
     <section id="header-homepage">
