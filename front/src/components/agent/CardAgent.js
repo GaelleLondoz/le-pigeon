@@ -1,6 +1,7 @@
 import React from "react";
 import Rating from "@material-ui/lab/Rating";
 import { Link } from "react-router-dom";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const CardAgent = ({ agent, avgRatings }) => {
   return (
@@ -12,7 +13,7 @@ const CardAgent = ({ agent, avgRatings }) => {
             src={
               agent.avatar
                 ? "http://localhost:5000/avatar/" + agent.avatar
-                : agent.firstName
+                : AvatarDefault
             }
             className="rounded-circle img-fluid"
             alt={
