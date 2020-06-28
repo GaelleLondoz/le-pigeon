@@ -9,6 +9,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  FormHelperText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
@@ -66,6 +67,7 @@ const Travel = () => {
     remarks: "",
     latlng: "",
     date: "",
+    type: "",
   });
 
   const [openForm, setOpenForm] = useState(false);
@@ -245,6 +247,7 @@ const Travel = () => {
                 >
                   <InputLabel id="type">Type de voyage</InputLabel>
                   <Select
+                    error={errors.type ? true : false}
                     labelId="type"
                     value={newDestination.type}
                     name="type"
@@ -260,6 +263,9 @@ const Travel = () => {
                     <MenuItem value="Backpacking">Backpacking</MenuItem>
                     <MenuItem value="Hotel">Hotel</MenuItem>
                   </Select>
+                  <FormHelperText style={{ color: "#f44336" }}>
+                    {errors.type && errors.type}
+                  </FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
