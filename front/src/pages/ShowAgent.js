@@ -238,7 +238,11 @@ const ShowAgent = ({ match }) => {
           <Typography variant="h3">
             Ce que les voyageurs disent de {agent.User.firstName}
           </Typography>
-
+          {reviews.length < 1 && (
+            <p style={{ fontWeight: "bold", fontSize: "1rem" }}>
+              Soyez le premier à laisser un commentaire !
+            </p>
+          )}
           <Button
             size="medium"
             variant="contained"
