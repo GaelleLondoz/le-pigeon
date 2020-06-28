@@ -74,6 +74,7 @@ const create = async (req, res) => {
       name: req.body.name,
       lat: req.body.lat,
       lng: req.body.lng,
+      type: req.body.type,
       coverImage: fileSendToDatabase,
       createdAt: new Date(),
       updatedAt: new Date(),

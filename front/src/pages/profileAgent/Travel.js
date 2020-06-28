@@ -5,6 +5,10 @@ import {
   Typography,
   Button,
   TextField,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
@@ -28,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
   gridInput: {
     marginBottom: "20px",
   },
+  formControl: {
+    //margin: theme.spacing(1),
+    width: "100%",
+  },
   // loaderButton: {
   //   color: "#fff",
   // },
@@ -41,14 +49,15 @@ const Travel = () => {
 
   const [destinations, setDestinations] = useState([]);
   const [newDestination, setNewDestination] = useState({
-    continent: "",
-    country: "",
+    //continent: "",
+    //country: "",
     name: "",
     coverImage: "",
     remarks: "",
     lat: "",
     lng: "",
     date: "",
+    type: "",
     pictures: [],
   });
   const [errors, setErrors] = useState({
@@ -85,14 +94,6 @@ const Travel = () => {
       lng: suggestion.latlng.lng,
     });
   };
-
-  // const createImage = (file) => {
-  //   const reader = new FileReader();
-  //   reader.onload = (e) => {
-  //     setNewDestination({ ...newDestination, coverImage: e.target.result });
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
 
   const handleFileChange = async (event) => {
     const files = event.target.files || event.dataTransfer.files;
@@ -167,6 +168,7 @@ const Travel = () => {
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
+  console.log(newDestination);
   return (
     <section className="profile-agent-destinations">
       <Container>
@@ -234,6 +236,31 @@ const Travel = () => {
                   label="Donnez un titre à votre voyage"
                   helperText={errors.name && errors.name}
                 />
+              </Grid>
+              <Grid item xs={12} className={classes.gridInput}>
+                <FormControl
+                  required
+                  className={classes.formControl}
+                  variant="outlined"
+                >
+                  <InputLabel id="type">Type de voyage</InputLabel>
+                  <Select
+                    labelId="type"
+                    value={newDestination.type}
+                    name="type"
+                    onChange={(e) =>
+                      setNewDestination({
+                        ...newDestination,
+                        type: e.target.value,
+                      })
+                    }
+                    label="Type de voyage"
+                    fullWidth
+                  >
+                    <MenuItem value="Backpacking">Backpacking</MenuItem>
+                    <MenuItem value="Hotel">Hotel</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12} className={classes.gridInput}>
                 <TextField

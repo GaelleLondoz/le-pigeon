@@ -6,6 +6,7 @@ const coverImages = [
   "ozl5wXpxA5.jpeg",
   "pF6NUrGBx3.jpeg",
 ];
+const destinationType = ["Hotel", "Backpacking"];
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -21,6 +22,7 @@ module.exports = {
         coverImage: faker.random.arrayElement(coverImages),
         createdAt: new Date(),
         updatedAt: new Date(),
+        type: faker.random.arrayElement(destinationType),
       });
     }
     return queryInterface.bulkInsert("Destinations", data, {});
