@@ -170,7 +170,6 @@ const Travel = () => {
   useEffect(() => {
     fetchDestinations(id);
   }, [id]);
-  console.log(newDestination);
   return (
     <section className="profile-agent-destinations">
       <Container>
