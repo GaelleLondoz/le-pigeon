@@ -10,11 +10,14 @@ const CardAgent = ({ agent, avgRatings }) => {
         <Link to={"/agent/" + agent.id}>
           <img
             src={
-              agent.avatar.length < 16
+              agent.avatar
                 ? "http://localhost:5000/avatar/" + agent.avatar
-                : agent.avatar
+                : agent.firstName
             }
             className="rounded-circle img-fluid"
+            alt={
+              "Le Pigeon | Avatar de " + agent.firstName + " " + agent.lastName
+            }
           />
           ))
         </Link>
