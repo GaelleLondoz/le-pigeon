@@ -101,8 +101,9 @@ const ShowDestination = ({ destination, pictures }) => {
                 <img
                   alt={destination.Destination.name}
                   src={
+                    destination.Destination.coverImage &&
                     "http://localhost:5000/destination/" +
-                    destination.Destination.coverImage
+                      destination.Destination.coverImage
                   }
                   className={classes.picture}
                 />
