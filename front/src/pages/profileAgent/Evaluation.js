@@ -5,6 +5,7 @@ import UsersAPI from "../../components/services/userAPI";
 import ReviewsAPI from "../../components/services/reviewAPI";
 import CardComment from "../../components/agent/CardComment";
 import Paginator from "../../components/Pagination";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const Evaluation = () => {
   const url = window.location.href;
@@ -82,8 +83,6 @@ const Evaluation = () => {
   useEffect(() => {
     fetchComments(id);
   }, [id]);
-
-  //console.log(avgRatings);
   //console.log(comments);
 
   return (
@@ -102,7 +101,11 @@ const Evaluation = () => {
               <div className="profile-agent-evaluation-info">
                 <Avatar
                   alt="Remy Sharp"
-                  src={"http://localhost:5000/avatar/" + agent.User.avatar}
+                  src={
+                    agent.User.avatar
+                      ? "http://localhost:5000/avatar/" + agent.User.avatar
+                      : AvatarDefault
+                  }
                 />
                 <Rating
                   name="read-only"
@@ -114,9 +117,9 @@ const Evaluation = () => {
             </Grid>
           </Grid>
         </div>
-        <Typography variant="h5">Liste de vos messages</Typography>
+        <Typography variant="h5">Liste de vos commentaires</Typography>
 
-        {noComments ? (
+        {comments.length < 1 ? (
           <Typography component="p">{noComments}</Typography>
         ) : (
           paginatedComments.map((comment) => {

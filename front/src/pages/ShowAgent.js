@@ -17,7 +17,7 @@ import CardDestination from "../components/agent/CardDestination";
 import Paginator from "../components/Pagination";
 import CardComment from "../components/agent/CardComment";
 import Form from "../components/reviews/Form";
-import Flash from "../components/alerts/Flash"
+import Flash from "../components/alerts/Flash";
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
@@ -81,8 +81,6 @@ const ShowAgent = ({ match }) => {
     }
   };
 
-
-
   const handlePaginationDestinationChange = (e, page) => {
     setCurrentDestinationPage(page);
     //window.scrollTo(0, 0);
@@ -102,15 +100,16 @@ const ShowAgent = ({ match }) => {
   };
 
   const handleCreateItem = (status) => {
-    const messageAlert = "Votre review a bien été ajoutée, elle sera publée une fois validée par nos administrateurs"
-    loadAlertInfos(status, messageAlert)
-  }
+    const messageAlert =
+      "Votre review a bien été ajoutée, elle sera publée une fois validée par nos administrateurs";
+    loadAlertInfos(status, messageAlert);
+  };
 
   const handleDeleteItem = (status) => {
-    const messageAlert = "Votre review a bien été supprimée"
-    loadAlertInfos(status, messageAlert)
-    handleRefreshList(id)
-  }
+    const messageAlert = "Votre review a bien été supprimée";
+    loadAlertInfos(status, messageAlert);
+    handleRefreshList(id);
+  };
 
   const handleOpen = () => {
     handleOpenFormCreate(true);
@@ -119,16 +118,16 @@ const ShowAgent = ({ match }) => {
   const loadAlertInfos = (status, messageAlert) => {
     setDisplayFlash({
       status: status,
-      messageAlert: messageAlert
-    })
+      messageAlert: messageAlert,
+    });
 
     setTimeout(function () {
       setDisplayFlash({
         status: false,
-        messageAlert: ""
-      })
+        messageAlert: "",
+      });
     }, 3000);
-  }
+  };
 
   const paginatedDestinations = Paginator.getData(
     destinations,
@@ -159,16 +158,12 @@ const ShowAgent = ({ match }) => {
     fetchReviewsByAgent(id);
   }, [id]);
 
-
-
-  //   console.log(agent);
-  //   console.log(avgRatings);
-  //   console.log(destinations);
-  // console.log(reviews);
   return (
     <section id="public-agent-profile">
       <div className="alert-container">
-        {displayFlash.status && <Flash status="success" text={displayFlash.messageAlert} />}
+        {displayFlash.status && (
+          <Flash status="success" text={displayFlash.messageAlert} />
+        )}
       </div>
       <Container>
         <Box className="agent-information" component="div">
@@ -177,7 +172,10 @@ const ShowAgent = ({ match }) => {
               <Box component="div" className="container-avatar">
                 <Avatar
                   alt="Remy Sharp"
-                  src={"http://localhost:5000/avatar/" + agent.User.avatar}
+                  src={
+                    agent.User.avatar &&
+                    "http://localhost:5000/avatar/" + agent.User.avatar
+                  }
                 />
                 <Rating
                   name="read-only"
@@ -240,14 +238,21 @@ const ShowAgent = ({ match }) => {
           <Typography variant="h3">
             Ce que les voyageurs disent de {agent.User.firstName}
           </Typography>
-
-          <Button size="medium" variant="contained" color="secondary" onClick={handleOpen}>
+          {reviews.length < 1 && (
+            <p style={{ fontWeight: "bold", fontSize: "1rem" }}>
+              Soyez le premier à laisser un commentaire !
+            </p>
+          )}
+          <Button
+            size="medium"
+            variant="contained"
+            color="secondary"
+            onClick={handleOpen}
+          >
             Donner votre avis
-                </Button>
-
+          </Button>
 
           {paginatedReviews.map((review) => {
-
             return (
               <div key={review.id} className="card-comments-agent">
                 <CardComment

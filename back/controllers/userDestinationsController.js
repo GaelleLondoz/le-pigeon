@@ -52,6 +52,12 @@ const create = async (req, res) => {
       msg: "Veuillez séléctionner une image principale de votre destination !",
     });
   }
+  if (req.body.type === "") {
+    errors.push({
+      target: "type",
+      msg: "Veuillez séléctionner un type de voyage !",
+    });
+  }
   if (errors.length > 0) {
     return res.status(400).json({ errors });
   }
@@ -74,6 +80,7 @@ const create = async (req, res) => {
       name: req.body.name,
       lat: req.body.lat,
       lng: req.body.lng,
+      type: req.body.type,
       coverImage: fileSendToDatabase,
       createdAt: new Date(),
       updatedAt: new Date(),

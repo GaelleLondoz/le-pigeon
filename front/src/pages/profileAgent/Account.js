@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -15,6 +15,7 @@ import ReviewsAPI from "../../components/services/reviewAPI";
 import EditAgentModal from "../../components/modals/EditAgentModal";
 import userDestinationsAPI from "../../components/services/userDestinationsAPI";
 import { getBase64 } from "../../helpers/getBase64";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const Account = () => {
   const url = window.location.href;
@@ -159,15 +160,6 @@ const Account = () => {
     initialPosition.push([50.503887, 4.469936]);
   }
 
-  // destinations.map((destination, index) =>
-  //   destination && index === 0
-  //     ? initialPosition.push([
-  //         destination.Destination.lat,
-  //         destination.Destination.lng,
-  //       ])
-  //     : initialPosition.push([50.503887, 4.469936])
-  // );
-
   return (
     <section className="profile-agent-account">
       <Container>
@@ -267,7 +259,11 @@ const Account = () => {
               <div className="profile-agent-account-avatar">
                 <Avatar
                   alt={"Pigeon | Avatar de l'agent " + agent.User.firstName}
-                  src={"http://localhost:5000/avatar/" + agent.User.avatar}
+                  src={
+                    agent.User.avatar
+                      ? "http://localhost:5000/avatar/" + agent.User.avatar
+                      : AvatarDefault
+                  }
                 />
                 <Rating
                   name="read-only"
