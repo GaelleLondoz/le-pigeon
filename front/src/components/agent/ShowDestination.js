@@ -2,8 +2,17 @@ import React, { useState, useEffect } from "react";
 import Swiper from "react-id-swiper";
 import "swiper/css/swiper.css";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Grid, Typography } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Typography,
+  Avatar,
+  Badge,
+  Chip,
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
 import { formatDate } from "../../helpers/formatDate";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const useStyles = makeStyles({
   containerCoverImage: {
@@ -72,16 +81,20 @@ const ShowDestination = ({ destination, pictures }) => {
     fetchInfoLocation();
   }, [destination]);
 
+  console.log(destination);
+
   return (
     <section className="travel-details">
       <Container>
         <div className="travel-detail-location-title">
           <Grid container justify="center">
             <Grid item xs={12} className={classes.locationTitle}>
-              <Typography variant="h4">
-                {destinationDetails.results[0].components.continent} |{" "}
-                {destinationDetails.results[0].components.country} |{" "}
-                {destinationDetails.results[0].components.city}
+              <Typography variant="h5">
+                {/* {destinationDetails.results[0].components.continent} |{" "}
+                {destinationDetails.results[0].components.country} |{" "} */}
+                Mon voyage à{" "}
+                {destinationDetails.results[0].components.city ||
+                  destinationDetails.results[0].components.city_district}
               </Typography>
             </Grid>
           </Grid>
@@ -92,11 +105,6 @@ const ShowDestination = ({ destination, pictures }) => {
         >
           <Grid container justify="center">
             <Grid item xs={12}>
-              {/* <img
-                src={destination.Destination.coverImage}
-                alt=""
-                className={classes.coverImage}
-              /> */}
               <Swiper {...params} shouldSwiperUpdate>
                 <img
                   alt={destination.Destination.name}
@@ -117,15 +125,60 @@ const ShowDestination = ({ destination, pictures }) => {
                   </div>
                 ))}
               </Swiper>
-              <Typography component="p" className={classes.dateStart}>
+              {/* <Typography component="p" className={classes.dateStart}>
                 - Parti le {formatDate(destination.date)} -
-              </Typography>
+              </Typography> */}
             </Grid>
           </Grid>
         </div>
         <div className="travel-detail-info">
+          <Typography variant="h5">Notre agent</Typography>
+          <div className="travel-detail-info-agent-container">
+            <div className="travel-detail-info-agent">
+              <Avatar
+                alt={"Le Pigeon | Avatar de " + destination.User.firstName}
+                src={
+                  destination.User.avatar
+                    ? "http://localhost:5000/avatar/" + destination.User.avatar
+                    : AvatarDefault
+                }
+              />
+              <Typography component="p">
+                {destination.User.firstName} {destination.User.lastName}
+                <br />
+                Mon voyage à{" "}
+                {destinationDetails.results[0].components.city ||
+                  destinationDetails.results[0].components.city_district}{" "}
+                en date du {formatDate(destination.date)}
+              </Typography>
+            </div>
+            <Link to={"/agent/" + destination.User.id}>En savoir plus</Link>
+          </div>
           <Grid container>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={12}>
+              <Typography variant="h5" style={{ marginBottom: "20px" }}>
+                Information complémentaire sur le voyage de{" "}
+                <strong>
+                  {destination.User.firstName} {destination.User.lastName}
+                </strong>
+              </Typography>
+              <Typography
+                component="p"
+                style={{ marginBottom: "15px", fontWeight: "bold" }}
+              >
+                Type de voyage :{" "}
+              </Typography>
+              <Chip color="secondary" label={destination.Destination.type} />
+              <Typography
+                component="p"
+                style={{
+                  marginTop: "20px",
+                  marginBottom: "15px",
+                  fontWeight: "bold",
+                }}
+              >
+                Description :
+              </Typography>
               <Typography component="p">{destination.remarks}</Typography>
             </Grid>
           </Grid>

@@ -14,14 +14,15 @@ const ShowTravelDetails = ({ match }) => {
       Continent: {},
       Country: {},
     },
+    User: {},
   });
   const [pictures, setPictures] = useState([]);
 
   const fetchDestination = async (id, destinationId) => {
     try {
       const data = await UserAPI.getDestinationByUser(id, destinationId);
-      const { date, remarks, Destination } = data;
-      setDestination({ date, remarks, Destination });
+      const { date, remarks, Destination, User } = data;
+      setDestination({ date, remarks, Destination, User });
     } catch (error) {
       console.log(error.response);
     }
