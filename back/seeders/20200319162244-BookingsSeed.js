@@ -4,7 +4,7 @@ const faker = require("faker");
 module.exports = {
   up: (queryInterface, Sequelize) => {
     let data = [];
-    const dataStatus = ["En cours", "Acceptée", "Annulée"];
+    const dataStatus = ["PENDING", "ACCEPTED", "CANCELLED"];
     let count = 30;
     while (count--) {
       data.push({
