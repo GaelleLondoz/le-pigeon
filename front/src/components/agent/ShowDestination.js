@@ -132,7 +132,7 @@ const ShowDestination = ({ destination, pictures }) => {
           </Grid>
         </div>
         <div className="travel-detail-info">
-          <Typography variant="h5">Notre agent</Typography>
+          <Typography variant="h5">Agent de voyage</Typography>
           <div className="travel-detail-info-agent-container">
             <div className="travel-detail-info-agent">
               <Avatar
