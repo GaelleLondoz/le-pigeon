@@ -15,6 +15,7 @@ import { formatDate } from "../../helpers/formatDate";
 import { getBase64 } from "../../helpers/getBase64";
 import LoaderButton from "../../components/loaders/LoaderButton";
 import Flash from "../../components/alerts/Flash";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const UserAccount = ({ match }) => {
   const { id } = match.params;
@@ -85,8 +86,6 @@ const UserAccount = ({ match }) => {
     fetchUser(id);
   }, [id]);
 
-  console.log(user);
-
   return (
     <>
       <section id="profile-user-account-header">
@@ -94,7 +93,11 @@ const UserAccount = ({ match }) => {
           <div className="container-header">
             <Avatar
               alt={"Le Pigeon | Avatar de " + user.firstName}
-              src={"http://localhost:5000/avatar/" + user.avatar}
+              src={
+                user.avatar
+                  ? "http://localhost:5000/avatar/" + user.avatar
+                  : AvatarDefault
+              }
             />
             <div className="container-info">
               <div className="profile-user-account-info">

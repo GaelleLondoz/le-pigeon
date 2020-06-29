@@ -181,6 +181,10 @@ const getDestinationByUser = async (req, res) => {
         {
           model: Destination,
         },
+        {
+          model: User,
+          attributes: ["firstName", "lastName", "avatar", "id"],
+        },
       ],
     });
     if (!destination) {

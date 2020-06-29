@@ -102,7 +102,6 @@ const getAllCommentsReviewByAgent = async (req, res) => {
         },
       ],
     });
-    console.log(comments);
     if (!comments.length) {
       return res.status(404).json({ msg: "Comments Not Found" });
     }

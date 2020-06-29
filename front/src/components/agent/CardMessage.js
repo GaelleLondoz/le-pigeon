@@ -7,6 +7,7 @@ import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import MessageAPI from "../../components/services/messageAPI";
 import { changeStatusMessageToFrench } from "../../helpers/changeStatusToFrench";
 import LoaderButton from "../../components/loaders/LoaderButton";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const CardMessage = ({ message }) => {
   const [showMessage, setShowMessage] = useState(false);
@@ -74,8 +75,12 @@ const CardMessage = ({ message }) => {
           style={{ marginTop: "20px", alignItems: "center" }}
         >
           <Avatar
-            alt="Remy Sharp"
-            src={"http://localhost:5000/avatar/" + message.sender.avatar}
+            alt={"Le Pigeon | Avatar de " + message.sender.lastName}
+            src={
+              message.sender.avatar
+                ? "http://localhost:5000/avatar/" + message.sender.avatar
+                : AvatarDefault
+            }
           />
           <Typography component="p">
             Par {message.sender.firstName} {message.sender.lastName}

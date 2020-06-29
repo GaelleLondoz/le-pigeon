@@ -39,8 +39,6 @@ const UserMessage = ({ match }) => {
   useEffect(() => {
     fetchMessages(id);
   }, [id]);
-
-  console.log(messages);
   return (
     <section id="profile-user-messages">
       <Container>
