@@ -208,13 +208,14 @@ const getAllDestinationsByUsers = async (req, res) => {
   return UserDestination.findAll({
     include: [
       {
-        model: Destination
+        model: Destination,
+        attributes: ["id", "lat", "lng", "type"],
       },
     ],
   })
     .then((users) => res.status(200).send(users))
     .catch((e) => res.status(500).send(e));
-}
+};
 
 module.exports = {
   getAllDestinationsByUser,
@@ -222,5 +223,5 @@ module.exports = {
   create,
   //getAllContinents,
   getPicturesDestinationByDestination,
-  getAllDestinationsByUsers
+  getAllDestinationsByUsers,
 };
