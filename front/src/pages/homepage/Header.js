@@ -11,13 +11,13 @@ import {
 import userDestinationsAPI from "../../components/services/userDestinationsAPI";
 
 const Header = () => {
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState({
+    d: [],
+  });
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
   const initDestinations = async () => {
-    //let cities = [];
     let data = [];
-    let dataCities = [];
     const destinations = await UserDestinationsAPI.getAllDestinationsByUsers();
     // const ratings = await reviewAPI.getRatings();
     const entries = destinations.entries();
@@ -36,64 +36,41 @@ const Header = () => {
       }
       data.push(row);
     }
-    console.log({ data });
     setDestinations(data);
-
-    // destinations.map(destination => {
-    //   console.log({ destination })
-    // })
-
-    const latlng = [
-      {
-        lat: 51.049999,
-        lng: 3.733333,
-      },
-      {
-        lat: 50.984966,
-        lng: 5.051962,
-      },
-      {
-        lat: 50.843502,
-        lng: 3.604461,
-      },
-    ];
-    for (let i = 0; i < latlng.length; i++) {
-      console.log({ destinations: destinations[i] });
-      fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${latlng[i].lat}%2C+${latlng[i].lng}&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
-      )
-        .then(function (response) {
-          if (response.status !== 200) {
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
-            return;
-          }
-          response.json().then(function ({ results }) {
-            //console.log({ results });
-            //console.log(data);
-            //setCities(results);
-            dataCities.push(results[0]);
-            //console.log({ response: cities });
-          });
-        })
-        .catch(function (err) {
-          console.log("Fetch Error :-S", err);
-        });
-    }
-    setCities(dataCities);
-    //console.log({ dataCities });
-    //console.log({ cities });
+  };
+  // const latlng = [
+  //   {
+  //     lat: 51.049999,
+  //     lng: 3.733333,
+  //   },
+  //   {
+  //     lat: 50.984966,
+  //     lng: 5.051962,
+  //   },
+  //   {
+  //     lat: 50.843502,
+  //     lng: 3.604461,
+  //   },
+  // ];
+  const fetchLatLng = async () => {
+    let dataCities = [];
+    const dest = await UserDestinationsAPI.getAllDestinationsByUsers();
+    dest.map(async (data) => {
+      let response = await fetch(
+        `https://api.opencagedata.com/geocode/v1/json?q=${data.Destination.lat}%2C+${data.Destination.lng}&language=en&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
+      );
+      const { results } = await response.json();
+      if (results[0] !== undefined) dataCities.push(results[0]);
+      setCities({ ...cities, d: dataCities });
+    });
   };
   useEffect(() => {
     if (mounted) {
       initDestinations();
+      fetchLatLng();
       setMounted(false);
     }
   }, []);
-
-  console.log(cities);
-
   return (
     <section id="header-homepage">
       <Container>
@@ -105,7 +82,18 @@ const Header = () => {
                 <Autocomplete
                   id="free-solo-demo-2"
                   freeSolo
-                  options={destinations.map((option) => option.name)}
+                  options={cities.d.map((data) => {
+                    if (data.components.city !== undefined)
+                      return data.components.city;
+                    if (data.components.state !== undefined)
+                      return data.components.state;
+                    if (data.components.city_district !== undefined)
+                      return data.components.city_district;
+                    return data.formatted;
+                    // return data.components.city === undefined
+                    //   ? data.components.city_district
+                    //   : data.components.city;
+                  })}
                   renderInput={(params) => (
                     <TextField
                       {...params}
