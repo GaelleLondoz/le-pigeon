@@ -97,6 +97,7 @@ const Header = () => {
                   id="free-solo-demo-2"
                   freeSolo
                   options={cities.citiesAPI.map((data) => {
+                    console.log(data);
                     if (data.components.city !== undefined)
                       return data.components.city;
                     if (data.components.state !== undefined)
