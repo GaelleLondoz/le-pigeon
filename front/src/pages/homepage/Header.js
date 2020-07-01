@@ -12,7 +12,7 @@ import userDestinationsAPI from "../../components/services/userDestinationsAPI";
 
 const Header = () => {
   const [cities, setCities] = useState({
-    d: [],
+    citiesAPI: [],
   });
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
@@ -65,11 +65,17 @@ const Header = () => {
         );
         const { results } = await response.json();
         if (results[0] !== undefined) dataCities.push(results[0]);
-        setCities({ ...cities, d: dataCities });
+        setCities({ ...cities, citiesAPI: dataCities });
       });
     } catch (error) {
       console.log(error.response);
     }
+  };
+  const handleSearchCityChange = (event, value) => {
+    setSearchCity(value);
+  };
+  const handleSearchTypeChange = (event, value) => {
+    setSearchType(value);
   };
   useEffect(() => {
     if (mounted) {
@@ -78,6 +84,8 @@ const Header = () => {
       setMounted(false);
     }
   }, []);
+  console.log({ searchCity });
+  console.log({ searchType });
   return (
     <section id="header-homepage">
       <Container>
@@ -85,11 +93,11 @@ const Header = () => {
         <div className="form-search">
           <form className="" noValidate autoComplete="off">
             <Grid container justify="center" spacing={4}>
-              <Grid item>
+              <Grid item sm={12} md={4}>
                 <Autocomplete
                   id="free-solo-demo-2"
                   freeSolo
-                  options={cities.d.map((data) => {
+                  options={cities.citiesAPI.map((data) => {
                     if (data.components.city !== undefined)
                       return data.components.city;
                     if (data.components.state !== undefined)
@@ -101,9 +109,7 @@ const Header = () => {
                     //   ? data.components.city_district
                     //   : data.components.city;
                   })}
-                  onChange={(e, values) => {
-                    setSearchCity(values);
-                  }}
+                  onChange={handleSearchCityChange}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -115,16 +121,14 @@ const Header = () => {
                   )}
                 />
               </Grid>
-              <Grid item>
+              <Grid item sm={12} md={4}>
                 <Autocomplete
                   id="free-solo-demo"
                   freeSolo
                   options={destinations.map(
                     (option) => option.Destination.type
                   )}
-                  onChange={(e, values) => {
-                    setSearchType(values);
-                  }}
+                  onChange={handleSearchTypeChange}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -136,7 +140,7 @@ const Header = () => {
                   )}
                 />
               </Grid>
-              <Grid item>
+              <Grid item sm={12} md={4}>
                 <Button variant="contained" color="secondary" size="large">
                   Rechercher
                 </Button>
