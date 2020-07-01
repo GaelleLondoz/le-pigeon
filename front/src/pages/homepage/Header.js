@@ -16,28 +16,30 @@ const Header = () => {
   });
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
-  const initDestinations = async () => {
-    let data = [];
-    const destinations = await UserDestinationsAPI.getAllDestinationsByUsers();
-    // const ratings = await reviewAPI.getRatings();
-    const entries = destinations.entries();
-    for (const [i, item] of entries) {
-      const result = data.find((row) => row.type === item.Destination.type);
-      let row = {
-        name: item.Destination.name,
-        type: item.Destination.type,
-        lat: item.Destination.lat,
-        lng: item.Destination.lng,
-      };
-      if (!result) {
-        row.type = item.Destination.type;
-      } else {
-        row.type = "";
-      }
-      data.push(row);
-    }
-    setDestinations(data);
-  };
+  const [searchCity, setSearchCity] = useState("");
+  const [searchType, setSearchType] = useState("");
+  // const initDestinations = async () => {
+  //   let data = [];
+  //   const destinations = await UserDestinationsAPI.getAllDestinationsByUsers();
+  //   // const ratings = await reviewAPI.getRatings();
+  //   const entries = destinations.entries();
+  //   for (const [i, item] of entries) {
+  //     const result = data.find((row) => row.type === item.Destination.type);
+  //     let row = {
+  //       name: item.Destination.name,
+  //       type: item.Destination.type,
+  //       lat: item.Destination.lat,
+  //       lng: item.Destination.lng,
+  //     };
+  //     if (!result) {
+  //       row.type = item.Destination.type;
+  //     } else {
+  //       row.type = "";
+  //     }
+  //     data.push(row);
+  //   }
+  //   setDestinations(data);
+  // };
   // const latlng = [
   //   {
   //     lat: 51.049999,
@@ -54,23 +56,30 @@ const Header = () => {
   // ];
   const fetchLatLng = async () => {
     let dataCities = [];
-    const dest = await UserDestinationsAPI.getAllDestinationsByUsers();
-    dest.map(async (data) => {
-      let response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${data.Destination.lat}%2C+${data.Destination.lng}&language=en&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
-      );
-      const { results } = await response.json();
-      if (results[0] !== undefined) dataCities.push(results[0]);
-      setCities({ ...cities, d: dataCities });
-    });
+    try {
+      const dest = await UserDestinationsAPI.getAllDestinationsByUsers();
+      setDestinations(dest);
+      dest.map(async (data) => {
+        let response = await fetch(
+          `https://api.opencagedata.com/geocode/v1/json?q=${data.Destination.lat}%2C+${data.Destination.lng}&language=en&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
+        );
+        const { results } = await response.json();
+        if (results[0] !== undefined) dataCities.push(results[0]);
+        setCities({ ...cities, d: dataCities });
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
   };
   useEffect(() => {
     if (mounted) {
-      initDestinations();
+      //initDestinations();
       fetchLatLng();
       setMounted(false);
     }
   }, []);
+  console.log({ searchType });
+  console.log({ searchCity });
   return (
     <section id="header-homepage">
       <Container>
@@ -94,6 +103,9 @@ const Header = () => {
                     //   ? data.components.city_district
                     //   : data.components.city;
                   })}
+                  onChange={(e, values) => {
+                    setSearchCity(values);
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -109,7 +121,12 @@ const Header = () => {
                 <Autocomplete
                   id="free-solo-demo"
                   freeSolo
-                  options={destinations.map((option) => option.type)}
+                  options={destinations.map(
+                    (option) => option.Destination.type
+                  )}
+                  onChange={(e, values) => {
+                    setSearchType(values);
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
