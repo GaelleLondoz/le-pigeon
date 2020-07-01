@@ -18,6 +18,7 @@ const Header = () => {
   const [destinations, setDestinations] = useState([]);
   const [searchCity, setSearchCity] = useState("");
   const [searchType, setSearchType] = useState("");
+
   // const initDestinations = async () => {
   //   let data = [];
   //   const destinations = await UserDestinationsAPI.getAllDestinationsByUsers();
@@ -84,8 +85,6 @@ const Header = () => {
       setMounted(false);
     }
   }, []);
-  console.log({ searchCity });
-  console.log({ searchType });
   return (
     <section id="header-homepage">
       <Container>
