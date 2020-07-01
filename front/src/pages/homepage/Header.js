@@ -78,8 +78,6 @@ const Header = () => {
       setMounted(false);
     }
   }, []);
-  console.log({ searchType });
-  console.log({ searchCity });
   return (
     <section id="header-homepage">
       <Container>
