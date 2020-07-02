@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import UserDestinationsAPI from "./../../components/services/userDestinationsAPI";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import algoliasearch from 'algoliasearch';
+import Places from "../../components/algolia/Places";
+
 import {
   Container,
   Grid,
@@ -18,6 +21,10 @@ const Header = () => {
   const [destinations, setDestinations] = useState([]);
   const [searchCity, setSearchCity] = useState("");
   const [searchType, setSearchType] = useState("");
+
+  const client = algoliasearch(process.env.REACT_APP_APP_ID_ALGOLIA_NAIM, process.env.REACT_APP_API_KEY_ALGOLIA_NAIM);
+  // const client = algoliasearch('pl8P9UZ5YTUQ', 'ce717e8eae6c276af2b1d57ea05bfe44');
+  const index = client.initIndex('your_index_name');
 
   // const initDestinations = async () => {
   //   let data = [];
@@ -59,6 +66,7 @@ const Header = () => {
     let dataCities = [];
     try {
       const dest = await UserDestinationsAPI.getAllDestinationsByUsers();
+
       setDestinations(dest);
       dest.map(async (data) => {
         let response = await fetch(
@@ -72,11 +80,27 @@ const Header = () => {
       console.log(error.response);
     }
   };
+
   const handleSearchCityChange = (event, value) => {
     setSearchCity(value);
   };
   const handleSearchTypeChange = (event, value) => {
     setSearchType(value);
+  };
+
+  const handlePlacesLatLngChange = async (suggestion) => {
+    console.log({
+      lat: suggestion.latlng.lat,
+      lng: suggestion.latlng.lng
+
+
+    })
+    const { lat, lng } = suggestion.latlng
+
+    const proxyDestinations = await UserDestinationsAPI.getProxyDestinations(lat, lng)
+
+    console.log({ proxyDestinations })
+
   };
   useEffect(() => {
     if (mounted) {
@@ -88,6 +112,14 @@ const Header = () => {
   return (
     <section id="header-homepage">
       <Container>
+        <Places
+          type="city"
+          name="latlng"
+          placeholder="Insérer la ville de votre destination"
+          handleChange={(suggestion) =>
+            handlePlacesLatLngChange(suggestion)
+          }
+        />
         <Typography variant="h1">Trouvez votre agent de voyage</Typography>
         <div className="form-search">
           <form className="" noValidate autoComplete="off">
@@ -97,7 +129,7 @@ const Header = () => {
                   id="free-solo-demo-2"
                   freeSolo
                   options={cities.citiesAPI.map((data) => {
-                    console.log(data);
+                    // console.log(data);
                     if (data.components.city !== undefined)
                       return data.components.city;
                     if (data.components.state !== undefined)

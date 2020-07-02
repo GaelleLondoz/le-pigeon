@@ -127,6 +127,11 @@ router.get(
 //   userDestinationsController.getAllContinents
 // );
 router.post("/destinations/new", checkAuth, userDestinationsController.create);
+router.get(
+  "/proxy-destinations/:lat/:lng",
+  userDestinationsController.getProxyDestinations
+);
+
 
 // roles
 router.get("/roles", checkAuth, rolesController.index);
