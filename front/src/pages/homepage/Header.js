@@ -8,8 +8,12 @@ import {
   Typography,
   TextField,
   Button,
+  Checkbox,
+  FormControlLabel,
 } from "@material-ui/core";
 import userDestinationsAPI from "../../components/services/userDestinationsAPI";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 
 const Header = () => {
   const [cities, setCities] = useState({
@@ -20,7 +24,14 @@ const Header = () => {
   const [searchCity, setSearchCity] = useState("");
   const [searchType, setSearchType] = useState("");
   const [types, setTypes] = useState([]);
+  const [checked, setChecked] = useState({
+    Hotel: true,
+    Backpacking: true,
+  });
+  //const [checked, setChecked] = useState(true);
   let data = [];
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 
   // const initDestinations = async () => {
   //   let data = [];
@@ -78,8 +89,12 @@ const Header = () => {
   const handleSearchCityChange = (event, value) => {
     setSearchCity(value);
   };
-  const handleSearchTypeChange = (event, value) => {
-    setSearchType(value);
+  const handleSearchTypeChange = (event) => {
+    //console.log({ event });
+    const name = event.currentTarget.name;
+    //setChecked({ ...checked, [name]: !checked[name] });
+    setChecked(!checked);
+    console.log({ event });
   };
 
   const handlePlacesLatLngChange = async (suggestion) => {
@@ -113,7 +128,8 @@ const Header = () => {
       setMounted(false);
     }
   }, []);
-  console.log({ TYPE: types });
+  //console.log({ TYPE: types });
+  console.log({ EVENT: checked });
   return (
     <section id="header-homepage">
       <Container>
@@ -185,7 +201,7 @@ const Header = () => {
                 {/* /> */}
               </Grid>
               <Grid item sm={12} md={4}>
-                <Autocomplete
+                {/* <Autocomplete
                   id="free-solo-demo"
                   freeSolo
                   options={types.map((option) => option.type)}
@@ -199,7 +215,53 @@ const Header = () => {
                       variant="outlined"
                     />
                   )}
-                />
+                /> */}
+                {/* <Autocomplete
+                  multiple
+                  id="checkboxes-tags-demo"
+                  options={types}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.type}
+                  renderOption={(option, { selected }) => (
+                    <>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                        onChange={(e) => handleSearchTypeChange(e)}
+                      />
+                      {option.type}
+                    </>
+                  )}
+                  style={{ width: 500 }}
+                  //onChange={(e) => handleSearchTypeChange(e)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Checkboxes"
+                      placeholder="Favorites"
+                    />
+                  )}
+                /> */}
+                {types.map(({ type }) => {
+                  console.log({ type });
+                  return (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          //checked={checked[type]}
+                          checked={checked}
+                          onChange={handleSearchTypeChange}
+                          name={type}
+                          color="primary"
+                        />
+                      }
+                      label={type}
+                    />
+                  );
+                })}
               </Grid>
               <Grid item sm={12} md={4}>
                 <Button variant="contained" color="secondary" size="large">
