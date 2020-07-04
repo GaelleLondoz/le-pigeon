@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserDestinationsAPI from "./../../components/services/userDestinationsAPI";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-<<<<<<< HEAD
-=======
 import Places from "../../components/algolia/Places";
-
->>>>>>> 45c2cb6618fa1971dfa88ae89fff64139a330b92
 import {
   Container,
   Grid,
@@ -64,10 +60,6 @@ const Header = () => {
     let dataCities = [];
     try {
       const dest = await UserDestinationsAPI.getAllDestinationsByUsers();
-<<<<<<< HEAD
-=======
-
->>>>>>> 45c2cb6618fa1971dfa88ae89fff64139a330b92
       setDestinations(dest);
       dest.map(async (data) => {
         let response = await fetch(
@@ -81,32 +73,27 @@ const Header = () => {
       console.log(error.response);
     }
   };
-<<<<<<< HEAD
-=======
-
->>>>>>> 45c2cb6618fa1971dfa88ae89fff64139a330b92
   const handleSearchCityChange = (event, value) => {
     setSearchCity(value);
   };
   const handleSearchTypeChange = (event, value) => {
     setSearchType(value);
   };
-<<<<<<< HEAD
-=======
 
   const handlePlacesLatLngChange = async (suggestion) => {
     console.log({
       lat: suggestion.latlng.lat,
-      lng: suggestion.latlng.lng
-    })
-    const { lat, lng } = suggestion.latlng
+      lng: suggestion.latlng.lng,
+    });
+    const { lat, lng } = suggestion.latlng;
 
-    const proxyDestinations = await UserDestinationsAPI.getProxyDestinations(lat, lng)
+    const proxyDestinations = await UserDestinationsAPI.getProxyDestinations(
+      lat,
+      lng
+    );
 
-    console.log({ proxyDestinations })
-
+    console.log({ proxyDestinations });
   };
->>>>>>> 45c2cb6618fa1971dfa88ae89fff64139a330b92
   useEffect(() => {
     if (mounted) {
       //initDestinations();
@@ -117,14 +104,12 @@ const Header = () => {
   return (
     <section id="header-homepage">
       <Container>
-
         <Typography variant="h1">Trouvez votre agent de voyage</Typography>
         <div className="form-search">
           <form className="" noValidate autoComplete="off">
             <Grid container justify="center" spacing={4}>
               <Grid item sm={12} md={4}>
-<<<<<<< HEAD
-                <Autocomplete
+                {/* <Autocomplete
                   id="free-solo-demo-2"
                   freeSolo
                   options={cities.citiesAPI.map((data) => {
@@ -149,8 +134,7 @@ const Header = () => {
                       margin="normal"
                       variant="outlined"
                     />
-                  )}
-=======
+                  )} */}
                 <Places
                   type="city"
                   name="latlng"
@@ -158,7 +142,6 @@ const Header = () => {
                   handleChange={(suggestion) =>
                     handlePlacesLatLngChange(suggestion)
                   }
->>>>>>> 45c2cb6618fa1971dfa88ae89fff64139a330b92
                 />
                 {/* <Autocomplete
                   id="free-solo-demo-2"

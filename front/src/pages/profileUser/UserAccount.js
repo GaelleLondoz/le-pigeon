@@ -95,7 +95,7 @@ const UserAccount = ({ match }) => {
               alt={"Le Pigeon | Avatar de " + user.firstName}
               src={
                 user.avatar
-                  ? "http://localhost:5000/avatar/" + user.avatar
+                  ? process.env.REACT_APP_BASE_URL + "/avatar/" + user.avatar
                   : AvatarDefault
               }
             />
