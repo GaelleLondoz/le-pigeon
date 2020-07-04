@@ -23,11 +23,11 @@ const create = async (req, res) => {
       target: "name",
       msg: "Veuillez renseigner un titre à votre destination !",
     });
-  } else if (req.body.name.length < 10 || req.body.name > 30) {
+  } else if (req.body.name.length < 1 || req.body.name > 255) {
     errors.push({
       target: "name",
       msg:
-        "Le titre de votre destination doit contenir entre 10 et 30 caractères !",
+        "Le titre de votre destination doit contenir des caractères !",
     });
   }
   if (req.body.date === "") {
@@ -237,7 +237,7 @@ const getProxyDestinations = async (req, res) => {
     const limit = 100
 
     // https://stackoverflow.com/a/20437045
-    const query = `SELECT id, lat, lng, 3956 * 2 
+    const query = `SELECT id, lat, lng, type, 3956 * 2 
     * ASIN(SQRT(POWER(SIN((:lat - lat) * pi() / 180 / 2), 2)
     + COS(:lat * pi() / 180) * COS(lat * pi() / 180)
     * POWER(SIN((:lng - lng) * pi() / 180 / 2), 2)))

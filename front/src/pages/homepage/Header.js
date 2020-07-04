@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import UserDestinationsAPI from "./../../components/services/userDestinationsAPI";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import algoliasearch from 'algoliasearch';
 import Places from "../../components/algolia/Places";
 
 import {
@@ -11,7 +10,6 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
-import userDestinationsAPI from "../../components/services/userDestinationsAPI";
 
 const Header = () => {
   const [cities, setCities] = useState({
@@ -21,10 +19,6 @@ const Header = () => {
   const [destinations, setDestinations] = useState([]);
   const [searchCity, setSearchCity] = useState("");
   const [searchType, setSearchType] = useState("");
-
-  const client = algoliasearch(process.env.REACT_APP_APP_ID_ALGOLIA_NAIM, process.env.REACT_APP_API_KEY_ALGOLIA_NAIM);
-  // const client = algoliasearch('pl8P9UZ5YTUQ', 'ce717e8eae6c276af2b1d57ea05bfe44');
-  const index = client.initIndex('your_index_name');
 
   // const initDestinations = async () => {
   //   let data = [];
@@ -92,8 +86,6 @@ const Header = () => {
     console.log({
       lat: suggestion.latlng.lat,
       lng: suggestion.latlng.lng
-
-
     })
     const { lat, lng } = suggestion.latlng
 
@@ -112,20 +104,21 @@ const Header = () => {
   return (
     <section id="header-homepage">
       <Container>
-        <Places
-          type="city"
-          name="latlng"
-          placeholder="Insérer la ville de votre destination"
-          handleChange={(suggestion) =>
-            handlePlacesLatLngChange(suggestion)
-          }
-        />
+
         <Typography variant="h1">Trouvez votre agent de voyage</Typography>
         <div className="form-search">
           <form className="" noValidate autoComplete="off">
             <Grid container justify="center" spacing={4}>
               <Grid item sm={12} md={4}>
-                <Autocomplete
+                <Places
+                  type="city"
+                  name="latlng"
+                  placeholder="Insérer la ville de votre destination"
+                  handleChange={(suggestion) =>
+                    handlePlacesLatLngChange(suggestion)
+                  }
+                />
+                {/* <Autocomplete
                   id="free-solo-demo-2"
                   freeSolo
                   options={cities.citiesAPI.map((data) => {
@@ -150,8 +143,8 @@ const Header = () => {
                       margin="normal"
                       variant="outlined"
                     />
-                  )}
-                />
+                  // )} */}
+                {/* /> */}
               </Grid>
               <Grid item sm={12} md={4}>
                 <Autocomplete
