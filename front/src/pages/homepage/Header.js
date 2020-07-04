@@ -25,11 +25,12 @@ const Header = () => {
   const [searchType, setSearchType] = useState("");
   const [types, setTypes] = useState([]);
   const [checked, setChecked] = useState({
-    Hotel: true,
-    Backpacking: true,
+    // Hotel: true,
+    // Backpacking: true,
   });
   //const [checked, setChecked] = useState(true);
   let data = [];
+  //const destinationSearch = React.createRef();
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 
@@ -55,20 +56,6 @@ const Header = () => {
   //   }
   //   setDestinations(data);
   // };
-  // const latlng = [
-  //   {
-  //     lat: 51.049999,
-  //     lng: 3.733333,
-  //   },
-  //   {
-  //     lat: 50.984966,
-  //     lng: 5.051962,
-  //   },
-  //   {
-  //     lat: 50.843502,
-  //     lng: 3.604461,
-  //   },
-  // ];
   const fetchLatLng = async () => {
     let dataCities = [];
     try {
@@ -89,12 +76,8 @@ const Header = () => {
   const handleSearchCityChange = (event, value) => {
     setSearchCity(value);
   };
-  const handleSearchTypeChange = (event) => {
-    //console.log({ event });
-    const name = event.currentTarget.name;
-    //setChecked({ ...checked, [name]: !checked[name] });
-    setChecked(!checked);
-    console.log({ event });
+  const handleSearchTypeChange = (event, value) => {
+    setSearchType(value);
   };
 
   const handlePlacesLatLngChange = async (suggestion) => {
@@ -104,22 +87,22 @@ const Header = () => {
     });
     const { lat, lng } = suggestion.latlng;
 
-    const proxyDestinations = await UserDestinationsAPI.getProxyDestinations(
-      lat,
-      lng
-    );
+    // const proxyDestinations = await UserDestinationsAPI.getProxyDestinations(
+    //   lat,
+    //   lng
+    // );
 
-    proxyDestinations.map((destination) => {
-      let row = {
-        type: destination.type,
-      };
-      const result = data.find((row) => row.type === destination.type);
-      if (!result) data.push(row);
-    });
-    setTypes(data);
-    //console.log(types);
+    //   // proxyDestinations.map((destination) => {
+    //   //   let row = {
+    //   //     type: destination.type,
+    //   //   };
+    //   //   const result = data.find((row) => row.type === destination.type);
+    //   //   if (!result) data.push(row);
+    //   // });
+    //   //setTypes(data);
+    //   //console.log(types);
 
-    //console.log({ proxyDestinations });
+    //   //console.log({ proxyDestinations });
   };
   useEffect(() => {
     if (mounted) {
@@ -128,8 +111,27 @@ const Header = () => {
       setMounted(false);
     }
   }, []);
-  //console.log({ TYPE: types });
-  console.log({ EVENT: checked });
+  useEffect(() => {
+    const names = destinations;
+    let uniqueType = [];
+    names.map((name) => {
+      let row = {
+        type: name.Destination.type,
+      };
+      const result = uniqueType.find(
+        (row) => row.type === name.Destination.type
+      );
+      if (!result) uniqueType.push(row);
+    });
+    setTypes(uniqueType);
+  }, [destinations]);
+
+  // useEffect(() => {
+  //   //Change focus
+  //   destinationSearch.focus();
+  // }, [searchType]);
+  console.log({ destinations });
+  console.log({ searchType });
   return (
     <section id="header-homepage">
       <Container>
@@ -137,6 +139,42 @@ const Header = () => {
         <div className="form-search">
           <form className="" noValidate autoComplete="off">
             <Grid container justify="center" spacing={4}>
+              <Grid item sm={12} md={4}>
+                <Autocomplete
+                  id="free-solo-demo"
+                  freeSolo
+                  options={types.map((option) => option.type)}
+                  onChange={handleSearchTypeChange}
+                  //value={searchType}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      id="outlined-basic"
+                      label="Quel type de voyage ?"
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  )}
+                />
+                {/* {types.map(({ type }) => {
+                  console.log({ type });
+                  return (
+                    <FormControlLabel
+                      key={type}
+                      control={
+                        <Checkbox
+                          checked={checked[type]}
+                          //checked={checked}
+                          onChange={handleSearchTypeChange}
+                          name={type}
+                          color="primary"
+                        />
+                      }
+                      label={type}
+                    />
+                  );
+                })} */}
+              </Grid>
               <Grid item sm={12} md={4}>
                 {/* <Autocomplete
                   id="free-solo-demo-2"
@@ -171,6 +209,9 @@ const Header = () => {
                   handleChange={(suggestion) =>
                     handlePlacesLatLngChange(suggestion)
                   }
+                  // ref={(input) => {
+                  //   destinationSearch = input;
+                  // }}
                 />
                 {/* <Autocomplete
                   id="free-solo-demo-2"
@@ -199,69 +240,6 @@ const Header = () => {
                     />
                   // )} */}
                 {/* /> */}
-              </Grid>
-              <Grid item sm={12} md={4}>
-                {/* <Autocomplete
-                  id="free-solo-demo"
-                  freeSolo
-                  options={types.map((option) => option.type)}
-                  onChange={handleSearchTypeChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      id="outlined-basic"
-                      label="Quel type de voyage ?"
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  )}
-                /> */}
-                {/* <Autocomplete
-                  multiple
-                  id="checkboxes-tags-demo"
-                  options={types}
-                  disableCloseOnSelect
-                  getOptionLabel={(option) => option.type}
-                  renderOption={(option, { selected }) => (
-                    <>
-                      <Checkbox
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
-                        checked={selected}
-                        onChange={(e) => handleSearchTypeChange(e)}
-                      />
-                      {option.type}
-                    </>
-                  )}
-                  style={{ width: 500 }}
-                  //onChange={(e) => handleSearchTypeChange(e)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      label="Checkboxes"
-                      placeholder="Favorites"
-                    />
-                  )}
-                /> */}
-                {types.map(({ type }) => {
-                  console.log({ type });
-                  return (
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          //checked={checked[type]}
-                          checked={checked}
-                          onChange={handleSearchTypeChange}
-                          name={type}
-                          color="primary"
-                        />
-                      }
-                      label={type}
-                    />
-                  );
-                })}
               </Grid>
               <Grid item sm={12} md={4}>
                 <Button variant="contained" color="secondary" size="large">
