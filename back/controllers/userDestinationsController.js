@@ -255,6 +255,43 @@ const getProxyDestinations = async (req, res) => {
     return res.status(500).json({ msg: "Error Server" });
   }
 };
+const searchAgentByDestAndType = async (req, res) => {
+  const { type, lat, lng } = req.query;
+  // console.log({ query: req.query });
+  const errors = [];
+  if (type === "" || undefined) {
+    errors.push({
+      target: "type",
+      msg: "Veuillez séléctionner un type !",
+    });
+  }
+  if (lat === null || lat === undefined) {
+    errors.push({
+      target: "latlng",
+      msg: "Veuillez taper une destination !",
+    });
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json(errors);
+  }
+  //Validation ok
+  try {
+    const agents = await db.sequelize.query(
+      "Select users.firstName, users.lastName, users.id, users.avatar, AVG(Reviews.rating) as avgRatings FROM Reviews, users, userdestinations,destinations as dest WHERE users.id=userdestinations.userID AND userdestinations.destinationID=dest.id AND users.id = Reviews.agentID AND CAST(dest.lat as CHAR) LIKE BINARY :lat AND CAST(dest.lng as CHAR) LIKE BINARY :lng AND dest.type like :type AND Users.isAgent = 1 GROUP BY Users.firstName, Users.lastName, Reviews.agentID ORDER BY avgRatings DESC",
+      {
+        replacements: { lat: lat, lng: lng, type: type },
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    if (agents.length === 0) {
+      return res.status(404).json({ msg: "Agents Not Found" });
+    }
+    return res.status(200).json(agents);
+  } catch (error) {
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   getAllDestinationsByUser,
   getDestinationByUser,
@@ -263,4 +300,5 @@ module.exports = {
   getPicturesDestinationByDestination,
   getAllDestinationsByUsers,
   getProxyDestinations,
+  searchAgentByDestAndType,
 };

@@ -39,6 +39,10 @@ router.get(
   usersController.getProfileUser
 );
 router.put("/users/user/:id", checkAuth, usersController.editProfileUser);
+router.get(
+  "/users/search/agents",
+  userDestinationsController.searchAgentByDestAndType
+);
 // login auth
 router.post("/login", usersController.login);
 router.post("/logout", checkAuth, usersController.logout);
@@ -131,7 +135,6 @@ router.get(
   "/proxy-destinations/:lat/:lng",
   userDestinationsController.getProxyDestinations
 );
-
 
 // roles
 router.get("/roles", checkAuth, rolesController.index);

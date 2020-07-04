@@ -12,7 +12,7 @@ const CardAgent = ({ agent, avgRatings }) => {
           <img
             src={
               agent.avatar
-                ? "http://localhost:5000/avatar/" + agent.avatar
+                ? process.env.REACT_APP_BASE_URL + "/avatar/" + agent.avatar
                 : AvatarDefault
             }
             className="rounded-circle img-fluid"

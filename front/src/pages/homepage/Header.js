@@ -8,105 +8,63 @@ import {
   Typography,
   TextField,
   Button,
-  Checkbox,
-  FormControlLabel,
 } from "@material-ui/core";
-import userDestinationsAPI from "../../components/services/userDestinationsAPI";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 
 const Header = () => {
-  const [cities, setCities] = useState({
-    citiesAPI: [],
-  });
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
-  const [searchCity, setSearchCity] = useState("");
+  const [searchDestination, setSearchDestination] = useState({
+    lat: null,
+    lng: null,
+  });
   const [searchType, setSearchType] = useState("");
   const [types, setTypes] = useState([]);
-  const [checked, setChecked] = useState({
-    // Hotel: true,
-    // Backpacking: true,
-  });
-  //const [checked, setChecked] = useState(true);
   let data = [];
-  //const destinationSearch = React.createRef();
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 
-  // const initDestinations = async () => {
-  //   let data = [];
-  //   const destinations = await UserDestinationsAPI.getAllDestinationsByUsers();
-  //   // const ratings = await reviewAPI.getRatings();
-  //   const entries = destinations.entries();
-  //   for (const [i, item] of entries) {
-  //     const result = data.find((row) => row.type === item.Destination.type);
-  //     let row = {
-  //       name: item.Destination.name,
-  //       type: item.Destination.type,
-  //       lat: item.Destination.lat,
-  //       lng: item.Destination.lng,
-  //     };
-  //     if (!result) {
-  //       row.type = item.Destination.type;
-  //     } else {
-  //       row.type = "";
-  //     }
-  //     data.push(row);
-  //   }
-  //   setDestinations(data);
-  // };
   const fetchLatLng = async () => {
     let dataCities = [];
     try {
       const dest = await UserDestinationsAPI.getAllDestinationsByUsers();
       setDestinations(dest);
-      dest.map(async (data) => {
-        let response = await fetch(
-          `https://api.opencagedata.com/geocode/v1/json?q=${data.Destination.lat}%2C+${data.Destination.lng}&language=en&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
-        );
-        const { results } = await response.json();
-        if (results[0] !== undefined) dataCities.push(results[0]);
-        setCities({ ...cities, citiesAPI: dataCities });
-      });
+      // dest.map(async (data) => {
+      //   let response = await fetch(
+      //     `https://api.opencagedata.com/geocode/v1/json?q=${data.Destination.lat}%2C+${data.Destination.lng}&language=en&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
+      //   );
+      //   const { results } = await response.json();
+      //   if (results[0] !== undefined) dataCities.push(results[0]);
+      //   setCities({ ...cities, citiesAPI: dataCities });
+      // });
     } catch (error) {
       console.log(error.response);
     }
-  };
-  const handleSearchCityChange = (event, value) => {
-    setSearchCity(value);
   };
   const handleSearchTypeChange = (event, value) => {
     setSearchType(value);
   };
 
-  const handlePlacesLatLngChange = async (suggestion) => {
+  const handlePlacesLatLngChange = (suggestion) => {
     console.log({
       lat: suggestion.latlng.lat,
       lng: suggestion.latlng.lng,
     });
-    const { lat, lng } = suggestion.latlng;
+    setSearchDestination(suggestion.latlng);
+  };
 
-    // const proxyDestinations = await UserDestinationsAPI.getProxyDestinations(
-    //   lat,
-    //   lng
-    // );
-
-    //   // proxyDestinations.map((destination) => {
-    //   //   let row = {
-    //   //     type: destination.type,
-    //   //   };
-    //   //   const result = data.find((row) => row.type === destination.type);
-    //   //   if (!result) data.push(row);
-    //   // });
-    //   //setTypes(data);
-    //   //console.log(types);
-
-    //   //console.log({ proxyDestinations });
+  const handleSearchClick = async () => {
+    try {
+      const data = await UserDestinationsAPI.getAgentsByDestAndType(
+        searchType,
+        searchDestination.lat,
+        searchDestination.lng
+      );
+      //CREATE STATE FOR RESPONSE
+      console.log(data);
+    } catch (error) {
+      console.log(error.response);
+    }
   };
   useEffect(() => {
     if (mounted) {
-      //initDestinations();
       fetchLatLng();
       setMounted(false);
     }
@@ -125,13 +83,6 @@ const Header = () => {
     });
     setTypes(uniqueType);
   }, [destinations]);
-
-  // useEffect(() => {
-  //   //Change focus
-  //   destinationSearch.focus();
-  // }, [searchType]);
-  console.log({ destinations });
-  console.log({ searchType });
   return (
     <section id="header-homepage">
       <Container>
@@ -145,7 +96,6 @@ const Header = () => {
                   freeSolo
                   options={types.map((option) => option.type)}
                   onChange={handleSearchTypeChange}
-                  //value={searchType}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -156,52 +106,8 @@ const Header = () => {
                     />
                   )}
                 />
-                {/* {types.map(({ type }) => {
-                  console.log({ type });
-                  return (
-                    <FormControlLabel
-                      key={type}
-                      control={
-                        <Checkbox
-                          checked={checked[type]}
-                          //checked={checked}
-                          onChange={handleSearchTypeChange}
-                          name={type}
-                          color="primary"
-                        />
-                      }
-                      label={type}
-                    />
-                  );
-                })} */}
               </Grid>
               <Grid item sm={12} md={4}>
-                {/* <Autocomplete
-                  id="free-solo-demo-2"
-                  freeSolo
-                  options={cities.citiesAPI.map((data) => {
-                    console.log(data);
-                    if (data.components.city !== undefined)
-                      return data.components.city;
-                    if (data.components.state !== undefined)
-                      return data.components.state;
-                    if (data.components.city_district !== undefined)
-                      return data.components.city_district;
-                    return data.formatted;
-                    // return data.components.city === undefined
-                    //   ? data.components.city_district
-                    //   : data.components.city;
-                  })}
-                  onChange={handleSearchCityChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      id="outlined-basic-2"
-                      label="Quelle région du monde ?"
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  )} */}
                 <Places
                   type="city"
                   name="latlng"
@@ -209,40 +115,15 @@ const Header = () => {
                   handleChange={(suggestion) =>
                     handlePlacesLatLngChange(suggestion)
                   }
-                  // ref={(input) => {
-                  //   destinationSearch = input;
-                  // }}
                 />
-                {/* <Autocomplete
-                  id="free-solo-demo-2"
-                  freeSolo
-                  options={cities.citiesAPI.map((data) => {
-                    // console.log(data);
-                    if (data.components.city !== undefined)
-                      return data.components.city;
-                    if (data.components.state !== undefined)
-                      return data.components.state;
-                    if (data.components.city_district !== undefined)
-                      return data.components.city_district;
-                    return data.formatted;
-                    // return data.components.city === undefined
-                    //   ? data.components.city_district
-                    //   : data.components.city;
-                  })}
-                  onChange={handleSearchCityChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      id="outlined-basic-2"
-                      label="Quelle région du monde ?"
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  // )} */}
-                {/* /> */}
               </Grid>
               <Grid item sm={12} md={4}>
-                <Button variant="contained" color="secondary" size="large">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  onClick={handleSearchClick}
+                >
                   Rechercher
                 </Button>
               </Grid>

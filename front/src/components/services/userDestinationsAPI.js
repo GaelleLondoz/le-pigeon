@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USER_DESTINATIONS_URL, API_URL } from "../../config";
+import { USER_DESTINATIONS_URL, API_URL, USERS_URL } from "../../config";
 
 function getAllDestinationsByUser(id) {
   return axios
@@ -33,10 +33,25 @@ function getProxyDestinations(lat, lng) {
     .get(API_URL + "/proxy-destinations/" + lat + "/" + lng)
     .then((response) => response.data);
 }
+function getAgentsByDestAndType(type, lat, lng) {
+  return axios
+    .get(
+      USERS_URL +
+        "/search/agents?" +
+        "type=" +
+        type +
+        "&lat=" +
+        lat +
+        "&lng=" +
+        lng
+    )
+    .then((response) => response.data);
+}
 export default {
   getAllDestinationsByUser,
   create,
   getAllPicturesByDestination,
   getAllDestinationsByUsers,
   getProxyDestinations,
+  getAgentsByDestAndType,
 };
