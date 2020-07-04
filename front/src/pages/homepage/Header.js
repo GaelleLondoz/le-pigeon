@@ -188,9 +188,7 @@ const Header = () => {
                 <Autocomplete
                   id="free-solo-demo"
                   freeSolo
-                  options={destinations.map(
-                    (option) => option.Destination.type
-                  )}
+                  options={types.map((option) => option.type)}
                   onChange={handleSearchTypeChange}
                   renderInput={(params) => (
                     <TextField
