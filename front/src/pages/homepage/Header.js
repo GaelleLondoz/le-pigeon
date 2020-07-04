@@ -19,6 +19,8 @@ const Header = () => {
   const [destinations, setDestinations] = useState([]);
   const [searchCity, setSearchCity] = useState("");
   const [searchType, setSearchType] = useState("");
+  const [types, setTypes] = useState([]);
+  let data = [];
 
   // const initDestinations = async () => {
   //   let data = [];
@@ -92,7 +94,17 @@ const Header = () => {
       lng
     );
 
-    console.log({ proxyDestinations });
+    proxyDestinations.map((destination) => {
+      let row = {
+        type: destination.type,
+      };
+      const result = data.find((row) => row.type === destination.type);
+      if (!result) data.push(row);
+    });
+    setTypes(data);
+    //console.log(types);
+
+    //console.log({ proxyDestinations });
   };
   useEffect(() => {
     if (mounted) {
@@ -101,6 +113,7 @@ const Header = () => {
       setMounted(false);
     }
   }, []);
+  console.log({ TYPE: types });
   return (
     <section id="header-homepage">
       <Container>
