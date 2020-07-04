@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Menu, MenuList, MenuItem, Button, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const CollapseNav = ({
   anchorEl,
@@ -71,9 +72,9 @@ const CollapseNav = ({
               <Avatar
                 alt={"Le Pigeon | Avatar de " + currentUser.firstName}
                 src={
-                  currentUser.avatar !== undefined
+                  currentUser.avatar
                     ? "http://localhost:5000/avatar/" + currentUser.avatar
-                    : null
+                    : AvatarDefault
                 }
               />
             </Button>

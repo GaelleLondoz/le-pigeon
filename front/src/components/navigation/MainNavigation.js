@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import AuthContext from "../../contexts/AuthContext";
 import AuthAPI from "../services/authAPI";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 //NAVIGATION WITHOUT RESPONSIVE
 
@@ -106,9 +107,9 @@ const MainNavigation = ({ history }) => {
                   <Avatar
                     alt={"Le Pigeon | Avatar de " + currentUser.firstName}
                     src={
-                      currentUser.avatar !== undefined
+                      currentUser.avatar
                         ? "http://localhost:5000/avatar/" + currentUser.avatar
-                        : null
+                        : AvatarDefault
                     }
                   />
                 </Button>

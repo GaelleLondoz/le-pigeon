@@ -7,6 +7,8 @@ const {
   User,
 } = require("../models");
 const fs = require("fs");
+const db = require("../models/index");
+const sequelize = require("sequelize");
 const { makeKey } = require("../helpers");
 
 const create = async (req, res) => {
@@ -21,11 +23,10 @@ const create = async (req, res) => {
       target: "name",
       msg: "Veuillez renseigner un titre à votre destination !",
     });
-  } else if (req.body.name.length < 10 || req.body.name > 30) {
+  } else if (req.body.name.length < 1 || req.body.name > 255) {
     errors.push({
       target: "name",
-      msg:
-        "Le titre de votre destination doit contenir entre 10 et 30 caractères !",
+      msg: "Le titre de votre destination doit contenir des caractères !",
     });
   }
   if (req.body.date === "") {
@@ -52,6 +53,12 @@ const create = async (req, res) => {
       msg: "Veuillez séléctionner une image principale de votre destination !",
     });
   }
+  if (req.body.type === "") {
+    errors.push({
+      target: "type",
+      msg: "Veuillez séléctionner un type de voyage !",
+    });
+  }
   if (errors.length > 0) {
     return res.status(400).json({ errors });
   }
@@ -74,6 +81,7 @@ const create = async (req, res) => {
       name: req.body.name,
       lat: req.body.lat,
       lng: req.body.lng,
+      type: req.body.type,
       coverImage: fileSendToDatabase,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -174,6 +182,10 @@ const getDestinationByUser = async (req, res) => {
         {
           model: Destination,
         },
+        {
+          model: User,
+          attributes: ["firstName", "lastName", "avatar", "id"],
+        },
       ],
     });
     if (!destination) {
@@ -216,7 +228,33 @@ const getAllDestinationsByUsers = async (req, res) => {
     .then((users) => res.status(200).send(users))
     .catch((e) => res.status(500).send(e));
 };
+const getProxyDestinations = async (req, res) => {
+  try {
+    const { lat, lng } = req.params;
+    const dis = 50;
+    const limit = 100;
 
+    // https://stackoverflow.com/a/20437045
+    const query = `SELECT id, lat, lng, type, 3956 * 2 
+    * ASIN(SQRT(POWER(SIN((:lat - lat) * pi() / 180 / 2), 2)
+    + COS(:lat * pi() / 180) * COS(lat * pi() / 180)
+    * POWER(SIN((:lng - lng) * pi() / 180 / 2), 2)))
+    as distance FROM Destinations WHERE
+    lng between(:lng - :dis / cos(radians(:lat)) * 69)
+    and(:lng + :dis / cos(radians(:lat)) * 69)
+    and lat between(:lat - (:dis / 69))
+    and(:lat + (:dis / 69))
+    having distance < :dis ORDER BY distance limit :limit`;
+    const result = await db.sequelize.query(query, {
+      replacements: { lat, lng, dis, limit },
+      type: sequelize.QueryTypes.SELECT,
+    });
+    return res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   getAllDestinationsByUser,
   getDestinationByUser,
@@ -224,4 +262,5 @@ module.exports = {
   //getAllContinents,
   getPicturesDestinationByDestination,
   getAllDestinationsByUsers,
+  getProxyDestinations,
 };
