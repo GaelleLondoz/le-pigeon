@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import UserDestinationsAPI from "./../../components/services/userDestinationsAPI";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Places from "../../components/algolia/Places";
@@ -9,6 +9,9 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import CardAgent from "../../components/agent/CardAgent";
+import { Redirect } from "react-router-dom";
+import SearchAgentsContext from "../../contexts/SearchAgentsContext";
 
 const Header = () => {
   const [mounted, setMounted] = useState(true);
@@ -19,7 +22,16 @@ const Header = () => {
   });
   const [searchType, setSearchType] = useState("");
   const [types, setTypes] = useState([]);
+  //const [searchAgents, setSearchAgents] = useState([]);
+  const [redirect, setRedirect] = useState(false);
   let data = [];
+
+  const {
+    searchAgents,
+    setSearchAgents,
+    setSearchDisplay,
+    searchDisplay,
+  } = useContext(SearchAgentsContext);
 
   const fetchLatLng = async () => {
     let dataCities = [];
@@ -57,8 +69,9 @@ const Header = () => {
         searchDestination.lat,
         searchDestination.lng
       );
-      //CREATE STATE FOR RESPONSE
-      console.log(data);
+      setSearchAgents(data);
+      setSearchDisplay(true);
+      setRedirect(true);
     } catch (error) {
       console.log(error.response);
     }
@@ -83,6 +96,22 @@ const Header = () => {
     });
     setTypes(uniqueType);
   }, [destinations]);
+
+  //console.log({ search: searchAgents });
+
+  if (redirect) {
+    return (
+      <Redirect
+        exact
+        from="/"
+        to={{
+          pathname: `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`,
+          state: { searchAgents, searchDisplay },
+        }}
+      />
+    );
+  }
+  console.log({ headerSearch: searchAgents, searchDisplay });
   return (
     <section id="header-homepage">
       <Container>

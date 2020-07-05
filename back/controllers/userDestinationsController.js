@@ -257,23 +257,28 @@ const getProxyDestinations = async (req, res) => {
 };
 const searchAgentByDestAndType = async (req, res) => {
   const { type, lat, lng } = req.query;
-  // console.log({ query: req.query });
+  console.log({ query: req.query });
   const errors = [];
+
+  if (
+    lat === "null" ||
+    (lat === undefined && lng === "null") ||
+    lng === undefined
+  ) {
+    errors.push({
+      target: "latlng",
+      msg: "Veuillez taper une destination !",
+    });
+  }
   if (type === "" || undefined) {
     errors.push({
       target: "type",
       msg: "Veuillez séléctionner un type !",
     });
   }
-  if (lat === null || lat === undefined) {
-    errors.push({
-      target: "latlng",
-      msg: "Veuillez taper une destination !",
-    });
-  }
 
   if (errors.length > 0) {
-    return res.status(400).json(errors);
+    return res.status(400).json({ errors });
   }
   //Validation ok
   try {

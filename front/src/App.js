@@ -14,6 +14,7 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import AuthAPI from "./components/services/authAPI";
 import userAPI from "./components/services/userAPI";
 import AuthContext from "./contexts/AuthContext";
+import SearchAgentsContext from "./contexts/SearchAgentsContext";
 
 import Home from "./pages/Home";
 import Connect from "./pages/Connect";
@@ -36,6 +37,7 @@ import MainNav from "./components/navigation/MainNav";
 import UserAccount from "./pages/profileUser/UserAccount";
 import UserMessage from "./pages/profileUser/UserMessage";
 import UserBooking from "./pages/profileUser/UserBooking";
+import Agents from "./pages/Agents";
 
 AuthAPI.setup();
 const App = () => {
@@ -47,6 +49,9 @@ const App = () => {
       setIsAdmin(status);
     })
   );
+
+  const [searchAgents, setSearchAgents] = useState([]);
+  const [searchDisplay, setSearchDisplay] = useState(false);
 
   const [currentUser, setCurrentUser] = useState({});
 
@@ -62,6 +67,7 @@ const App = () => {
 
   useEffect(() => {
     isAuthenticated && fetchUser();
+    //setSearchAgents([]);
   }, []);
 
   // const NavBarWithRouter = withRouter(Nav);
@@ -76,58 +82,68 @@ const App = () => {
     isAdmin,
     setIsAdmin,
   };
+  const contextSearchAgentsValue = {
+    searchAgents,
+    setSearchAgents,
+    searchDisplay,
+    setSearchDisplay,
+  };
 
   return (
     <AuthContext.Provider value={contextValue}>
-      <Router>
-        <Head />
-        {/* <NavBarWithRouter /> */}
-        {/* <MainNavigationWithRouter /> */}
-        <MainNavWithRouter />
-        <main>
-          <Switch>
-            {/*<Route exact path="/" component={Home} />*/}
-            <Route exact path="/chat" component={ChatBox} />
-            <AdminRoute exact path="/admin" component={AdminDashboard} />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/connect" component={Connect} />
-            <Route exact path="/help" component={Help} />
-            <Route exact path="/message" component={Messages} />
-            <Route exact path="/become-agent" component={BecomeAgent} />
-            <Route exact path="/agent/:id" component={ShowAgent} />
-            <LoginNotAllowedRoutes exact path="/login" component={Login} />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <Route
-              exact
-              path="/agent/:id/destination/:destinationId"
-              component={ShowTravelDetails}
-            />
-            <PrivateRoute
-              exact
-              path="/profile/agent/:id"
-              component={ProfileAgent}
-            />
-            <PrivateRoute
-              exact
-              path="/profile/user/:id/account"
-              component={UserAccount}
-            />
-            <PrivateRoute
-              exact
-              path="/profile/user/:id/message"
-              component={UserMessage}
-            />
-            <PrivateRoute
-              exact
-              path="/profile/user/:id/booking"
-              component={UserBooking}
-            />
+      <SearchAgentsContext.Provider value={contextSearchAgentsValue}>
+        <Router>
+          <Head />
+          {/* <NavBarWithRouter /> */}
+          {/* <MainNavigationWithRouter /> */}
+          <MainNavWithRouter />
+          <main>
+            <Switch>
+              {/*<Route exact path="/" component={Home} />*/}
+              <Route exact path="/chat" component={ChatBox} />
+              <AdminRoute exact path="/admin" component={AdminDashboard} />
+              <Route exact path="/" component={Home} />
+              <Route exact path="/connect" component={Connect} />
+              <Route exact path="/help" component={Help} />
+              <Route exact path="/message" component={Messages} />
+              <Route exact path="/become-agent" component={BecomeAgent} />
+              <Route exact path="/agent/:id" component={ShowAgent} />
 
-            {/* <Route exact path="/users/:id" component={Profile} /> */}
-          </Switch>
-        </main>
-        {/*<Footer />*/}
-      </Router>
+              <Route exact path="/agents" component={Agents} />
+              <LoginNotAllowedRoutes exact path="/login" component={Login} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <Route
+                exact
+                path="/agent/:id/destination/:destinationId"
+                component={ShowTravelDetails}
+              />
+              <PrivateRoute
+                exact
+                path="/profile/agent/:id"
+                component={ProfileAgent}
+              />
+              <PrivateRoute
+                exact
+                path="/profile/user/:id/account"
+                component={UserAccount}
+              />
+              <PrivateRoute
+                exact
+                path="/profile/user/:id/message"
+                component={UserMessage}
+              />
+              <PrivateRoute
+                exact
+                path="/profile/user/:id/booking"
+                component={UserBooking}
+              />
+
+              {/* <Route exact path="/users/:id" component={Profile} /> */}
+            </Switch>
+          </main>
+          {/*<Footer />*/}
+        </Router>
+      </SearchAgentsContext.Provider>
     </AuthContext.Provider>
   );
 };

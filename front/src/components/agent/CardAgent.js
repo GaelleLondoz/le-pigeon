@@ -20,7 +20,6 @@ const CardAgent = ({ agent, avgRatings }) => {
               "Le Pigeon | Avatar de " + agent.firstName + " " + agent.lastName
             }
           />
-          ))
         </Link>
       </div>
       <div className="card-body">
