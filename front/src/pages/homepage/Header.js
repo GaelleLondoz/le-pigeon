@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
+// import { browserHistory } from 'react-router'
+import { connect } from "react-redux";
 import UserDestinationsAPI from "./../../components/services/userDestinationsAPI";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Places from "../../components/algolia/Places";
@@ -13,7 +15,8 @@ import CardAgent from "../../components/agent/CardAgent";
 import { Redirect } from "react-router-dom";
 import SearchAgentsContext from "../../contexts/SearchAgentsContext";
 
-const Header = () => {
+
+let Header = (props) => {
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
   const [searchDestination, setSearchDestination] = useState({
@@ -22,16 +25,16 @@ const Header = () => {
   });
   const [searchType, setSearchType] = useState("");
   const [types, setTypes] = useState([]);
-  //const [searchAgents, setSearchAgents] = useState([]);
+  const [searchAgents, setSearchAgents] = useState([]);
   const [redirect, setRedirect] = useState(false);
   let data = [];
 
-  const {
-    searchAgents,
-    setSearchAgents,
-    setSearchDisplay,
-    searchDisplay,
-  } = useContext(SearchAgentsContext);
+  // const {
+  //   searchAgents,
+  //   setSearchAgents,
+  //   setSearchDisplay,
+  //   searchDisplay,
+  // } = useContext(SearchAgentsContext);
 
   const fetchLatLng = async () => {
     let dataCities = [];
@@ -70,8 +73,15 @@ const Header = () => {
         searchDestination.lng
       );
       setSearchAgents(data);
-      setSearchDisplay(true);
-      setRedirect(true);
+      console.log({ store: props })
+      // setSearchDisplay(true);
+      props.dispatch({ type: "SET_SEARCH_AGENTS", agents: data })
+      // this.props.dispatch(registerStep1Success())
+
+      props.history.push(`/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`)
+
+      // setRedirect(true);
+
     } catch (error) {
       console.log(error.response);
     }
@@ -102,16 +112,16 @@ const Header = () => {
   if (redirect) {
     return (
       <Redirect
-        exact
+        // exact
         from="/"
         to={{
           pathname: `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`,
-          state: { searchAgents, searchDisplay },
+          // state: { searchAgents, searchDisplay },
         }}
       />
     );
   }
-  console.log({ headerSearch: searchAgents, searchDisplay });
+  // console.log({ headerSearch: searchAgents, searchDisplay });
   return (
     <section id="header-homepage">
       <Container>
@@ -163,5 +173,27 @@ const Header = () => {
     </section>
   );
 };
+const mapStateToSearchAgents = (state) => {
+  return {
+    agents: state.agents,
+  };
+};
+
+// const mapDispatchToSearchAgents = (dispatch) => {
+//   return {
+//     // login: () => {
+//     //   //Dispatch => role: call a action of type ...(SET_AUTH)
+//     //   dispatch({ type: "SET_AUTH" });
+//     // },
+//     search: () => {
+//       //Dispatch => role: call a action of type ...(SET_AUTH)
+//       dispatch({ type: "SET_SEARCH_AGENTS" });
+//     }
+//   };
+//   // return bindActionCreators({ setLight: setLight }, dispatch);
+// };
+
+// Header = connect(mapStateToSearchAgents, mapDispatchToSearchAgents)(Header);
+Header = connect(mapStateToSearchAgents)(Header);
 
 export default Header;
