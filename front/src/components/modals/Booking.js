@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useContext } from "react";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -125,7 +125,7 @@ export default function FormDialog({ agentID }) {
 
   return (
     <div>
-      {isAuthenticated && !currentUser.isAgent && (
+      {isAuthenticated && !currentUser.isAgent ? (
         <Button
           variant="contained"
           color="secondary"
@@ -134,6 +134,16 @@ export default function FormDialog({ agentID }) {
         >
           Reservez un Rendez-Vous
         </Button>
+      ) : (
+        <p style={{ color: "#009fb7" }}>
+          Vous souhaitez réserver ?{" "}
+          <Link
+            to="/login"
+            style={{ textDecoration: "none", color: "#f72564" }}
+          >
+            Connectez-vous !
+          </Link>
+        </p>
       )}
       <form>
         <Dialog
