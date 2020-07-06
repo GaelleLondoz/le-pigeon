@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -12,6 +12,7 @@ import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import bookingAPI from "../services/bookingAPI";
+import { FormHelperText } from "@material-ui/core";
 
 import { DateTimePicker } from "@material-ui/pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -20,6 +21,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
+import AuthContext from "../../contexts/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,11 +32,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FormDialog() {
+export default function FormDialog({ agentID }) {
+  const { isAuthenticated, currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const defaultDate = new Date();
   const classes = useStyles();
-  const status ="Accepted"
+  const status = "Accepted";
 
   const handleClick = () => {
     setOpen(true);
@@ -58,16 +61,42 @@ export default function FormDialog() {
   const [booking, setBooking] = useState({
     date: defaultDate,
     type: "",
+    agentID: null,
+  });
+  const [errors, setErrors] = useState({
+    date: "",
+    type: "",
   });
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await bookingAPI.createBooking({ booking, date: toMysql(booking.date)});
+      // await bookingAPI.createBooking({
+      //   booking,
+      //   date: toMysql(booking.date),
+      //   agentID: 1,
+      // });
+      setErrors({});
+      await bookingAPI.createBooking(agentID, {
+        booking,
+        date: toMysql(booking.date),
+      });
       console.log("Ok, in the DB");
       // await bookingAPI.createBooking({ booking, date: booking.date });
-      return setshowFlash(true), console.log("Show me the alert");
+      setTimeout(() => {
+        setshowFlash(true);
+      }, 3000);
+      setshowFlash(false);
+      setOpen(false);
     } catch (error) {
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
       console.log(error.response);
     }
   };
@@ -92,18 +121,20 @@ export default function FormDialog() {
 
   // console.log(booking);
   console.log("Date", booking.date);
-  console.log("Booking", booking)
+  console.log("Booking", booking);
 
   return (
     <div>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={handleClickOpen}
-        onClick={handleClick}
-      >
-        Reservez un Rendez-Vous
-      </Button>
+      {isAuthenticated && !currentUser.isAgent && (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleClickOpen}
+          onClick={handleClick}
+        >
+          Reservez un Rendez-Vous
+        </Button>
+      )}
       <form>
         <Dialog
           open={open}
@@ -124,6 +155,8 @@ export default function FormDialog() {
                 disablePast
                 onChange={handledDateChange}
                 format="dd-MM-yyyy hh:mm"
+                error={errors.date ? true : false}
+                helperText={errors.date && errors.date}
               />
             </MuiPickersUtilsProvider>
             <TextField
@@ -145,7 +178,11 @@ export default function FormDialog() {
           </DialogContent>
 
           <DialogActions>
-            <FormControl component="fieldset">
+            <FormControl
+              component="fieldset"
+              error={errors.type ? true : false}
+              he
+            >
               <RadioGroup
                 aria-label="Communication"
                 name="type"
@@ -159,11 +196,12 @@ export default function FormDialog() {
                   label="Face à Face"
                 />
                 <FormControlLabel
-                  value="Par Vidéo Conf"
+                  value="Par Vidéo Conférence"
                   control={<Radio />}
-                  label="Par Vidéo Conf"
+                  label="Par Vidéo Conférence"
                 />
               </RadioGroup>
+              {errors.type && <FormHelperText>{errors.type}</FormHelperText>}
 
               {showFlash && (
                 <div className={classes.root}>

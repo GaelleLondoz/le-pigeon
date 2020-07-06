@@ -51,7 +51,7 @@ router.get("/users/me/admin", checkAuth, usersController.admin);
 
 // bookings
 router.get("/bookings", checkAuth, bookingsController.index);
-router.post("/bookings", checkAuth, bookingsController.create);
+router.post("/bookings/:id", checkAuth, bookingsController.create);
 router.get("/bookings/:id", checkAuth, bookingsController.findOne);
 router.put("/bookings/:id/accept", checkAuth, bookingsController.acceptBooking);
 router.put("/bookings/:id/cancel", checkAuth, bookingsController.cancelBooking);

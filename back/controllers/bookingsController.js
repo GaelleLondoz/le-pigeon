@@ -26,11 +26,51 @@ const index = async (req, res) => {
   }
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
   const newBooking = req.body.booking;
-  return Booking.create(newBooking)
-    .then((booking) => res.status(200).send(booking))
-    .catch((e) => res.status(500).send(e));
+  const userID = req.user.id;
+  const agentID = parseInt(req.params.id);
+  console.log({ newBooking });
+  console.log({ userID });
+  console.log({ agentID });
+  const errors = [];
+  if (newBooking.date === "" || newBooking.date === undefined) {
+    errors.push({
+      target: "date",
+      msg: "Veuillez séléctionner une date pour votre réservation !",
+    });
+  } else if (!compareCurrentDate(newBooking.date)) {
+    errors.push({
+      target: "date",
+      msg:
+        "La date de la réservation doit être supérieure à la date d'aujourd'hui !",
+    });
+  }
+  if (newBooking.type === "" || newBooking.type === undefined) {
+    errors.push({
+      target: "type",
+      msg: "Veuillez séléctionner un type de réservation !",
+    });
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
+  try {
+    Booking.create({
+      date: newBooking.date,
+      type: newBooking.type,
+      userID,
+      agentID,
+    });
+    return res.status(200).json({ msg: "Booking created successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+  // return Booking.create(newBooking)
+  //   .then((booking) => res.status(200).send(booking))
+  //   .catch((e) => res.status(500).send(e));
 };
 
 const findOne = (req, res) => {
@@ -66,18 +106,18 @@ const getBookingsByAgent = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { agentID: id },
-      attributes: ["id", "date", "status"],
+      attributes: ["id", "date", "status", "type"],
       include: [
-        {
-          model: BookingLocation,
-          //attributes: ["locationID"],
-          include: [
-            {
-              model: Location,
-              attributes: ["name"],
-            },
-          ],
-        },
+        // {
+        //   model: BookingLocation,
+        //   //attributes: ["locationID"],
+        //   include: [
+        //     {
+        //       model: Location,
+        //       attributes: ["name"],
+        //     },
+        //   ],
+        // },
         {
           model: User,
           as: "booker",
@@ -155,18 +195,18 @@ const getBookingsByUser = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { userID: id },
-      attributes: ["id", "date", "status"],
+      attributes: ["id", "date", "status", "type"],
       include: [
-        {
-          model: BookingLocation,
-          //attributes: ["locationID"],
-          include: [
-            {
-              model: Location,
-              attributes: ["name"],
-            },
-          ],
-        },
+        // {
+        //   model: BookingLocation,
+        //   //attributes: ["locationID"],
+        //   include: [
+        //     {
+        //       model: Location,
+        //       attributes: ["name"],
+        //     },
+        //   ],
+        // },
         {
           model: User,
           as: "agent",

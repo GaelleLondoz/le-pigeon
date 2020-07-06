@@ -18,6 +18,7 @@ import Paginator from "../components/Pagination";
 import CardComment from "../components/agent/CardComment";
 import Form from "../components/reviews/Form";
 import Flash from "../components/alerts/Flash";
+import Booking from "../components/modals/Booking";
 
 const ShowAgent = ({ match }) => {
   const id = match.params.id;
@@ -200,9 +201,10 @@ const ShowAgent = ({ match }) => {
               </Typography>
               <Box component="div" className="price">
                 <Typography component="p">{agent.price} € / heure</Typography>
-                <Button size="medium" variant="contained" color="secondary">
+                {/* <Button size="medium" variant="contained" color="secondary">
                   Réserver un rendez-vous
-                </Button>
+                </Button> */}
+                <Booking agentID={id} />
               </Box>
             </Grid>
           </Grid>

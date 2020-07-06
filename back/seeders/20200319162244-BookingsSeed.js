@@ -5,6 +5,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     let data = [];
     const dataStatus = ["PENDING", "ACCEPTED", "CANCELLED"];
+    const bookingType = ["Face à face", "Par vidéo conférence"];
     let count = 30;
     while (count--) {
       data.push({
@@ -14,6 +15,7 @@ module.exports = {
         agentID: faker.random.number({ min: 16, max: 30, precision: 1 }),
         createdAt: new Date(),
         updatedAt: new Date(),
+        type: faker.random.arrayElement(bookingType),
       });
     }
     return queryInterface.bulkInsert("Bookings", data, {});

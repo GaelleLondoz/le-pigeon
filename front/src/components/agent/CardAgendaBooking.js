@@ -19,6 +19,7 @@ import { changeStatusBookingToFrench } from "../../helpers/changeStatusToFrench"
 import BookingAPI from "../../components/services/bookingAPI";
 import AuthContext from "../../contexts/AuthContext";
 import LoaderButton from "../loaders/LoaderButton";
+import CategoryIcon from "@material-ui/icons/Category";
 
 const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
@@ -135,11 +136,17 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
           </Typography>
         )}
       </div>
-      <div className="profile-agent-agenda-card-info">
+      {/* <div className="profile-agent-agenda-card-info">
         <LocationOnIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
           Pour la destination :{" "}
           <strong>{booking.BookingLocations[0].Location.name}</strong>
+        </Typography>
+      </div> */}
+      <div className="profile-agent-agenda-card-info">
+        <CategoryIcon style={{ fill: "#750D37" }} />
+        <Typography component="p">
+          Type de réservation : <strong>{booking.type}</strong>
         </Typography>
       </div>
       {status === "PENDING" &&

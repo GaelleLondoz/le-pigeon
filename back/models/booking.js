@@ -1,27 +1,31 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const Booking = sequelize.define(
-        "Booking", {
-            date: {
-                type: DataTypes.DATE,
-                allowNull: false,
-            },
-
+  const Booking = sequelize.define(
+    "Booking",
+    {
+      date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
 
       status: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: "En attente"
+        defaultValue: "PENDING",
       },
       userID: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: 2
+        //defaultValue: 2,
       },
       agentID: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        defaultValue: 2
+        //defaultValue: 2,
+      },
+      type: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
     },
     {}
@@ -43,4 +47,3 @@ module.exports = (sequelize, DataTypes) => {
   };
   return Booking;
 };
-
