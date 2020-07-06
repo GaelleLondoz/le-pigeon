@@ -267,7 +267,7 @@ const searchAgentByDestAndType = async (req, res) => {
   ) {
     errors.push({
       target: "latlng",
-      msg: "Veuillez taper une destination !",
+      msg: "Veuillez insérer une destination !",
     });
   }
   if (type === "" || undefined) {

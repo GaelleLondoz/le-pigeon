@@ -15,7 +15,6 @@ import CardAgent from "../../components/agent/CardAgent";
 import { Redirect } from "react-router-dom";
 import SearchAgentsContext from "../../contexts/SearchAgentsContext";
 
-
 let Header = (props) => {
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
@@ -28,6 +27,10 @@ let Header = (props) => {
   const [searchAgents, setSearchAgents] = useState([]);
   const [redirect, setRedirect] = useState(false);
   let data = [];
+  const [errors, setErrors] = useState({
+    type: "",
+    latlng: "",
+  });
 
   // const {
   //   searchAgents,
@@ -67,22 +70,32 @@ let Header = (props) => {
 
   const handleSearchClick = async () => {
     try {
+      setErrors({});
       const data = await UserDestinationsAPI.getAgentsByDestAndType(
         searchType,
         searchDestination.lat,
         searchDestination.lng
       );
       setSearchAgents(data);
-      console.log({ store: props })
+      console.log({ store: props });
       // setSearchDisplay(true);
-      props.dispatch({ type: "SET_SEARCH_AGENTS", agents: data })
+      props.dispatch({ type: "SET_SEARCH_AGENTS", agents: data });
       // this.props.dispatch(registerStep1Success())
 
-      props.history.push(`/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`)
+      props.history.push(
+        `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`
+      );
 
       // setRedirect(true);
-
     } catch (error) {
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
       console.log(error.response);
     }
   };
@@ -142,6 +155,8 @@ let Header = (props) => {
                       label="Quel type de voyage ?"
                       margin="normal"
                       variant="outlined"
+                      error={errors.type ? true : false}
+                      helperText={errors.type && errors.type}
                     />
                   )}
                 />
@@ -155,6 +170,18 @@ let Header = (props) => {
                     handlePlacesLatLngChange(suggestion)
                   }
                 />
+                {errors.latlng && (
+                  <Typography
+                    component="p"
+                    style={{
+                      margin: "3px 14px",
+                      fontSize: "0.75rem",
+                      color: "#710000",
+                    }}
+                  >
+                    {errors.latlng}
+                  </Typography>
+                )}
               </Grid>
               <Grid item sm={12} md={4}>
                 <Button
