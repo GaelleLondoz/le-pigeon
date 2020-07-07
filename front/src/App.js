@@ -16,7 +16,6 @@ import userAPI from "./components/services/userAPI";
 import AuthContext from "./contexts/AuthContext";
 import SearchAgentsContext from "./contexts/SearchAgentsContext";
 
-
 import Home from "./pages/Home";
 import Connect from "./pages/Connect";
 import Help from "./pages/Help";
@@ -112,7 +111,7 @@ const App = () => {
 
               <Route exact path="/agents" component={Agents} />
               <LoginNotAllowedRoutes exact path="/login" component={Login} />
-              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/dashboard" component={Home} />
               <Route
                 exact
                 path="/agent/:id/destination/:destinationId"
@@ -142,7 +141,7 @@ const App = () => {
               {/* <Route exact path="/users/:id" component={Profile} /> */}
             </Switch>
           </main>
-          {/*<Footer />*/}
+          <Footer />
         </Router>
       </SearchAgentsContext.Provider>
     </AuthContext.Provider>

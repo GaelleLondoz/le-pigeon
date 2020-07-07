@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
+            description: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
             isAgent: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,

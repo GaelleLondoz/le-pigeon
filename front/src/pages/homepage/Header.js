@@ -16,7 +16,6 @@ import { Redirect } from "react-router-dom";
 import SearchAgentsContext from "../../contexts/SearchAgentsContext";
 
 let Header = (props) => {
-  console.log({ propsHeader: props });
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
   const [searchDestination, setSearchDestination] = useState({
@@ -33,26 +32,11 @@ let Header = (props) => {
     latlng: "",
   });
 
-  // const {
-  //   searchAgents,
-  //   setSearchAgents,
-  //   setSearchDisplay,
-  //   searchDisplay,
-  // } = useContext(SearchAgentsContext);
-
   const fetchLatLng = async () => {
     let dataCities = [];
     try {
       const dest = await UserDestinationsAPI.getAllDestinationsByUsers();
       setDestinations(dest);
-      // dest.map(async (data) => {
-      //   let response = await fetch(
-      //     `https://api.opencagedata.com/geocode/v1/json?q=${data.Destination.lat}%2C+${data.Destination.lng}&language=en&key=${process.env.REACT_APP_API_KEY_OPENCAGE}`
-      //   );
-      //   const { results } = await response.json();
-      //   if (results[0] !== undefined) dataCities.push(results[0]);
-      //   setCities({ ...cities, citiesAPI: dataCities });
-      // });
     } catch (error) {
       console.log(error.response);
     }
@@ -80,22 +64,22 @@ let Header = (props) => {
       );
       if (data.length > 0) {
         setSearchAgents(data);
-        console.log({ store: props });
-        // setSearchDisplay(true);
         props.dispatch({ type: "SET_SEARCH_AGENTS", agents: data });
-        // this.props.dispatch(registerStep1Success())
-        //MAKE CONDITION IF PAGE /AGENT DONT REDIRECT
-        console.log({ href: window.location.href });
-        // props.history.push(
-        //   `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`
-        // );
+        //Check if the current location is /agents
+        var hrefString = window.location.href;
+        var pos = hrefString.indexOf("/agents") > -1;
+        if (!pos) {
+          props.history.push(
+            `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`
+          );
+        } else {
+          setRedirect(true);
+        }
       }
-
-      // setRedirect(true);
     } catch (error) {
-      // if (error.response.status === 404) {
-      //   props.history.push(`/agents`);
-      // }
+      if (error.response.status === 500) {
+        props.dispatch({ type: "SET_SEARCH_AGENTS", agents: [] });
+      }
       console.log({ error });
       const { errors } = error.response.data;
       if (errors) {
@@ -129,21 +113,16 @@ let Header = (props) => {
     setTypes(uniqueType);
   }, [destinations]);
 
-  //console.log({ search: searchAgents });
-
   if (redirect) {
     return (
       <Redirect
-        // exact
-        from="/"
         to={{
-          pathname: `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`,
-          // state: { searchAgents, searchDisplay },
+          pathname: `/agents`,
         }}
       />
     );
   }
-  // console.log({ headerSearch: searchAgents, searchDisplay });
+
   return (
     <section id="header-homepage">
       <Container>
@@ -215,21 +194,6 @@ const mapStateToSearchAgents = (state) => {
   };
 };
 
-// const mapDispatchToSearchAgents = (dispatch) => {
-//   return {
-//     // login: () => {
-//     //   //Dispatch => role: call a action of type ...(SET_AUTH)
-//     //   dispatch({ type: "SET_AUTH" });
-//     // },
-//     search: () => {
-//       //Dispatch => role: call a action of type ...(SET_AUTH)
-//       dispatch({ type: "SET_SEARCH_AGENTS" });
-//     }
-//   };
-//   // return bindActionCreators({ setLight: setLight }, dispatch);
-// };
-
-// Header = connect(mapStateToSearchAgents, mapDispatchToSearchAgents)(Header);
 Header = connect(mapStateToSearchAgents)(Header);
 
 export default Header;
