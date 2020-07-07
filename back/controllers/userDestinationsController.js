@@ -289,9 +289,9 @@ const searchAgentByDestAndType = async (req, res) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    // if (agents.length === 0) {
-    //   return res.status(404).json({ msg: "Agents Not Found" });
-    // }
+    if (agents.length === 0) {
+      return res.status(404).json({ msg: "Agents Not Found" });
+    }
     return res.status(200).json(agents);
   } catch (error) {
     return res.status(500).json({ msg: "Error Server" });

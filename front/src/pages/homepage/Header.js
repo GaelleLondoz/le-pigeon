@@ -16,6 +16,7 @@ import { Redirect } from "react-router-dom";
 import SearchAgentsContext from "../../contexts/SearchAgentsContext";
 
 let Header = (props) => {
+  console.log({ propsHeader: props });
   const [mounted, setMounted] = useState(true);
   const [destinations, setDestinations] = useState([]);
   const [searchDestination, setSearchDestination] = useState({
@@ -69,6 +70,7 @@ let Header = (props) => {
   };
 
   const handleSearchClick = async () => {
+    console.log("clicked search");
     try {
       setErrors({});
       const data = await UserDestinationsAPI.getAgentsByDestAndType(
@@ -76,18 +78,25 @@ let Header = (props) => {
         searchDestination.lat,
         searchDestination.lng
       );
-      setSearchAgents(data);
-      console.log({ store: props });
-      // setSearchDisplay(true);
-      props.dispatch({ type: "SET_SEARCH_AGENTS", agents: data });
-      // this.props.dispatch(registerStep1Success())
-
-      props.history.push(
-        `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`
-      );
+      if (data.length > 0) {
+        setSearchAgents(data);
+        console.log({ store: props });
+        // setSearchDisplay(true);
+        props.dispatch({ type: "SET_SEARCH_AGENTS", agents: data });
+        // this.props.dispatch(registerStep1Success())
+        //MAKE CONDITION IF PAGE /AGENT DONT REDIRECT
+        console.log({ href: window.location.href });
+        // props.history.push(
+        //   `/agents?type=${searchType}&lat=${searchDestination.lat}&lng=${searchDestination.lng}`
+        // );
+      }
 
       // setRedirect(true);
     } catch (error) {
+      // if (error.response.status === 404) {
+      //   props.history.push(`/agents`);
+      // }
+      console.log({ error });
       const { errors } = error.response.data;
       if (errors) {
         const apiErrors = {};

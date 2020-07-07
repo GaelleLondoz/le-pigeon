@@ -7,6 +7,7 @@ import { Container, Grid, Typography } from "@material-ui/core";
 import Paginator from "../components/Pagination";
 
 let Agents = (props) => {
+  console.log({ historyPageAgent: props.history });
   const ITEMSBYPAGE = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const handlePaginationChange = (e, page) => {
