@@ -90,6 +90,16 @@ const EditAgentModal = ({
               helperText={errors.email && errors.email}
             />
             <TextField
+              margin="dense"
+              name="description"
+              label="Description"
+              multiline
+              rowsMax={4}
+              value={agent.User.description}
+              onChange={onChangeUser}
+              fullWidth
+            />
+            <TextField
               error={errors.language ? true : false}
               margin="dense"
               name="language"

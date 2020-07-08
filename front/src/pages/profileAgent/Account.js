@@ -28,6 +28,7 @@ const Account = () => {
       userName: "",
       email: "",
       avatar: "",
+      description: "",
     },
     language: "",
     price: "",

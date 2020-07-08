@@ -29,6 +29,7 @@ const ShowAgent = ({ match }) => {
       firstName: "",
       lastName: "",
       avatar: "",
+      description: "",
     },
     language: "",
     price: "",
@@ -195,9 +196,7 @@ const ShowAgent = ({ match }) => {
                 <strong>
                   {agent.User.firstName} {agent.User.lastName}
                 </strong>
-                , Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Ullam illum laboriosam numquam nesciunt error, voluptas cum
-                atque provident veritatis vitae.
+                , {agent.User.description ? agent.User.description : "..."}
               </Typography>
               <Box component="div" className="price">
                 <Typography component="p">{agent.price} € / heure</Typography>

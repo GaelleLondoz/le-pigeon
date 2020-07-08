@@ -212,7 +212,14 @@ const getProfileAgent = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["firstName", "lastName", "email", "userName", "avatar"],
+          attributes: [
+            "firstName",
+            "lastName",
+            "email",
+            "userName",
+            "avatar",
+            "description",
+          ],
         },
       ],
     });
@@ -282,7 +289,14 @@ const getMessages = async (req, res) => {
 
 const editProfileAgent = async (req, res) => {
   const id = req.params.id;
-  const { firstName, lastName, userName, email, avatar } = req.body.User;
+  const {
+    firstName,
+    lastName,
+    userName,
+    email,
+    avatar,
+    description,
+  } = req.body.User;
   const { language, price } = req.body;
   const emailExist = await User.findOne({
     where: { email },
@@ -373,6 +387,7 @@ const editProfileAgent = async (req, res) => {
         lastName,
         userName,
         email,
+        description,
         avatar: fileSendToDatabase,
       },
       {
@@ -454,7 +469,7 @@ const getPublicProfileAgent = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["id", "firstName", "lastName", "avatar"],
+          attributes: ["id", "firstName", "lastName", "avatar", "description"],
         },
       ],
     });
