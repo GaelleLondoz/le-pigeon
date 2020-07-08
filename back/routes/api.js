@@ -43,6 +43,7 @@ router.get(
   "/users/search/agents",
   userDestinationsController.searchAgentByDestAndType
 );
+router.get("/users/become/agent", checkAuth, usersController.becomeAgent);
 // login auth
 router.post("/login", usersController.login);
 router.post("/logout", checkAuth, usersController.logout);

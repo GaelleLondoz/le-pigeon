@@ -705,6 +705,31 @@ const admin = async (req, res) => {
     return res.status(500).json({ msg: "Error Server" });
   }
 };
+const becomeAgent = async (req, res) => {
+  const currentUser = req.user;
+  if (!currentUser) {
+    return res.status(403).json({ msg: "Access Denied" });
+  }
+
+  try {
+    await User.update(
+      {
+        isAgent: true,
+      },
+      { where: { id: currentUser.id } }
+    );
+    await UserRole.update(
+      {
+        roleID: 2,
+      },
+      { where: { userID: currentUser.id } }
+    );
+    return res.status(200).json({ msg: "User is now agent" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Error Server" });
+  }
+};
 module.exports = {
   index,
   create,
@@ -728,4 +753,5 @@ module.exports = {
   getRecentSales,
   getRecentOrders,
   admin,
+  becomeAgent,
 };

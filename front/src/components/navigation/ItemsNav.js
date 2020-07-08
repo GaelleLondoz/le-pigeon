@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { MenuList, MenuItem, Button, Avatar, Menu } from "@material-ui/core";
+import ButtonBecomeAgent from "../buttons/ButtonBecomeAgent";
 
 const ItemsNav = ({
   isAuthenticated,
@@ -38,9 +39,13 @@ const ItemsNav = ({
 
       {!currentUser.isAgent && (
         <MenuItem className={classes.menuItem}>
-          <Button color="secondary" variant="contained">
+          {/* <Button color="secondary" variant="contained">
             Devenez agent !
-          </Button>
+          </Button> */}
+          <ButtonBecomeAgent
+            isAuthenticated={isAuthenticated}
+            currentUser={currentUser}
+          />
         </MenuItem>
       )}
 

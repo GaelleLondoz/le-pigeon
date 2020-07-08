@@ -90,9 +90,13 @@ const MainNavigation = ({ history }) => {
 
             {!currentUser.isAgent && (
               <MenuItem className={classes.menuItem}>
-                <Button color="secondary" variant="contained">
+                {/* <Button color="secondary" variant="contained">
                   Devenez agent !
-                </Button>
+                </Button> */}
+                <ButtonBecomeAgent
+                  isAuthenticated={isAuthenticated}
+                  currentUser={currentUser}
+                />
               </MenuItem>
             )}
 

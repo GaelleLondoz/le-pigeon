@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, MenuList, MenuItem, Button, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AvatarDefault from "../../assets/images/avatar_default.png";
+import ButtonBecomeAgent from "../buttons/ButtonBecomeAgent";
 
 const CollapseNav = ({
   anchorEl,
@@ -55,9 +56,13 @@ const CollapseNav = ({
 
         {!currentUser.isAgent && (
           <MenuItem className={classes.menuItem}>
-            <Button color="secondary" variant="contained">
+            {/* <Button color="secondary" variant="contained">
               Devenez agent !
-            </Button>
+            </Button> */}
+            <ButtonBecomeAgent
+              isAuthenticated={isAuthenticated}
+              currentUser={currentUser}
+            />
           </MenuItem>
         )}
 
