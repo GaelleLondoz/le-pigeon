@@ -20,6 +20,7 @@ import BookingAPI from "../../components/services/bookingAPI";
 import AuthContext from "../../contexts/AuthContext";
 import LoaderButton from "../loaders/LoaderButton";
 import CategoryIcon from "@material-ui/icons/Category";
+import ModeCommentIcon from "@material-ui/icons/ModeComment";
 
 const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
@@ -148,6 +149,10 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         <Typography component="p">
           Type de réservation : <strong>{booking.type}</strong>
         </Typography>
+      </div>
+      <div className="profile-agent-agenda-card-info">
+        <ModeCommentIcon style={{ fill: "#750D37" }} />
+        <Typography component="p">Commentaire : {booking.comment}</Typography>
       </div>
       {status === "PENDING" &&
         compareCurrentDate(booking.date) &&

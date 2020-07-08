@@ -60,6 +60,7 @@ const create = async (req, res) => {
     Booking.create({
       date: newBooking.date,
       type: newBooking.type,
+      comment: newBooking.comment,
       userID,
       agentID,
     });
@@ -106,7 +107,7 @@ const getBookingsByAgent = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { agentID: id },
-      attributes: ["id", "date", "status", "type"],
+      attributes: ["id", "date", "status", "type", "comment"],
       include: [
         // {
         //   model: BookingLocation,
@@ -195,7 +196,7 @@ const getBookingsByUser = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { userID: id },
-      attributes: ["id", "date", "status", "type"],
+      attributes: ["id", "date", "status", "type", "comment"],
       include: [
         // {
         //   model: BookingLocation,

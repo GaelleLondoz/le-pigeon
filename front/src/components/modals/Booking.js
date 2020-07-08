@@ -62,6 +62,7 @@ export default function FormDialog({ agentID }) {
     date: defaultDate,
     type: "",
     agentID: null,
+    comment: "",
   });
   const [errors, setErrors] = useState({
     date: "",
@@ -170,16 +171,18 @@ export default function FormDialog({ agentID }) {
               />
             </MuiPickersUtilsProvider>
             <TextField
-              id="standard-full-width"
-              label="Message"
+              label="Votre commentaire"
               style={{ margin: 8 }}
-              placeholder="Dites nous tout"
+              placeholder="Vous souhaitez ajouter une remarque ?"
               helperText=""
               fullWidth
               margin="normal"
               InputLabelProps={{
                 shrink: true,
               }}
+              name="comment"
+              multiline
+              onChange={handleChange}
             />
 
             <DialogContentText>

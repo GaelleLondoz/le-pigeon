@@ -1,29 +1,29 @@
 @import "variables";
 .Footer_container {
-    z-index: 1000;
-    background-color: #3993dd;
-    text-align: left;
-    padding: 20px;
-    // position: fixed;
-    // left: 0;
-    // bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    width: 100%;
-    margin-top: 100px;
+  z-index: 1000;
+  background-color: #3993dd;
+  text-align: left;
+  padding: 20px;
+  // position: fixed;
+  // left: 0;
+  // bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  //width: 100%;
+  margin-top: 100px;
 }
 
 .Footer_info {
-    display: block;
-    & a {
-        font-family: $main-font;
-        color: $light-grey;
-        text-decoration: none;
-        padding-right: 60px;
-        &:hover {
-            color: $light-blue;
-        }
+  display: block;
+  & a {
+    font-family: $main-font;
+    color: $light-grey;
+    text-decoration: none;
+    padding-right: 60px;
+    &:hover {
+      color: $light-blue;
     }
+  }
 }
