@@ -78,7 +78,9 @@ const CollapseNav = ({
                 alt={"Le Pigeon | Avatar de " + currentUser.firstName}
                 src={
                   currentUser.avatar
-                    ? "http://localhost:5000/avatar/" + currentUser.avatar
+                    ? process.env.REACT_APP_BASE_URL +
+                      "/avatar/" +
+                      currentUser.avatar
                     : AvatarDefault
                 }
               />

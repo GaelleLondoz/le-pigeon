@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { MenuList, MenuItem, Button, Avatar, Menu } from "@material-ui/core";
 import ButtonBecomeAgent from "../buttons/ButtonBecomeAgent";
+import AvatarDefault from "../../assets/images/avatar_default.png";
 
 const ItemsNav = ({
   isAuthenticated,
@@ -60,9 +61,11 @@ const ItemsNav = ({
             <Avatar
               alt={"Le Pigeon | Avatar de " + currentUser.firstName}
               src={
-                currentUser.avatar !== undefined
-                  ? "http://localhost:5000/avatar/" + currentUser.avatar
-                  : null
+                currentUser.avatar
+                  ? process.env.REACT_APP_BASE_URL +
+                    "/avatar/" +
+                    currentUser.avatar
+                  : AvatarDefault
               }
             />
           </Button>
