@@ -94,7 +94,7 @@ const EditAgentModal = ({
               name="description"
               label="Description"
               multiline
-              rowsMax={4}
+              rows={4}
               value={agent.User.description}
               onChange={onChangeUser}
               fullWidth

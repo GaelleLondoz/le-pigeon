@@ -126,7 +126,7 @@ export default function FormDialog({ agentID }) {
 
   return (
     <div>
-      {isAuthenticated && !currentUser.isAgent ? (
+      {isAuthenticated ? (
         <Button
           variant="contained"
           color="secondary"
