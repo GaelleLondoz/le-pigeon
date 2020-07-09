@@ -2,12 +2,24 @@ import React, { useState, useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import AuthAPI from "../components/services/authAPI";
 import userAPI from "../components/services/userAPI";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+// import Button from "@material-ui/core/Button";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
@@ -29,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  formControl: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 const Login = ({ history }) => {
@@ -45,6 +61,7 @@ const Login = ({ history }) => {
     email: null,
     password: null,
     avatar: null,
+    role: "",
   });
   const [open, setOpen] = useState(true);
 
@@ -77,7 +94,7 @@ const Login = ({ history }) => {
       const connectedUser = await AuthAPI.login({ login: credentials });
       setIsAuthenticated(true);
       setCurrentUser(connectedUser);
-    
+
       history.replace("/");
     } catch (error) {
       throw error.response;
@@ -95,6 +112,7 @@ const Login = ({ history }) => {
     setOpen(false);
   };
   const classes = useStyles();
+  console.log(user);
   return (
     <div>
       {!isSignUp ? (
@@ -223,6 +241,30 @@ const Login = ({ history }) => {
                 errorMessages={["Champ obligatoire*", "Email non valide"]}
                 autoFocus
               />
+              <FormControl
+                variant="outlined"
+                className={classes.formControl}
+                fullWidth
+              >
+                <InputLabel id="demo-simple-select-outlined-label">
+                  Je suis
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  value={user.role}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      role: e.target.value,
+                    })
+                  }
+                  label="Je suis..."
+                  name="role"
+                >
+                  <MenuItem value="0">Voyageur</MenuItem>
+                  <MenuItem value="1">Agent</MenuItem>
+                </Select>
+              </FormControl>
               <TextValidator
                 variant="outlined"
                 margin="normal"

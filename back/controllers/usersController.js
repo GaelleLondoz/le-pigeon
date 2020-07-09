@@ -17,15 +17,33 @@ const index = (req, res) => {
 
 const create = (req, res) => {
   const newUser = req.body.user;
+  let isAgent;
+  let roleName;
+  if (newUser.role === "0") {
+    isAgent = 0;
+    roleName = "ROLE_USER";
+  } else {
+    isAgent = 1;
+    roleName = "ROLE_AGENT";
+  }
   //const updatedAt = new Date(Date.now()).toDateString();
   const updatedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
   newUser.password = getHash(newUser.password);
-  return User.create(newUser)
+  return User.create({
+    firstName: newUser.firstName,
+    lastName: newUser.lastName,
+    userName: newUser.userName,
+    email: newUser.email,
+    password: newUser.password,
+    isAgent,
+  })
     .then((user) => {
       const result = db.sequelize.query(
         "INSERT INTO userroles (userID,roleID,language,updatedAt) values (" +
           user.id +
-          ",(select id from roles WHERE name='ROLE_USER'),'French'," +
+          ",(select id from roles WHERE name=" +
+          `'${roleName}'` +
+          "),'French'," +
           `'${updatedAt}'` +
           ")",
         { type: sequelize.QueryTypes.INSERT }
