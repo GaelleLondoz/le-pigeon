@@ -55,6 +55,8 @@ const App = () => {
 
   const [currentUser, setCurrentUser] = useState({});
 
+  const [isCallOnGoing, setIsCallOnGoing] = useState(false);
+
   // fetch user
   const fetchUser = async () => {
     try {
@@ -81,6 +83,8 @@ const App = () => {
     setCurrentUser,
     isAdmin,
     setIsAdmin,
+    isCallOnGoing,
+    setIsCallOnGoing,
   };
   const contextSearchAgentsValue = {
     searchAgents,

@@ -21,6 +21,7 @@ import AuthContext from "../../contexts/AuthContext";
 import LoaderButton from "../loaders/LoaderButton";
 import CategoryIcon from "@material-ui/icons/Category";
 import ModeCommentIcon from "@material-ui/icons/ModeComment";
+import ChatBox from "../chatbox/ChatBox";
 
 const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
@@ -33,7 +34,22 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     date: "",
   });
   const [loadingUpdateBooking, setLoadingUpdateBooking] = useState(false);
+  const [enableCall, setEnableCall] = useState(false);
+  const [userToCall, setUserToCall] = useState({});
 
+  const handleConferenceCall = (booker) => {
+    console.log({ BOOKER: booker });
+    const userToCall = {
+      id: booker.id,
+      firstName: booker.firstName,
+      lastName: booker.lastName,
+      email: booker.email,
+      avatar: booker.avatar,
+      userName: booker.userName,
+    };
+    setUserToCall(userToCall);
+    setEnableCall(true);
+  };
   const handleAcceptBookingClick = async () => {
     try {
       await BookingAPI.acceptBooking(booking.id);
@@ -125,7 +141,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
           <Typography component="p">
             Auteur de la réservation :{" "}
             <strong>
-              {booking.booker.firstName} {booking.booker.lastName}
+              {booking.booker.firstName} {booking.booker.lastName}{" "}
             </strong>
           </Typography>
         ) : (
@@ -190,6 +206,17 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
             </Button>
           </div>
         )}
+      {
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={(e) => handleConferenceCall(booking.booker)}
+        >
+          Appeler
+        </Button>
+      }
+      {enableCall && <ChatBox user={userToCall}></ChatBox>}
+
       {showFormUpdateBooking && (
         <form
           style={{ marginTop: "20px" }}

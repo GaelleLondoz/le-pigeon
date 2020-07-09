@@ -214,7 +214,7 @@ class ChatBox extends Component {
   }
 
   renderContacts() {
-    const contacts = [];
+    /*    const contacts = [];
     const entries = this.state.contacts.entries();
     for (const [i, item] of entries) {
       const contact = {
@@ -223,16 +223,18 @@ class ChatBox extends Component {
         name: item.firstName + " " + item.lastName,
         isSelected: false,
       };
-      contacts.push(
-        <ContactBox
-          handleCall={this.handleCall}
-          handleChange={this.handleChange}
-          user={contact}
-          key={i}
-        />
-      );
+      contacts.push( */
+    return (
+      <ContactBox
+        handleCall={this.handleCall}
+        handleChange={this.handleChange}
+        user={this.state.selectedUser}
+        key={this.state.selectedUser.id}
+      />
+    );
+    /*);
     }
-    return contacts;
+    return contacts;*/
   }
 
   /*renderContacts() {
@@ -320,9 +322,22 @@ class ChatBox extends Component {
       receiverID: currentUser.id,
     };
 
+    /*     this.setState({
+      isCallInitiator: true,
+      isCallOnGoing: true,
+      isChatOngoing: false,
+    }); */
+
     this.setState({
+      selectedUser: this.props.user,
+      selectedAvatar: this.props.user.avatar,
+      selectedName: this.props.user.firstName + " " + this.props.user.lastName,
+      isSelected: true,
+      isCallInitiator: true,
+      isCallOnGoing: true,
+      isChatOngoing: false,
       //Query the API to retrieve the list of contact
-      contacts: await userAPI.getUsers(),
+      //contacts: await userAPI.getUsers(),
       //Init UUID
       uuid: currentUser.id,
       //Init IsAuthenticated
@@ -384,7 +399,6 @@ class ChatBox extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-        }
       </div>
     );
   }
