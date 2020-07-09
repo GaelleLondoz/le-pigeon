@@ -54,12 +54,14 @@ let Agents = (props) => {
                   );
                 })
               ) : (
-                <Typography
-                  variant="h5"
-                  style={{ marginTop: "50px", fontWeight: "bold" }}
-                >
-                  Aucun agent n'a été trouvé. 😞
-                </Typography>
+                <div style={{ minHeight: "400px" }}>
+                  <Typography
+                    variant="h4"
+                    style={{ marginTop: "150px", fontWeight: "bold" }}
+                  >
+                    Aucun agent n'a été trouvé. 😞
+                  </Typography>
+                </div>
               )}
             </Grid>
             {props.agents.length > 12 && (

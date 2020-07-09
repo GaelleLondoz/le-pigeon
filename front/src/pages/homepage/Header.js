@@ -126,7 +126,9 @@ let Header = (props) => {
   return (
     <section id="header-homepage">
       <Container>
-        <Typography variant="h1">Trouvez votre agent de voyage</Typography>
+        {!window.location.href.includes("agents") && (
+          <Typography variant="h1">Trouvez votre agent de voyage</Typography>
+        )}
         <div className="form-search">
           <form className="" noValidate autoComplete="off">
             <Grid container justify="center" spacing={4}>

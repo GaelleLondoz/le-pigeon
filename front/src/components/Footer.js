@@ -9,10 +9,10 @@ function Footer() {
       <div className="Footer_container">
         <div className="Footer_info">
           <Router>
-            <Link to="/contact">Contact</Link>
-            <Link to="/faq">FAQ</Link>
+            <Link to="/help">FAQ</Link>
             <Link to="/conditions">Terms & Conditions</Link>
           </Router>
+          <p>Copyright 2020 - LE PIGEON</p>
         </div>
       </div>
     </div>
