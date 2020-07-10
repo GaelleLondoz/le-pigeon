@@ -20,8 +20,8 @@
 .MuiDialog-paper {
   padding: 30px;
 }
-body {
-  min-height: 100vh;
+main {
+  min-height: calc(100vh - 80px - 60px);
 }
 
 //Homepage

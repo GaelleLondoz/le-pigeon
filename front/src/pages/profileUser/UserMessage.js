@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Typography } from "@material-ui/core";
 import MessageAPI from "../../components/services/messageAPI";
 import CardMessage from "../../components/agent/CardMessage";
 import Paginator from "../../components/Pagination";
+import AuthContext from "../../contexts/AuthContext";
 
 const UserMessage = ({ match }) => {
   const { id } = match.params;
@@ -10,6 +11,7 @@ const UserMessage = ({ match }) => {
   const [messages, setMessages] = useState([]);
   const [notMessages, setNotMessages] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const { currentUser } = useContext(AuthContext);
 
   const ITEMS_PER_PAGE = 5;
 
@@ -44,8 +46,10 @@ const UserMessage = ({ match }) => {
       <Container>
         <Typography variant="h5">Liste de vos messages</Typography>
         <Typography component="p" style={{ marginBottom: "30px" }}>
-          John Doe, vous avez actuellement <strong>{messages.length}</strong>{" "}
-          messages.
+          <strong>
+            {currentUser.firstName} {currentUser.lastName}
+          </strong>
+          , vous avez actuellement <strong>{messages.length}</strong> messages.
         </Typography>
         {notMessages ? (
           <p>{notMessages}</p>

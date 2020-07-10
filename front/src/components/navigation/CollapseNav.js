@@ -103,7 +103,7 @@ const CollapseNav = ({
               Mon tableau de bord
             </MenuItem>
           )}
-          {currentUser.isAgent && (
+          {/* {currentUser.isAgent && (
             <MenuItem
               component={Link}
               to={"/profile/agent/" + currentUser.id}
@@ -120,7 +120,7 @@ const CollapseNav = ({
             >
               Mes destinations
             </MenuItem>
-          )}
+          )} */}
           {!currentUser.isAgent && (
             <MenuItem
               component={Link}
@@ -148,7 +148,7 @@ const CollapseNav = ({
               Mes réservations
             </MenuItem>
           )}
-          {currentUser.isAgent && (
+          {/* {currentUser.isAgent && (
             <MenuItem
               component={Link}
               to={"/profile/agent/" + currentUser.id}
@@ -156,7 +156,7 @@ const CollapseNav = ({
             >
               Ajouter un voyage
             </MenuItem>
-          )}
+          )} */}
           <MenuItem onClick={handleLogOut}>Logout</MenuItem>
         </Menu>
       </MenuList>

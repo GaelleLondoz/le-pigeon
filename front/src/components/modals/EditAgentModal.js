@@ -150,7 +150,7 @@ const EditAgentModal = ({
             Annuler
           </Button>
           <LoaderButton
-            text="Editer mon profil"
+            text="Sauvegarder"
             onClick={onSubmit}
             loadingButton={sendEditAgentLoading}
           />

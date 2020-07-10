@@ -87,7 +87,7 @@ const ItemsNav = ({
             Mon tableau de bord
           </MenuItem>
         )}
-        {currentUser.isAgent && (
+        {/* {currentUser.isAgent && (
           <MenuItem
             component={Link}
             to={"/profile/agent/" + currentUser.id}
@@ -104,7 +104,7 @@ const ItemsNav = ({
           >
             Mes destinations
           </MenuItem>
-        )}
+        )} */}
         {!currentUser.isAgent && (
           <MenuItem
             component={Link}
@@ -132,7 +132,7 @@ const ItemsNav = ({
             Mes réservations
           </MenuItem>
         )}
-        {currentUser.isAgent && (
+        {/* {currentUser.isAgent && (
           <MenuItem
             component={Link}
             to={"/profile/agent/" + currentUser.id}
@@ -140,7 +140,7 @@ const ItemsNav = ({
           >
             Ajouter un voyage
           </MenuItem>
-        )}
+        )} */}
         <MenuItem onClick={handleLogOut}>Logout</MenuItem>
       </Menu>
     </MenuList>

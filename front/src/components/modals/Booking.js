@@ -126,7 +126,7 @@ export default function FormDialog({ agentID }) {
 
   return (
     <div>
-      {isAuthenticated ? (
+      {isAuthenticated && parseInt(currentUser.id) !== parseInt(agentID) ? (
         <Button
           variant="contained"
           color="secondary"
@@ -135,6 +135,15 @@ export default function FormDialog({ agentID }) {
         >
           Reservez un Rendez-Vous
         </Button>
+      ) : isAuthenticated && parseInt(currentUser.id) === parseInt(agentID) ? (
+        <>
+          <Button variant="contained" color="secondary" disabled>
+            Reservez un Rendez-Vous
+          </Button>
+          <p style={{ fontSize: "1.1rem" }}>
+            Vous ne pouvez pas réserver votre propre annonce !
+          </p>
+        </>
       ) : (
         <p style={{ color: "#009fb7" }}>
           Vous souhaitez réserver ?{" "}
