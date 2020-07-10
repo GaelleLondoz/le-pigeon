@@ -82,13 +82,12 @@ export default function FormDialog({ agentID }) {
         booking,
         date: toMysql(booking.date),
       });
-      console.log("Ok, in the DB");
+      //console.log("Ok, in the DB");
       // await bookingAPI.createBooking({ booking, date: booking.date });
+      setshowFlash(!showFlash);
       setTimeout(() => {
-        setshowFlash(true);
-      }, 3000);
-      setshowFlash(false);
-      setOpen(false);
+        setOpen(false);
+      }, 5000);
     } catch (error) {
       const { errors } = error.response.data;
       if (errors) {
