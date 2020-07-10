@@ -10,6 +10,7 @@ import {
   Avatar,
 } from "@material-ui/core";
 import LoaderButton from "../../components/loaders/LoaderButton";
+import { useEffect } from "react";
 
 const EditAgentModal = ({
   agent,
@@ -19,12 +20,20 @@ const EditAgentModal = ({
   sendEditAgentLoading,
   onHandleFileChange,
   errors,
+  onCloseModal,
 }) => {
   const [open, setOpen] = useState(false);
 
   const handleModalOpenToggle = () => {
     setOpen(!open);
   };
+
+  //Call back from parent Account.js
+  useEffect(() => {
+    if (onCloseModal) {
+      setOpen(!open);
+    }
+  }, [onCloseModal]);
 
   return (
     <div style={{ margin: "30px 0" }}>

@@ -52,6 +52,8 @@ const Account = () => {
     price: "",
   });
 
+  const [closeModal, setCloseModal] = useState(false);
+
   const fetchAvgRatings = async (id) => {
     try {
       const data = await ReviewsAPI.getAvgRatings(id);
@@ -89,6 +91,10 @@ const Account = () => {
       setSendEditAgentLoading(false);
       setErrors({});
       setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 5000);
+      setCloseModal(true);
       fetchAgent(id);
     } catch (error) {
       setSendEditAgentLoading(false);
@@ -182,6 +188,7 @@ const Account = () => {
           sendEditAgentLoading={sendEditAgentLoading}
           onHandleFileChange={handleFileChange}
           errors={errors}
+          onCloseModal={closeModal}
         />
         <div className="profile-agent-account-content">
           <Grid container spacing={5}>

@@ -141,7 +141,7 @@ export default function FormDialog({ agentID }) {
             Reservez un Rendez-Vous
           </Button>
           <p style={{ fontSize: "1.1rem" }}>
-            Vous ne pouvez pas réserver votre propre annonce !
+            Impossible de réserver un rendez-vous avec vous même !
           </p>
         </>
       ) : (
