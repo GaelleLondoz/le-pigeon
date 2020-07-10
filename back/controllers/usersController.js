@@ -17,6 +17,52 @@ const index = (req, res) => {
 
 const create = (req, res) => {
   const newUser = req.body.user;
+  const errors = [];
+
+  if (newUser.firstName === null) {
+    errors.push({
+      target: "firstName",
+      msg: "Veuillez renseigner votre prénom !",
+    });
+  }
+  if (newUser.lastName === "") {
+    errors.push({
+      target: "lastName",
+      msg: "Veuillez renseigner votre nom !",
+    });
+  }
+  if (newUser.email === "") {
+    errors.push({
+      target: "email",
+      msg: "Veuillez renseigner votre email !",
+    });
+  } else if (!validateEmail(newUser.email)) {
+    errors.push({
+      target: "email",
+      msg: "Veuillez renseigner une adresse email correct !",
+    });
+  }
+  if (newUser.password === "") {
+    errors.push({
+      target: "password",
+      msg: "Veuillez renseigner un mot de passe !",
+    });
+  }
+  if (newUser.passwordConfirm !== newUser.password) {
+    errors.push({
+      target: "passwordConfirm",
+      msg: "Veuillez confirmer correctement vos mots de passe !",
+    });
+  }
+  if (newUser.type === "") {
+    errors.push({
+      target: "role",
+      msg: "Veuillez faire un choix !",
+    });
+  }
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
   let isAgent;
   let roleName;
   if (newUser.role === "0") {

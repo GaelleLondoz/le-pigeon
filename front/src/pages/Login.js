@@ -19,6 +19,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -62,10 +63,20 @@ const Login = ({ history }) => {
     password: null,
     avatar: null,
     role: "",
+    passwordConfirm: null,
   });
   const [open, setOpen] = useState(true);
 
   const [isSignUp, setSignUp] = useState(false);
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    userName: "",
+    email: "",
+    password: "",
+    role: "",
+    passwordConfirm: "",
+  });
 
   const handleClose = () => {
     setOpen(false);
@@ -105,8 +116,17 @@ const Login = ({ history }) => {
   const handleSubscribe = async (event) => {
     event.preventDefault();
     try {
+      setErrors({});
       await userAPI.createUser({ user: user });
     } catch (error) {
+      const { errors } = error.response.data;
+      if (errors) {
+        const apiErrors = {};
+        errors.forEach((error) => {
+          apiErrors[error.target] = error.msg;
+        });
+        setErrors(apiErrors);
+      }
       throw error.response;
     }
     setOpen(false);
@@ -211,7 +231,6 @@ const Login = ({ history }) => {
                 onChange={handleUser}
                 validators={["required"]}
                 errorMessages={["Champ obligatoire*"]}
-                autoFocus
               />
               <TextValidator
                 variant="outlined"
@@ -225,7 +244,6 @@ const Login = ({ history }) => {
                 onChange={handleUser}
                 validators={["required"]}
                 errorMessages={["Champ obligatoire*"]}
-                autoFocus
               />
               <TextValidator
                 variant="outlined"
@@ -239,7 +257,6 @@ const Login = ({ history }) => {
                 onChange={handleUser}
                 validators={["required", "isEmail"]}
                 errorMessages={["Champ obligatoire*", "Email non valide"]}
-                autoFocus
               />
               <FormControl
                 variant="outlined"
@@ -278,6 +295,18 @@ const Login = ({ history }) => {
                 validators={["required"]}
                 errorMessages={["Champ obligatoire*"]}
                 autoComplete="current-password"
+              />
+              <TextField
+                fullWidth
+                name="passwordConfirm"
+                type="password"
+                onChange={handleUser}
+                value={user.passwordConfirm}
+                variant="outlined"
+                margin="normal"
+                label="Confirmation mot de passe"
+                error={errors.passwordConfirm ? true : false}
+                helperText={errors.passwordConfirm && errors.passwordConfirm}
               />
               <Button
                 type="submit"
