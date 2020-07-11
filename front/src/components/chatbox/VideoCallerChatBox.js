@@ -12,6 +12,7 @@ var remoteVideo;
 var peerConnection;
 var uuid;
 var serverConnection;
+var user;
 
 var peerConnectionConfig = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -78,7 +79,10 @@ export default function VideoCallerChatBox(props) {
 }
 
 async function callOngoing(props) {
+  console.log({ CALLERPROPS: props });
   uuid = props.uuid;
+  user = props.user;
+
   localVideo = document.getElementById("localVideo");
   remoteVideo = document.getElementById("remoteVideo");
 
@@ -134,7 +138,7 @@ function getUserMediaSuccess(stream) {
 async function gotMessageFromServer(message) {
   var signal = JSON.parse(message.data);
   //Ignore messages from ourself
-  if (signal.uuid === uuid && signal.sdp) {
+  if (signal.uuid === user.id && signal.sdp) {
     if (signal.sdp.type === "answer") {
       await peerConnection
         .setRemoteDescription(new RTCSessionDescription(signal.sdp))
@@ -160,6 +164,7 @@ async function createdDescription(description) {
           sdp: peerConnection.localDescription,
           uuid: uuid,
           remoteStream: remoteStream,
+          receiver: user.id,
         })
       );
     })

@@ -12,7 +12,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
-import { InputAdornment } from "@material-ui/core";
 
 var serverConnection;
 
@@ -29,40 +28,8 @@ class ChatBox extends Component {
     this.handleOpen = this.handleOpen.bind(this);
 
     this.state = {
-      //uuid: "er3JJoRkKwVfmRepUYMr46367P24",
-      //uuid: currentUser.id,
       messages: [],
       contacts: [],
-      /*       contacts: [
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P22",
-          name: "Jan Romaniak",
-          isSelected: false,
-        },
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P23",
-          name: "Bertrand Novak",
-          isSelected: false,
-        },
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P24",
-          name: "Paul Busmut",
-          isSelected: false,
-        },
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P25",
-          name: "Ian Joubert",
-          isSelected: false,
-        },
-      ], */
       selectedUser: {},
       isAuthenticated: false,
       isSelected: false,
@@ -80,33 +47,20 @@ class ChatBox extends Component {
     };
   }
   handleChange(user, e) {
-    if (user) {
-      user.isSelected = true;
-      this.setState({
-        selectedUser: user,
-        selectedAvatar: user.avatar,
-        selectedName: user.name,
-        isSelected: true,
-        isChatOngoing: true,
-        isCallOnGoing: false,
-      });
-      return user;
-    }
+    this.setState({
+      isSelected: true,
+      isChatOngoing: true,
+      isCallOnGoing: false,
+    });
   }
 
   handleCall(user, e) {
-    if (user) {
-      user.isSelected = true;
-      this.setState({
-        selectedUser: user,
-        selectedAvatar: user.avatar,
-        selectedName: user.name,
-        isSelected: true,
-        isCallInitiator: true,
-        isCallOnGoing: true,
-        isChatOngoing: false,
-      });
-    }
+    this.setState({
+      isSelected: true,
+      isCallInitiator: true,
+      isCallOnGoing: true,
+      isChatOngoing: false,
+    });
   }
   monitorIncomingCalls() {
     console.log("monitorIncomingCalls");
@@ -115,7 +69,7 @@ class ChatBox extends Component {
       var signal = JSON.parse(message.data);
       console.log({ signal: signal });
       //Change state if incoming call for yourself
-      if (signal.uuid === this.state.uuid) {
+      if (signal.receiver === this.state.uuid) {
         this.setState({
           isCallOnGoing: true,
           liveMessage: message,
@@ -214,22 +168,22 @@ class ChatBox extends Component {
   }
 
   renderContacts() {
-    /*    const contacts = [];
-    const entries = this.state.contacts.entries();
-    for (const [i, item] of entries) {
-      const contact = {
-        id: item.id,
-        text: item.content,
-        name: item.firstName + " " + item.lastName,
-        isSelected: false,
+    const contact = null;
+    if (this.props.user) {
+      contact = {
+        id: this.props.user.id,
+        text: this.props.user.email,
+        name: this.props.user.firstName + " " + this.props.user.lastName,
+        avatar: this.props.user.avatar,
+        isSelected: true,
       };
-      contacts.push( */
+    }
     return (
       <ContactBox
         handleCall={this.handleCall}
         handleChange={this.handleChange}
-        user={this.state.selectedUser}
-        key={this.state.selectedUser.id}
+        user={contact}
+        key={contact != null ? contact.id : 0}
       />
     );
     /*);
@@ -237,49 +191,11 @@ class ChatBox extends Component {
     return contacts;*/
   }
 
-  /*renderContacts() {
-    const contacts = [];
-    const entries = this.state.contacts.entries();
-    for (const [i, item] of entries) {
-      contacts.push(
-        <ContactBox
-          handleCall={this.handleCall}
-          handleChange={this.handleChange}
-          user={item}
-          key={i}
-        />
-      );
-    }
-    return contacts;
-  } */
-
   renderHomeChatBox() {
     return <HomeChatBox />;
   }
 
   renderGiftedChat() {
-    /*const messages = [];
-    const entries = this.state.messages.entries();
-    for (const [i, item] of entries) {
-      if (
-        item.status == "SEND" &&
-        item.senderID == this.state.selectedUser.id
-      ) {
-        const message = {
-          id: item.id,
-          text: item.content,
-          user: {},
-        };
-        //Update messages array
-        messages.push(message);
-        //Update message status in database
-        const params = {
-          id: item.id,
-          status: "RECEIVED",
-        };
-        //messageAPI.updateMessageStatus(params);
-      }
-    }*/
     return (
       <GiftedChat
         user={this.state.selectedUser}
@@ -293,7 +209,7 @@ class ChatBox extends Component {
     return (
       <VideoCallerChatBox
         isCaller={true}
-        uuid={this.state.selectedUser.id}
+        uuid={this.state.uuid}
         user={this.state.selectedUser}
         handleStopVideo={this.handleStopVideo}
       />
@@ -315,36 +231,36 @@ class ChatBox extends Component {
   async componentDidMount() {
     // Connect ot the current context
     const customContext = this.context;
-
-    let data = await userAPI.getUser();
-    const currentUser = data.user;
     let msgData = {
-      receiverID: currentUser.id,
+      receiverID: customContext.currentUser.id,
     };
 
-    /*     this.setState({
-      isCallInitiator: true,
-      isCallOnGoing: true,
-      isChatOngoing: false,
-    }); */
+    if (this.props.user) {
+      this.setState({
+        selectedUser: {
+          id: this.props.user.id,
+          text: this.props.user.email,
+          name: this.props.user.firstName + " " + this.props.user.lastName,
+          avatar: this.props.user.avatar,
+          isSelected: true,
+        },
+        selectedAvatar: this.props.user.avatar,
+        selectedName:
+          this.props.user.firstName + " " + this.props.user.lastName,
+      });
+    }
 
     this.setState({
-      selectedUser: this.props.user,
-      selectedAvatar: this.props.user.avatar,
-      selectedName: this.props.user.firstName + " " + this.props.user.lastName,
-      isSelected: true,
-      isCallInitiator: true,
-      isCallOnGoing: true,
-      isChatOngoing: false,
       //Query the API to retrieve the list of contact
       //contacts: await userAPI.getUsers(),
       //Init UUID
-      uuid: currentUser.id,
+      uuid: customContext.currentUser.id,
       //Init IsAuthenticated
       isAuthenticated: customContext.isAuthenticated,
       //Init Message related to the current user
       //messages: await messageAPI.getMessages(msgData),
     });
+
     //Monitor incoming calls for the connected user
     this.monitorIncomingCalls(this.state.uuid);
   }

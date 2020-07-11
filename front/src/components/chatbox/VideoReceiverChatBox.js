@@ -14,6 +14,7 @@ var peerConnection;
 var uuid;
 var message;
 var serverConnection;
+var receiverID;
 
 var peerConnectionConfig = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -155,7 +156,7 @@ function getUserMediaSuccess(stream) {
 async function gotMessageFromServer(message) {
   var signal = JSON.parse(message.data);
   console.log({ signal: signal });
-  if (signal.uuid === uuid) {
+  if (signal.receiver === uuid) {
     if (signal.sdp) {
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(signal.sdp)
