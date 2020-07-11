@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 type: DataTypes.STRING,
             },
+            amount: {
+                type: DataTypes.DOUBLE,
+                allowNull: true,
+            },
         }, {}
     );
     Booking.associate = function(models) {

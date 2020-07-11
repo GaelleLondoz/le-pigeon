@@ -49,10 +49,19 @@ function setup() {
 
 function isAuthenticated() {
     const token = window.localStorage.getItem("authToken");
+    console.log("GENERAL - IS AUTHENTICATED");
     if (token) {
-        return true;
+        console.log("TOKEN - IS AUTHENTICATED");
+        const jwtData = jwtDecode(token);
+        if (jwtData.exp * 1000 > new Date().getTime()) {
+            console.log("TRUE - IS AUTHENTICATED");
+            return true;
+        } else {
+            console.log("FALSE - IS AUTHENTICATED");
+            window.localStorage.removeItem("authToken");
+            return false;
+        }
     }
-    return false;
 }
 
 export default {

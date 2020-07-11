@@ -17,6 +17,7 @@ module.exports = {
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 type: faker.random.arrayElement(bookingType),
+                amount: faker.commerce.price(100, 300, 2),
             });
         }
         return queryInterface.bulkInsert("Bookings", data, {});

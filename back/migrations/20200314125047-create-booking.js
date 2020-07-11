@@ -54,6 +54,10 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.STRING,
             },
+            amount: {
+                type: Sequelize.DOUBLE,
+                allowNull: true,
+            },
         });
     },
     down: (queryInterface, Sequelize) => {

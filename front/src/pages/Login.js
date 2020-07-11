@@ -79,6 +79,7 @@ const Login = ({ history }) => {
   });
 
   const handleClose = () => {
+    history.replace("/");
     setOpen(false);
   };
   const handleSignUp = () => {
@@ -105,11 +106,10 @@ const Login = ({ history }) => {
       const connectedUser = await AuthAPI.login({ login: credentials });
       setIsAuthenticated(true);
       setCurrentUser(connectedUser);
-
-      history.replace("/");
     } catch (error) {
       throw error.response;
     }
+    history.replace("/");
     setOpen(false);
   };
 
@@ -129,10 +129,10 @@ const Login = ({ history }) => {
       }
       throw error.response;
     }
+    history.replace("/");
     setOpen(false);
   };
   const classes = useStyles();
-  console.log(user);
   return (
     <div>
       {!isSignUp ? (
