@@ -66,6 +66,7 @@ class ChatBox extends Component {
     console.log("monitorIncomingCalls");
     serverConnection = new WebSocket(process.env.REACT_APP_WEB_RTC_SERVER);
     serverConnection.onmessage = (message) => {
+      console.log("INSIDE WEBSOCKET");
       var signal = JSON.parse(message.data);
       console.log({ signal: signal });
       //Change state if incoming call for yourself
@@ -168,7 +169,8 @@ class ChatBox extends Component {
   }
 
   renderContacts() {
-    const contact = null;
+    let contact = {};
+    const contacts = [];
     if (this.props.user) {
       contact = {
         id: this.props.user.id,
@@ -177,18 +179,35 @@ class ChatBox extends Component {
         avatar: this.props.user.avatar,
         isSelected: true,
       };
+      return (
+        <ContactBox
+          handleCall={this.handleCall}
+          handleChange={this.handleChange}
+          user={contact}
+          key={contact.id}
+        />
+      );
+    } else {
+      //User receives call
+      const entries = this.state.contacts.entries();
+      for (const [i, item] of entries) {
+        contact = {
+          id: item.id,
+          text: item.content,
+          name: item.firstName + " " + item.lastName,
+          isSelected: false,
+        };
+        contacts.push(
+          <ContactBox
+            handleCall={this.handleCall}
+            handleChange={this.handleChange}
+            user={contact}
+            key={i}
+          />
+        );
+      }
+      return contacts;
     }
-    return (
-      <ContactBox
-        handleCall={this.handleCall}
-        handleChange={this.handleChange}
-        user={contact}
-        key={contact != null ? contact.id : 0}
-      />
-    );
-    /*);
-    }
-    return contacts;*/
   }
 
   renderHomeChatBox() {
@@ -247,6 +266,12 @@ class ChatBox extends Component {
         selectedAvatar: this.props.user.avatar,
         selectedName:
           this.props.user.firstName + " " + this.props.user.lastName,
+        isCallInitiator: true,
+      });
+    } else {
+      this.setState({
+        //Query the API to retrieve the list of contact
+        contacts: await userAPI.getUsers(),
       });
     }
 

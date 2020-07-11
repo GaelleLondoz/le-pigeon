@@ -79,7 +79,6 @@ export default function VideoCallerChatBox(props) {
 }
 
 async function callOngoing(props) {
-  console.log({ CALLERPROPS: props });
   uuid = props.uuid;
   user = props.user;
 
@@ -145,6 +144,7 @@ async function gotMessageFromServer(message) {
         .catch(errorHandler);
     } else return;
   }
+
   if (signal.uuid === uuid && signal.ice) {
     await peerConnection
       .addIceCandidate(signal.ice)
