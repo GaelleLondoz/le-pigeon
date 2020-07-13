@@ -101,12 +101,10 @@ export default function VideoReceiverChatBox(props) {
 }
 
 async function callOngoing(props) {
+  props.setReceiverComponentLoaded();
   uuid = props.uuid;
   message = props.liveMessage;
   serverConnection = props.liveConnection;
-
-  console.log({ liveMessage: message });
-  console.log({ serverConnection: serverConnection });
 
   localVideo = document.getElementById("localVideo");
   remoteVideo = document.getElementById("remoteVideo");
@@ -125,8 +123,8 @@ async function callOngoing(props) {
   };
 
   peerConnection.ontrack = (event) => {
-    console.log("got remote stream");
     if (event.streams != null) {
+      console.log({ STREAM: event.streams[0] });
       remoteVideo.srcObject = event.streams[0];
     } else {
       console.log("got remote stream -> EVENT IS NULL");
@@ -155,7 +153,6 @@ function getUserMediaSuccess(stream) {
 }
 async function gotMessageFromServer(message) {
   var signal = JSON.parse(message.data);
-  console.log({ signal: signal });
   if (signal.receiver === uuid) {
     if (signal.sdp) {
       await peerConnection.setRemoteDescription(

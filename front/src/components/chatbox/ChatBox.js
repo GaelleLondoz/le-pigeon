@@ -26,6 +26,9 @@ class ChatBox extends Component {
     this.handleStopVideo = this.handleStopVideo.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
+    this.setReceiverComponentLoaded = this.setReceiverComponentLoaded.bind(
+      this
+    );
 
     this.state = {
       messages: [],
@@ -44,6 +47,7 @@ class ChatBox extends Component {
       open: true,
       receiverID: null,
       isChatOngoing: false,
+      isReceiverComponentLoaded: false,
     };
   }
   handleChange(user, e) {
@@ -62,38 +66,55 @@ class ChatBox extends Component {
       isChatOngoing: false,
     });
   }
+
+  setReceiverComponentLoaded() {
+    console.log("setReceiverComponentLoaded - ENABLED");
+    this.setState({
+      isReceiverComponentLoaded: true,
+    });
+  }
   monitorIncomingCalls() {
     console.log("monitorIncomingCalls");
     serverConnection = new WebSocket(process.env.REACT_APP_WEB_RTC_SERVER);
     serverConnection.onmessage = (message) => {
-      console.log("INSIDE WEBSOCKET");
       var signal = JSON.parse(message.data);
-      console.log({ signal: signal });
       //Change state if incoming call for yourself
-      if (signal.receiver === this.state.uuid) {
+      if (
+        !signal.chat &&
+        signal.receiver === this.state.uuid &&
+        !this.state.isReceiverComponentLoaded
+      ) {
         this.setState({
           isCallOnGoing: true,
           liveMessage: message,
           liveConnection: serverConnection,
         });
-      } else {
-        this.setState({
-          isCallOnGoing: false,
-        });
+        //Call received for the current user
+        const customContext = this.context;
+        customContext.setIsCallOnGoing(true);
       }
-      if (signal.chat) {
+      if (signal.chat && !this.state.isReceiverComponentLoaded) {
         if (signal.receiver === this.state.uuid) {
           this.state.messages.push(signal.chat);
           this.setState({
             receiverID: signal.sender,
             isChatOngoing: true,
-            selectedName: signal.chat.user.name,
+            isCallOnGoing: false,
+            liveMessage: message,
+            liveConnection: serverConnection,
+            selectedName:
+              this.props.receiver.firstName +
+              " " +
+              this.props.receiver.lastName,
+            //selectedName: signal.chat.user.name,
             selectedAvatar: signal.chat.user.avatar,
+            //selectedName: this.props.receiver.avatar,
           });
         }
       }
     };
   }
+
   handleClose(e) {
     this.setState({
       isSelected: false,
@@ -179,6 +200,17 @@ class ChatBox extends Component {
         avatar: this.props.user.avatar,
         isSelected: true,
       };
+    } else if (this.props.receiver) {
+      contact = {
+        id: Math.floor(Math.random()),
+        text: "",
+        name:
+          this.props.receiver.firstName + " " + this.props.receiver.lastName,
+        avatar: "",
+        isSelected: false,
+      };
+    }
+    if (contact) {
       return (
         <ContactBox
           handleCall={this.handleCall}
@@ -188,7 +220,7 @@ class ChatBox extends Component {
         />
       );
     } else {
-      //User receives call
+      //No parameter during call of ChatBox
       const entries = this.state.contacts.entries();
       for (const [i, item] of entries) {
         contact = {
@@ -236,6 +268,8 @@ class ChatBox extends Component {
   }
 
   renderVideoReceiverChatBox() {
+    console.log("renderVideoReceiverChatBox - ENABLED");
+    console.log({ LOADED: this.state.isReceiverComponentLoaded });
     return (
       <VideoReceiverChatBox
         iscaller={false}
@@ -243,6 +277,7 @@ class ChatBox extends Component {
         liveMessage={this.state.liveMessage}
         liveConnection={this.state.liveConnection}
         handleStopVideo={this.handleStopVideo}
+        setReceiverComponentLoaded={this.setReceiverComponentLoaded}
       />
     );
   }
@@ -272,6 +307,8 @@ class ChatBox extends Component {
       this.setState({
         //Query the API to retrieve the list of contact
         contacts: await userAPI.getUsers(),
+        selectedName:
+          this.props.receiver.firstName + " " + this.props.receiver.lastName,
       });
     }
 

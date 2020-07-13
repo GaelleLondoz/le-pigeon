@@ -38,7 +38,6 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [userToCall, setUserToCall] = useState({});
 
   const handleConferenceCall = (booker) => {
-    console.log({ BOOKER: booker });
     const userToCall = {
       id: booker.id,
       firstName: booker.firstName,
@@ -115,7 +114,6 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const handleDateChange = (e) => {
     setBookingDate(e.target.value);
   };
-  console.log({ BOOKER: booking });
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (

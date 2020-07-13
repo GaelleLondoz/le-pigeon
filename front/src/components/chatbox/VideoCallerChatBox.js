@@ -91,7 +91,6 @@ async function callOngoing(props) {
 
   peerConnection.onicecandidate = (event) => {
     if (event.candidate != null) {
-      console.log({ eventCandidate: event });
       serverConnection.onopen = () =>
         serverConnection.send(
           JSON.stringify({ ice: event.candidate, uuid: uuid })
@@ -144,8 +143,7 @@ async function gotMessageFromServer(message) {
         .catch(errorHandler);
     } else return;
   }
-
-  if (signal.uuid === uuid && signal.ice) {
+  if (signal.uuid === user.id && signal.ice) {
     await peerConnection
       .addIceCandidate(signal.ice)
       .then(onAddIceCandidateSuccess)

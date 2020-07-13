@@ -91,7 +91,9 @@ const UserBooking = ({ match }) => {
                       >
                         Rejoindre
                       </Button>
-                      {enableCall && <ChatBox></ChatBox>}
+                      {enableCall && (
+                        <ChatBox receiver={booking.agent}></ChatBox>
+                      )}
                     </Grid>
                   )
                 );

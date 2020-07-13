@@ -119,10 +119,6 @@ export default function FormDialog({ agentID }) {
     setOpen(true);
   };
 
-  // console.log(booking);
-  console.log("Date", booking.date);
-  console.log("Booking", booking);
-
   return (
     <div>
       {isAuthenticated && parseInt(currentUser.id) !== parseInt(agentID) ? (
