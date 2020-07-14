@@ -87,7 +87,7 @@ export default function FormDialog({ agentID }) {
       setshowFlash(!showFlash);
       setTimeout(() => {
         setOpen(false);
-      }, 5000);
+      }, 2000);
     } catch (error) {
       const { errors } = error.response.data;
       if (errors) {

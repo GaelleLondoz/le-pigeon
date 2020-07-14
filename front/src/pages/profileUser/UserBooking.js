@@ -84,16 +84,16 @@ const UserBooking = ({ match }) => {
                         booking={booking}
                         onFetchBookings={() => fetchUserBookingsCallBack(id)}
                       />
-                      <Button
+                      {/* <Button
                         variant="contained"
                         color="secondary"
                         onClick={(e) => handleConferenceCall()}
                       >
                         Rejoindre
-                      </Button>
-                      {enableCall && (
+                      </Button> */}
+                      {/* {enableCall && (
                         <ChatBox receiver={booking.agent}></ChatBox>
-                      )}
+                      )} */}
                     </Grid>
                   )
                 );

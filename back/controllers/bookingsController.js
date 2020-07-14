@@ -223,7 +223,14 @@ const getBookingsByUser = async (req, res) => {
         {
           model: User,
           as: "agent",
-          attributes: ["firstName", "lastName"],
+          attributes: [
+            "id",
+            "avatar",
+            "firstName",
+            "lastName",
+            "email",
+            "userName",
+          ],
         },
       ],
     });
