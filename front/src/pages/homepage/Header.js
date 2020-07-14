@@ -79,6 +79,7 @@ let Header = (props) => {
     } catch (error) {
       if (error.response.status === 500) {
         props.dispatch({ type: "SET_SEARCH_AGENTS", agents: [] });
+        props.history.push("/agents");
       }
       console.log({ error });
       const { errors } = error.response.data;
