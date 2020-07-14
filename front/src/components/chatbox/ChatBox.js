@@ -68,7 +68,6 @@ class ChatBox extends Component {
   }
 
   setReceiverComponentLoaded() {
-    console.log("setReceiverComponentLoaded - ENABLED");
     this.setState({
       isReceiverComponentLoaded: true,
     });
@@ -94,7 +93,7 @@ class ChatBox extends Component {
         customContext.setIsCallOnGoing(true);
       }
       if (signal.chat && !this.state.isReceiverComponentLoaded) {
-        if (signal.receiver === this.state.uuid) {
+        if (this.props.receiver && signal.receiver === this.state.uuid) {
           this.state.messages.push(signal.chat);
           this.setState({
             receiverID: signal.sender,
@@ -106,6 +105,21 @@ class ChatBox extends Component {
               this.props.receiver.firstName +
               " " +
               this.props.receiver.lastName,
+            //selectedName: signal.chat.user.name,
+            selectedAvatar: signal.chat.user.avatar,
+            //selectedName: this.props.receiver.avatar,
+          });
+        } else if (this.props.user && signal.receiver === this.state.uuid) {
+          console.log({ RECEIVER: this.props.receiver });
+          this.state.messages.push(signal.chat);
+          this.setState({
+            receiverID: signal.sender,
+            isChatOngoing: true,
+            isCallOnGoing: false,
+            liveMessage: message,
+            liveConnection: serverConnection,
+            selectedName:
+              this.props.user.firstName + " " + this.props.user.lastName,
             //selectedName: signal.chat.user.name,
             selectedAvatar: signal.chat.user.avatar,
             //selectedName: this.props.receiver.avatar,
@@ -138,7 +152,6 @@ class ChatBox extends Component {
   }
 
   onSend(messages = []) {
-    console.log({ MESSAGES: messages });
     this.setState((previousState) => ({
       messages: GiftedChat.append(previousState.messages, messages),
     }));
@@ -268,8 +281,6 @@ class ChatBox extends Component {
   }
 
   renderVideoReceiverChatBox() {
-    console.log("renderVideoReceiverChatBox - ENABLED");
-    console.log({ LOADED: this.state.isReceiverComponentLoaded });
     return (
       <VideoReceiverChatBox
         iscaller={false}

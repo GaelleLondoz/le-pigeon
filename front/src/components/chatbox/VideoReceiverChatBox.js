@@ -124,7 +124,6 @@ async function callOngoing(props) {
 
   peerConnection.ontrack = (event) => {
     if (event.streams != null) {
-      console.log({ STREAM: event.streams[0] });
       remoteVideo.srcObject = event.streams[0];
     } else {
       console.log("got remote stream -> EVENT IS NULL");
