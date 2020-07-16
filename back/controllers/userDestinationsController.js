@@ -287,7 +287,6 @@ const searchAgentByDestAndType = async (req, res) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    await Bookin;
     console.log({ agents });
     if (agents.length === 0) {
       return res.status(500).json({ msg: "Agents Not Found" });
