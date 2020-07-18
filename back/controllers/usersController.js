@@ -84,8 +84,8 @@ const create = (req, res) => {
       password: newUser.password,
       isAgent,
     })
-      .then((user) => {
-        const result = db.sequelize.query(
+      .then(async (user) => {
+        await db.sequelize.query(
           "INSERT INTO userroles (userID,roleID,language,updatedAt) values (" +
             user.id +
             ",(select id from roles WHERE name=" +
@@ -95,26 +95,33 @@ const create = (req, res) => {
             ")",
           { type: sequelize.QueryTypes.INSERT }
         );
+        await db.sequelize.query(
+          "insert into reviews (agentID,authorID,comment,rating,status,createdAt,updatedAt) values (:agent,:author,'',0,'PENDING',:todayDate,:todayDate)",
+          {
+            type: sequelize.QueryTypes.INSERT,
+            replacements: {
+              agent: user.id,
+              author: user.id,
+              todayDate: new Date(),
+            },
+          }
+        );
         return res.status(200).send(user);
       })
       // .then((user) => {
-      //   db.sequelize.query(
-      //     "INSERT INTO reviews (agentID, authorID, comment, rating, status, createdAT, updatedAt) values (" +
-      //       user.id,
-      //     user.id,
-      //     +"first comment" +
-      //       "," +
-      //       0 +
-      //       "," +
-      //       "PUBLISHED" +
-      //       "," +
-      //       `${updatedAt}` +
-      //       "," +
-      //       `${updatedAt}` +
-      //       ")",
-      //     { type: sequelize.QueryTypes.INSERT }
-      //   );
-      //   return res.status(200).send(user);
+      //   console.log({ userAddReview: user.id });
+      //   // db.sequelize.query(
+      //   //   "insert into reviews (agentID,authorID,comment,rating,status,createdAt,updatedAt) values (:agent,:author,'',0,'PENDING',':todayDate',':todayDate')",
+      //   //   {
+      //   //     type: sequelize.QueryTypes.INSERT,
+      //   //     replacements: {
+      //   //       agent: user.id,
+      //   //       author: user.id,
+      //   //       todayDate: new Date(),
+      //   //     },
+      //   //   }
+      //   // );
+      //   //return res.status(200).send(user);
       // })
       .catch((e) => res.status(500).send(e))
   );
@@ -496,42 +503,6 @@ const editProfileAgent = async (req, res) => {
 };
 const getBestAgents = async (req, res) => {
   try {
-    // const agents = await Review.findAll({
-    //   order: sequelize.literal("avgRatings DESC"),
-    //   limit: 4,
-    //   attributes: [
-    //     [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
-    //   ],
-    //   include: [
-    //     {
-    //       model: User,
-    //       as: "agent",
-    //       attributes: ["firstName", "lastName", "avatar", "id"],
-    //       duplicating: false,
-    //     },
-    //   ],
-    //   group: ["agent.id", "review.id"],
-    // });
-    // const agents = await User.findAll({
-    //   order: sequelize.literal("avgRatings DESC"),
-    //   limit: 4,
-    //   attributes: [
-    //     "id",
-    //     "firstName",
-    //     "lastName",
-    //     "avatar",
-    //     [sequelize.fn("AVG", sequelize.col("reviews.rating")), "avgRatings"],
-    //   ],
-    //   include: [
-    //     {
-    //       model: Review,
-    //       as: "reviews",
-    //       attributes: [],
-    //       duplicating: false,
-    //     },
-    //   ],
-    //   group: ["user.id", "user.firstName", "user.lastName", "reviews.agentID"],
-    // });
     const agents = await db.sequelize.query(
       "SELECT Users.id, Users.firstName, Users.lastName, Users.avatar, AVG(Reviews.rating) AS avgRatings, UserRoles.roleID FROM Users JOIN Reviews ON Users.id = Reviews.agentID JOIN UserRoles ON UserRoles.roleID = 2 GROUP BY Users.firstName, Users.lastName, Reviews.agentID ORDER BY avgRatings DESC LIMIT 4",
       { type: sequelize.QueryTypes.SELECT }
