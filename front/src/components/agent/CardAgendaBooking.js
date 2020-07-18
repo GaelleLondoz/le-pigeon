@@ -149,6 +149,12 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
+        <EventIcon style={{ fill: "#750D37" }} />
+        <Typography component="p">
+          Nombre d'heure(s): <strong>{booking.hours}</strong>
+        </Typography>
+      </div>
+      <div className="profile-agent-agenda-card-info">
         <AccountBoxIcon style={{ fill: "#750D37" }} />
         {currentUser.isAgent ? (
           <Typography component="p">

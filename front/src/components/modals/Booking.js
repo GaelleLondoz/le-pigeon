@@ -1,16 +1,32 @@
 import React, { useState, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
+// import Button from "@material-ui/core/Button";
+// import TextField from "@material-ui/core/TextField";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
+// import RadioGroup from "@material-ui/core/RadioGroup";
+// import Radio from "@material-ui/core/Radio";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import FormControl from "@material-ui/core/FormControl";
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import bookingAPI from "../services/bookingAPI";
 import { FormHelperText } from "@material-ui/core";
 
@@ -63,10 +79,12 @@ export default function FormDialog({ agentID }) {
     type: "",
     agentID: null,
     comment: "",
+    hours: null,
   });
   const [errors, setErrors] = useState({
     date: "",
     type: "",
+    hours: "",
   });
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -161,6 +179,8 @@ export default function FormDialog({ agentID }) {
           <DialogContent>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DateTimePicker
+                style={{ marginBottom: "15px" }}
+                fullWidth
                 label="DateTimePicker"
                 inputVariant="outlined"
                 name="date"
@@ -174,6 +194,28 @@ export default function FormDialog({ agentID }) {
                 helperText={errors.date && errors.date}
               />
             </MuiPickersUtilsProvider>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-outlined-label">
+                Nombre d'heure(s)
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                value={booking.hours}
+                onChange={handleChange}
+                label="Nombre d'heure(s)"
+                name="hours"
+                onChange={(e) =>
+                  setBooking({
+                    ...booking,
+                    hours: e.target.value,
+                  })
+                }
+              >
+                {Array.from(Array(24), (e, i) => {
+                  return <MenuItem value={i + 1}>{i + 1}</MenuItem>;
+                })}
+              </Select>
+            </FormControl>
             <TextField
               label="Votre commentaire"
               style={{ margin: 8 }}

@@ -53,6 +53,14 @@ const create = async (req, res) => {
     });
   }
 
+  if (newBooking.hours === null || newBooking.hours === "") {
+    errors.push({
+      target: "hours",
+      msg:
+        "Veuillez séléctionner le nombre d'heure que vous souhaitez réserver !",
+    });
+  }
+
   if (errors.length > 0) {
     return res.status(400).json({ errors });
   }
@@ -61,11 +69,24 @@ const create = async (req, res) => {
       .status(500)
       .json({ msg: "Impossible to book an appointment with yourself" });
   }
+  //Get agent price by hour
+  const currentAgent = await db.sequelize.query(
+    "SELECT price FROM userroles WHERE userID = :id",
+    {
+      replacements: { id: parseInt(agentID) },
+      type: sequelize.QueryTypes.SELECT,
+    }
+  );
+  console.log({ currentAgent });
+  //Calculate amount
+  const amount = newBooking.hours * currentAgent[0].price;
   try {
     Booking.create({
       date: newBooking.date,
       type: newBooking.type,
       comment: newBooking.comment,
+      hours: newBooking.hours,
+      amount,
       userID,
       agentID,
     });
@@ -112,7 +133,7 @@ const getBookingsByAgent = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { agentID: id },
-      attributes: ["id", "date", "status", "type", "comment"],
+      attributes: ["id", "date", "status", "type", "comment", "hours"],
       include: [
         // {
         //   model: BookingLocation,
@@ -208,7 +229,7 @@ const getBookingsByUser = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       where: { userID: id },
-      attributes: ["id", "date", "status", "type", "comment"],
+      attributes: ["id", "date", "status", "type", "comment", "hours"],
       include: [
         // {
         //   model: BookingLocation,
