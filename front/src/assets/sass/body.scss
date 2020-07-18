@@ -28,13 +28,19 @@ main {
 
 section#header-homepage {
   position: relative;
-  background-color: #3993dd;
+  //background-color: #3993dd;
+  background-image: url("../images/header-homerpage.jpg");
+  background-size: cover;
+  background-attachment: fixed;
   padding: 100px 0;
   .MuiTypography-h1 {
     font-size: 4rem;
     text-align: center;
     font-weight: bold;
     color: #fff;
+  }
+  h1 {
+    text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.6);
   }
   .form-search {
     margin-top: 50px;
@@ -54,6 +60,7 @@ section#header-homepage {
       padding: 16px 40px;
       font-size: 0.9375rem;
       background-color: #16324f;
+      width: 100%;
     }
     .MuiAutocomplete-inputRoot {
       padding: 0px;

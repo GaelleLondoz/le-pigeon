@@ -18,16 +18,26 @@ export const displayCallButton = (date) => {
   // ajouter heure, mois, année, minutes
   let today = new Date();
   let booking = new Date(date);
-  // let diffMs = (booking - today);
-  // let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
-  // console.log({ diffMins })
+  const todayMinutes = today.getMinutes();
+  const todayHour = today.getHours();
+  const todayDay = today.getDay();
+  const todayMonth = today.getDate();
+  const todayYear = today.getFullYear();
+  const bookingMinutes = booking.getMinutes();
+  const bookingHour = booking.getHours();
+  const bookingDay = booking.getDay();
+  const bookingMonth = booking.getDate();
+  const bookingYear = booking.getFullYear();
 
-
-  // var tenMinutes = 10 * 60 * 1000; /* ms */
-  // console.log({ calcul: today - booking })
-  // console.log({ diff: ((today - booking) < tenMinutes) })
-
-
-
-  // return diffMins <= 10 ? true : false
+  if (
+    todayDay === bookingDay &&
+    todayMonth === bookingMonth &&
+    todayYear === bookingYear &&
+    todayHour === bookingHour &&
+    todayMinutes + 10 >= bookingMinutes &&
+    bookingMinutes + 30 >= todayMinutes
+  ) {
+    return true;
+  }
+  return false;
 };

@@ -221,7 +221,8 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         )}
       {currentUser.isAgent &&
         status === "ACCEPTED" &&
-        displayCallButton(booking.date) && (
+        displayCallButton(booking.date) &&
+        compareCurrentDate(booking.date) && (
           <Button
             variant="contained"
             color="secondary"
@@ -232,7 +233,8 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         )}
       {!currentUser.isAgent &&
         status === "ACCEPTED" &&
-        displayCallButton(booking.date) && (
+        displayCallButton(booking.date) &&
+        compareCurrentDate(booking.date) && (
           <Button
             variant="contained"
             color="secondary"
