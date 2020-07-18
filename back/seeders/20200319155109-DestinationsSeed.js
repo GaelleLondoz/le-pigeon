@@ -6,13 +6,25 @@ const coverImages = [
   "ozl5wXpxA5.jpeg",
   "pF6NUrGBx3.jpeg",
 ];
-const destinationType = ["Hotel", "Backpacking"];
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
     let data = [];
     let count = 30;
-    let type = ["Backpacking","Hotel"]
+    let type = [
+      "Plage",
+      "Montagne",
+      "City-trip",
+      "Road-trip",
+      "Backpack",
+      "Hotel",
+      "Clubmed",
+      "Slow-travel",
+      "Tour du monde",
+      "Croisières",
+      "Trek",
+      "Camping",
+    ];
     while (count--) {
       data.push({
         // countryID: faker.random.number({ min: 1, max: 15, precision: 1 }),
@@ -24,7 +36,6 @@ module.exports = {
         coverImage: faker.random.arrayElement(coverImages),
         createdAt: new Date(),
         updatedAt: new Date(),
-        type: faker.random.arrayElement(destinationType),
       });
     }
     return queryInterface.bulkInsert("Destinations", data, {});
