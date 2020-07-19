@@ -78,13 +78,11 @@ class ChatBox extends Component {
     serverConnection.onmessage = (message) => {
       var signal = JSON.parse(message.data);
       //Change state if incoming call for yourself
-      if (
-        !signal.chat &&
-        signal.receiver === this.state.uuid &&
-        !this.state.isReceiverComponentLoaded
-      ) {
+      if (!signal.chat && signal.receiver === this.state.uuid) {
         this.setState({
           isCallOnGoing: true,
+          isSelected: false,
+          isChatOngoing: false,
           liveMessage: message,
           liveConnection: serverConnection,
         });
@@ -92,22 +90,21 @@ class ChatBox extends Component {
         const customContext = this.context;
         customContext.setIsCallOnGoing(true);
       }
-      if (signal.chat && !this.state.isReceiverComponentLoaded) {
+      if (signal.chat) {
         if (this.props.receiver && signal.receiver === this.state.uuid) {
           this.state.messages.push(signal.chat);
           this.setState({
             receiverID: signal.sender,
             isChatOngoing: true,
             isCallOnGoing: false,
+            isSelected: false,
             liveMessage: message,
             liveConnection: serverConnection,
             selectedName:
               this.props.receiver.firstName +
               " " +
               this.props.receiver.lastName,
-            //selectedName: signal.chat.user.name,
             selectedAvatar: signal.chat.user.avatar,
-            //selectedName: this.props.receiver.avatar,
           });
         } else if (this.props.user && signal.receiver === this.state.uuid) {
           console.log({ RECEIVER: this.props.receiver });
@@ -120,9 +117,7 @@ class ChatBox extends Component {
             liveConnection: serverConnection,
             selectedName:
               this.props.user.firstName + " " + this.props.user.lastName,
-            //selectedName: signal.chat.user.name,
             selectedAvatar: signal.chat.user.avatar,
-            //selectedName: this.props.receiver.avatar,
           });
         }
       }
@@ -230,6 +225,7 @@ class ChatBox extends Component {
           handleChange={this.handleChange}
           user={contact}
           key={contact.id}
+          isCaller={this.state.isCallInitiator}
         />
       );
     } else {
@@ -248,6 +244,7 @@ class ChatBox extends Component {
             handleChange={this.handleChange}
             user={contact}
             key={i}
+            isCaller={this.state.isCallInitiator}
           />
         );
       }
@@ -265,6 +262,7 @@ class ChatBox extends Component {
         user={this.state.selectedUser}
         messages={this.state.messages}
         onSend={(messages) => this.onSend(messages)}
+        inverted="true"
       />
     );
   }
@@ -352,12 +350,6 @@ class ChatBox extends Component {
                     <div style={styles.chat}>{this.renderHomeChatBox()}</div>
                   </div>
                 )}
-              {!this.state.isSelected && this.state.isChatOngoing && (
-                <div style={styles.chat}>
-                  <div style={styles.chat}>{this.renderUserChatBox()}</div>
-                  <div style={styles.chat}>{this.renderGiftedChat()}</div>
-                </div>
-              )}
               {this.state.isSelected &&
                 this.state.isChatOngoing &&
                 !this.state.isCallOngoing && (
@@ -366,19 +358,43 @@ class ChatBox extends Component {
                     <div style={styles.chat}>{this.renderGiftedChat()}</div>
                   </div>
                 )}
-              {this.state.isSelected && this.state.isCallOnGoing && (
-                <div style={styles.chat}>
-                  <div style={styles.chat}>{this.renderUserChatBox()}</div>
-                  <div style={styles.chat}>{this.renderVideoChatBox()}</div>
-                </div>
-              )}
-              {!this.state.isSelected && this.state.isCallOnGoing && (
-                <div style={styles.chat}>
+              {this.state.isSelected &&
+                this.state.isCallOnGoing &&
+                !this.state.isChatOngoing && (
                   <div style={styles.chat}>
-                    {this.renderVideoReceiverChatBox()}
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>{this.renderVideoChatBox()}</div>
                   </div>
-                </div>
-              )}
+                )}
+              {!this.state.isSelected &&
+                this.state.isChatOngoing &&
+                !this.state.isCallOnGoing && (
+                  <div style={styles.chat}>
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>{this.renderGiftedChat()}</div>
+                  </div>
+                )}
+              {!this.state.isSelected &&
+                this.state.isCallOnGoing &&
+                this.state.isChatOngoing && (
+                  <div style={styles.chat}>
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>
+                      {this.renderVideoReceiverChatBox()}
+                    </div>
+                    <div style={styles.chat}>{this.renderGiftedChat()}</div>
+                  </div>
+                )}
+              {!this.state.isSelected &&
+                this.state.isCallOnGoing &&
+                !this.state.isChatOngoing && (
+                  <div style={styles.chat}>
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>
+                      {this.renderVideoReceiverChatBox()}
+                    </div>
+                  </div>
+                )}
               <div style={styles.settings}> </div>
             </div>
           </DialogContent>
@@ -413,6 +429,7 @@ const styles = {
     borderColor: "#ccc",
     borderRightStyle: "solid",
     borderLeftStyle: "solid",
+    height: "200px",
   },
   settings: {
     display: "flex",

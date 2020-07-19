@@ -25,6 +25,7 @@ const MainNavigation = ({ history }) => {
     setIsAuthenticated,
     currentUser,
     setCurrentUser,
+    isCallOnGoing,
   } = useContext(AuthContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -87,7 +88,6 @@ const MainNavigation = ({ history }) => {
             <MenuItem component={Link} to="/help" className={classes.menuItem}>
               Aide
             </MenuItem>
-
             {!currentUser.isAgent && (
               <MenuItem className={classes.menuItem}>
                 {/* <Button color="secondary" variant="contained">
