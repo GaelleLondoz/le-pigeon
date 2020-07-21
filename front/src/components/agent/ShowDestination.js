@@ -81,8 +81,6 @@ const ShowDestination = ({ destination, pictures }) => {
     fetchInfoLocation();
   }, [destination]);
 
-  console.log(destination);
-
   return (
     <section className="travel-details">
       <Container>

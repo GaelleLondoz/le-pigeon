@@ -54,7 +54,6 @@ let Header = (props) => {
   };
 
   const handleSearchClick = async () => {
-    console.log("clicked search");
     try {
       setErrors({});
       const data = await UserDestinationsAPI.getAgentsByDestAndType(

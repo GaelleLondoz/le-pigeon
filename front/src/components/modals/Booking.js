@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FormDialog({ agentID }) {
-  console.log({ AGENTID: agentID });
   const { isAuthenticated, currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const defaultDate = new Date();
@@ -97,23 +96,11 @@ export default function FormDialog({ agentID }) {
       //   agentID: 1,
       // });
       setErrors({});
-      console.log({
-        TOSENDPOINT: {
-          ...booking,
-          date: toMysql(booking.date),
-        },
-      });
-      console.log({
-        TOSEND: {
-          booking,
-          date: toMysql(booking.date),
-        },
-      });
+
       await bookingAPI.createBooking(agentID, {
         booking,
         date: toMysql(booking.date),
       });
-      //console.log("Ok, in the DB");
       // await bookingAPI.createBooking({ booking, date: booking.date });
       setshowFlash(!showFlash);
       setTimeout(() => {
@@ -146,7 +133,7 @@ export default function FormDialog({ agentID }) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  console.log({ NEWBOOKING: booking });
+
   return (
     <div>
       {isAuthenticated && parseInt(currentUser.id) !== parseInt(agentID) ? (
@@ -258,8 +245,6 @@ export default function FormDialog({ agentID }) {
                 aria-label="Communication"
                 name="type"
                 defaultValue=""
-                // value={booking.type}
-                //onChange={handleChange}
                 onChange={(e) => {
                   setBooking({ ...booking, type: e.target.value });
                 }}

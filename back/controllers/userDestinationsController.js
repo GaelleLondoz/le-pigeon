@@ -249,7 +249,6 @@ const getProxyDestinations = async(req, res) => {
 };
 const searchAgentByDestAndType = async(req, res) => {
     const { type, lat, lng } = req.query;
-    console.log({ query: req.query });
     const errors = [];
 
     if (
@@ -280,7 +279,6 @@ const searchAgentByDestAndType = async(req, res) => {
                 type: sequelize.QueryTypes.SELECT,
             }
         );
-        console.log({ agents });
         if (agents.length === 0) {
             return res.status(500).json({ msg: "Agents Not Found" });
         }

@@ -73,7 +73,6 @@ class ChatBox extends Component {
     });
   }
   monitorIncomingCalls() {
-    console.log("monitorIncomingCalls");
     serverConnection = new WebSocket(process.env.REACT_APP_WEB_RTC_SERVER);
     serverConnection.onmessage = (message) => {
       var signal = JSON.parse(message.data);
@@ -107,7 +106,6 @@ class ChatBox extends Component {
             selectedAvatar: signal.chat.user.avatar,
           });
         } else if (this.props.user && signal.receiver === this.state.uuid) {
-          console.log({ RECEIVER: this.props.receiver });
           this.state.messages.push(signal.chat);
           this.setState({
             receiverID: signal.sender,

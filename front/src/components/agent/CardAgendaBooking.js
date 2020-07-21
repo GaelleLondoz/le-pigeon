@@ -127,7 +127,6 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     setBookingDate(e.target.value);
   };
 
-  console.log({ CURRENTUSER: currentUser });
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (

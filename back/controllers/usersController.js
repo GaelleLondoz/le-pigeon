@@ -162,7 +162,6 @@ const login = async(req, res) => {
                     email,
                 },
             });
-            console.log(user);
 
             if (!user) {
                 res.status(401).json({ message: "No such user found" });
@@ -254,7 +253,7 @@ const logout = (req, res) => {
         process.env.JWT_SECRET,
         verifyOptions
     );
-    console.log({ checkStatus });
+
     if (checkStatus != null) {
         res.status(200).json({});
     } else {
@@ -266,7 +265,6 @@ const logout = (req, res) => {
 
 const getRoleUser = async(req, res) => {
     const id = req.user.id;
-    console.log("role userrrr");
     try {
         const role = await UserRole.findOne({
             where: { userID: id },
@@ -289,10 +287,10 @@ const getProfileAgent = async(req, res) => {
     const id = req.params.id;
     //Verify if user connected is same of id
     /*
-                        if (req.user.id != id) {
-                            return res.status(403).json({ msg: "Access Denied" });
-                        }
-                      */
+                                  if (req.user.id != id) {
+                                      return res.status(403).json({ msg: "Access Denied" });
+                                  }
+                                */
 
     try {
         const agent = await UserRole.findOne({
@@ -329,7 +327,6 @@ const getReviews = async(req, res) => {
                 as: "reviews",
             }, ],
         });
-        console.log(reviews);
         return res.status(200).json(reviews);
     } catch (error) {
         console.log(error);
@@ -347,7 +344,7 @@ const getMessages = async(req, res) => {
                 nested: true,
             }, ],
         });
-        console.log(messages);
+
         return res.status(200).json(messages);
     } catch (error) {
         console.log(error);

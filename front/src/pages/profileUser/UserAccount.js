@@ -85,7 +85,6 @@ const UserAccount = ({ match }) => {
   };
 
   const handleBecomeAgentClick = async () => {
-    console.log("ToDo => send request to back !");
     try {
       await UserAPI.becomeAgent();
       setShowBecomeAgentFlash(true);

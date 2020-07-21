@@ -180,6 +180,12 @@ const Account = () => {
         <Typography variant="h5" style={{ marginBottom: "30px" }}>
           Bonjour {agent.User.lastName}, comment allez-vous aujourd'hui ?
         </Typography>
+        {!agent.price && (
+          <Alert variant="filled" severity="warning">
+            Veuillez saisir un prix horaire en cliquant sur "Editer votre
+            profil"!
+          </Alert>
+        )}
         <EditAgentModal
           agent={agent}
           onChange={handleChange}
