@@ -29,6 +29,8 @@ const UserAccount = ({ match }) => {
   });
   const [loading, setLoading] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
+  const [showBecomeAgentFlash, setShowBecomeAgentFlash] = useState(false);
+  const [showButtonBecomeAgent, setShowButtonBecomeAgent] = useState(true);
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
@@ -82,6 +84,19 @@ const UserAccount = ({ match }) => {
     });
   };
 
+  const handleBecomeAgentClick = async () => {
+    try {
+      await UserAPI.becomeAgent();
+      setShowBecomeAgentFlash(true);
+      setShowButtonBecomeAgent(false);
+      setTimeout(() => {
+        setShowBecomeAgentFlash(false);
+      }, 5000);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   useEffect(() => {
     fetchUser(id);
   }, [id]);
@@ -95,7 +110,7 @@ const UserAccount = ({ match }) => {
               alt={"Le Pigeon | Avatar de " + user.firstName}
               src={
                 user.avatar
-                  ? "http://localhost:5000/avatar/" + user.avatar
+                  ? process.env.REACT_APP_BASE_URL + "/avatar/" + user.avatar
                   : AvatarDefault
               }
             />
@@ -129,6 +144,24 @@ const UserAccount = ({ match }) => {
           {showFlash && (
             <Flash status="success" text="Votre profil a bien été mis à jour" />
           )}
+          {showBecomeAgentFlash && (
+            <Flash
+              status="success"
+              text="Vous êtes désormais un agent. Veuillez vous reconnectez et compléter votre profil."
+            />
+          )}
+          {window.location.search.includes("become-agent") &&
+            showButtonBecomeAgent && (
+              <div style={{ textAlign: "center", marginBottom: "40px" }}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleBecomeAgentClick}
+                >
+                  Cliquer et devenez agent dès aujourd'hui !
+                </Button>
+              </div>
+            )}
           <Typography variant="h5" align="center">
             Vous souhaitez modifier votre profil {user.firstName} ?
           </Typography>

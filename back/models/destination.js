@@ -28,8 +28,23 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       type: {
-        type: DataTypes.STRING,
+        //type: DataTypes.STRING,
         allowNull: false,
+        type: DataTypes.ENUM(
+          "Plage",
+          "Montagne",
+          "City-trip",
+          "Road-trip",
+          "Backpack",
+          "Hotel",
+          "Clubmed",
+          "Slow-travel",
+          "Tour du monde",
+          "Croisières",
+          "Trek",
+          "Camping"
+        ),
+        //defaultValue: 'employee'
       },
     },
     {}

@@ -6,12 +6,14 @@ import {
   AppBar,
   Tabs,
   Tab,
+  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import TabPanel from "../../components/agent/TabPanel";
 import BookingsAPI from "../../components/services/bookingAPI";
 import CardAgendaBooking from "../../components/agent/CardAgendaBooking";
 import { compareCurrentDate } from "../../helpers/compareCurrentDate";
+import ChatBox from "../../components/chatbox/ChatBox";
 
 const UserBooking = ({ match }) => {
   const { id } = match.params;
@@ -20,9 +22,14 @@ const UserBooking = ({ match }) => {
   const [valueTab, setValueTab] = useState(0);
   const [bookings, setBookings] = useState([]);
   const [notBookings, setNotBookings] = useState("");
+  const [enableCall, setEnableCall] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValueTab(newValue);
+  };
+
+  const handleConferenceCall = () => {
+    setEnableCall(true);
   };
 
   const fetchBookings = async (id) => {
@@ -77,6 +84,16 @@ const UserBooking = ({ match }) => {
                         booking={booking}
                         onFetchBookings={() => fetchUserBookingsCallBack(id)}
                       />
+                      {/* <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={(e) => handleConferenceCall()}
+                      >
+                        Rejoindre
+                      </Button> */}
+                      {/* {enableCall && (
+                        <ChatBox receiver={booking.agent}></ChatBox>
+                      )} */}
                     </Grid>
                   )
                 );

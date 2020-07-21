@@ -19,7 +19,6 @@ const AgentAvatar = () => {
     fetchBestAgents();
   }, []);
 
-  //console.log(bestAgents);
   return (
     <section id="agent-avatar">
       <Container>

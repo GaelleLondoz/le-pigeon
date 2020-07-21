@@ -39,6 +39,11 @@ router.get(
     usersController.getProfileUser
 );
 router.put("/users/user/:id", checkAuth, usersController.editProfileUser);
+router.get(
+    "/users/search/agents",
+    userDestinationsController.searchAgentByDestAndType
+);
+router.get("/users/become/agent", checkAuth, usersController.becomeAgent);
 // login auth
 router.post("/login", usersController.login);
 router.post("/logout", checkAuth, usersController.logout);
@@ -47,7 +52,7 @@ router.get("/users/me/admin", checkAuth, usersController.admin);
 
 // bookings
 router.get("/bookings", checkAuth, bookingsController.index);
-router.post("/bookings", checkAuth, bookingsController.create);
+router.post("/bookings/:id", checkAuth, bookingsController.create);
 router.get("/bookings/:id", checkAuth, bookingsController.findOne);
 router.put("/bookings/:id/accept", checkAuth, bookingsController.acceptBooking);
 router.put("/bookings/:id/cancel", checkAuth, bookingsController.cancelBooking);
@@ -117,11 +122,24 @@ router.get(
     "/users/:id/destination/:destinationId",
     userDestinationsController.getDestinationByUser
 );
+router.get(
+    "/destinations",
+    userDestinationsController.getAllDestinationsByUsers
+);
+router.get(
+    "/destinations/types",
+    userDestinationsController.getDestinationTypes
+);
+
 // router.get(
 //   "/destinations/continents",
 //   userDestinationsController.getAllContinents
 // );
 router.post("/destinations/new", checkAuth, userDestinationsController.create);
+router.get(
+    "/proxy-destinations/:lat/:lng",
+    userDestinationsController.getProxyDestinations
+);
 
 // roles
 router.get("/roles", checkAuth, rolesController.index);

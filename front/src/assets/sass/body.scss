@@ -14,11 +14,24 @@
 }
 */
 
+/*
+  GENERAL
+*/
+.MuiDialog-paper {
+  padding: 30px;
+}
+main {
+  min-height: calc(100vh - 80px - 60px);
+}
+
 //Homepage
 
 section#header-homepage {
   position: relative;
-  background-color: #3993dd;
+  //background-color: #3993dd;
+  background-image: url("../images/header-homerpage.jpg");
+  background-size: cover;
+  background-attachment: fixed;
   padding: 100px 0;
   .MuiTypography-h1 {
     font-size: 4rem;
@@ -26,10 +39,14 @@ section#header-homepage {
     font-weight: bold;
     color: #fff;
   }
+  h1 {
+    text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.6);
+  }
   .form-search {
     margin-top: 50px;
     .MuiTextField-root {
       margin: 0 20px;
+      margin-left: 0;
       .MuiInputBase-root {
         border-radius: 0;
         border-color: #fff;
@@ -44,6 +61,17 @@ section#header-homepage {
       padding: 16px 40px;
       font-size: 0.9375rem;
       background-color: #16324f;
+      width: 100%;
+    }
+    .MuiAutocomplete-inputRoot {
+      padding: 0px;
+    }
+    .ap-input {
+      height: 60px;
+      border-radius: 0px;
+    }
+    .MuiFormHelperText-root {
+      color: #710000;
     }
   }
 }
@@ -538,5 +566,10 @@ section.travel-details {
         right: 15px;
       }
     }
+  }
+}
+section#profile-user-agenda {
+  .MuiTabs-root {
+    min-width: 200px;
   }
 }

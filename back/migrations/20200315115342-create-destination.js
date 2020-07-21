@@ -28,6 +28,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      type: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       coverImage: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -50,7 +54,21 @@ module.exports = {
         type: Sequelize.DATE,
       },
       type: {
-        type: Sequelize.STRING,
+        //type: Sequelize.STRING,
+        type: Sequelize.ENUM(
+          "Plage",
+          "Montagne",
+          "City-trip",
+          "Road-trip",
+          "Backpack",
+          "Hotel",
+          "Clubmed",
+          "Slow-travel",
+          "Tour du monde",
+          "Croisières",
+          "Trek",
+          "Camping"
+        ),
         allowNull: false,
       },
     });

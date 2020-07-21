@@ -14,6 +14,7 @@ var peerConnection;
 var uuid;
 var message;
 var serverConnection;
+var receiverID;
 
 var peerConnectionConfig = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -100,12 +101,10 @@ export default function VideoReceiverChatBox(props) {
 }
 
 async function callOngoing(props) {
+  props.setReceiverComponentLoaded();
   uuid = props.uuid;
   message = props.liveMessage;
   serverConnection = props.liveConnection;
-
-  console.log({ liveMessage: message });
-  console.log({ serverConnection: serverConnection });
 
   localVideo = document.getElementById("localVideo");
   remoteVideo = document.getElementById("remoteVideo");
@@ -124,7 +123,6 @@ async function callOngoing(props) {
   };
 
   peerConnection.ontrack = (event) => {
-    console.log("got remote stream");
     if (event.streams != null) {
       remoteVideo.srcObject = event.streams[0];
     } else {
@@ -154,8 +152,7 @@ function getUserMediaSuccess(stream) {
 }
 async function gotMessageFromServer(message) {
   var signal = JSON.parse(message.data);
-  console.log({ signal: signal });
-  if (signal.uuid === uuid) {
+  if (signal.receiver === uuid) {
     if (signal.sdp) {
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(signal.sdp)

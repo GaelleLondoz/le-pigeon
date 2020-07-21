@@ -9,7 +9,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Title from "./Title";
 import userAPI from "../services/userAPI";
 
-
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -35,7 +34,7 @@ export default function Orders() {
         id: i,
         date: item.date,
         name: item.firstname + " " + item.lastname,
-        amount: item.price,
+        amount: item.amount,
       };
       const dateAsString = new Date(row.date).toDateString();
       row.date = dateAsString;

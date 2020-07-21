@@ -7,6 +7,7 @@ import AuthContext from "../../contexts/AuthContext";
 import AuthAPI from "../services/authAPI";
 import CollapseNav from "./CollapseNav";
 import ItemsNav from "./ItemsNav";
+import Logo from "../../assets/images/logo-pigeon.svg";
 
 //NAVIGATION WITH RESPONSIVE
 
@@ -71,7 +72,8 @@ const MainNav = ({ history }) => {
           />
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.titleLink}>
-              Le Pigeon
+              {/* Le Pigeon */}
+              <img src={Logo} alt="Logo | Le Pigeon" className={classes.logo} />
             </Link>
           </Typography>
           <ItemsNav
@@ -101,8 +103,11 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    fontSize: "1.6rem",
-    textTransform: "uppercase",
+    //fontSize: "1.6rem",
+    //textTransform: "uppercase",
+  },
+  logo: {
+    maxWidth: "2.5rem",
   },
   titleLink: {
     textDecoration: "none",
@@ -122,6 +127,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     backgroundColor: "#009fb7",
+    /*width: "100vw",*/
     [theme.breakpoints.down("sm")]: {
       paddingTop: "13px",
       paddingBottom: "13px",

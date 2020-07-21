@@ -28,6 +28,7 @@ const Account = () => {
       userName: "",
       email: "",
       avatar: "",
+      description: "",
     },
     language: "",
     price: "",
@@ -50,6 +51,8 @@ const Account = () => {
     language: "",
     price: "",
   });
+
+  const [closeModal, setCloseModal] = useState(false);
 
   const fetchAvgRatings = async (id) => {
     try {
@@ -88,6 +91,10 @@ const Account = () => {
       setSendEditAgentLoading(false);
       setErrors({});
       setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 5000);
+      setCloseModal(true);
       fetchAgent(id);
     } catch (error) {
       setSendEditAgentLoading(false);
@@ -173,6 +180,12 @@ const Account = () => {
         <Typography variant="h5" style={{ marginBottom: "30px" }}>
           Bonjour {agent.User.lastName}, comment allez-vous aujourd'hui ?
         </Typography>
+        {!agent.price && (
+          <Alert variant="filled" severity="warning">
+            Veuillez saisir un prix horaire en cliquant sur "Editer votre
+            profil"!
+          </Alert>
+        )}
         <EditAgentModal
           agent={agent}
           onChange={handleChange}
@@ -181,6 +194,7 @@ const Account = () => {
           sendEditAgentLoading={sendEditAgentLoading}
           onHandleFileChange={handleFileChange}
           errors={errors}
+          onCloseModal={closeModal}
         />
         <div className="profile-agent-account-content">
           <Grid container spacing={5}>

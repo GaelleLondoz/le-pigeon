@@ -35,7 +35,7 @@ export default function ContactBox(props) {
             value={props.user.name}
             aria-label="chat"
             onClick={(e) => props.handleChange(props.user, e)}
-            enabled="true"
+            disabled={props.isCaller ? false : true}
             color="primary"
           >
             <ChatIcon />
@@ -43,7 +43,7 @@ export default function ContactBox(props) {
           <IconButton
             aria-label="video"
             onClick={(e) => props.handleCall(props.user, e)}
-            enabled="true"
+            disabled={props.isCaller ? false : true}
             color="primary"
           >
             <VideoCallIcon />

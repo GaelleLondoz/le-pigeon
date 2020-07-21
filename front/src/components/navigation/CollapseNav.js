@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, MenuList, MenuItem, Button, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AvatarDefault from "../../assets/images/avatar_default.png";
+import ButtonBecomeAgent from "../buttons/ButtonBecomeAgent";
 
 const CollapseNav = ({
   anchorEl,
@@ -55,9 +56,13 @@ const CollapseNav = ({
 
         {!currentUser.isAgent && (
           <MenuItem className={classes.menuItem}>
-            <Button color="secondary" variant="contained">
+            {/* <Button color="secondary" variant="contained">
               Devenez agent !
-            </Button>
+            </Button> */}
+            <ButtonBecomeAgent
+              isAuthenticated={isAuthenticated}
+              currentUser={currentUser}
+            />
           </MenuItem>
         )}
 
@@ -73,7 +78,9 @@ const CollapseNav = ({
                 alt={"Le Pigeon | Avatar de " + currentUser.firstName}
                 src={
                   currentUser.avatar
-                    ? "http://localhost:5000/avatar/" + currentUser.avatar
+                    ? process.env.REACT_APP_BASE_URL +
+                      "/avatar/" +
+                      currentUser.avatar
                     : AvatarDefault
                 }
               />
@@ -96,7 +103,7 @@ const CollapseNav = ({
               Mon tableau de bord
             </MenuItem>
           )}
-          {currentUser.isAgent && (
+          {/* {currentUser.isAgent && (
             <MenuItem
               component={Link}
               to={"/profile/agent/" + currentUser.id}
@@ -113,7 +120,7 @@ const CollapseNav = ({
             >
               Mes destinations
             </MenuItem>
-          )}
+          )} */}
           {!currentUser.isAgent && (
             <MenuItem
               component={Link}
@@ -141,7 +148,7 @@ const CollapseNav = ({
               Mes réservations
             </MenuItem>
           )}
-          {currentUser.isAgent && (
+          {/* {currentUser.isAgent && (
             <MenuItem
               component={Link}
               to={"/profile/agent/" + currentUser.id}
@@ -149,7 +156,7 @@ const CollapseNav = ({
             >
               Ajouter un voyage
             </MenuItem>
-          )}
+          )} */}
           <MenuItem onClick={handleLogOut}>Logout</MenuItem>
         </Menu>
       </MenuList>

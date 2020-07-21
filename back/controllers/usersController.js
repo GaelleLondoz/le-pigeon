@@ -17,21 +17,112 @@ const index = (req, res) => {
 
 const create = (req, res) => {
     const newUser = req.body.user;
+    const errors = [];
+
+    if (newUser.firstName === null) {
+        errors.push({
+            target: "firstName",
+            msg: "Veuillez renseigner votre prénom !",
+        });
+    }
+    if (newUser.lastName === "") {
+        errors.push({
+            target: "lastName",
+            msg: "Veuillez renseigner votre nom !",
+        });
+    }
+    if (newUser.email === "") {
+        errors.push({
+            target: "email",
+            msg: "Veuillez renseigner votre email !",
+        });
+    } else if (!validateEmail(newUser.email)) {
+        errors.push({
+            target: "email",
+            msg: "Veuillez renseigner une adresse email correct !",
+        });
+    }
+    if (newUser.password === "") {
+        errors.push({
+            target: "password",
+            msg: "Veuillez renseigner un mot de passe !",
+        });
+    }
+    if (newUser.passwordConfirm !== newUser.password) {
+        errors.push({
+            target: "passwordConfirm",
+            msg: "Veuillez confirmer correctement vos mots de passe !",
+        });
+    }
+    if (newUser.type === "") {
+        errors.push({
+            target: "role",
+            msg: "Veuillez faire un choix !",
+        });
+    }
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
+    let isAgent;
+    let roleName;
+    if (newUser.role === "0") {
+        isAgent = 0;
+        roleName = "ROLE_USER";
+    } else {
+        isAgent = 1;
+        roleName = "ROLE_AGENT";
+    }
     //const updatedAt = new Date(Date.now()).toDateString();
     const updatedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
     newUser.password = getHash(newUser.password);
-    return User.create(newUser)
-        .then((user) => {
-            const result = db.sequelize.query(
+    return (
+        User.create({
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            userName: newUser.userName,
+            email: newUser.email,
+            password: newUser.password,
+            isAgent,
+        })
+        .then(async(user) => {
+            await db.sequelize.query(
                 "INSERT INTO userroles (userID,roleID,language,updatedAt) values (" +
                 user.id +
-                ",(select id from roles WHERE name='ROLE_USER'),'French'," +
+                ",(select id from roles WHERE name=" +
+                `'${roleName}'` +
+                "),'French'," +
                 `'${updatedAt}'` +
                 ")", { type: sequelize.QueryTypes.INSERT }
             );
+            await db.sequelize.query(
+                "insert into reviews (agentID,authorID,comment,rating,status,createdAt,updatedAt) values (:agent,:author,'',0,'PENDING',:todayDate,:todayDate)", {
+                    type: sequelize.QueryTypes.INSERT,
+                    replacements: {
+                        agent: user.id,
+                        author: user.id,
+                        todayDate: new Date(),
+                    },
+                }
+            );
             return res.status(200).send(user);
         })
-        .catch((e) => res.status(500).send(e));
+        // .then((user) => {
+        //   console.log({ userAddReview: user.id });
+        //   // db.sequelize.query(
+        //   //   "insert into reviews (agentID,authorID,comment,rating,status,createdAt,updatedAt) values (:agent,:author,'',0,'PENDING',':todayDate',':todayDate')",
+        //   //   {
+        //   //     type: sequelize.QueryTypes.INSERT,
+        //   //     replacements: {
+        //   //       agent: user.id,
+        //   //       author: user.id,
+        //   //       todayDate: new Date(),
+        //   //     },
+        //   //   }
+        //   // );
+        //   //return res.status(200).send(user);
+        // })
+        .catch((e) => res.status(500).send(e))
+    );
 };
 
 const findOne = (req, res) => {
@@ -71,7 +162,6 @@ const login = async(req, res) => {
                     email,
                 },
             });
-            console.log(user);
 
             if (!user) {
                 res.status(401).json({ message: "No such user found" });
@@ -163,7 +253,7 @@ const logout = (req, res) => {
         process.env.JWT_SECRET,
         verifyOptions
     );
-    console.log({ checkStatus });
+
     if (checkStatus != null) {
         res.status(200).json({});
     } else {
@@ -175,7 +265,6 @@ const logout = (req, res) => {
 
 const getRoleUser = async(req, res) => {
     const id = req.user.id;
-    console.log("role userrrr");
     try {
         const role = await UserRole.findOne({
             where: { userID: id },
@@ -198,17 +287,24 @@ const getProfileAgent = async(req, res) => {
     const id = req.params.id;
     //Verify if user connected is same of id
     /*
-          if (req.user.id != id) {
-              return res.status(403).json({ msg: "Access Denied" });
-          }
-        */
+                                  if (req.user.id != id) {
+                                      return res.status(403).json({ msg: "Access Denied" });
+                                  }
+                                */
 
     try {
         const agent = await UserRole.findOne({
             where: { userID: id, roleID: 2 },
             include: [{
                 model: User,
-                attributes: ["firstName", "lastName", "email", "userName", "avatar"],
+                attributes: [
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "userName",
+                    "avatar",
+                    "description",
+                ],
             }, ],
         });
         if (!agent) {
@@ -231,7 +327,6 @@ const getReviews = async(req, res) => {
                 as: "reviews",
             }, ],
         });
-        console.log(reviews);
         return res.status(200).json(reviews);
     } catch (error) {
         console.log(error);
@@ -249,7 +344,7 @@ const getMessages = async(req, res) => {
                 nested: true,
             }, ],
         });
-        console.log(messages);
+
         return res.status(200).json(messages);
     } catch (error) {
         console.log(error);
@@ -273,7 +368,14 @@ const getMessages = async(req, res) => {
 
 const editProfileAgent = async(req, res) => {
     const id = req.params.id;
-    const { firstName, lastName, userName, email, avatar } = req.body.User;
+    const {
+        firstName,
+        lastName,
+        userName,
+        email,
+        avatar,
+        description,
+    } = req.body.User;
     const { language, price } = req.body;
     const emailExist = await User.findOne({
         where: { email },
@@ -363,6 +465,7 @@ const editProfileAgent = async(req, res) => {
             lastName,
             userName,
             email,
+            description,
             avatar: fileSendToDatabase,
         }, {
             where: { id },
@@ -381,44 +484,8 @@ const editProfileAgent = async(req, res) => {
 };
 const getBestAgents = async(req, res) => {
     try {
-        // const agents = await Review.findAll({
-        //   order: sequelize.literal("avgRatings DESC"),
-        //   limit: 4,
-        //   attributes: [
-        //     [sequelize.fn("AVG", sequelize.col("rating")), "avgRatings"],
-        //   ],
-        //   include: [
-        //     {
-        //       model: User,
-        //       as: "agent",
-        //       attributes: ["firstName", "lastName", "avatar", "id"],
-        //       duplicating: false,
-        //     },
-        //   ],
-        //   group: ["agent.id", "review.id"],
-        // });
-        // const agents = await User.findAll({
-        //   order: sequelize.literal("avgRatings DESC"),
-        //   limit: 4,
-        //   attributes: [
-        //     "id",
-        //     "firstName",
-        //     "lastName",
-        //     "avatar",
-        //     [sequelize.fn("AVG", sequelize.col("reviews.rating")), "avgRatings"],
-        //   ],
-        //   include: [
-        //     {
-        //       model: Review,
-        //       as: "reviews",
-        //       attributes: [],
-        //       duplicating: false,
-        //     },
-        //   ],
-        //   group: ["user.id", "user.firstName", "user.lastName", "reviews.agentID"],
-        // });
         const agents = await db.sequelize.query(
-            "SELECT Users.id, Users.firstName, Users.lastName, Users.avatar, AVG(Reviews.rating) AS avgRatings, UserRoles.roleID FROM Users JOIN Reviews ON Users.id = Reviews.agentID JOIN UserRoles ON UserRoles.roleID = 2 GROUP BY Users.firstName, Users.lastName, Reviews.agentID ORDER BY avgRatings DESC LIMIT 4", { type: sequelize.QueryTypes.SELECT }
+            "SELECT Users.id, Users.firstName, Users.lastName, Users.avatar, AVG(Reviews.rating) AS avgRatings, UserRoles.roleID FROM Users JOIN Reviews ON Users.id = Reviews.agentID JOIN UserRoles ON UserRoles.roleID = 2 WHERE users.isAgent=1 GROUP BY Users.firstName, Users.lastName, Reviews.agentID ORDER BY avgRatings DESC LIMIT 4", { type: sequelize.QueryTypes.SELECT }
         );
         if (!agents) {
             return res.status(404).json({ msg: "Agents Not Found" });
@@ -437,7 +504,7 @@ const getPublicProfileAgent = async(req, res) => {
             where: { userID: id },
             include: [{
                 model: User,
-                attributes: ["id", "firstName", "lastName", "avatar"],
+                attributes: ["id", "firstName", "lastName", "avatar", "description"],
             }, ],
         });
         if (!agent) {
@@ -610,10 +677,10 @@ const setRoleAdminByUserID = async(req, res) => {
 const getRecentSales = async(req, res) => {
     try {
         const sales = await db.sequelize.query(
-            "SELECT users.firstName as firstname, users.lastName as lastname, SUM(price) as sales from userroles,bookings,roles,users " +
+            "SELECT users.firstName as firstname, users.lastName as lastname, SUM(bookings.amount) as sales from userroles,bookings,roles,users " +
             "WHERE userroles.userID = users.id and userroles.userID = bookings.agentID and userroles.roleID = roles.id " +
             "AND MONTH(CURRENT_DATE - INTERVAL 1 MONTH) = MONTH(bookings.createdAt - INTERVAL 1 MONTH) " +
-            "AND bookings.status like 'Acceptée' and users.isAgent = 1 GROUP BY users.id ORDER BY sales ASC", { type: sequelize.QueryTypes.SELECT }
+            "AND bookings.status like 'ACCEPTED' and users.isAgent = 1 GROUP BY users.id ORDER BY sales ASC", { type: sequelize.QueryTypes.SELECT }
         );
         if (!sales) {
             return res.status(403).json({ msg: "Recent sales not found" });
@@ -626,14 +693,13 @@ const getRecentSales = async(req, res) => {
 };
 
 const getRecentOrders = async(req, res) => {
-
     try {
         const orders = await db.sequelize.query(
-            "SELECT bookings.date as date, users.firstName as firstname, users.lastName as lastname, userroles.price " +
+            "SELECT bookings.date as date, users.firstName as firstname, users.lastName as lastname, bookings.amount " +
             "FROM userroles,bookings,roles,users " +
             "WHERE userroles.userID = users.id and userroles.userID = bookings.agentID and userroles.roleID = roles.id " +
             "AND MONTH(CURRENT_DATE - INTERVAL 1 MONTH) = MONTH(bookings.createdAt - INTERVAL 1 MONTH) " +
-            "AND bookings.status like 'Acceptée' and users.isAgent = 1", { type: sequelize.QueryTypes.SELECT }
+            "AND bookings.status like 'ACCEPTED' and users.isAgent = 1", { type: sequelize.QueryTypes.SELECT }
         );
         if (!orders) {
             return res.status(403).json({ msg: "Recent orders not found" });
@@ -651,12 +717,33 @@ const admin = async(req, res) => {
     try {
         const admin = await db.sequelize.query(
             "SELECT users.firstName as firstname, users.lastName as lastname from userroles,users " +
-            "WHERE userroles.userID = " + id + " and users.id = userroles.id AND userroles.roleID = (SELECT roles.id FROM roles WHERE roles.name like 'ROLE_ADMIN')", { type: sequelize.QueryTypes.SELECT }
+            "WHERE userroles.userID = " +
+            id +
+            " and users.id = userroles.id AND userroles.roleID = (SELECT roles.id FROM roles WHERE roles.name like 'ROLE_ADMIN')", { type: sequelize.QueryTypes.SELECT }
         );
         if (!admin) {
             return res.status(403).json({ msg: "User not administrator" });
         }
         return res.status(200).json(admin);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ msg: "Error Server" });
+    }
+};
+const becomeAgent = async(req, res) => {
+    const currentUser = req.user;
+    if (!currentUser) {
+        return res.status(403).json({ msg: "Access Denied" });
+    }
+
+    try {
+        await User.update({
+            isAgent: true,
+        }, { where: { id: currentUser.id } });
+        await UserRole.update({
+            roleID: 2,
+        }, { where: { userID: currentUser.id } });
+        return res.status(200).json({ msg: "User is now agent" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ msg: "Error Server" });
@@ -685,4 +772,5 @@ module.exports = {
     getRecentSales,
     getRecentOrders,
     admin,
+    becomeAgent,
 };

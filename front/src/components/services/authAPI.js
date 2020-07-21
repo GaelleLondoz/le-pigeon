@@ -50,9 +50,14 @@ function setup() {
 function isAuthenticated() {
     const token = window.localStorage.getItem("authToken");
     if (token) {
-        return true;
+        const jwtData = jwtDecode(token);
+        if (jwtData.exp * 1000 > new Date().getTime()) {
+            return true;
+        } else {
+            window.localStorage.removeItem("authToken");
+            return false;
+        }
     }
-    return false;
 }
 
 export default {

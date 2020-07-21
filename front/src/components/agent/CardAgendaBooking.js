@@ -13,12 +13,16 @@ import {
 import {
   compareCurrentDate,
   compareDateForUpdateBooking,
+  displayCallButton,
 } from "../../helpers/compareCurrentDate";
 import { changeColorIconStatus } from "../../helpers/changeColorIconStatus";
 import { changeStatusBookingToFrench } from "../../helpers/changeStatusToFrench";
 import BookingAPI from "../../components/services/bookingAPI";
 import AuthContext from "../../contexts/AuthContext";
 import LoaderButton from "../loaders/LoaderButton";
+import CategoryIcon from "@material-ui/icons/Category";
+import ModeCommentIcon from "@material-ui/icons/ModeComment";
+import ChatBox from "../chatbox/ChatBox";
 
 const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const [status, setStatus] = useState(booking.status);
@@ -31,7 +35,32 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
     date: "",
   });
   const [loadingUpdateBooking, setLoadingUpdateBooking] = useState(false);
+  const [enableCall, setEnableCall] = useState(false);
+  const [userToCall, setUserToCall] = useState({});
+  const [agentToCall, setAgentToCall] = useState({});
 
+  const handleConferenceCallAgent = (booker) => {
+    const userToCall = {
+      id: booker.id,
+      firstName: booker.firstName,
+      lastName: booker.lastName,
+      email: booker.email,
+      avatar: booker.avatar,
+      userName: booker.userName,
+    };
+    setUserToCall(userToCall);
+    setEnableCall(true);
+  };
+  const handleConferenceCallUser = (user) => {
+    const agentToCall = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatar: user.avatar,
+    };
+    setAgentToCall(agentToCall);
+    setEnableCall(true);
+  };
   const handleAcceptBookingClick = async () => {
     try {
       await BookingAPI.acceptBooking(booking.id);
@@ -97,6 +126,7 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
   const handleDateChange = (e) => {
     setBookingDate(e.target.value);
   };
+
   return (
     <div className="profile-agent-agenda-card">
       {showFlash && (
@@ -118,12 +148,18 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
         </Typography>
       </div>
       <div className="profile-agent-agenda-card-info">
+        <EventIcon style={{ fill: "#750D37" }} />
+        <Typography component="p">
+          Nombre d'heure(s): <strong>{booking.hours}</strong>
+        </Typography>
+      </div>
+      <div className="profile-agent-agenda-card-info">
         <AccountBoxIcon style={{ fill: "#750D37" }} />
         {currentUser.isAgent ? (
           <Typography component="p">
             Auteur de la réservation :{" "}
             <strong>
-              {booking.booker.firstName} {booking.booker.lastName}
+              {booking.booker.firstName} {booking.booker.lastName}{" "}
             </strong>
           </Typography>
         ) : (
@@ -135,12 +171,22 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
           </Typography>
         )}
       </div>
-      <div className="profile-agent-agenda-card-info">
+      {/* <div className="profile-agent-agenda-card-info">
         <LocationOnIcon style={{ fill: "#750D37" }} />
         <Typography component="p">
           Pour la destination :{" "}
           <strong>{booking.BookingLocations[0].Location.name}</strong>
         </Typography>
+      </div> */}
+      <div className="profile-agent-agenda-card-info">
+        <CategoryIcon style={{ fill: "#750D37" }} />
+        <Typography component="p">
+          Type de réservation : <strong>{booking.type}</strong>
+        </Typography>
+      </div>
+      <div className="profile-agent-agenda-card-info">
+        <ModeCommentIcon style={{ fill: "#750D37" }} />
+        <Typography component="p">Commentaire : {booking.comment}</Typography>
       </div>
       {status === "PENDING" &&
         compareCurrentDate(booking.date) &&
@@ -178,6 +224,38 @@ const CardAgendaBooking = ({ booking, onFetchBookings }) => {
             </Button>
           </div>
         )}
+      {currentUser.isAgent &&
+        status === "ACCEPTED" &&
+        displayCallButton(booking.date) &&
+        compareCurrentDate(booking.date) && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={(e) => handleConferenceCallAgent(booking.booker)}
+          >
+            Appeler
+          </Button>
+        )}
+      {!currentUser.isAgent &&
+        status === "ACCEPTED" &&
+        displayCallButton(booking.date) &&
+        compareCurrentDate(booking.date) && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={(e) => handleConferenceCallUser(booking.agent)}
+          >
+            Rejoindre
+          </Button>
+        )}
+      {enableCall && currentUser.isAgent && (
+        <ChatBox user={userToCall}></ChatBox>
+      )}
+
+      {enableCall && !currentUser.isAgent && (
+        <ChatBox receiver={agentToCall}></ChatBox>
+      )}
+
       {showFormUpdateBooking && (
         <form
           style={{ marginTop: "20px" }}

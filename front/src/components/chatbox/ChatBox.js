@@ -12,7 +12,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
-import { InputAdornment } from "@material-ui/core";
 
 var serverConnection;
 
@@ -27,42 +26,13 @@ class ChatBox extends Component {
     this.handleStopVideo = this.handleStopVideo.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
+    this.setReceiverComponentLoaded = this.setReceiverComponentLoaded.bind(
+      this
+    );
 
     this.state = {
-      //uuid: "er3JJoRkKwVfmRepUYMr46367P24",
-      //uuid: currentUser.id,
       messages: [],
       contacts: [],
-      /*       contacts: [
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P22",
-          name: "Jan Romaniak",
-          isSelected: false,
-        },
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P23",
-          name: "Bertrand Novak",
-          isSelected: false,
-        },
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P24",
-          name: "Paul Busmut",
-          isSelected: false,
-        },
-        {
-          avatar:
-            "https://lh4.googleusercontent.com/-5_Q2XW37ylw/AAAAAAAAAAI/AAAAAAAAC1c/tFrvjFVXwyg/photo.jpg",
-          id: "er3JJoRkKwVfmRepUYMr46367P25",
-          name: "Ian Joubert",
-          isSelected: false,
-        },
-      ], */
       selectedUser: {},
       isAuthenticated: false,
       isSelected: false,
@@ -77,68 +47,81 @@ class ChatBox extends Component {
       open: true,
       receiverID: null,
       isChatOngoing: false,
+      isReceiverComponentLoaded: false,
     };
   }
   handleChange(user, e) {
-    if (user) {
-      user.isSelected = true;
-      this.setState({
-        selectedUser: user,
-        selectedAvatar: user.avatar,
-        selectedName: user.name,
-        isSelected: true,
-        isChatOngoing: true,
-        isCallOnGoing: false,
-      });
-      return user;
-    }
+    this.setState({
+      isSelected: true,
+      isChatOngoing: true,
+      isCallOnGoing: false,
+    });
   }
 
   handleCall(user, e) {
-    if (user) {
-      user.isSelected = true;
-      this.setState({
-        selectedUser: user,
-        selectedAvatar: user.avatar,
-        selectedName: user.name,
-        isSelected: true,
-        isCallInitiator: true,
-        isCallOnGoing: true,
-        isChatOngoing: false,
-      });
-    }
+    this.setState({
+      isSelected: true,
+      isCallInitiator: true,
+      isCallOnGoing: true,
+      isChatOngoing: false,
+    });
+  }
+
+  setReceiverComponentLoaded() {
+    this.setState({
+      isReceiverComponentLoaded: true,
+    });
   }
   monitorIncomingCalls() {
-    console.log("monitorIncomingCalls");
     serverConnection = new WebSocket(process.env.REACT_APP_WEB_RTC_SERVER);
     serverConnection.onmessage = (message) => {
       var signal = JSON.parse(message.data);
-      console.log({ signal: signal });
       //Change state if incoming call for yourself
-      if (signal.uuid === this.state.uuid) {
+      if (!signal.chat && signal.receiver === this.state.uuid) {
         this.setState({
           isCallOnGoing: true,
+          isSelected: false,
+          isChatOngoing: false,
           liveMessage: message,
           liveConnection: serverConnection,
         });
-      } else {
-        this.setState({
-          isCallOnGoing: false,
-        });
+        //Call received for the current user
+        const customContext = this.context;
+        customContext.setIsCallOnGoing(true);
       }
       if (signal.chat) {
-        if (signal.receiver === this.state.uuid) {
+        if (this.props.receiver && signal.receiver === this.state.uuid) {
           this.state.messages.push(signal.chat);
           this.setState({
             receiverID: signal.sender,
             isChatOngoing: true,
-            selectedName: signal.chat.user.name,
+            isCallOnGoing: false,
+            isSelected: false,
+            liveMessage: message,
+            liveConnection: serverConnection,
+            selectedName:
+              this.props.receiver.firstName +
+              " " +
+              this.props.receiver.lastName,
+            selectedAvatar: signal.chat.user.avatar,
+          });
+        } else if (this.props.user && signal.receiver === this.state.uuid) {
+          this.state.messages.push(signal.chat);
+          this.setState({
+            receiverID: signal.sender,
+            isChatOngoing: true,
+            isCallOnGoing: false,
+            liveMessage: message,
+            liveConnection: serverConnection,
+            selectedName:
+              this.props.user.firstName + " " + this.props.user.lastName,
             selectedAvatar: signal.chat.user.avatar,
           });
         }
       }
     };
   }
+
   handleClose(e) {
     this.setState({
       isSelected: false,
@@ -162,7 +145,6 @@ class ChatBox extends Component {
   }
 
   onSend(messages = []) {
-    console.log({ MESSAGES: messages });
     this.setState((previousState) => ({
       messages: GiftedChat.append(previousState.messages, messages),
     }));
@@ -214,75 +196,71 @@ class ChatBox extends Component {
   }
 
   renderContacts() {
+    let contact = {};
     const contacts = [];
-    const entries = this.state.contacts.entries();
-    for (const [i, item] of entries) {
-      const contact = {
-        id: item.id,
-        text: item.content,
-        name: item.firstName + " " + item.lastName,
+    if (this.props.user) {
+      contact = {
+        id: this.props.user.id,
+        text: this.props.user.email,
+        name: this.props.user.firstName + " " + this.props.user.lastName,
+        avatar: this.props.user.avatar,
+        isSelected: true,
+      };
+    } else if (this.props.receiver) {
+      contact = {
+        id: Math.floor(Math.random()),
+        text: "",
+        name:
+          this.props.receiver.firstName + " " + this.props.receiver.lastName,
+        avatar: "",
         isSelected: false,
       };
-      contacts.push(
+    }
+    if (contact) {
+      return (
         <ContactBox
           handleCall={this.handleCall}
           handleChange={this.handleChange}
           user={contact}
-          key={i}
+          key={contact.id}
+          isCaller={this.state.isCallInitiator}
         />
       );
+    } else {
+      //No parameter during call of ChatBox
+      const entries = this.state.contacts.entries();
+      for (const [i, item] of entries) {
+        contact = {
+          id: item.id,
+          text: item.content,
+          name: item.firstName + " " + item.lastName,
+          isSelected: false,
+        };
+        contacts.push(
+          <ContactBox
+            handleCall={this.handleCall}
+            handleChange={this.handleChange}
+            user={contact}
+            key={i}
+            isCaller={this.state.isCallInitiator}
+          />
+        );
+      }
+      return contacts;
     }
-    return contacts;
   }
-
-  /*renderContacts() {
-    const contacts = [];
-    const entries = this.state.contacts.entries();
-    for (const [i, item] of entries) {
-      contacts.push(
-        <ContactBox
-          handleCall={this.handleCall}
-          handleChange={this.handleChange}
-          user={item}
-          key={i}
-        />
-      );
-    }
-    return contacts;
-  } */
 
   renderHomeChatBox() {
     return <HomeChatBox />;
   }
 
   renderGiftedChat() {
-    /*const messages = [];
-    const entries = this.state.messages.entries();
-    for (const [i, item] of entries) {
-      if (
-        item.status == "SEND" &&
-        item.senderID == this.state.selectedUser.id
-      ) {
-        const message = {
-          id: item.id,
-          text: item.content,
-          user: {},
-        };
-        //Update messages array
-        messages.push(message);
-        //Update message status in database
-        const params = {
-          id: item.id,
-          status: "RECEIVED",
-        };
-        //messageAPI.updateMessageStatus(params);
-      }
-    }*/
     return (
       <GiftedChat
         user={this.state.selectedUser}
         messages={this.state.messages}
         onSend={(messages) => this.onSend(messages)}
+        inverted="true"
       />
     );
   }
@@ -291,7 +269,7 @@ class ChatBox extends Component {
     return (
       <VideoCallerChatBox
         isCaller={true}
-        uuid={this.state.selectedUser.id}
+        uuid={this.state.uuid}
         user={this.state.selectedUser}
         handleStopVideo={this.handleStopVideo}
       />
@@ -306,6 +284,7 @@ class ChatBox extends Component {
         liveMessage={this.state.liveMessage}
         liveConnection={this.state.liveConnection}
         handleStopVideo={this.handleStopVideo}
+        setReceiverComponentLoaded={this.setReceiverComponentLoaded}
       />
     );
   }
@@ -313,23 +292,44 @@ class ChatBox extends Component {
   async componentDidMount() {
     // Connect ot the current context
     const customContext = this.context;
-
-    let data = await userAPI.getUser();
-    const currentUser = data.user;
     let msgData = {
-      receiverID: currentUser.id,
+      receiverID: customContext.currentUser.id,
     };
+
+    if (this.props.user) {
+      this.setState({
+        selectedUser: {
+          id: this.props.user.id,
+          text: this.props.user.email,
+          name: this.props.user.firstName + " " + this.props.user.lastName,
+          avatar: this.props.user.avatar,
+          isSelected: true,
+        },
+        selectedAvatar: this.props.user.avatar,
+        selectedName:
+          this.props.user.firstName + " " + this.props.user.lastName,
+        isCallInitiator: true,
+      });
+    } else {
+      this.setState({
+        //Query the API to retrieve the list of contact
+        contacts: await userAPI.getUsers(),
+        selectedName:
+          this.props.receiver.firstName + " " + this.props.receiver.lastName,
+      });
+    }
 
     this.setState({
       //Query the API to retrieve the list of contact
-      contacts: await userAPI.getUsers(),
+      //contacts: await userAPI.getUsers(),
       //Init UUID
-      uuid: currentUser.id,
+      uuid: customContext.currentUser.id,
       //Init IsAuthenticated
       isAuthenticated: customContext.isAuthenticated,
       //Init Message related to the current user
       //messages: await messageAPI.getMessages(msgData),
     });
+
     //Monitor incoming calls for the connected user
     this.monitorIncomingCalls(this.state.uuid);
   }
@@ -348,12 +348,6 @@ class ChatBox extends Component {
                     <div style={styles.chat}>{this.renderHomeChatBox()}</div>
                   </div>
                 )}
-              {!this.state.isSelected && this.state.isChatOngoing && (
-                <div style={styles.chat}>
-                  <div style={styles.chat}>{this.renderUserChatBox()}</div>
-                  <div style={styles.chat}>{this.renderGiftedChat()}</div>
-                </div>
-              )}
               {this.state.isSelected &&
                 this.state.isChatOngoing &&
                 !this.state.isCallOngoing && (
@@ -362,19 +356,43 @@ class ChatBox extends Component {
                     <div style={styles.chat}>{this.renderGiftedChat()}</div>
                   </div>
                 )}
-              {this.state.isSelected && this.state.isCallOnGoing && (
-                <div style={styles.chat}>
-                  <div style={styles.chat}>{this.renderUserChatBox()}</div>
-                  <div style={styles.chat}>{this.renderVideoChatBox()}</div>
-                </div>
-              )}
-              {!this.state.isSelected && this.state.isCallOnGoing && (
-                <div style={styles.chat}>
+              {this.state.isSelected &&
+                this.state.isCallOnGoing &&
+                !this.state.isChatOngoing && (
                   <div style={styles.chat}>
-                    {this.renderVideoReceiverChatBox()}
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>{this.renderVideoChatBox()}</div>
                   </div>
-                </div>
-              )}
+                )}
+              {!this.state.isSelected &&
+                this.state.isChatOngoing &&
+                !this.state.isCallOnGoing && (
+                  <div style={styles.chat}>
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>{this.renderGiftedChat()}</div>
+                  </div>
+                )}
+              {!this.state.isSelected &&
+                this.state.isCallOnGoing &&
+                this.state.isChatOngoing && (
+                  <div style={styles.chat}>
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>
+                      {this.renderVideoReceiverChatBox()}
+                    </div>
+                    <div style={styles.chat}>{this.renderGiftedChat()}</div>
+                  </div>
+                )}
+              {!this.state.isSelected &&
+                this.state.isCallOnGoing &&
+                !this.state.isChatOngoing && (
+                  <div style={styles.chat}>
+                    <div style={styles.chat}>{this.renderUserChatBox()}</div>
+                    <div style={styles.chat}>
+                      {this.renderVideoReceiverChatBox()}
+                    </div>
+                  </div>
+                )}
               <div style={styles.settings}> </div>
             </div>
           </DialogContent>
@@ -384,7 +402,6 @@ class ChatBox extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-        }
       </div>
     );
   }
@@ -410,6 +427,7 @@ const styles = {
     borderColor: "#ccc",
     borderRightStyle: "solid",
     borderLeftStyle: "solid",
+    height: "200px",
   },
   settings: {
     display: "flex",

@@ -25,6 +25,7 @@ const MainNavigation = ({ history }) => {
     setIsAuthenticated,
     currentUser,
     setCurrentUser,
+    isCallOnGoing,
   } = useContext(AuthContext);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -47,7 +48,7 @@ const MainNavigation = ({ history }) => {
       throw error.response;
     }
   };
-  console.log(currentUser);
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -87,12 +88,15 @@ const MainNavigation = ({ history }) => {
             <MenuItem component={Link} to="/help" className={classes.menuItem}>
               Aide
             </MenuItem>
-
             {!currentUser.isAgent && (
               <MenuItem className={classes.menuItem}>
-                <Button color="secondary" variant="contained">
+                {/* <Button color="secondary" variant="contained">
                   Devenez agent !
-                </Button>
+                </Button> */}
+                <ButtonBecomeAgent
+                  isAuthenticated={isAuthenticated}
+                  currentUser={currentUser}
+                />
               </MenuItem>
             )}
 
