@@ -47,6 +47,13 @@ function getAgentsByDestAndType(type, lat, lng) {
     )
     .then((response) => response.data);
 }
+
+function getDestinationTypes() {
+  return axios
+    .get(USER_DESTINATIONS_URL + "/types/")
+    .then((response) => response.data);
+}
+
 export default {
   getAllDestinationsByUser,
   create,
@@ -54,4 +61,5 @@ export default {
   getAllDestinationsByUsers,
   getProxyDestinations,
   getAgentsByDestAndType,
+  getDestinationTypes,
 };

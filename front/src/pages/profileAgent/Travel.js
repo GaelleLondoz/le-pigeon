@@ -78,6 +78,16 @@ const Travel = () => {
 
   const [showFlash, setShowFlash] = useState(false);
 
+  const [destinationTypes, setDestinationTypes] = useState([]);
+
+  const getDestinationTypes = async () => {
+    try {
+      setDestinationTypes(await UserDestinationsAPI.getDestinationTypes());
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   const handleDestinationFormClick = () => {
     setOpenForm(!openForm);
   };
@@ -166,6 +176,10 @@ const Travel = () => {
       console.log(error.response);
     }
   };
+
+  useEffect(() => {
+    getDestinationTypes();
+  }, []);
 
   useEffect(() => {
     fetchDestinations(id);
@@ -259,8 +273,15 @@ const Travel = () => {
                     label="Type de voyage"
                     fullWidth
                   >
-                    <MenuItem value="Backpacking">Backpacking</MenuItem>
-                    <MenuItem value="Hotel">Hotel</MenuItem>
+                    {destinationTypes.map((type) => {
+                      return (
+                        <MenuItem value={type} key={type}>
+                          {type}
+                        </MenuItem>
+                      );
+                    })}
+                    {/*                     <MenuItem value="Backpacking">Backpacking</MenuItem>
+                    <MenuItem value="Hotel">Hotel</MenuItem> */}
                   </Select>
                   <FormHelperText style={{ color: "#f44336" }}>
                     {errors.type && errors.type}
