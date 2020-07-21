@@ -4,27 +4,27 @@ const faker = require("faker");
 const { getHash } = require("../helpers/index");
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    let data = [];
-    let count = 30;
+    up: (queryInterface, Sequelize) => {
+        let data = [];
+        let count = 1;
 
-    while (count--) {
-      data.push({
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        userName: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: getHash("password"),
-        avatar: "n949NmPh02.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        isAgent: false,
-      });
-    }
-    return queryInterface.bulkInsert("Users", data, {});
-  },
+        while (count--) {
+            data.push({
+                firstName: "admin",
+                lastName: "admin",
+                userName: "admin",
+                email: "admin@pigeon.com",
+                password: getHash("password"),
+                avatar: "n949NmPh02.jpeg",
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                isAgent: false,
+            });
+        }
+        return queryInterface.bulkInsert("Users", data, {});
+    },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("Users", null, {});
-  },
+    down: (queryInterface, Sequelize) => {
+        return queryInterface.bulkDelete("Users", null, {});
+    },
 };

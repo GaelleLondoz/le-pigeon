@@ -26,9 +26,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from "@material-ui/core";
 import bookingAPI from "../services/bookingAPI";
-import { FormHelperText } from "@material-ui/core";
 
 import { DateTimePicker } from "@material-ui/pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FormDialog({ agentID }) {
+  console.log({ AGENTID: agentID });
   const { isAuthenticated, currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const defaultDate = new Date();
@@ -96,6 +97,18 @@ export default function FormDialog({ agentID }) {
       //   agentID: 1,
       // });
       setErrors({});
+      console.log({
+        TOSENDPOINT: {
+          ...booking,
+          date: toMysql(booking.date),
+        },
+      });
+      console.log({
+        TOSEND: {
+          booking,
+          date: toMysql(booking.date),
+        },
+      });
       await bookingAPI.createBooking(agentID, {
         booking,
         date: toMysql(booking.date),
@@ -123,20 +136,17 @@ export default function FormDialog({ agentID }) {
     //Nom du champ
     const name = event.currentTarget.name;
     const value = event.currentTarget.value;
-    // setValue(event.target.value);
     setBooking({ ...booking, [name]: value });
-    // console.log({ value });
-    // console.log(booking);
   };
 
   const handledDateChange = (date) => {
-    setBooking({ date: date });
+    setBooking({ ...booking, date: date });
   };
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  console.log({ NEWBOOKING: booking });
   return (
     <div>
       {isAuthenticated && parseInt(currentUser.id) !== parseInt(agentID) ? (
@@ -204,6 +214,7 @@ export default function FormDialog({ agentID }) {
                 onChange={handleChange}
                 label="Nombre d'heure(s)"
                 name="hours"
+                error={errors.hours ? true : false}
                 onChange={(e) =>
                   setBooking({
                     ...booking,
@@ -215,6 +226,7 @@ export default function FormDialog({ agentID }) {
                   return <MenuItem value={i + 1}>{i + 1}</MenuItem>;
                 })}
               </Select>
+              <FormHelperText>{errors.hours && errors.hours}</FormHelperText>
             </FormControl>
             <TextField
               label="Votre commentaire"
@@ -247,7 +259,10 @@ export default function FormDialog({ agentID }) {
                 name="type"
                 defaultValue=""
                 // value={booking.type}
-                onChange={handleChange}
+                //onChange={handleChange}
+                onChange={(e) => {
+                  setBooking({ ...booking, type: e.target.value });
+                }}
               >
                 <FormControlLabel
                   value="Face à Face"
