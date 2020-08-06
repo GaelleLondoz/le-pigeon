@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# le-pigeon
-=======
 # le-pigeon
 
 ## ALGOLIA
@@ -86,4 +83,3 @@ https://docs.google.com/document/d/1mM_m0S-CE24hOduglewzkkoWwPjCcCejbwc_3wWkuws/
 
 Project presentation
 https://meet.google.com/linkredirect?authuser=0&dest=https%3A%2F%2Fdocs.google.com%2Fpresentation%2Fd%2F15ab4VcSzb-WbBA-p1qPGz4v_io3ee-RAGLcvOWvGfTg%2Fedit%3Fusp%3Dsharing
->>>>>>> a9f77021bac92c93823d57c41c430c01411c50f9
