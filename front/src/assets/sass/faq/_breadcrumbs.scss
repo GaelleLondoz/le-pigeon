@@ -1,0 +1,39 @@
+.breadcrumbs {
+  display: flex;
+  font-family: "Open Sans", sans-serif;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  align-items: center;
+  margin-bottom: 3rem !important;
+  margin-top: -6rem !important;
+  .breadcrumbs-featured,
+  .breadcrumbs-arrow,
+  .current-faqs {
+    opacity: 0;
+    display: flex;
+    transition: 0.4s ease-in-out opacity;
+  }
+
+  .breadcrumbs-arrow {
+    color: #bcbcbc;
+    font-size: 1rem;
+    margin: 0 0.3rem;
+  }
+
+  .current-faqs {
+    font-weight: bold;
+  }
+
+  .breadcrumbs-featured {
+    color: #bcbcbc;
+    cursor: pointer;
+  }
+
+  &.faqs-selected {
+    .breadcrumbs-featured,
+    .breadcrumbs-arrow,
+    .current-faqs {
+      opacity: 1;
+    }
+  }
+}
