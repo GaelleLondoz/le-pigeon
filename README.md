@@ -12,7 +12,7 @@ Les API_KEY sont définies dans front\.env
 REACT_APP_APP_ID_ALGOLIA_NAIM=pl9Z8TRWV4I3  
 REACT_APP_API_KEY_ALGOLIA_NAIM=bc1cb9962e909f0f29520e5cc8c028fd
 
-2. Exemple appel:
+2. Exemple appel:  
    front\src\components\algolia\Places.js
 
 ## DATABASE
